@@ -15,7 +15,7 @@ const useGameBase = () => {
   const {current, isTicking, startGlobalTick, pauseGlobalTick} = useTick();
   const [state, setState] = useState(initialState);
   const prevTick = usePrevious(current);
-  const convertResources = new ResourceConversion(state);
+  const convertResources = new ResourceConversion();
 
   const get = useCallback(
     (key: ResourceKeys, _state = state) => _get(key, _state),

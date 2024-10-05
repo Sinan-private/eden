@@ -1,12 +1,9 @@
 import {useGame} from "./context/game.context.ts";
-import {TradeUpdate, Update} from "./context/types.ts";
-import {ResourceConversion} from "./gameRules/ResourceConversion.ts";
+import {Update} from "./context/types.ts";
 
 export const Game = () => {
   const {
     get,
-    onTrade,
-    trade,
     // onBakeBread,
     // onBuildField,
     // onBuildWindmill,
@@ -38,10 +35,9 @@ export const Game = () => {
         </div>
 
         <div className="card">
-          {state.filter(({type}) => type === "build").map(({key}) => (
+          {state.filter(({type}) => type === "build_resource").map(({key}) => (
             <Button key={key} resource={get(key)}/>
           ))}
-          <Button resource={get('land')}/>
         </div>
       </div>
       <div>

@@ -7,7 +7,7 @@ import {ResourceConversion} from "./ResourceConversion.ts";
 
 export const getTurnUpdate = (state: State[]): UpdateFormat<ResourceKeys, ResourceTypes>[] => {
   const get = (key: ResourceKeys): ResourceSingle<ResourceKeys, ResourceTypes> => _get(key, state)
-  const convert = new ResourceConversion(state);
+  const convert = new ResourceConversion();
 
   return [
     {
@@ -26,11 +26,24 @@ export const getTurnUpdate = (state: State[]): UpdateFormat<ResourceKeys, Resour
     },
     {
       type: "trade",
-      update: convert.bread(),
+      update: {
+        ...convert.bread(),
+        multiplier: get('bakery').value
+      },
     },
     {
       type: "trade",
-      update: convert.flour(),
+      update: {
+        ...convert.flour(),
+        multiplier: get('windmill').value
+      },
+    },
+    {
+      type: "trade",
+      update: {
+        ...convert.meat(),
+        multiplier: get('pasture').value
+      },
     },
   ];
 }

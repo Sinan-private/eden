@@ -1,9 +1,13 @@
-import {State, TradeUpdate} from "../context/types.ts";
-import {ResourceKeys} from "./types.ts";
-import {get} from "../context/helper/getResource.ts";
+import {TradeUpdate} from "../context/types.ts";
+import {BuildResourceKeys, ProcessedResourceKeys} from "./types.ts";
 
-export class ResourceConversion implements Partial<Record<ResourceKeys, () => TradeUpdate>>{
-  constructor(private readonly state: State[]) {
+type ConversionMethodKeys = Record<
+  BuildResourceKeys | ProcessedResourceKeys,
+  () => TradeUpdate
+>
+
+export class ResourceConversion implements ConversionMethodKeys {
+  constructor() {
   }
 
   public readonly land = (): TradeUpdate => ({
@@ -41,17 +45,39 @@ export class ResourceConversion implements Partial<Record<ResourceKeys, () => Tr
     gain: [{key: 'forrester', value: 1}]
   });
 
+  public readonly pasture = (): TradeUpdate => ({
+    give: [{key: 'land', value: 1}, {key: 'gold', value: 20}],
+    gain: [{key: 'pasture', value: 1}]
+  });
+
   public readonly bread = (): TradeUpdate => ({
     give: [{key: 'flour', value: 1}, {key: 'water', value: 2}],
     gain: [{key: 'bread', value: 1}],
-    multiplier: this.__get('bakery').value
   });
 
   public readonly flour = (): TradeUpdate => ({
     give: [{key: 'corn', value: 2}],
     gain: [{key: 'flour', value: 1}],
-    multiplier: this.__get('windmill').value
   });
 
-  private readonly __get = (key: ResourceKeys) => get(key, this.state)
+  public readonly meat = (): TradeUpdate => ({
+    give: [{key: 'corn', value: 5}],
+    gain: [{key: 'meat', value: 1}],
+  });
+
+  public readonly milk = (): TradeUpdate => ({
+    give: [{key: 'corn', value: 5}],
+    gain: [{key: 'meat', value: 1}],
+  });
+
+  public readonly wool = (): TradeUpdate => ({
+    give: [{key: 'corn', value: 5}],
+    gain: [{key: 'wool', value: 1}],
+  });
+
+  public readonly planks = (): TradeUpdate => ({
+    give: [{key: 'wood', value: 2}],
+    gain: [{key: 'planks', value: 1}],
+  });
+
 }
