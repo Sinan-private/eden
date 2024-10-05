@@ -8,14 +8,13 @@ import {mergeChangeToState, nextTurn} from "./helper/stateUpdates.ts";
 import {get as _get} from "./helper/getResource.ts";
 import {TradeUpdate, Update} from "./types.ts";
 import {ResourceKeys} from "../gameRules/types.ts";
-import {ResourceConversion} from "../gameRules/ResourceConversion.ts";
 
 
 const useGameBase = () => {
   const {current, isTicking, startGlobalTick, pauseGlobalTick} = useTick();
   const [state, setState] = useState(initialState);
   const prevTick = usePrevious(current);
-  const convertResources = new ResourceConversion();
+  // const convertResources = new ResourceConversion();
 
   const get = useCallback(
     (key: ResourceKeys, _state = state) => _get(key, _state),
@@ -53,15 +52,10 @@ const useGameBase = () => {
   return {
     state,
     get: getExternal,
-    // resources,
+    check: get,
     trade,
     onUpdate,
     onTrade,
-    convertResources,
-    // onBakeBread,
-    // onBuildField,
-    // onBuildWindmill,
-    // onBuildBakery,
     currentTick: current,
     startGlobalTick,
     pauseGlobalTick,

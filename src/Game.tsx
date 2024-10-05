@@ -55,14 +55,11 @@ type ButtonProps = {
 }
 
 const Button = ({resource, increment = 1}: ButtonProps) => {
-  const {onUpdate, convertResources, onTrade} = useGame();
+  const {onUpdate, onTrade, check} = useGame();
+  const _resource = check(resource.key)
 
-  // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-  // @ts-expect-error
-  const onButtonClick = () => convertResources[resource.key]
-    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-  // @ts-expect-error
-    ? onTrade(convertResources[resource.key]())
+  const onButtonClick = () => _resource.has_trade
+    ? onTrade(_resource.trade)
     : onUpdate({key: resource.key, value: increment})
 
   return (

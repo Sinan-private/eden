@@ -63,7 +63,7 @@ export class ResourceConversion implements ConversionMethodKeys {
 
   public readonly milk = (): TradeUpdate => ({
     give: [{key: 'corn', value: 5}],
-    gain: [{key: 'meat', value: 1}],
+    gain: [{key: 'milk', value: 1}],
   });
 
   public readonly wool = (): TradeUpdate => ({

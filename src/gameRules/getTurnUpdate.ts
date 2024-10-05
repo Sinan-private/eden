@@ -1,13 +1,11 @@
 import {State} from "../context/types.ts";
-import {ResourceSingle} from "../Resource/ResourceSingle.ts";
-import {get as _get} from "../context/helper/getResource.ts";
+import {get as _get, GetResource} from "../context/helper/getResource.ts";
 import {ResourceKeys, ResourceTypes} from "./types.ts";
 import {UpdateFormat} from "../Resource/types.ts";
-import {ResourceConversion} from "./ResourceConversion.ts";
 
 export const getTurnUpdate = (state: State[]): UpdateFormat<ResourceKeys, ResourceTypes>[] => {
-  const get = (key: ResourceKeys): ResourceSingle<ResourceKeys, ResourceTypes> => _get(key, state)
-  const convert = new ResourceConversion();
+  const get: GetResource = (key) => _get(key, state)
+  console.log(get('bakery').trade)
 
   return [
     {
@@ -27,21 +25,21 @@ export const getTurnUpdate = (state: State[]): UpdateFormat<ResourceKeys, Resour
     {
       type: "trade",
       update: {
-        ...convert.bread(),
+        ...get('bread').trade,
         multiplier: get('bakery').value
       },
     },
     {
       type: "trade",
       update: {
-        ...convert.flour(),
+        ...get('flour').trade,
         multiplier: get('windmill').value
       },
     },
     {
       type: "trade",
       update: {
-        ...convert.meat(),
+        ...get('meat').trade,
         multiplier: get('pasture').value
       },
     },
