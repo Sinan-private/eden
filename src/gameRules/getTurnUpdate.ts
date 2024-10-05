@@ -4,10 +4,10 @@ import {ResourceSingle} from "../Resource/ResourceSingle.ts";
 import {get as _get} from "../context/helper/getResource.ts";
 import {ResourceKeys, ResourceTypes} from "./types.ts";
 
-export const getTurnUpdate = (state: State[]): UpdateFormat<ResourceKeys>[] => {
+export const getTurnUpdate = (state: State[]): UpdateFormat<ResourceKeys, ResourceTypes>[] => {
   const get = (key: ResourceKeys): ResourceSingle<ResourceKeys, ResourceTypes> => _get(key, state)
 
-  const changes: UpdateFormat<ResourceKeys>[] = [
+  const changes: UpdateFormat<ResourceKeys, ResourceTypes>[] = [
     {
       type: "increment",
       update: {

@@ -1,25 +1,24 @@
-import {ResourceUpdateProps} from "../Resource/types.ts";
-// import {ResourceKeys} from "../context/gameInit.ts";
+import {ResourceUpdateProps} from "./types.ts";
 
 type UpdateFormatType = 'trade' | 'increment' | 'decrement' | 'update' | 'set'
 type SimpleUpdateFormatType = Exclude<UpdateFormatType, 'trade'>;
 
-type SimpleUpdateFormat<T> = {
+type SimpleUpdateFormat<K, T> = {
   type: SimpleUpdateFormatType;
-  update: ResourceUpdateProps<T>
+  update: ResourceUpdateProps<K, T>
 }
 
 
-type TradeFormat<T> = {
+type TradeFormat<K, T> = {
   type: 'trade',
   update: {
-    give: ResourceUpdateProps<T>[];
-    gain: ResourceUpdateProps<T>[];
+    give: ResourceUpdateProps<K, T>[];
+    gain: ResourceUpdateProps<K, T>[];
     multiplier?: number
   }
 }
 
-export type UpdateFormat<T> = SimpleUpdateFormat<T> | TradeFormat<T>
+export type UpdateFormat<K, T> = SimpleUpdateFormat<K, T> | TradeFormat<K, T>
 
 // type IncrementFormat<T> = {
 //   type: 'increment',
@@ -50,7 +49,7 @@ export type UpdateFormat<T> = SimpleUpdateFormat<T> | TradeFormat<T>
 // export type ResourceUpdate<T> = TradeFormat<T> | IncrementFormat<T> | DecrementFormat<T> | UpdateFormat<T> | SetFormat<T>;
 // export type ResourceUpdateList<T> = ResourceUpdate<T>[]
 
-export const isTradeFormat = <T>(change: UpdateFormat<T>): change is TradeFormat<T> =>
+export const isTradeFormat = <K, T>(change: UpdateFormat<K, T>): change is TradeFormat<K, T> =>
   change.type === 'trade';
 
 

@@ -3,7 +3,7 @@ import {isTradeFormat, UpdateFormat} from "../../Resource/updateFormat.ts";
 import {Trade} from "../../Resource/Trade.ts";
 import {getTurnUpdate} from "../../gameRules/getTurnUpdate.ts";
 import {get} from "./getResource.ts";
-import {ResourceKeys} from "../../gameRules/types.ts";
+import {ResourceKeys, ResourceTypes} from "../../gameRules/types.ts";
 
 export const turnUpdate = (state: State[]) => {
   const changes = getTurnUpdate(state);
@@ -23,7 +23,7 @@ export const mergeChangeToState = (updates: State[], state: State[]) => {
 }
 
 export const singleChange = (
-  change: UpdateFormat<ResourceKeys>,
+  change: UpdateFormat<ResourceKeys, ResourceTypes>,
   state: State[],
 ): State[] => {
   if (isTradeFormat(change)) {

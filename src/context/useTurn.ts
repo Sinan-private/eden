@@ -3,21 +3,21 @@ import {UpdateFormat} from "../Resource/updateFormat.ts";
 import {usePrevious} from "../hooks/usePrevious.ts";
 import {mergeChangeToState, singleChange} from "./helper/stateUpdates.ts";
 import {State} from "./types.ts";
-import {ResourceSingle} from "../Resource/ResourceSingle.ts";
 import {ResourceKeys, ResourceTypes} from "../gameRules/types.ts";
+import {get as _get} from "./helper/getResource.ts";
 
 export const useTurn = (
   current: number,
   isTicking: boolean,
   state: State[],
-  get: (key: ResourceKeys, state?: State[]) => ResourceSingle<ResourceKeys, ResourceTypes>,
 ) => {
   const prevTick = usePrevious(current);
   let newState = [...state];
+  const get = (key: ResourceKeys) => _get(key, state);
   useEffect(() => {
 
     if (isTicking && prevTick !== current) {
-      const changes: UpdateFormat<ResourceKeys>[] = [
+      const changes: UpdateFormat<ResourceKeys, ResourceTypes>[] = [
         // {
         //   type: "increment",
         //   update: {
@@ -59,7 +59,7 @@ export const useTurn = (
 
       const update = changes.reduce((newState, change) => {
         // const a = singleChange(change, state)
-        newState = mergeChangeToState(singleChange(change, newState, get), newState);
+        newState = mergeChangeToState(singleChange(change, newState), newState);
         return newState
       }, [...state]);
       console.log(update)
