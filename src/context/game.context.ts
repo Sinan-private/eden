@@ -4,16 +4,18 @@ import {initialState} from "../gameRules/gameInit.ts";
 import {useTick} from "./tick.ts";
 import {usePrevious} from "../hooks/usePrevious.ts";
 import {Trade} from "../Resource/Trade.ts";
-import {Update} from "./types.ts";
-import {mergeChangeToState, turnUpdate} from "./helper/stateUpdates.ts";
+import {mergeChangeToState, nextTurn} from "./helper/stateUpdates.ts";
 import {get as _get} from "./helper/getResource.ts";
+import {Update} from "./types.ts";
 import {ResourceKeys} from "../gameRules/types.ts";
+import {ResourceConversion} from "../gameRules/ResourceConversion.ts";
 
 
 const useGameBase = () => {
   const {current, isTicking, startGlobalTick, pauseGlobalTick} = useTick();
   const [state, setState] = useState(initialState);
   const prevTick = usePrevious(current);
+  const convertResources = new ResourceConversion(state);
 
   const get = useCallback(
     (key: ResourceKeys, _state = state) => _get(key, _state),
@@ -50,16 +52,9 @@ const useGameBase = () => {
 
 
   useEffect(() => {
-    // Update each turn
     const isNextTurn = isTicking && prevTick !== current;
     if (isNextTurn) {
-      // const changes = getTurnUpdate(state);
-
-      // const newState = changes.reduce((newState, change) => {
-      //   newState = mergeChangeToState(singleChange(change, newState), newState);
-      //   return newState
-      // }, [...state]);
-      setState(turnUpdate(state))
+      setState(nextTurn(state))
     }
   }, [isTicking, current, prevTick, get, state]);
 
@@ -70,6 +65,7 @@ const useGameBase = () => {
     trade,
     onUpdate,
     onTrade,
+    convertResources,
     // onBakeBread,
     // onBuildField,
     // onBuildWindmill,

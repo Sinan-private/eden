@@ -1,11 +1,11 @@
 import {State} from "../types.ts";
-import {isTradeFormat, UpdateFormat} from "../../Resource/updateFormat.ts";
 import {Trade} from "../../Resource/Trade.ts";
 import {getTurnUpdate} from "../../gameRules/getTurnUpdate.ts";
 import {get} from "./getResource.ts";
 import {ResourceKeys, ResourceTypes} from "../../gameRules/types.ts";
+import {isTradeFormat, UpdateFormat} from "../../Resource/types.ts";
 
-export const turnUpdate = (state: State[]) => {
+export const nextTurn = (state: State[]) => {
   const changes = getTurnUpdate(state);
 
   return changes.reduce((newState, change) => {

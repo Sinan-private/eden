@@ -1,10 +1,10 @@
 import {useEffect} from "react";
-import {UpdateFormat} from "../Resource/updateFormat.ts";
 import {usePrevious} from "../hooks/usePrevious.ts";
 import {mergeChangeToState, singleChange} from "./helper/stateUpdates.ts";
 import {State} from "./types.ts";
 import {ResourceKeys, ResourceTypes} from "../gameRules/types.ts";
 import {get as _get} from "./helper/getResource.ts";
+import {UpdateFormat} from "../Resource/types.ts";
 
 export const useTurn = (
   current: number,

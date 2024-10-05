@@ -16,6 +16,10 @@ export type ResourceKeys =
   | 'flour'
   | 'wood'
   | 'iron'
+  | 'planks'
+  | 'forrester'
+  | 'wood_mill'
+
 export type ResourceTypes =
   | 'base_resource'
   | 'processed_resource'

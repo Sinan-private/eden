@@ -18,3 +18,20 @@ export type ResourceBeautyType = {
   max: string;
   fillPercentage: number;
 }
+type UpdateFormatType = 'trade' | 'increment' | 'decrement' | 'update' | 'set'
+type SimpleUpdateFormatType = Exclude<UpdateFormatType, 'trade'>;
+type SimpleUpdateFormat<K, T> = {
+  type: SimpleUpdateFormatType;
+  update: ResourceUpdateProps<K, T>
+}
+type TradeFormat<K, T> = {
+  type: 'trade',
+  update: {
+    give: ResourceUpdateProps<K, T>[];
+    gain: ResourceUpdateProps<K, T>[];
+    multiplier?: number
+  }
+}
+export type UpdateFormat<K, T> = SimpleUpdateFormat<K, T> | TradeFormat<K, T>
+export const isTradeFormat = <K, T>(change: UpdateFormat<K, T>): change is TradeFormat<K, T> =>
+  change.type === 'trade';

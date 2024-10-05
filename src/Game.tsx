@@ -1,7 +1,5 @@
 import {useGame} from "./context/game.context.ts";
-import {ResourceUpdateProps} from "./Resource/types.ts";
-import {ResourceKeys, ResourceTypes} from "./gameRules/types.ts";
-type Update = ResourceUpdateProps<ResourceKeys, ResourceTypes>;
+import {TradeUpdate, Update} from "./context/types.ts";
 
 export const Game = () => {
   const {
@@ -18,73 +16,57 @@ export const Game = () => {
     pauseGlobalTick,
     isTicking,
     state,
+    convertResources,
   } = useGame();
 
   const tradeIfPossible = (
-    give: Update[],
-    gain: Update[],
-    amount = 1
+    {
+      give,
+      gain,
+      multiplier = 1
+    }: TradeUpdate
   ) => {
-    if (trade(give, gain, amount).isPartlyPossible) {
-      onTrade(give, gain, amount)
+    if (trade(give, gain, multiplier).isPartlyPossible) {
+      onTrade(give, gain, multiplier)
     }
   }
-  const onBakeBread = () => tradeIfPossible(
-    [{key: 'flour', value: 1}, {key: 'water', value: 2}],
-    [{key: 'bread', value: 1}],
-    get('bakery').value
-  )
+  const onBakeBread = () => tradeIfPossible(convertResources.bread())
 
-  const onBuildField = () => tradeIfPossible(
-    [{key: 'land', value: 1}, {key: 'gold', value: 10}],
-    [{key: 'field', value: 1}]
-  )
+  const onBuildField = () => tradeIfPossible(convertResources.field())
 
-  const onBuildWell = () => tradeIfPossible(
-    [{key: 'land', value: 1}, {key: 'gold', value: 20}],
-    [{key: 'well', value: 1}]
-  )
+  const onBuildWell = () => tradeIfPossible(convertResources.well())
 
-  const onBuildWindmill = () => tradeIfPossible(
-    [{key: 'land', value: 1}, {key: 'gold', value: 50}],
-    [{key: 'windmill', value: 1}]
-  )
+  const onBuildWindmill = () => tradeIfPossible(convertResources.windmill())
 
-  const onMakeFlour = () => tradeIfPossible(
-    [{key: 'corn', value: 2}],
-    [{key: 'flour', value: 1}]
-  )
+  const onMakeFlour = () => tradeIfPossible(convertResources.flour())
 
-  const onBuildBakery = () => tradeIfPossible(
-    [{key: 'land', value: 1}, {key: 'gold', value: 50}],
-    [{key: 'bakery', value: 1}]
-  )
+  const onBuildBakery = () => tradeIfPossible(convertResources.bakery())
   // console.log(state, get('corn'))
   return (
     <>
 
-    <div style={{display: "flex", justifyContent: "center", flexDirection: "row"}}>
+      <div style={{display: "flex", justifyContent: "center", flexDirection: "row"}}>
 
-      <div className="card">
-      {state.filter(({type}) => type === "base_resource").map(({key}) => (
-        <Button key={key} resource={get(key)}/>
-      ))}
+        <div className="card">
+          {state.filter(({type}) => type === "base_resource").map(({key}) => (
+            <Button key={key} resource={get(key)}/>
+          ))}
+        </div>
+
+        <div className="card">
+          <Button resource={get('bread')} onClick={onBakeBread}/>
+          <Button resource={get('flour')} onClick={onMakeFlour}/>
+
+        </div>
+
+        <div className="card">
+          <Button resource={get('land')}/>
+          <Button resource={get('windmill')} onClick={onBuildWindmill}/>
+          <Button resource={get('bakery')} onClick={onBuildBakery}/>
+          <Button resource={get('well')} onClick={onBuildWell}/>
+          <Button resource={get('field')} onClick={onBuildField}/>
+        </div>
       </div>
-
-      <div className="card">
-        <Button resource={get('bread')} onClick={onBakeBread}/>
-        <Button resource={get('flour')} onClick={onMakeFlour}/>
-
-      </div>
-
-      <div className="card">
-        <Button resource={get('land')}/>
-        <Button resource={get('windmill')} onClick={onBuildWindmill}/>
-        <Button resource={get('bakery')} onClick={onBuildBakery}/>
-        <Button resource={get('well')} onClick={onBuildWell}/>
-        <Button resource={get('field')} onClick={onBuildField}/>
-      </div>
-    </div>
       <div>
         Turn {currentTick}
         <button onClick={isTicking ? pauseGlobalTick : startGlobalTick}>{isTicking ? 'x' : '>'}</button>
@@ -93,13 +75,13 @@ export const Game = () => {
   )
 }
 
-type ButonProps = {
+type ButtonProps = {
   resource: Update;
   increment?: number;
   onClick?(): void;
 }
 
-const Button = ({resource, increment = 1, onClick}: ButonProps) => {
+const Button = ({resource, increment = 1, onClick}: ButtonProps) => {
   const {onUpdate} = useGame();
   const onButtonClick = () => onClick
     ? onClick()

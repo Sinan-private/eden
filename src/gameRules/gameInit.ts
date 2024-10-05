@@ -7,8 +7,8 @@ type ResourceInit = ResourceUpdateProps<ResourceKeys, ResourceTypes>[];
 const base_resources: ResourceInit = [
   {value: 100, key: 'gold'},
   {value: 20, key: 'corn'},
-  {value: 30, max: 50, key: 'water'},
-  {value: 1, max: 50, key: 'stone'},
+  {value: 30, key: 'water'},
+  {value: 1, key: 'stone'},
   {value: 1, key: 'wood'},
 ];
 
@@ -17,6 +17,8 @@ const build_resources: ResourceInit = [
   {value: 1, max: 50, key: 'field'},
   {value: 1, max: 50, key: 'bakery'},
   {value: 1, key: 'well'},
+  {value: 1, key: 'forrester'},
+  {value: 1, key: 'wood_mill', label: 'Wood mill'},
 ];
 
 const processed_resources: ResourceInit = [
@@ -24,7 +26,7 @@ const processed_resources: ResourceInit = [
   {value: 1, key: 'milk'},
   {value: 1, key: 'wool'},
   {value: 1, key: 'flour'},
-  {value: 1, max: 50, key: 'bread', label: 'Bread', min: 0},
+  {value: 1, key: 'bread'},
   {value: 1, key: 'milk'},
   {value: 1, key: 'meat'},
   {value: 1, key: 'wool'},
