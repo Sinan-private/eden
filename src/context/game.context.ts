@@ -43,16 +43,6 @@ const useGameBase = () => {
 
   const getExternal = (key: ResourceKeys) => get(key).state;
 
-  // const newState = useTurn(current, isTicking, state, get)
-
-  // useEffect(() => {
-  //   if (current !== prevTick) {
-  //     // console.log(newState, state)
-  //     setState(newState)
-  //   }
-  // }, [current, newState, prevTick]);
-
-
   useEffect(() => {
     const isNextTurn = isTicking && prevTick !== current;
     if (isNextTurn) {

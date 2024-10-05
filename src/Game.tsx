@@ -1,5 +1,6 @@
 import {useGame} from "./context/game.context.ts";
 import {TradeUpdate, Update} from "./context/types.ts";
+import {ResourceConversion} from "./gameRules/ResourceConversion.ts";
 
 export const Game = () => {
   const {
@@ -16,16 +17,9 @@ export const Game = () => {
     pauseGlobalTick,
     isTicking,
     state,
-    convertResources,
   } = useGame();
 
-  const onBakeBread = () => onTrade(convertResources.bread())
-  const onBuildField = () => onTrade(convertResources.field())
-  const onBuildWell = () => onTrade(convertResources.well())
-  const onBuildWindmill = () => onTrade(convertResources.windmill())
-  const onMakeFlour = () => onTrade(convertResources.flour())
-  const onBuildBakery = () => onTrade(convertResources.bakery())
-  // console.log(state, get('corn'))
+  // const onBakeBread = () => onTrade(convertResources.bread())
   return (
     <>
 
@@ -38,17 +32,16 @@ export const Game = () => {
         </div>
 
         <div className="card">
-          <Button resource={get('bread')} onClick={onBakeBread}/>
-          <Button resource={get('flour')} onClick={onMakeFlour}/>
-
+          {state.filter(({type}) => type === "processed_resource").map(({key}) => (
+            <Button key={key} resource={get(key)}/>
+          ))}
         </div>
 
         <div className="card">
+          {state.filter(({type}) => type === "build").map(({key}) => (
+            <Button key={key} resource={get(key)}/>
+          ))}
           <Button resource={get('land')}/>
-          <Button resource={get('windmill')} onClick={onBuildWindmill}/>
-          <Button resource={get('bakery')} onClick={onBuildBakery}/>
-          <Button resource={get('well')} onClick={onBuildWell}/>
-          <Button resource={get('field')} onClick={onBuildField}/>
         </div>
       </div>
       <div>
@@ -62,14 +55,20 @@ export const Game = () => {
 type ButtonProps = {
   resource: Update;
   increment?: number;
-  onClick?(): void;
+  // onClick?(): void;
 }
 
-const Button = ({resource, increment = 1, onClick}: ButtonProps) => {
-  const {onUpdate} = useGame();
-  const onButtonClick = () => onClick
-    ? onClick()
+const Button = ({resource, increment = 1}: ButtonProps) => {
+  const {onUpdate, convertResources, onTrade} = useGame();
+
+  // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+  // @ts-expect-error
+  const onButtonClick = () => convertResources[resource.key]
+    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+  // @ts-expect-error
+    ? onTrade(convertResources[resource.key]())
     : onUpdate({key: resource.key, value: increment})
+
   return (
     <button onClick={onButtonClick}>
       {resource.label} {resource.value}

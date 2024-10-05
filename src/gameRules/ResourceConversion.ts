@@ -6,25 +6,40 @@ export class ResourceConversion implements Partial<Record<ResourceKeys, () => Tr
   constructor(private readonly state: State[]) {
   }
 
+  public readonly land = (): TradeUpdate => ({
+    give: [{key: 'gold', value: 10}],
+    gain: [{key: 'land', value: 1}]
+  })
+
   public readonly field = (): TradeUpdate => ({
     give: [{key: 'land', value: 1}, {key: 'gold', value: 10}],
     gain: [{key: 'field', value: 1}]
-  })
+  });
 
   public readonly well = (): TradeUpdate => ({
     give: [{key: 'land', value: 1}, {key: 'gold', value: 20}],
     gain: [{key: 'well', value: 1}]
-  })
+  });
 
   public readonly windmill = (): TradeUpdate => ({
     give: [{key: 'land', value: 1}, {key: 'gold', value: 20}],
     gain: [{key: 'windmill', value: 1}]
-  })
+  });
 
   public readonly bakery = (): TradeUpdate => ({
     give: [{key: 'land', value: 1}, {key: 'gold', value: 20}],
     gain: [{key: 'bakery', value: 1}]
-  })
+  });
+
+  public readonly wood_mill = (): TradeUpdate => ({
+    give: [{key: 'land', value: 1}, {key: 'gold', value: 20}],
+    gain: [{key: 'wood_mill', value: 1}]
+  });
+
+  public readonly forrester = (): TradeUpdate => ({
+    give: [{key: 'land', value: 1}, {key: 'gold', value: 20}],
+    gain: [{key: 'forrester', value: 1}]
+  });
 
   public readonly bread = (): TradeUpdate => ({
     give: [{key: 'flour', value: 1}, {key: 'water', value: 2}],

@@ -5,7 +5,7 @@ import {ResourceKeys, ResourceTypes} from "./types.ts";
 type ResourceInit = ResourceUpdateProps<ResourceKeys, ResourceTypes>[];
 
 const base_resources: ResourceInit = [
-  {value: 100, key: 'gold'},
+  {value: 1000, key: 'gold'},
   {value: 20, key: 'corn'},
   {value: 30, key: 'water'},
   {value: 1, key: 'stone'},
@@ -27,9 +27,6 @@ const processed_resources: ResourceInit = [
   {value: 1, key: 'wool'},
   {value: 1, key: 'flour'},
   {value: 1, key: 'bread'},
-  {value: 1, key: 'milk'},
-  {value: 1, key: 'meat'},
-  {value: 1, key: 'wool'},
 ];
 
 export const uncategorized_resources: ResourceInit = [
