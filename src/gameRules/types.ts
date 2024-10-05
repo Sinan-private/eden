@@ -1,4 +1,5 @@
-export type ResourceKeys = BaseResourceKeys | BuildResourceKeys | ProcessedResourceKeys
+export type ResourceKeys = BaseResourceKeys | BuildResourceKeys | ProcessedResourceKeys;
+export type TradeResourceKeys = BuildResourceKeys | ProcessedResourceKeys;
 
 export type ResourceTypes =
   | 'base_resource'

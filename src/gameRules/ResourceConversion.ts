@@ -1,10 +1,6 @@
 import {TradeUpdate} from "../context/types.ts";
-import {BuildResourceKeys, ProcessedResourceKeys} from "./types.ts";
-
-type ConversionMethodKeys = Record<
-  BuildResourceKeys | ProcessedResourceKeys,
-  () => TradeUpdate
->
+import {TradeResourceKeys} from "./types.ts";
+type ConversionMethodKeys = Record<TradeResourceKeys, () => TradeUpdate>
 
 export class ResourceConversion implements ConversionMethodKeys {
   constructor() {
