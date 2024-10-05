@@ -5,17 +5,17 @@ import {
 } from "./types";
 import {beautifyNumber, delta, mapMultiply} from "./helpers";
 
-type UpdateProps = Partial<ResourceTypeRaw>;
+type UpdateProps<T> = Partial<ResourceTypeRaw<T>>;
 
-export class ResourceSingle<T extends string> {
-  public readonly key: T;
+export class ResourceSingle<K extends string, T extends string> {
+  public readonly key: K;
   public readonly value: number;
   public readonly min: number;
   public readonly max: number;
   public readonly label: string;
-  public readonly type: string;
+  public readonly type: T;
 
-  constructor(raw_resource: ResourceUpdateProps<T>) {
+  constructor(raw_resource: ResourceUpdateProps<K, T>) {
     const {
       min,
       max,
@@ -28,11 +28,11 @@ export class ResourceSingle<T extends string> {
     this.value = typeof value === 'number' ? value : 0;
     this.min = typeof min === 'number' ? min : 0;
     this.max = typeof max === 'number' ? max : Infinity;
-    this.label = label || 'Label missing';
-    this.type = type || 'type missing';
+    this.label = label || capitalizeFirstLetter(key);
+    this.type = type || '' as T;
   }
 
-  public readonly updateBy = (update: UpdateProps): ResourceState<T> => {
+  public readonly updateBy = (update: UpdateProps<T>): ResourceState<K, T> => {
     // This is a little complex to update constraints first before updating the value
     // This respects that the new value might be different after e.g. the max value raised.
     const constraints = {
@@ -44,12 +44,12 @@ export class ResourceSingle<T extends string> {
     return new ResourceSingle({...this, ...constraints}).setValueTo(newValue);
   }
 
-  public readonly updateValueBy = (value: number): ResourceTypeRaw => ({
+  public readonly updateValueBy = (value: number): ResourceState<K, T> => ({
     ...this.state,
     value: this.__respectConstraints(this.value + value)
   })
 
-  public readonly setTo = (update: UpdateProps): ResourceTypeRaw => {
+  public readonly setTo = (update: UpdateProps<T>): ResourceState<K, T> => {
     const {
       value = this.value,
       ...constraints
@@ -57,12 +57,12 @@ export class ResourceSingle<T extends string> {
     return new ResourceSingle({...this, ...constraints}).setValueTo(value);
   }
 
-  public readonly setValueTo = (value: number): ResourceState<T> => ({
+  public readonly setValueTo = (value: number): ResourceState<K, T> => ({
     ...this.state,
     value: this.__respectConstraints(value),
   });
 
-  public readonly delta = (update: UpdateProps) => delta(
+  public readonly delta = (update: UpdateProps<T>) => delta(
     {...this.state},
     update.value || 0
   )
@@ -88,7 +88,7 @@ export class ResourceSingle<T extends string> {
     }
   }
 
-  get state(): ResourceState<T> {
+  get state(): ResourceState<K, T> {
     return {
       key: this.key,
       value: this.value,
@@ -98,4 +98,8 @@ export class ResourceSingle<T extends string> {
       type: this.type,
     }
   }
+}
+
+function capitalizeFirstLetter(string: string) {
+  return string.charAt(0).toUpperCase() + string.slice(1);
 }

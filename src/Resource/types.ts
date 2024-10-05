@@ -1,16 +1,16 @@
-export type ResourceTypeRaw = {
+export type ResourceTypeRaw<T> = {
   value: number;
   min: number;
   max: number;
   label: string;
-  type?: string; // should be generic
+  type?: T; // should be generic
 }
 
-export type ResourceUpdateProps<T> = {
-  key: T;
-} & Partial<ResourceTypeRaw>
+export type ResourceUpdateProps<K, T> = {
+  key: K;
+} & Partial<ResourceTypeRaw<T>>
 
-export type ResourceState<T> = ResourceTypeRaw & {key: T};
+export type ResourceState<K, T> = ResourceTypeRaw<T> & {key: K};
 
 export type ResourceBeautyType = {
   value: string;

@@ -1,114 +1,67 @@
-import {createContainer} from "unstated-next";
 import {useCallback, useEffect, useState} from "react";
-import {initialState, ResourceKeys} from "./gameInit.ts";
-import {ResourceState, ResourceUpdateProps} from "../Resource/types.ts";
+import {createContainer} from "unstated-next";
+import {initialState} from "../gameRules/gameInit.ts";
 import {useTick} from "./tick.ts";
 import {usePrevious} from "../hooks/usePrevious.ts";
-import {isTradeFormat, UpdateFormat} from "../Resource/updateFormat.ts";
-import {ResourceSingle} from "../NEW_Resource/ResourceSingle.ts";
-import {Trade} from "../NEW_Resource/Trade.ts";
-import {Resources} from "../Resource/Resources.ts";
+import {Trade} from "../Resource/Trade.ts";
+import {Update} from "./types.ts";
+import {mergeChangeToState, turnUpdate} from "./helper/stateUpdates.ts";
+import {get as _get} from "./helper/getResource.ts";
+import {ResourceKeys} from "../gameRules/types.ts";
+
 
 const useGameBase = () => {
   const {current, isTicking, startGlobalTick, pauseGlobalTick} = useTick();
   const [state, setState] = useState(initialState);
   const prevTick = usePrevious(current);
 
-  const get = useCallback((key: ResourceKeys, _state = state): ResourceSingle<ResourceKeys> => {
-    const _this = _state.find(resource => resource.key === key);
-    if (!_this) throw new Error("Could not find resource key " + key);
-    return new ResourceSingle<ResourceKeys>(_this)
-  }, [state]);
+  const get = useCallback(
+    (key: ResourceKeys, _state = state) => _get(key, _state),
+    [state]);
 
-  const onUpdate = (update: ResourceUpdateProps<ResourceKeys>) => {
-    setState(state => new Resources(state).update(update))
+  const onUpdate = (update: Update) => {
+    const newState = get(update.key).updateValueBy(update.value || 0)
+    setState(mergeChangeToState([newState], state))
   }
 
   const trade = useCallback((
-    give: ResourceUpdateProps<ResourceKeys>[],
-    gain: ResourceUpdateProps<ResourceKeys>[],
-    multiplier = 1
-  ) => new Trade(give, gain, state, multiplier),
-  [state]);
+      give: Update[],
+      gain: Update[],
+      multiplier = 1
+    ) => new Trade(give, gain, state, multiplier),
+    [state]);
 
   const onTrade = (
-    give: ResourceUpdateProps<ResourceKeys>[],
-    gain: ResourceUpdateProps<ResourceKeys>[],
+    give: Update[],
+    gain: Update[],
     multiplier = 1
   ) => setState(trade(give, gain, multiplier).newState);
 
   const getExternal = (key: ResourceKeys) => get(key).state;
 
-  const singleChange = useCallback((
-    change: UpdateFormat<ResourceKeys>,
-    _state: ResourceState<ResourceKeys>[],
-  ): ResourceState<ResourceKeys>[] => {
-    if (isTradeFormat(change)) {
-      const {give, gain, multiplier = 1} = change.update
-      return new Trade(give, gain, _state, multiplier).stateUpdates
-    }
-    const {type, update} = change;
-    switch (type) {
-      case "increment":
-        return [get(update.key, _state).updateValueBy(update.value!)]
-      case "decrement":
-        // console.log(type, get(update.key, _state))
-        return [get(update.key, _state).updateValueBy(-Math.abs(update.value!))]
-      case "update":
-        return []
-      case "set":
-        return []
-      // case "trade":
-      //   return []
-      default:
-        return []
-    }
-  }, [get])
+  // const newState = useTurn(current, isTicking, state, get)
 
-  const mergeChangeToState = (updates: ResourceState<ResourceKeys>[], _state: ResourceState<ResourceKeys>[]) => {
-    // Create a map for quick lookup of updates by key
-    const updatesMap = new Map(updates.map(update => [update.key, update]));
-    // Iterate through the state and either take the update (if exists) or keep the current state item
-    return _state.map(item => updatesMap.get(item.key) || item);
-  }
+  // useEffect(() => {
+  //   if (current !== prevTick) {
+  //     // console.log(newState, state)
+  //     setState(newState)
+  //   }
+  // }, [current, newState, prevTick]);
+
 
   useEffect(() => {
-    // Here the problem is again that one change is overwriting the other
-    if (isTicking && prevTick !== current) {
-      const changes: UpdateFormat<ResourceKeys>[] = [
-        {
-          type: "increment",
-          update: {
-            key: 'corn',
-            value: get('field').value
-          }
-        },
-        {
-          type: "trade",
-          update: {
-            give: [{key: 'corn', value: 1}, {key: 'water', value: 2}],
-            gain: [{key: 'bread', value: 1}],
-            multiplier: get('bakery').value
-          }
-        },
-        // {
-        //   type: "decrement",
-        //   update: {
-        //     key: 'corn',
-        //     value: 20
-        //   }
-        // },
-      ];
+    // Update each turn
+    const isNextTurn = isTicking && prevTick !== current;
+    if (isNextTurn) {
+      // const changes = getTurnUpdate(state);
 
-      const newState = changes.reduce((newState, change) => {
-        // const a = singleChange(change, state)
-        newState = mergeChangeToState(singleChange(change, newState), newState);
-        return newState
-      }, [...state]);
-      console.log(state, newState)
-      setState(newState)
+      // const newState = changes.reduce((newState, change) => {
+      //   newState = mergeChangeToState(singleChange(change, newState), newState);
+      //   return newState
+      // }, [...state]);
+      setState(turnUpdate(state))
     }
-  }, [isTicking, current, prevTick, get, state, singleChange]);
+  }, [isTicking, current, prevTick, get, state]);
 
   return {
     state,

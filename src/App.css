@@ -8,4 +8,8 @@
 
 .card {
   padding: 2em;
+  button {
+    margin: 4px;
+    min-width: 120px;
+  }
 }

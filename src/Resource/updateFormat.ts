@@ -1,4 +1,4 @@
-import {ResourceUpdateProps} from "./types.ts";
+import {ResourceUpdateProps} from "../Resource/types.ts";
 // import {ResourceKeys} from "../context/gameInit.ts";
 
 type UpdateFormatType = 'trade' | 'increment' | 'decrement' | 'update' | 'set'

@@ -1,11 +1,12 @@
 import {createContainer} from "unstated-next";
 import {useCallback, useEffect, useMemo, useState} from "react";
-import {gameInit, ResourceKeys} from "./gameInit.ts";
+import {gameInit} from "../gameRules/gameInit.ts";
 import {Resources} from "../Resource/Resources.ts";
 import {ResourceUpdateProps} from "../Resource/types.ts";
 import {useTick} from "./tick.ts";
 import {usePrevious} from "../hooks/usePrevious.ts";
 import {ResourceUpdateList} from "../Resource/updateFormat.ts";
+import {ResourceKeys} from "../gameRules/types.ts";
 
 const useGameBase = () => {
   const {current, isTicking, startGlobalTick, pauseGlobalTick} = useTick();
