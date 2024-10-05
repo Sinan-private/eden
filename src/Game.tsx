@@ -19,28 +19,12 @@ export const Game = () => {
     convertResources,
   } = useGame();
 
-  const tradeIfPossible = (
-    {
-      give,
-      gain,
-      multiplier = 1
-    }: TradeUpdate
-  ) => {
-    if (trade(give, gain, multiplier).isPartlyPossible) {
-      onTrade(give, gain, multiplier)
-    }
-  }
-  const onBakeBread = () => tradeIfPossible(convertResources.bread())
-
-  const onBuildField = () => tradeIfPossible(convertResources.field())
-
-  const onBuildWell = () => tradeIfPossible(convertResources.well())
-
-  const onBuildWindmill = () => tradeIfPossible(convertResources.windmill())
-
-  const onMakeFlour = () => tradeIfPossible(convertResources.flour())
-
-  const onBuildBakery = () => tradeIfPossible(convertResources.bakery())
+  const onBakeBread = () => onTrade(convertResources.bread())
+  const onBuildField = () => onTrade(convertResources.field())
+  const onBuildWell = () => onTrade(convertResources.well())
+  const onBuildWindmill = () => onTrade(convertResources.windmill())
+  const onMakeFlour = () => onTrade(convertResources.flour())
+  const onBuildBakery = () => onTrade(convertResources.bakery())
   // console.log(state, get('corn'))
   return (
     <>

@@ -6,7 +6,7 @@ import {usePrevious} from "../hooks/usePrevious.ts";
 import {Trade} from "../Resource/Trade.ts";
 import {mergeChangeToState, nextTurn} from "./helper/stateUpdates.ts";
 import {get as _get} from "./helper/getResource.ts";
-import {Update} from "./types.ts";
+import {TradeUpdate, Update} from "./types.ts";
 import {ResourceKeys} from "../gameRules/types.ts";
 import {ResourceConversion} from "../gameRules/ResourceConversion.ts";
 
@@ -27,17 +27,19 @@ const useGameBase = () => {
   }
 
   const trade = useCallback((
-      give: Update[],
-      gain: Update[],
-      multiplier = 1
-    ) => new Trade(give, gain, state, multiplier),
+      {
+        give,
+        gain,
+        multiplier = 1
+      }: TradeUpdate) =>
+      new Trade(give, gain, state, multiplier),
     [state]);
 
-  const onTrade = (
-    give: Update[],
-    gain: Update[],
-    multiplier = 1
-  ) => setState(trade(give, gain, multiplier).newState);
+  const onTrade = (update: TradeUpdate) => {
+    if (trade(update).isPartlyPossible) {
+      setState(trade(update).newState)
+    }
+  };
 
   const getExternal = (key: ResourceKeys) => get(key).state;
 
@@ -76,7 +78,6 @@ const useGameBase = () => {
     isTicking
   };
 }
-
 
 
 const useGameContainer = createContainer(useGameBase);

@@ -2,7 +2,7 @@ import {State, TradeUpdate} from "../context/types.ts";
 import {ResourceKeys} from "./types.ts";
 import {get} from "../context/helper/getResource.ts";
 
-export class ResourceConversion {
+export class ResourceConversion implements Partial<Record<ResourceKeys, () => TradeUpdate>>{
   constructor(private readonly state: State[]) {
   }
 
