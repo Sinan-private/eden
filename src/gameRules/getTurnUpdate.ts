@@ -5,7 +5,6 @@ import {UpdateFormat} from "../Resource/types.ts";
 
 export const getTurnUpdate = (state: State[]): UpdateFormat<ResourceKeys, ResourceTypes>[] => {
   const get: GetResource = (key) => _get(key, state)
-  console.log(get('bakery').trade)
 
   return [
     {

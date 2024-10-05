@@ -9,22 +9,23 @@ import {get as _get} from "./helper/getResource.ts";
 import {TradeUpdate, Update} from "./types.ts";
 import {ResourceKeys} from "../gameRules/types.ts";
 
-
 const useGameBase = () => {
   const {current, isTicking, startGlobalTick, pauseGlobalTick} = useTick();
   const [state, setState] = useState(initialState);
   const prevTick = usePrevious(current);
-  // const convertResources = new ResourceConversion();
 
+  // Get the full Resource class
   const get = useCallback(
     (key: ResourceKeys, _state = state) => _get(key, _state),
     [state]);
 
+  // Update a single Resource
   const onUpdate = (update: Update) => {
-    const newState = get(update.key).updateValueBy(update.value || 0)
+    const newState = get(update.key).updateBy(update)
     setState(mergeChangeToState([newState], state))
   }
 
+  // Only a simplification to pass the state in once
   const trade = useCallback((
       {
         give,
@@ -34,14 +35,17 @@ const useGameBase = () => {
       new Trade(give, gain, state, multiplier),
     [state]);
 
+  // Expects the TradeUpdate object to handle a trade if at least a part of it can be executed
   const onTrade = (update: TradeUpdate) => {
     if (trade(update).isPartlyPossible) {
       setState(trade(update).newState)
     }
   };
 
+  // The exposed get method only returns the state of the resource
   const getExternal = (key: ResourceKeys) => get(key).state;
 
+  // With every tick a new turn is triggered with all included production
   useEffect(() => {
     const isNextTurn = isTicking && prevTick !== current;
     if (isNextTurn) {
@@ -52,8 +56,8 @@ const useGameBase = () => {
   return {
     state,
     get: getExternal,
+    // This returns the full Resource for deeper evaluations
     check: get,
-    trade,
     onUpdate,
     onTrade,
     currentTick: current,
