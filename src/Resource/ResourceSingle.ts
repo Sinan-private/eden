@@ -28,7 +28,7 @@ export class ResourceSingle<K extends string, T extends string> {
     this.value = typeof value === 'number' ? value : 0;
     this.min = typeof min === 'number' ? min : 0;
     this.max = typeof max === 'number' ? max : Infinity;
-    this.label = label || capitalizeFirstLetter(key);
+    this.label = label || key ? labelFromKey(key) : 'No label';
     this.type = type || '' as T;
   }
 
@@ -100,6 +100,9 @@ export class ResourceSingle<K extends string, T extends string> {
   }
 }
 
-function capitalizeFirstLetter(string: string) {
-  return string.charAt(0).toUpperCase() + string.slice(1);
-}
+const labelFromKey = (key: string) =>
+  key
+    .charAt(0)
+    .toUpperCase() + key.slice(1)
+    .split('_')
+    .join(' ')

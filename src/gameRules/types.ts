@@ -8,12 +8,13 @@ export type ResourceTypes =
   | ''
 
 type BaseResourceKeys =
+  | 'money'
+  | 'iron'
   | 'gold'
   | 'corn'
   | 'water'
   | 'stone'
   | 'wood'
-  | 'iron'
   | 'citizen'
 
 export type BuildResourceKeys =
@@ -33,4 +34,5 @@ export type ProcessedResourceKeys =
   | 'wool'
   | 'flour'
   | 'planks'
+  | 'bricks'
 

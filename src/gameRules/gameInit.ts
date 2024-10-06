@@ -6,10 +6,11 @@ type ResourceInit = ResourceUpdateProps<ResourceKeys, ResourceTypes>[];
 
 const base_resources: ResourceInit = [
   {value: 1000, key: 'gold'},
+  {value: 1000, key: 'money'},
   {value: 100, key: 'corn'},
   {value: 30, key: 'water'},
-  {value: 1, key: 'stone'},
-  {value: 1, key: 'wood'},
+  {value: 50, key: 'stone'},
+  {value: 50, key: 'wood'},
   {value: 1, max: 50, key: 'citizen'},
 ];
 
@@ -30,6 +31,8 @@ const processed_resources: ResourceInit = [
   {value: 1, key: 'wool'},
   {value: 1, key: 'flour'},
   {value: 1, key: 'bread'},
+  {value: 10, key: 'bricks'},
+  {value: 10, key: 'planks'},
 ];
 
 export const uncategorized_resources: ResourceInit = [
