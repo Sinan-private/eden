@@ -10,9 +10,9 @@ import {TradeUpdate, Update} from "./types.ts";
 import {ResourceKeys} from "../gameRules/types.ts";
 
 const useGameBase = () => {
-  const {current, isTicking, startGlobalTick, pauseGlobalTick} = useTick();
+  const tick = useTick();
   const [state, setState] = useState(initialState);
-  const prevTick = usePrevious(current);
+  const prevTick = usePrevious(tick.current);
 
   // Get the full Resource class
   const get = useCallback(
@@ -47,11 +47,12 @@ const useGameBase = () => {
 
   // With every tick a new turn is triggered with all included production
   useEffect(() => {
-    const isNextTurn = isTicking && prevTick !== current;
+    const {isActive, current} = tick;
+    const isNextTurn = isActive && prevTick !== current;
     if (isNextTurn) {
       setState(nextTurn(state))
     }
-  }, [isTicking, current, prevTick, get, state]);
+  }, [tick, prevTick, get, state]);
 
   return {
     state,
@@ -60,10 +61,7 @@ const useGameBase = () => {
     check: get,
     onUpdate,
     onTrade,
-    currentTick: current,
-    startGlobalTick,
-    pauseGlobalTick,
-    isTicking
+    tick,
   };
 }
 

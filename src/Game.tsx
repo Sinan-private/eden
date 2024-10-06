@@ -3,13 +3,11 @@ import {Resource} from "./gameRules/Resource.ts";
 
 export const Game = () => {
   const {
-    currentTick,
     check,
-    startGlobalTick,
-    pauseGlobalTick,
-    isTicking,
+    tick,
     state,
   } = useGame();
+  const {current, isActive, start, stop} = tick;
 
   return (
     <>
@@ -34,8 +32,8 @@ export const Game = () => {
         </div>
       </div>
       <div>
-        Turn {currentTick}
-        <button onClick={isTicking ? pauseGlobalTick : startGlobalTick}>{isTicking ? 'x' : '>'}</button>
+        Turn {current}
+        <button onClick={isActive ? stop : start}>{isActive ? 'x' : '>'}</button>
       </div>
     </>
   )
