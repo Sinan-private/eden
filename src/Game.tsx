@@ -52,8 +52,11 @@ const Button = ({resource, increment = 1}: ButtonProps) => {
 
   return (
     <button onClick={onButtonClick}>
-      <img src={resource.icon} style={{marginRight: 8}} />
-      {resource.label} {resource.value}
+      <div style={{display: "flex", alignItems: "center", flexDirection: "column", marginRight: 16}}>
+        <img src={resource.icon} alt={resource.label} width={32} height={32} />
+        <span style={{fontSize: '0.7rem'}}>{resource.label}</span>
+      </div>
+       {resource.value}
     </button>
   )
 }

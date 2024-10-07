@@ -16,6 +16,10 @@ type BaseResourceKeys =
   | 'stone'
   | 'wood'
   | 'citizen'
+  | 'engineer'
+  | 'scientist'
+  | 'artist'
+  | 'magician'
 
 export type BuildResourceKeys =
   | 'land'

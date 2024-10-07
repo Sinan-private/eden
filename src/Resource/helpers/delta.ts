@@ -2,9 +2,9 @@ import {mapMultiply} from "./mapMultiply";
 import {ResourceTypeRaw} from "../types";
 
 type DeltaType = 'INCREMENT' | 'DECREMENT';
-export type DeltaResponse<T extends string> = Increment<T> | Decrement<T>
+export type DeltaResponse<K extends string, T extends string> = Increment<K, T> | Decrement<K, T>
 
-export type Delta<T extends string> = {
+export type Delta<K extends string> = {
   to: number;
   by: number;
   cut: number;
@@ -15,12 +15,12 @@ export type Delta<T extends string> = {
   updateApproach: number;
   min: number;
   max: number;
-  key: T;
+  key: K;
   type: DeltaType
 }
 
-class Increment<T extends string> implements Delta<T> {
-  public readonly key: T;
+class Increment<K extends string, T extends string> implements Delta<K> {
+  public readonly key: K;
   public readonly to: number;
   public readonly by: number;
   public readonly cut: number;
@@ -32,7 +32,7 @@ class Increment<T extends string> implements Delta<T> {
   public readonly min: number;
   public readonly max: number;
   constructor(
-    public readonly prevState: ResourceTypeRaw & {key: T},
+    public readonly prevState: ResourceTypeRaw<T> & {key: K},
     public readonly updateApproach: number,
   ) {
     const {
@@ -55,8 +55,8 @@ class Increment<T extends string> implements Delta<T> {
   }
 }
 
-class Decrement<T extends string> implements Delta<T>{
-  public readonly key: T;
+class Decrement<K extends string, T extends string> implements Delta<K>{
+  public readonly key: K;
   public readonly to: number;
   public readonly by: number;
   public readonly cut: number;
@@ -68,7 +68,7 @@ class Decrement<T extends string> implements Delta<T>{
   public readonly min: number;
   public readonly max: number;
   constructor(
-    public readonly prevState: ResourceTypeRaw & {key: T},
+    public readonly prevState: ResourceTypeRaw<T> & {key: K},
     public readonly updateApproach: number,
   ) {
     const {
@@ -93,8 +93,8 @@ class Decrement<T extends string> implements Delta<T>{
 
 const round = (n: number) => Math.round(n * 100) / 100;
 
-export const delta = <T extends string>(
-  current: ResourceTypeRaw & {key: T},
+export const delta = <K extends string, T extends string>(
+  current: ResourceTypeRaw<T> & {key: K},
   updateBy: number,
 ) =>
   updateBy >= 0
