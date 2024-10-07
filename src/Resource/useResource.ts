@@ -1,7 +1,8 @@
 import {useCallback, useState} from "react";
 import {Trade} from "./Trade.ts";
 import {ResourceState, ResourceUpdateProps} from "./types.ts";
-import {mergeChangeToState} from "./helpers/stateUpdates.ts";
+import {mergeChangeToState} from "./helpers/nextTurn.ts";
+import {get as _get} from "./helpers/getResource.ts";
 
 export type Update<K, T> = ResourceUpdateProps<K, T>;
 export type TradeUpdate<K, T> = {
@@ -11,7 +12,7 @@ export type TradeUpdate<K, T> = {
 }
 
 
-export const useResource = <K, T>(initialState: ResourceState<K, T>) => {
+export const useResource = <K extends string, T extends string>(initialState: ResourceState<K, T>[]) => {
   const [state, setState] = useState(initialState);
 
   // Get the full Resource class
@@ -31,12 +32,12 @@ export const useResource = <K, T>(initialState: ResourceState<K, T>) => {
         give,
         gain,
         multiplier = 1
-      }: TradeUpdate) =>
+      }: TradeUpdate<K, T>) =>
       new Trade(give, gain, state, multiplier),
     [state]);
 
   // Expects the TradeUpdate object to handle a trade if at least a part of it can be executed
-  const onTrade = (update: TradeUpdate) => {
+  const onTrade = (update: TradeUpdate<K, T>) => {
     if (trade(update).isPartlyPossible) {
       setState(trade(update).newState)
     }
@@ -52,5 +53,6 @@ export const useResource = <K, T>(initialState: ResourceState<K, T>) => {
     check: get,
     onUpdate,
     onTrade,
+    setState,
   }
 }

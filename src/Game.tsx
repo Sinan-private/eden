@@ -1,13 +1,13 @@
 import {useGame} from "./context/game.context.ts";
-import {Resource} from "./gameRules/Resource.ts";
+import {ResourceClass} from "./gameRules/types.ts";
 
 export const Game = () => {
   const {
-    check,
+    resource,
     tick,
-    state,
   } = useGame();
   const {current, isActive, start, stop} = tick;
+  const {state, check} = resource
 
   return (
     <>
@@ -40,12 +40,12 @@ export const Game = () => {
 }
 
 type ButtonProps = {
-  resource: Resource;
+  resource: ResourceClass;
   increment?: number;
 }
 
 const Button = ({resource, increment = 1}: ButtonProps) => {
-  const {onUpdate, onTrade} = useGame();
+  const {onUpdate, onTrade} = useGame().resource;
   const onButtonClick = () => resource.has_trade
     ? onTrade(resource.trade)
     : onUpdate({key: resource.key, value: increment})

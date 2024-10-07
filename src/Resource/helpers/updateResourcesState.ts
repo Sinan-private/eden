@@ -1,10 +1,10 @@
 import {ResourceState, ResourceUpdateProps} from "../types.ts";
 
 // Function to update the state based on partial updates
-export function updateResourceState<T extends string>(
-  state: ResourceState<T>[],
-  updates: ResourceUpdateProps<T>[]
-): ResourceState<T>[] {
+export function updateResourceState<K extends string, T extends string>(
+  state: ResourceState<K, T>[],
+  updates: ResourceUpdateProps<K, T>[]
+): ResourceState<K, T>[] {
   // Start with the current state
   const newState = [...state];
 

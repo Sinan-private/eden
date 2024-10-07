@@ -1,22 +1,26 @@
 import {ResourceState} from "../types.ts";
-import {Trade} from "../../Resource/Trade.ts";
+import {Trade} from "../Trade.ts";
 import {get} from "./getResource.ts";
-import {isTradeFormat, UpdateFormat} from "../../Resource/types.ts";
-
-export type GenericResourceState<K extends string, T extends string> = ResourceState<K, T>;
-
-
-// export const nextTurn = (state: State[]) => {
-//   const changes = getTurnUpdate(state);
-//
-//   return changes.reduce((newState, change) => {
-//     newState = mergeChangeToState(singleChange(change, newState), newState);
-//     return newState
-//   }, [...state]);
-// }
+import {isTradeFormat, UpdateFormat} from "../types.ts";
+import {State} from "../../context/types.ts";
+import {ResourceKeys, ResourceTypes} from "../../gameRules/types.ts";
 
 
-export const mergeChangeToState = <K extends string, T extends string>(updates: GenericResourceState<K, T>[], state: GenericResourceState<K, T>[]) => {
+
+export const nextTurn = (
+  state: State[],
+  getTurnUpdate: (state: State[]) => UpdateFormat<ResourceKeys, ResourceTypes>[]
+) => {
+  const changes = getTurnUpdate(state);
+
+  return changes.reduce((newState, change) => {
+    newState = mergeChangeToState(singleChange(change, newState), newState);
+    return newState
+  }, [...state]);
+}
+
+
+export const mergeChangeToState = <K extends string, T extends string>(updates: ResourceState<K, T>[], state: ResourceState<K, T>[]) => {
   // Create a map for quick lookup of updates by key
   const updatesMap = new Map(updates.map(update => [update.key, update]));
   // Iterate through the state and either take the update (if exists) or keep the current state item
@@ -25,8 +29,8 @@ export const mergeChangeToState = <K extends string, T extends string>(updates: 
 
 export const singleChange = <K extends string, T extends string>(
   change: UpdateFormat<K, T>,
-  state: GenericResourceState<K, T>[],
-): GenericResourceState<K, T>[] => {
+  state: ResourceState<K, T>[],
+): ResourceState<K, T>[] => {
   if (isTradeFormat(change)) {
     const {give, gain, multiplier = 1} = change.update
     return new Trade(give, gain, state, multiplier).stateUpdates

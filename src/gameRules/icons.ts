@@ -10,9 +10,9 @@ import wood from '../assets/icons/wood.png';
 import wool from '../assets/icons/wool.png';
 import empty from '../assets/icons/empty.png';
 
-type IconList = Record<ResourceKeys, string>
+type IconList<K extends string> = Record<K, string>
 
-export const icons: IconList = {
+export const icons: IconList<ResourceKeys> = {
   bakery: empty,
   bread: bread,
   bricks: brick,
@@ -35,5 +35,9 @@ export const icons: IconList = {
   wool,
   forrester,
   meat,
-  money
+  money,
+  engineer: empty,
+  scientist: empty,
+  artist: empty,
+  magician: empty,
 }

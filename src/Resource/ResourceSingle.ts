@@ -1,7 +1,8 @@
 import {
   ResourceBeautyType,
   ResourceUpdateProps,
-  ResourceTypeRaw, ResourceState,
+  ResourceTypeRaw,
+  ResourceState,
 } from "./types";
 import {beautifyNumber, delta, mapMultiply} from "./helpers";
 

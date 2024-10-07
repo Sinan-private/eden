@@ -1,3 +1,5 @@
+import {Resource} from "./Resource.ts";
+
 export type ResourceKeys = BaseResourceKeys | BuildResourceKeys | ProcessedResourceKeys;
 export type TradeResourceKeys = BuildResourceKeys | ProcessedResourceKeys;
 
@@ -40,3 +42,4 @@ export type ProcessedResourceKeys =
   | 'planks'
   | 'bricks'
 
+export type ResourceClass = Resource<ResourceKeys, ResourceTypes>
