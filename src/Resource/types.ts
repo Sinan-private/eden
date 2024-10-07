@@ -32,6 +32,6 @@ type TradeFormat<K, T> = {
     multiplier?: number
   }
 }
-export type UpdateFormat<K, T> = SimpleUpdateFormat<K, T> | TradeFormat<K, T>
-export const isTradeFormat = <K, T>(change: UpdateFormat<K, T>): change is TradeFormat<K, T> =>
+export type TurnUpdateFormat<K, T> = SimpleUpdateFormat<K, T> | TradeFormat<K, T>
+export const isTradeFormat = <K, T>(change: TurnUpdateFormat<K, T>): change is TradeFormat<K, T> =>
   change.type === 'trade';

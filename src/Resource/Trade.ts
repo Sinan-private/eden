@@ -1,5 +1,5 @@
 import {ResourceState, ResourceUpdateProps} from "./types.ts";
-import {ResourceSingle} from "./ResourceSingle.ts";
+import {ResourceBase} from "./ResourceBase.ts";
 
 // limiting resource multiplied until I have the right possibleTradingAmount
 
@@ -51,7 +51,7 @@ const createChanges = <K extends string, T extends string>(
   mergedApproaches: ResourceUpdateType<K, T>[],
 ): ResourceState<K, T>[] => {
   return mergedApproaches.map((resource) =>
-    new ResourceSingle(resource)
+    new ResourceBase(resource)
       .updateBy({value: resource.valueChangeApproach})
   );
 }
@@ -85,7 +85,7 @@ const getFactors = <K extends string, T extends string>(approach: ResourceUpdate
       max: curr.maxChangeApproach,
       value: curr.valueChangeApproach,
     }
-    const {key, factor} = new ResourceSingle(curr).delta(update);
+    const {key, factor} = new ResourceBase(curr).delta(update);
     limiters.push([key, factor])
     return limiters;
   }, [] as [K, number][])

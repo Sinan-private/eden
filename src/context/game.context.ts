@@ -4,12 +4,11 @@ import {initialState} from "../gameRules/gameInit.ts";
 import {useTick} from "./tick.ts";
 import {usePrevious} from "../hooks/usePrevious.ts";
 import {useResource} from "../Resource/useResource.ts";
-import {nextTurn} from "../Resource/helpers/nextTurn.ts";
-import {getTurnUpdate} from "../gameRules/getTurnUpdate.ts";
+import {getResourceTurnUpdate} from "../gameRules/getResourceTurnUpdate.ts";
 
 const useGameBase = () => {
-  // The resource offers all info and update methods. The setState is only needed here to handle turn updates directly.
-  const {setState, ...resource} = useResource(initialState);
+  // The resource offers all info and update methods. The nextTurn is only needed here to handle turn updates only in here.
+  const {nextTurn, ...resource} = useResource(initialState);
   const tick = useTick();
   const prevTick = usePrevious(tick.current);
 
@@ -18,9 +17,9 @@ const useGameBase = () => {
     const {isActive, current} = tick;
     const isNextTurn = isActive && prevTick !== current;
     if (isNextTurn) {
-      setState(nextTurn(resource.state, getTurnUpdate))
+      nextTurn(getResourceTurnUpdate)
     }
-  }, [tick, prevTick, resource.state, setState]);
+  }, [tick, prevTick, resource.state, nextTurn]);
 
   return {
     resource,

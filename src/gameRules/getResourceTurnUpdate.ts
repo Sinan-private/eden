@@ -1,10 +1,8 @@
-import {State} from "../context/types.ts";
-import {get as _get} from "../Resource/helpers/getResource.ts";
 import {ResourceKeys, ResourceTypes} from "./types.ts";
-import {UpdateFormat} from "../Resource/types.ts";
+import {TurnUpdateFormat} from "../Resource/types.ts";
+import {GetTurnUpdate} from "../Resource/helpers/nextTurn.ts";
 
-export const getTurnUpdate = (state: State[]): UpdateFormat<ResourceKeys, ResourceTypes>[] => {
-  const get = (key: ResourceKeys) => _get(key, state)
+export const getResourceTurnUpdate: GetTurnUpdate<ResourceKeys, ResourceTypes> = (get): TurnUpdateFormat<ResourceKeys, ResourceTypes>[] => {
 
   return [
     {

@@ -1,10 +1,10 @@
-import {ResourceSingle} from "../Resource/ResourceSingle.ts";
+import {ResourceBase} from "../Resource/ResourceBase.ts";
 import {ResourceUpdateProps} from "../Resource/types.ts";
 import {TradeUpdate} from "../context/types.ts";
 import {ResourceConversion} from "./ResourceConversion.ts";
 import {icons} from "./icons.ts";
 
-export class Resource<K extends string, T extends string> extends ResourceSingle<K, T>{
+export class Resource<K extends string, T extends string> extends ResourceBase<K, T>{
   public readonly trade: TradeUpdate;
   public readonly has_trade: boolean;
   public readonly icon: string;

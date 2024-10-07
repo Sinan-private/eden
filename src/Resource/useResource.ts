@@ -1,7 +1,7 @@
 import {useCallback, useState} from "react";
 import {Trade} from "./Trade.ts";
 import {ResourceState, ResourceUpdateProps} from "./types.ts";
-import {mergeChangeToState} from "./helpers/nextTurn.ts";
+import {GetTurnUpdate, mergeChangeToState, nextTurn} from "./helpers/nextTurn.ts";
 import {get as _get} from "./helpers/getResource.ts";
 
 export type Update<K, T> = ResourceUpdateProps<K, T>;
@@ -45,6 +45,8 @@ export const useResource = <K extends string, T extends string>(initialState: Re
 
   // The exposed get method only returns the state of the resource
   const getExternal = (key: K) => get(key).state;
+  const a = (getTurnUpdate: GetTurnUpdate<K, T>) =>
+    setState(nextTurn(getTurnUpdate, state))
 
   return {
     state,
@@ -53,6 +55,7 @@ export const useResource = <K extends string, T extends string>(initialState: Re
     check: get,
     onUpdate,
     onTrade,
-    setState,
+    // setState,
+    nextTurn: a,
   }
 }

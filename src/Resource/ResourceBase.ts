@@ -8,7 +8,7 @@ import {beautifyNumber, delta, mapMultiply} from "./helpers";
 
 type UpdateProps<T> = Partial<ResourceTypeRaw<T>>;
 
-export class ResourceSingle<K extends string, T extends string> {
+export class ResourceBase<K extends string, T extends string> {
   public readonly key: K;
   public readonly value: number;
   public readonly min: number;
@@ -42,7 +42,7 @@ export class ResourceSingle<K extends string, T extends string> {
       value: this.value,
     }
     const newValue = (update.value || 0) + this.value;
-    return new ResourceSingle({...this, ...constraints}).setValueTo(newValue);
+    return new ResourceBase({...this, ...constraints}).setValueTo(newValue);
   }
 
   public readonly updateValueBy = (value: number): ResourceState<K, T> => ({
@@ -55,7 +55,7 @@ export class ResourceSingle<K extends string, T extends string> {
       value = this.value,
       ...constraints
     } = update;
-    return new ResourceSingle({...this, ...constraints}).setValueTo(value);
+    return new ResourceBase({...this, ...constraints}).setValueTo(value);
   }
 
   public readonly setValueTo = (value: number): ResourceState<K, T> => ({

@@ -1,24 +1,24 @@
 import {ResourceState} from "../types.ts";
 import {Trade} from "../Trade.ts";
 import {get} from "./getResource.ts";
-import {isTradeFormat, UpdateFormat} from "../types.ts";
-import {State} from "../../context/types.ts";
-import {ResourceKeys, ResourceTypes} from "../../gameRules/types.ts";
+import {isTradeFormat, TurnUpdateFormat} from "../types.ts";
+import {Resource} from "../../gameRules/Resource.ts";
 
+export type GetTurnUpdate<K extends string, T extends string> = (get: (key: K) => Resource<K, T>, state: ResourceState<K, T>[]) =>
+  TurnUpdateFormat<K, T>[];
 
-
-export const nextTurn = (
-  state: State[],
-  getTurnUpdate: (state: State[]) => UpdateFormat<ResourceKeys, ResourceTypes>[]
+export const nextTurn = <K extends string, T extends string>(
+  getTurnUpdate: GetTurnUpdate<K, T>,
+  state: ResourceState<K, T>[],
 ) => {
-  const changes = getTurnUpdate(state);
+  // The change is coming from external. The callback to evaluate that change receives the get(key) as the first parameter and the raw state as a second
+  const changes = getTurnUpdate((key: K) => get(key, state), state);
 
   return changes.reduce((newState, change) => {
     newState = mergeChangeToState(singleChange(change, newState), newState);
     return newState
   }, [...state]);
 }
-
 
 export const mergeChangeToState = <K extends string, T extends string>(updates: ResourceState<K, T>[], state: ResourceState<K, T>[]) => {
   // Create a map for quick lookup of updates by key
@@ -28,7 +28,7 @@ export const mergeChangeToState = <K extends string, T extends string>(updates: 
 }
 
 export const singleChange = <K extends string, T extends string>(
-  change: UpdateFormat<K, T>,
+  change: TurnUpdateFormat<K, T>,
   state: ResourceState<K, T>[],
 ): ResourceState<K, T>[] => {
   if (isTradeFormat(change)) {
@@ -46,8 +46,6 @@ export const singleChange = <K extends string, T extends string>(
       return []
     case "set":
       return []
-    // case "trade":
-    //   return []
     default:
       return []
   }
