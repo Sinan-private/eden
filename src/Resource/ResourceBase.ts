@@ -6,7 +6,7 @@ import {
 } from "./types";
 import {beautifyNumber, delta, mapMultiply} from "./helpers";
 
-type UpdateProps<T> = Partial<ResourceTypeRaw<T>>;
+type UpdateProps<K, T> = Partial<ResourceTypeRaw<K, T>>;
 
 export class ResourceBase<K extends string, T extends string> {
   public readonly key: K;
@@ -15,6 +15,10 @@ export class ResourceBase<K extends string, T extends string> {
   public readonly max: number;
   public readonly label: string;
   public readonly type: T;
+  public readonly cost: {
+    give: {key: K, value: number}[];
+    gain: {key: K, value: number}[];
+  } | null;
 
   constructor(raw_resource: ResourceUpdateProps<K, T>) {
     const {
@@ -23,7 +27,8 @@ export class ResourceBase<K extends string, T extends string> {
       value,
       label,
       type,
-      key
+      key,
+      cost
     } = raw_resource;
     this.key = key;
     this.value = typeof value === 'number' ? value : 0;
@@ -31,9 +36,10 @@ export class ResourceBase<K extends string, T extends string> {
     this.max = typeof max === 'number' ? max : Infinity;
     this.label = label || key ? labelFromKey(key) : 'No label';
     this.type = type || '' as T;
+    this.cost = cost || null;
   }
 
-  public readonly updateBy = (update: UpdateProps<T>): ResourceState<K, T> => {
+  public readonly updateBy = (update: UpdateProps<K, T>): ResourceState<K, T> => {
     // This is a little complex to update constraints first before updating the value
     // This respects that the new value might be different after e.g. the max value raised.
     const constraints = {
@@ -50,7 +56,7 @@ export class ResourceBase<K extends string, T extends string> {
     value: this.__respectConstraints(this.value + value)
   })
 
-  public readonly setTo = (update: UpdateProps<T>): ResourceState<K, T> => {
+  public readonly setTo = (update: UpdateProps<K, T>): ResourceState<K, T> => {
     const {
       value = this.value,
       ...constraints
@@ -63,7 +69,7 @@ export class ResourceBase<K extends string, T extends string> {
     value: this.__respectConstraints(value),
   });
 
-  public readonly delta = (update: UpdateProps<T>) => delta(
+  public readonly delta = (update: UpdateProps<K, T>) => delta(
     {...this.state},
     update.value || 0
   )
@@ -97,6 +103,7 @@ export class ResourceBase<K extends string, T extends string> {
       max: this.max,
       label: this.label,
       type: this.type,
+      cost: this.cost,
     }
   }
 }

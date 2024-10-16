@@ -44,8 +44,8 @@ const Button = ({resource, increment = 1}: ButtonProps) => {
   resources: {
     onUpdate, onTrade
   }} = useGame();
-  const onButtonClick = () => resource.has_trade
-    ? onTrade(resource.trade)
+  const onButtonClick = () => resource.cost
+    ? onTrade(resource.cost)
     : onUpdate({key: resource.key, value: increment})
 
   console.log(getResourceTurnUpdate())
@@ -58,9 +58,9 @@ const Button = ({resource, increment = 1}: ButtonProps) => {
       <div style={{marginRight: 8}}>
       {resource.value}
       </div>
-      {resource.trade.give?.map(give => (
+      {resource.cost?.give.map(give => (
         <div key={'give' + give.key} style={{marginLeft: 6}}>
-          <img src={give.icon} alt={give.label} width={16} height={16}/>
+          <img src={resource.icon} alt={resource.label} width={16} height={16}/>
           <div style={{opacity: 0.4}}>{give.value}</div>
         </div>
       ))}

@@ -1,9 +1,6 @@
 import {ResourceUpdateProps} from "../Resource";
 import {
   BaseResourceKeys,
-  BuildResourceKeys,
-  CitizenResourceKeys, CurrencyResourceKeys,
-  ProcessedResourceKeys,
   ResourceKeys,
   ResourceTypes
 } from "./types.ts";
@@ -20,28 +17,138 @@ const base_resources: ResourceUpdateProps<BaseResourceKeys, ResourceTypes>[] = [
   {value: 50, key: 'wood'},
 ];
 
-const build_resources: ResourceUpdateProps<BuildResourceKeys, ResourceTypes>[] = [
-  {value: 10, key: 'land', max: 100},
-  {value: 1, max: 50, key: 'windmill'},
-  {value: 1, max: 50, key: 'field'},
-  {value: 1, max: 50, key: 'bakery'},
-  {value: 1, key: 'well'},
-  {value: 1, key: 'forrester'},
-  {value: 1, key: 'wood_mill', label: 'Wood mill'},
-  {value: 1, key: 'pasture'},
+const build_resources: ResourceUpdateProps<ResourceKeys, ResourceTypes>[] = [
+  {
+    value: 10,
+    key: 'land',
+    max: 100,
+    cost: {
+      give: [{key: 'gold', value: 10}],
+      gain: [{key: 'land', value: 1}]
+    }
+  },
+  {
+    value: 1,
+    max: 50,
+    key: 'windmill',
+    cost: {
+      give: [{key: 'land', value: 1}, {key: 'gold', value: 20}, {key: 'bricks', value: 3}],
+      gain: [{key: 'windmill', value: 1}]
+    },
+  },
+  {
+    value: 1,
+    max: 50,
+    key: 'field',
+    cost: {
+      give: [{key: 'land', value: 1}, {key: 'gold', value: 10}],
+      gain: [{key: 'field', value: 1}]
+    }
+  },
+  {
+    value: 1,
+    max: 50,
+    key: 'bakery',
+    cost: {
+      give: [{key: 'land', value: 1}, {key: 'gold', value: 20}, {key: 'bricks', value: 2}],
+      gain: [{key: 'bakery', value: 1}]
+    }
+  },
+  {
+    value: 1,
+    key: 'well',
+    cost: {
+      give: [{key: 'land', value: 1}, {key: 'gold', value: 20}, {key: 'bricks', value: 5}],
+      gain: [{key: 'well', value: 1}]
+    }
+  },
+  {
+    value: 1,
+    key: 'forrester',
+    cost: {
+      give: [{key: 'land', value: 1}, {key: 'gold', value: 20}, {key: 'stone', value: 5}],
+      gain: [{key: 'forrester', value: 1}]
+    }
+  },
+  {
+    value: 1,
+    key: 'wood_mill',
+    label: 'Wood mill',
+    cost: {
+      give: [{key: 'land', value: 1}, {key: 'gold', value: 20}, {key: 'bricks', value: 3}],
+      gain: [{key: 'windmill', value: 1}]
+    }
+  },
+  {
+    value: 1,
+    key: 'pasture',
+    cost: {
+      give: [{key: 'land', value: 1}, {key: 'gold', value: 20}, {key: 'bricks', value: 3}],
+      gain: [{key: 'pasture', value: 1}]
+    }
+  },
 ];
 
-const processed_resources: ResourceUpdateProps<ProcessedResourceKeys, ResourceTypes>[] = [
-  {value: 1, key: 'meat'},
-  {value: 1, key: 'milk'},
-  {value: 1, key: 'wool'},
-  {value: 1, key: 'flour'},
-  {value: 1, key: 'bread'},
-  {value: 10, key: 'bricks'},
-  {value: 10, key: 'planks'},
+const processed_resources: ResourceUpdateProps<ResourceKeys, ResourceTypes>[] = [
+  {
+    value: 1,
+    key: 'meat',
+    cost: {
+      give: [{key: 'corn', value: 5}, {key: 'water', value: 5}],
+      gain: [{key: 'meat', value: 1}],
+    }
+  },
+  {
+    value: 1,
+    key: 'milk',
+    cost: {
+      give: [{key: 'corn', value: 5}, {key: 'water', value: 5}],
+      gain: [{key: 'milk', value: 1}],
+    }
+  },
+  {
+    value: 1,
+    key: 'wool',
+    cost: {
+      give: [{key: 'corn', value: 5}],
+      gain: [{key: 'wool', value: 1}],
+    }
+  },
+  {
+    value: 1,
+    key: 'flour',
+    cost: {
+      give: [{key: 'corn', value: 2}],
+      gain: [{key: 'flour', value: 1}],
+    }
+  },
+  {
+    value: 1,
+    key: 'bread',
+    cost: {
+      give: [{key: 'flour', value: 1}, {key: 'water', value: 2}],
+      gain: [{key: 'bread', value: 1}],
+    }
+  },
+  {
+    value: 10,
+    key: 'bricks',
+    cost: {
+      give: [{key: 'stone', value: 4}],
+      gain: [{key: 'bricks', value: 1}],
+    }
+  },
+  {
+    value: 10,
+    key: 'planks',
+    cost: {
+      give: [{key: 'wood', value: 2}],
+      gain: [{key: 'planks', value: 1}],
+    }
+  },
 ];
 
-const citizen_resources: ResourceUpdateProps<CitizenResourceKeys, ResourceTypes>[] = [
+const citizen_resources: ResourceUpdateProps<ResourceKeys, ResourceTypes>[] = [
   {value: 1, key: 'citizen'},
   {value: 1, key: 'engineer'},
   {value: 1, key: 'scientist'},
@@ -49,12 +156,11 @@ const citizen_resources: ResourceUpdateProps<CitizenResourceKeys, ResourceTypes>
   {value: 1, key: 'magician'},
 ];
 
-const currency_resources: ResourceUpdateProps<CurrencyResourceKeys, ResourceTypes>[] = [
+const currency_resources: ResourceUpdateProps<ResourceKeys, ResourceTypes>[] = [
   {value: 1000, key: 'money'},
 ];
 
-export const uncategorized_resources: ResourceInit = [
-];
+export const uncategorized_resources: ResourceInit = [];
 
 // This is just a little helper to keep the object clean and readable
 const typedResources = (resources: ResourceInit, type: ResourceTypes) =>

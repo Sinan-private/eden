@@ -74,5 +74,5 @@ export const useResource = <K extends string, T extends string>(initialState: Re
 
 type GetResource<K extends string, T extends string> = {
   increment(amount: number): void;
-  update(update: Partial<ResourceTypeRaw<T>>): void;
+  update(update: Partial<ResourceTypeRaw<K, T>>): void;
 } & Resource<K, T>

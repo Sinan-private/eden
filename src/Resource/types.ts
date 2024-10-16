@@ -1,16 +1,20 @@
-export type ResourceTypeRaw<T> = {
+export type ResourceTypeRaw<K, T> = {
   value: number;
   min: number;
   max: number;
   label: string;
   type?: T;
+  cost: {
+    give: {key: K, value: number}[];
+    gain: {key: K, value: number}[];
+  } | null
 }
 
 export type ResourceUpdateProps<K, T> = {
   key: K;
-} & Partial<ResourceTypeRaw<T>>
+} & Partial<ResourceTypeRaw<K, T>>
 
-export type ResourceState<K, T> = ResourceTypeRaw<T> & {key: K};
+export type ResourceState<K, T> = ResourceTypeRaw<K, T> & {key: K};
 
 export type ResourceBeautyType = {
   value: string;
