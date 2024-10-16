@@ -39,21 +39,35 @@ export const useResource = <K extends string, T extends string>(initialState: Re
 
   // Expects the TradeUpdate object to handle a trade if at least a part of it can be executed
   const onTrade = (update: TradeUpdate<K, T>) => {
-    if (trade(update).isPartlyPossible) {
-      setState(trade(update).newState)
+    const thisTrade = trade(update);
+    console.log(thisTrade)
+    if (thisTrade.isPartlyPossible) {
+      setState(thisTrade.newState)
     }
   };
 
   // Todo This needs cleaning. Some parts are provided, some are not
   // The exposed get method only returns the state of the resource
   const getExternal = (key: K): GetResource<K, T> => {
+    const _this = get(key);
     // const cleanResource =
     return {
     // ...JSON.parse(JSON.stringify(get(key))),
       // ...removeFunctionProperties(get(key)),
-      ...get(key),
+      ..._this,
       update: (update) => onUpdate({...update, key}),
       increment: (amount = 1) => onUpdate({value: amount, key}),
+      // checkTrade: (amount = 1) => {
+      //   const x = trade(_this.cost || {} as TradeUpdate<K, T>).limitingResources;
+      //   if (key === 'windmill') {
+      //   //   console.log(_this.cost)
+      //   // console.log(trade(_this.cost || {} as TradeUpdate<K, T>))
+      //   }
+      //   if (x.length) {
+      //
+      //   }
+      //   return trade(_this.cost || {} as TradeUpdate<K, T>)
+      // }
     }
   };
   const next = (getTurnUpdate: GetTurnUpdate<K, T>) =>
@@ -66,7 +80,7 @@ export const useResource = <K extends string, T extends string>(initialState: Re
     // This returns the full Resource for deeper evaluations
     check: get,
     onUpdate,
-    checkTrade: trade,
+    // checkTrade: trade,
     onTrade,
     nextTurn: next,
   }
@@ -75,4 +89,5 @@ export const useResource = <K extends string, T extends string>(initialState: Re
 type GetResource<K extends string, T extends string> = {
   increment(amount: number): void;
   update(update: Partial<ResourceTypeRaw<K, T>>): void;
+  checkTrade(amount: number): Trade<K, T>;
 } & Resource<K, T>

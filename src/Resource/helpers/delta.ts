@@ -32,7 +32,7 @@ class Increment<K extends string, T extends string> implements Delta<K> {
   public readonly min: number;
   public readonly max: number;
   constructor(
-    public readonly prevState: ResourceTypeRaw<T> & {key: K},
+    public readonly prevState: ResourceTypeRaw<K, T> & {key: K},
     public readonly updateApproach: number,
   ) {
     const {
@@ -68,7 +68,7 @@ class Decrement<K extends string, T extends string> implements Delta<K>{
   public readonly min: number;
   public readonly max: number;
   constructor(
-    public readonly prevState: ResourceTypeRaw<T> & {key: K},
+    public readonly prevState: ResourceTypeRaw<K, T> & {key: K},
     public readonly updateApproach: number,
   ) {
     const {
@@ -94,7 +94,7 @@ class Decrement<K extends string, T extends string> implements Delta<K>{
 const round = (n: number) => Math.round(n * 100) / 100;
 
 export const delta = <K extends string, T extends string>(
-  current: ResourceTypeRaw<T> & {key: K},
+  current: ResourceTypeRaw<K, T> & {key: K},
   updateBy: number,
 ) =>
   updateBy >= 0

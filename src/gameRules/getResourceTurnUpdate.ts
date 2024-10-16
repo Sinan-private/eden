@@ -31,21 +31,21 @@ export const getResourceTurnUpdate: GetTurnUpdate<ResourceKeys, ResourceTypes> =
     {
       type: "trade",
       update: {
-        ...get('bread').trade,
+        ...get('bread').cost,
         multiplier: get('bakery').value
       },
     },
     {
       type: "trade",
       update: {
-        ...get('flour').trade,
+        ...get('flour').cost,
         multiplier: get('windmill').value
       },
     },
     {
       type: "trade",
       update: {
-        ...get('meat').trade,
+        ...get('meat').cost,
         multiplier: get('pasture').value
       },
     },

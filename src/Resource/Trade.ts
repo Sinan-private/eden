@@ -63,6 +63,9 @@ const getLimitingResources = <K extends string, T extends string>(
 ): LimitingResource<K>[] => {
   const limiting = getFactors<K, T>(mergedApproaches)
     .filter(([, factor]) => factor < 1)
+  if (mergedApproaches.find(({key}) => key === 'windmill')) {
+    console.log(mergedApproaches, limiting)
+  }
   return limiting.map(([key, value]) => ({key, factor: value}));
 }
 

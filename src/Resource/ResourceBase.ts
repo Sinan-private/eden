@@ -2,9 +2,10 @@ import {
   ResourceBeautyType,
   ResourceUpdateProps,
   ResourceTypeRaw,
-  ResourceState,
+  ResourceState, ResourceCost, ResourceCostUpdate,
 } from "./types";
 import {beautifyNumber, delta, mapMultiply} from "./helpers";
+import {icons} from "../gameRules/icons.ts";
 
 type UpdateProps<K, T> = Partial<ResourceTypeRaw<K, T>>;
 
@@ -15,10 +16,8 @@ export class ResourceBase<K extends string, T extends string> {
   public readonly max: number;
   public readonly label: string;
   public readonly type: T;
-  public readonly cost: {
-    give: {key: K, value: number}[];
-    gain: {key: K, value: number}[];
-  } | null;
+  public readonly cost: ResourceCost<K> | null;
+  public readonly icon: string;
 
   constructor(raw_resource: ResourceUpdateProps<K, T>) {
     const {
@@ -28,7 +27,8 @@ export class ResourceBase<K extends string, T extends string> {
       label,
       type,
       key,
-      cost
+      cost,
+      icon,
     } = raw_resource;
     this.key = key;
     this.value = typeof value === 'number' ? value : 0;
@@ -36,7 +36,25 @@ export class ResourceBase<K extends string, T extends string> {
     this.max = typeof max === 'number' ? max : Infinity;
     this.label = label || key ? labelFromKey(key) : 'No label';
     this.type = type || '' as T;
-    this.cost = cost || null;
+    this.cost = this.__createCost(cost);
+    // @ts-ignore
+    this.icon = icon || icons[key];
+  }
+
+  private readonly __createCost = (cost?: ResourceCostUpdate<K> | null): ResourceCost<K> | null => {
+    if (!cost) {
+      return null
+    }
+    // Here I want to iterate over each Resource and enrich it with the relevant stuff for it
+    const give = cost.give.map(resource => ({
+      ...resource,
+        icon: new ResourceBase(resource).icon,
+    }));
+    const gain = cost.gain.map(resource => ({
+      ...resource,
+      icon: new ResourceBase(resource).icon,
+    }))
+    return {give, gain}
   }
 
   public readonly updateBy = (update: UpdateProps<K, T>): ResourceState<K, T> => {
