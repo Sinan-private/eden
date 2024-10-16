@@ -22,6 +22,7 @@ export type BaseResourceKeys =
   | 'gold'
   | 'corn'
   | 'water'
+  | 'coal'
   | 'stone'
   | 'wood'
 

@@ -19,6 +19,8 @@ import water from '../assets/icons/water.png';
 import stone from '../assets/icons/stone.png';
 import flour from '../assets/icons/flour.png';
 import milk from '../assets/icons/milk.png';
+import coal from '../assets/icons/coal.png';
+import land from '../assets/icons/land.png';
 
 type IconList<K extends string> = Record<K, string>
 
@@ -31,10 +33,11 @@ export const icons: IconList<ResourceKeys> = {
   flour,
   gold,
   iron: empty,
-  land: empty,
+  land,
   milk,
   pasture: empty,
   planks: plank,
+  coal,
   stone,
   water: water,
   well: empty,

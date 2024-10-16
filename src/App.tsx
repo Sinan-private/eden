@@ -1,15 +1,15 @@
 import './App.css'
 import {GameProvider} from "./context/game.context.ts";
-import {Game} from "./Game.tsx";
+import {Game} from "./GameUI/Game.tsx";
 
 
 function App() {
 
   return (
     <>
-        <GameProvider>
-          <Game/>
-        </GameProvider>
+      <GameProvider>
+        <Game/>
+      </GameProvider>
     </>
   )
 }

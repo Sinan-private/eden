@@ -1,4 +1,4 @@
-import {useEffect} from "react";
+import {useCallback, useEffect} from "react";
 import {createContainer} from "unstated-next";
 import {initialState} from "../gameRules/gameInit.ts";
 import {useTick} from "./tick.ts";
@@ -8,7 +8,7 @@ import {getResourceTurnUpdate} from "../gameRules/getResourceTurnUpdate.ts";
 
 const useGameBase = () => {
   // The resource offers all info and update methods. The nextTurn is only needed here to handle turn updates only in here.
-  const {nextTurn, ...resource} = useResource(initialState);
+  const {nextTurn, ...resources} = useResource(initialState);
   const tick = useTick();
   const prevTick = usePrevious(tick.current);
 
@@ -19,11 +19,17 @@ const useGameBase = () => {
     if (isNextTurn) {
       nextTurn(getResourceTurnUpdate)
     }
-  }, [tick, prevTick, resource.state, nextTurn]);
+  }, [tick, prevTick, resources.state, nextTurn]);
+
+  const turnUpdate = useCallback(() => {
+    const updates = getResourceTurnUpdate(resources.check, resources.state);
+    return updates
+  }, [resources])
 
   return {
-    resource,
+    resources,
     tick,
+    getResourceTurnUpdate: turnUpdate,
   };
 }
 

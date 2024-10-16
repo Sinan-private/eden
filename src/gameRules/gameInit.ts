@@ -15,6 +15,7 @@ const base_resources: ResourceUpdateProps<BaseResourceKeys, ResourceTypes>[] = [
   {value: 1000, key: 'gold'},
   {value: 100, key: 'corn'},
   {value: 30, key: 'water'},
+  {value: 50, key: 'coal'},
   {value: 50, key: 'stone'},
   {value: 50, key: 'wood'},
 ];
