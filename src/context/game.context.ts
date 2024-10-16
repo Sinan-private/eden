@@ -3,7 +3,7 @@ import {createContainer} from "unstated-next";
 import {initialState} from "../gameRules/gameInit.ts";
 import {useTick} from "./tick.ts";
 import {usePrevious} from "../hooks/usePrevious.ts";
-import {useResource} from "../Resource/useResource.ts";
+import {useResource} from "../Resource";
 import {getResourceTurnUpdate} from "../gameRules/getResourceTurnUpdate.ts";
 
 const useGameBase = () => {

@@ -1,27 +1,29 @@
 import {Resource} from "./Resource.ts";
 
-export type ResourceKeys = BaseResourceKeys | BuildResourceKeys | ProcessedResourceKeys;
+export type ResourceKeys =
+  | BaseResourceKeys
+  | BuildResourceKeys
+  | ProcessedResourceKeys
+  | CitizenResourceKeys
+  | CurrencyResourceKeys
+
 export type TradeResourceKeys = BuildResourceKeys | ProcessedResourceKeys;
 
 export type ResourceTypes =
   | 'base_resource'
   | 'processed_resource'
   | 'build_resource'
+  | 'citizen_resource'
+  | 'currency_resource'
   | ''
 
-type BaseResourceKeys =
-  | 'money'
+export type BaseResourceKeys =
   | 'iron'
   | 'gold'
   | 'corn'
   | 'water'
   | 'stone'
   | 'wood'
-  | 'citizen'
-  | 'engineer'
-  | 'scientist'
-  | 'artist'
-  | 'magician'
 
 export type BuildResourceKeys =
   | 'land'
@@ -41,5 +43,15 @@ export type ProcessedResourceKeys =
   | 'flour'
   | 'planks'
   | 'bricks'
+
+export type CitizenResourceKeys =
+  | 'citizen'
+  | 'engineer'
+  | 'scientist'
+  | 'artist'
+  | 'magician'
+
+export type CurrencyResourceKeys =
+  | 'money'
 
 export type ResourceClass = Resource<ResourceKeys, ResourceTypes>

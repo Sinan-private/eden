@@ -4,11 +4,21 @@ import meat from '../assets/icons/meat2.png';
 import money from '../assets/icons/chest.png';
 import bread from '../assets/icons/bread.png';
 import brick from '../assets/icons/brick.png';
-import gold from '../assets/icons/money_gold.png';
+import gold from '../assets/icons/brick_gold.png';
 import plank from '../assets/icons/plank.png';
 import wood from '../assets/icons/wood.png';
 import wool from '../assets/icons/wool.png';
 import empty from '../assets/icons/empty.png';
+import clothes from '../assets/icons/clothes.png';
+import clothes2 from '../assets/icons/clothes2.png';
+import harp from '../assets/icons/harp.png';
+import helmet from '../assets/icons/helmet.png';
+import book2 from '../assets/icons/book2.png';
+import wheat from '../assets/icons/wheat.png';
+import water from '../assets/icons/water.png';
+import stone from '../assets/icons/stone.png';
+import flour from '../assets/icons/flour.png';
+import milk from '../assets/icons/milk.png';
 
 type IconList<K extends string> = Record<K, string>
 
@@ -16,18 +26,17 @@ export const icons: IconList<ResourceKeys> = {
   bakery: empty,
   bread: bread,
   bricks: brick,
-  citizen: empty,
-  corn: empty,
+  corn: wheat,
   field: empty,
-  flour: empty,
+  flour,
   gold,
   iron: empty,
   land: empty,
-  milk: empty,
+  milk,
   pasture: empty,
   planks: plank,
-  stone: empty,
-  water: empty,
+  stone,
+  water: water,
   well: empty,
   windmill: empty,
   wood,
@@ -36,8 +45,9 @@ export const icons: IconList<ResourceKeys> = {
   forrester,
   meat,
   money,
-  engineer: empty,
-  scientist: empty,
-  artist: empty,
-  magician: empty,
+  citizen: clothes2,
+  engineer: helmet,
+  scientist: book2,
+  artist: harp,
+  magician: clothes,
 }

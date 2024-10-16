@@ -3,7 +3,7 @@ export type ResourceTypeRaw<T> = {
   min: number;
   max: number;
   label: string;
-  type?: T; // should be generic
+  type?: T;
 }
 
 export type ResourceUpdateProps<K, T> = {

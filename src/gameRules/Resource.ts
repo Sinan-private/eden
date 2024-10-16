@@ -1,5 +1,4 @@
-import {ResourceBase} from "../Resource/ResourceBase.ts";
-import {ResourceUpdateProps} from "../Resource/types.ts";
+import {ResourceBase, ResourceUpdateProps} from "../Resource";
 import {TradeUpdate} from "../context/types.ts";
 import {ResourceConversion} from "./ResourceConversion.ts";
 import {icons} from "./icons.ts";

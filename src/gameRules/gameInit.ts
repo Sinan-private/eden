@@ -1,21 +1,26 @@
-import {ResourceUpdateProps} from "../Resource/types.ts";
-import {ResourceKeys, ResourceTypes} from "./types.ts";
+import {ResourceUpdateProps} from "../Resource";
+import {
+  BaseResourceKeys,
+  BuildResourceKeys,
+  CitizenResourceKeys, CurrencyResourceKeys,
+  ProcessedResourceKeys,
+  ResourceKeys,
+  ResourceTypes
+} from "./types.ts";
 import {Resource} from "./Resource.ts";
 
 type ResourceInit = ResourceUpdateProps<ResourceKeys, ResourceTypes>[];
 
-const base_resources: ResourceInit = [
+const base_resources: ResourceUpdateProps<BaseResourceKeys, ResourceTypes>[] = [
   {value: 1000, key: 'gold'},
-  {value: 1000, key: 'money'},
   {value: 100, key: 'corn'},
   {value: 30, key: 'water'},
   {value: 50, key: 'stone'},
   {value: 50, key: 'wood'},
-  {value: 1, max: 50, key: 'citizen'},
 ];
 
-const build_resources: ResourceInit = [
-  {value: 10, key: 'land', label: 'Land', max: 100},
+const build_resources: ResourceUpdateProps<BuildResourceKeys, ResourceTypes>[] = [
+  {value: 10, key: 'land', max: 100},
   {value: 1, max: 50, key: 'windmill'},
   {value: 1, max: 50, key: 'field'},
   {value: 1, max: 50, key: 'bakery'},
@@ -25,7 +30,7 @@ const build_resources: ResourceInit = [
   {value: 1, key: 'pasture'},
 ];
 
-const processed_resources: ResourceInit = [
+const processed_resources: ResourceUpdateProps<ProcessedResourceKeys, ResourceTypes>[] = [
   {value: 1, key: 'meat'},
   {value: 1, key: 'milk'},
   {value: 1, key: 'wool'},
@@ -33,6 +38,18 @@ const processed_resources: ResourceInit = [
   {value: 1, key: 'bread'},
   {value: 10, key: 'bricks'},
   {value: 10, key: 'planks'},
+];
+
+const citizen_resources: ResourceUpdateProps<CitizenResourceKeys, ResourceTypes>[] = [
+  {value: 1, key: 'citizen'},
+  {value: 1, key: 'engineer'},
+  {value: 1, key: 'scientist'},
+  {value: 1, key: 'artist'},
+  {value: 1, key: 'magician'},
+];
+
+const currency_resources: ResourceUpdateProps<CurrencyResourceKeys, ResourceTypes>[] = [
+  {value: 1000, key: 'money'},
 ];
 
 export const uncategorized_resources: ResourceInit = [
@@ -48,8 +65,11 @@ const typedResources = (resources: ResourceInit, type: ResourceTypes) =>
 export const raw_state = uncategorized_resources.concat(
   typedResources(base_resources, 'base_resource'),
   typedResources(build_resources, 'build_resource'),
-  typedResources(processed_resources, 'processed_resource')
+  typedResources(processed_resources, 'processed_resource'),
+  typedResources(citizen_resources, 'citizen_resource'),
+  typedResources(currency_resources, 'currency_resource'),
 )
 
 export const initialState = raw_state.map(rawResource =>
-  new Resource(rawResource).state);
+  new Resource(rawResource).state
+);
