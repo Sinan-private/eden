@@ -1,9 +1,9 @@
 import {ResourceState, TurnUpdateFormat} from "../types.ts";
 import {get} from "./getResource.ts";
 import {mergeChangeToState, singleChange} from "./stateUpdate.ts";
-import {Resource} from "../../gameRules/Resource.ts";
+import {ResourceBase} from "../ResourceBase.ts";
 
-export type GetTurnUpdate<K extends string, T extends string> = (get: (key: K) => Resource<K, T>, state: ResourceState<K, T>[]) =>
+export type GetTurnUpdate<K extends string, T extends string> = (get: (key: K) => ResourceBase<K, T>, state: ResourceState<K, T>[]) =>
   TurnUpdateFormat<K, T>[];
 export const nextTurn = <K extends string, T extends string>(
   getTurnUpdate: GetTurnUpdate<K, T>,

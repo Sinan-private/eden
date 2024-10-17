@@ -1,16 +1,33 @@
 import {useCallback, useEffect} from "react";
 import {createContainer} from "unstated-next";
-import {initialState} from "../gameRules/gameInit.ts";
 import {useTick} from "./tick.ts";
 import {usePrevious} from "../hooks/usePrevious.ts";
-import {useResource} from "../Resource";
+import {ResourceBase, ResourceUpdateProps, useResource} from "../Resource";
 import {getResourceTurnUpdate} from "../gameRules/getResourceTurnUpdate.ts";
+import {useApi} from "./useApi.ts";
+// import {Resource} from "../gameRules/Resource.ts";
+import {ResourceKeys, ResourceTypes} from "../gameRules/types.ts";
+import {useComponentMount} from "../hooks/useComponentMount.ts";
 
 const useGameBase = () => {
+  const {fetchResources, updateResources, fetchIcons} = useApi();
   // The resource offers all info and update methods. The nextTurn is only needed here to handle turn updates only in here.
-  const {nextTurn, ...resources} = useResource(initialState);
+  const {nextTurn, setState, ...resources} = useResource<ResourceKeys, ResourceTypes>([]);
   const tick = useTick();
   const prevTick = usePrevious(tick.current);
+  useComponentMount(async () => {
+    const a = await fetchResources();
+    console.log('a', getInitialState(a))
+    setState(getInitialState(a))
+  })
+
+
+
+  // fetchResources();
+  // updateResources([
+  //   { id: 1, name: 'Gold', quantity: 1200 },
+  //   { id: 2, name: 'Wood', quantity: 600 }
+  // ]);
 
   // With every tick a new turn is triggered with all included production
   useEffect(() => {
@@ -26,10 +43,15 @@ const useGameBase = () => {
     return updates
   }, [resources])
 
+  const writeInitialResources = (newState = resources.state) => updateResources(newState)
+  const a = fetchIcons();
+  a.then(a => console.log(a))
+
   return {
     resources,
     tick,
     getResourceTurnUpdate: turnUpdate,
+    writeInitialResources
   };
 }
 
@@ -37,3 +59,7 @@ const useGameBase = () => {
 const useGameContainer = createContainer(useGameBase);
 export const useGame = useGameContainer.useContainer;
 export const GameProvider = useGameContainer.Provider;
+
+const getInitialState = (raw_state: ResourceUpdateProps<ResourceKeys, ResourceTypes>[]) => raw_state.map(rawResource =>
+  new ResourceBase(rawResource).state
+);

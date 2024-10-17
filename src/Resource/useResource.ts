@@ -3,8 +3,9 @@ import {Trade} from "./Trade.ts";
 import {ResourceState, ResourceTypeRaw, ResourceUpdateProps} from "./types.ts";
 import {GetTurnUpdate, nextTurn} from "./helpers/nextTurn.ts";
 import {get as _get} from "./helpers/getResource.ts";
-import {mergeChangeToState} from "./helpers/stateUpdate.ts";
-import {Resource} from "../gameRules/Resource.ts";
+import {mergeChangeToState as _mergeChangeToState} from "./helpers/stateUpdate.ts";
+import {ResourceBase} from "./ResourceBase.ts";
+// import {Resource} from "../gameRules/Resource.ts";
 
 export type Update<K, T> = ResourceUpdateProps<K, T>;
 export type TradeUpdate<K, T> = {
@@ -21,10 +22,18 @@ export const useResource = <K extends string, T extends string>(initialState: Re
     (key: K, _state = state) => _get(key, _state),
     [state]);
 
+  const getType = (type: T) =>
+    state.filter(resource => type === resource.type)
+
   // Update a single Resource
   const onUpdate = (update: Update<K, T>) => {
     const newState = get(update.key).updateBy(update)
-    setState(mergeChangeToState([newState], state));
+    setState(mergeChangeToState(newState));
+  }
+
+  const onSetTo = (update: Update<K, T>) => {
+    const newState = get(update.key).setTo(update)
+    setState(mergeChangeToState(newState));
   }
 
   // Only a simplification to pass the state in once
@@ -73,16 +82,25 @@ export const useResource = <K extends string, T extends string>(initialState: Re
   const next = (getTurnUpdate: GetTurnUpdate<K, T>) =>
     setState(nextTurn(getTurnUpdate, state))
 
+  const mergeChangeToState = (update: ResourceState<K, T> | ResourceState<K, T>[]): ResourceState<K, T>[] => {
+    const arr: ResourceState<K, T>[] = [];
+    return _mergeChangeToState(arr.concat(update), state);
+  }
+
   return {
     state,
     // This includes the state as well as some methods to update the resource
     get: getExternal,
+    getType,
     // This returns the full Resource for deeper evaluations
     check: get,
     onUpdate,
+    onSetTo,
     // checkTrade: trade,
     onTrade,
     nextTurn: next,
+    setState,
+    mergeChangeToState,
   }
 }
 
@@ -90,4 +108,4 @@ type GetResource<K extends string, T extends string> = {
   increment(amount: number): void;
   update(update: Partial<ResourceTypeRaw<K, T>>): void;
   checkTrade(amount: number): Trade<K, T>;
-} & Resource<K, T>
+} & ResourceBase<K, T>

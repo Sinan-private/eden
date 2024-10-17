@@ -5,8 +5,8 @@ import {TopBar} from "./TopBar.tsx";
 
 export const Game = () => {
   const {
-    state,
-    check
+    check,
+    getType,
   } = useGame().resources;
 
   return (
@@ -14,16 +14,16 @@ export const Game = () => {
       <TopBar/>
       <div style={{display: "flex", justifyContent: "center", flexDirection: "row"}}>
         <div className="card">
-          {state.filter(({type}) => type === "base_resource").map(({key}) => (
+          {getType("base_resource").map(({key}) => (
             <Button key={key} resource={check(key)} increment={10}/>
           ))}
           <hr style={{color: 'gray', margin: '20px 0'}}/>
-          {state.filter(({type}) => type === "processed_resource").map(({key}) => (
+          {getType("processed_resource").map(({key}) => (
             <Button key={key} resource={check(key)}/>
           ))}
         </div>
         <div className="card">
-          {state.filter(({type}) => type === "build_resource").map(({key}) => (
+          {getType("build_resource").map(({key}) => (
             <Button key={key} resource={check(key)}/>
           ))}
         </div>
@@ -72,11 +72,19 @@ const Button = ({resource, increment = 1}: ButtonProps) => {
 }
 
 const GameControl = () => {
-  const {current, isActive, start, stop} = useGame().tick;
+  const {
+    writeInitialResources,
+    tick: {
+    current, isActive, start, stop
+  }} = useGame();
+  const writeUpdate = () => writeInitialResources()
   return (
     <StylesGameControl>
-      <span>Turn {current}</span>
-      <button onClick={isActive ? stop : start}>{isActive ? 'x' : '>'}</button>
+      <div>
+        <span>Turn {current}</span>
+        <button onClick={isActive ? stop : start}>{isActive ? 'x' : '>'}</button>
+      </div>
+      <button onClick={writeUpdate}>Save</button>
     </StylesGameControl>
   )
 }
@@ -84,9 +92,12 @@ const GameControl = () => {
 const StylesGameControl = styled.div`
     position: fixed;
     display: flex;
-    align-items: center;
     min-height: 40px;
     top: 20px;
     right: 20px;
-    gap: 8px;
+    div {
+        display: flex;
+    align-items: center;
+        gap: 8px;
+    }
 `;

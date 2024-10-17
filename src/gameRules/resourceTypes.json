@@ -1,0 +1,8 @@
+{
+  "BaseResourceKeys": ["iron", "gold", "corn", "water", "coal", "stone", "wood"],
+  "BuildResourceKeys": ["land", "windmill", "field", "bakery", "well", "forrester", "wood_mill", "pasture"],
+  "ProcessedResourceKeys": ["bread", "meat", "milk", "wool", "flour", "planks", "bricks"],
+  "CitizenResourceKeys": ["citizen", "engineer", "scientist", "artist", "magician"],
+  "CurrencyResourceKeys": ["money"],
+  "ResourceTypes": ["base_resource", "processed_resource", "build_resource", "citizen_resource", "currency_resource"]
+}

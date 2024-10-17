@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Resource Manager</title>
+</head>
+<body>
+<h1>Resource Manager</h1>
+
+<div>
+    <h2>Add Resource</h2>
+    <form id="addResourceForm">
+        <input type="text" id="name" placeholder="Resource Name" required>
+        <input type="number" id="quantity" placeholder="Quantity" required>
+        <button type="submit">Add Resource</button>
+    </form>
+</div>
+
+<div>
+    <h2>Resources</h2>
+    <ul id="resourceList"></ul>
+</div>
+
+<script>
+  const resourceList = document.getElementById('resourceList');
+  const addResourceForm = document.getElementById('addResourceForm');
+
+  // Fetch and display resources
+  async function fetchResources() {
+    const response = await fetch('http://localhost:5000/resources');
+    const resources = await response.json();
+    resourceList.innerHTML = '';
+    resources.forEach(resource => {
+      const li = document.createElement('li');
+      li.textContent = `${resource.name} (Quantity: ${resource.quantity})`;
+      resourceList.appendChild(li);
+    });
+  }
+
+  // Add a new resource
+  addResourceForm.addEventListener('submit', async (e) => {
+    e.preventDefault();
+    const name = document.getElementById('name').value;
+    const quantity = document.getElementById('quantity').value;
+
+    await fetch('http://localhost:5000/resources', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({ name, quantity })
+    });
+
+    document.getElementById('name').value = '';
+    document.getElementById('quantity').value = '';
+    fetchResources();
+  });
+
+  // Initial fetch of resources
+  fetchResources();
+</script>
+</body>
+</html>

@@ -1,10 +1,10 @@
-import {ResourceUpdateProps} from "../Resource";
+import {ResourceBase, ResourceUpdateProps} from "../Resource";
 import {
   BaseResourceKeys,
   ResourceKeys,
   ResourceTypes
 } from "./types.ts";
-import {Resource} from "./Resource.ts";
+// import {Resource} from "./Resource.ts";
 
 type ResourceInit = ResourceUpdateProps<ResourceKeys, ResourceTypes>[];
 
@@ -178,5 +178,5 @@ export const raw_state = uncategorized_resources.concat(
 )
 
 export const initialState = raw_state.map(rawResource =>
-  new Resource(rawResource).state
+  new ResourceBase(rawResource).state
 );

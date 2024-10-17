@@ -1,4 +1,4 @@
-import {Resource} from "./Resource.ts";
+import {ResourceBase} from "../Resource";
 
 export type ResourceKeys =
   | BaseResourceKeys
@@ -55,4 +55,4 @@ export type CitizenResourceKeys =
 export type CurrencyResourceKeys =
   | 'money'
 
-export type ResourceClass = Resource<ResourceKeys, ResourceTypes>
+export type ResourceClass = ResourceBase<ResourceKeys, ResourceTypes>
