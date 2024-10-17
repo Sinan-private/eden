@@ -5,7 +5,6 @@ import {
   ResourceState,
   ResourceCostUpdate,
 } from "./types";
-// @ts-ignore
 import {beautifyNumber, delta, mapMultiply} from "./helpers";
 import icons from '../assets/icons/icons.ts';
 
@@ -18,8 +17,13 @@ export class ResourceBase<K extends string, T extends string> {
   public readonly max: number;
   public readonly label: string;
   public readonly type: T;
-  public readonly cost: ResourceCostUpdate<K> | null;
-  private readonly icon: string;
+  public readonly __cost: ResourceCostUpdate<K> | null;
+  private readonly __icon: string;
+
+  // I want to create the cost for the frontend to easily render
+  // And for the storage to save in a clean way
+  // So I need the internal storage to be smart. Offering all basics and methods to get what I need
+  // - stateToStorage
 
   constructor(raw_resource: ResourceUpdateProps<K, T>) {
     const {
@@ -31,6 +35,8 @@ export class ResourceBase<K extends string, T extends string> {
       key,
       cost,
       icon,
+      __icon,
+      __cost
     } = raw_resource;
     this.key = key;
     this.value = typeof value === 'number' ? value : 0;
@@ -38,30 +44,17 @@ export class ResourceBase<K extends string, T extends string> {
     this.max = typeof max === 'number' ? max : Infinity;
     this.label = label || key ? labelFromKey(key) : 'No label';
     this.type = type || '' as T;
-    this.cost = this.__createCost(cost);
-    this.icon = icon || 'empty'
+    // this.cost = this.__createCost(cost);
+    this.__cost = cost || __cost || null;
+    this.__icon = icon || __icon || 'empty'
     // @ts-ignore
     // this.icon = icon || icons[key];
   }
 
-  public readonly getIcon = () =>
-    icons.find(icon => icon.name === this.icon)!.src
 
-  private readonly __createCost = (cost?: ResourceCostUpdate<K> | null): ResourceCostUpdate<K> | null => {
-    if (!cost) {
-      return null
-    }
-    // Here I want to iterate over each Resource and enrich it with the relevant stuff for it
-    const give = cost.give.map(resource => ({
-      ...resource,
-        // icon: new ResourceBase(resource).icon,
-    }));
-    const gain = cost.gain.map(resource => ({
-      ...resource,
-      // icon: new ResourceBase(resource).icon,
-    }))
-    return {give, gain}
-  }
+
+  public readonly getIcon = () =>
+    icons.find(icon => icon.name === this.__icon)?.src
 
   public readonly updateBy = (update: UpdateProps<K, T>): ResourceState<K, T> => {
     // This is a little complex to update constraints first before updating the value
@@ -129,9 +122,26 @@ export class ResourceBase<K extends string, T extends string> {
       max: this.max,
       label: this.label,
       type: this.type,
-      cost: this.cost,
-      icon: this.icon,
+      cost: this.__cost,
+      icon: this.__icon,
     }
+  }
+
+  get store(): ResourceState<K, T> {
+    return {
+      key: this.key,
+      value: this.value,
+      min: this.min,
+      max: this.max,
+      label: this.label,
+      type: this.type,
+      cost: this.__cost,
+      icon: this.__icon,
+    }
+  }
+
+  get icon(): string {
+    return icons.find(icon => icon.name === this.__icon)?.src || ''
   }
 }
 

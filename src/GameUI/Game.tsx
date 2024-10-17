@@ -44,8 +44,8 @@ const Button = ({resource, increment = 1}: ButtonProps) => {
   resources: {
     onUpdate, onTrade
   }} = useGame();
-  const onButtonClick = () => resource.cost
-    ? onTrade(resource.cost)
+  const onButtonClick = () => resource.__cost
+    ? onTrade(resource.__cost)
     : onUpdate({key: resource.key, value: increment})
 
   // console.log(getResourceTurnUpdate())
@@ -53,7 +53,7 @@ const Button = ({resource, increment = 1}: ButtonProps) => {
   return (
     <button onClick={onButtonClick}>
       <div style={{display: "flex", alignItems: "center", flexDirection: "column", marginRight: 16}}>
-        <img src={resource.getIcon()} alt={resource.label} width={32} height={32}/>
+        <img src={resource.icon} alt={resource.label} width={32} height={32}/>
         <span style={{fontSize: '0.7rem'}}>{resource.label}</span>
       </div>
       <div style={{marginRight: 8}}>
@@ -61,7 +61,7 @@ const Button = ({resource, increment = 1}: ButtonProps) => {
       </div>
       {resource.cost?.give.map(give => (
         <div key={'give' + give.key} style={{marginLeft: 6}}>
-          {/*<img src={give.icon} alt={give.key} width={16} height={16}/>*/}
+          <img src={give.icon} alt={give.key} width={16} height={16}/>
           <div style={{opacity: 0.4}}>{give.value}</div>
         </div>
       ))}

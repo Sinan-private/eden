@@ -8,10 +8,10 @@ export type ResourceTypeRaw<K, T> = {
   icon?: string;
 }
 
-// export type ResourceCost<K> = {
-//   give: {key: K, value: number, icon: string}[];
-//   gain: {key: K, value: number, icon: string}[];
-// }
+export type ResourceCost<K> = {
+  give: {key: K, value: number, icon: string}[];
+  gain: {key: K, value: number, icon: string}[];
+}
 
 export type ResourceCostUpdate<K> = {
   give: {key: K, value: number}[];
@@ -20,6 +20,8 @@ export type ResourceCostUpdate<K> = {
 
 export type ResourceUpdateProps<K, T> = {
   key: K;
+  __cost?: ResourceCostUpdate<K> | null;
+  __icon?: string;
 } & Partial<ResourceTypeRaw<K, T>>
 
 export type ResourceState<K, T> = ResourceTypeRaw<K, T> & {key: K};

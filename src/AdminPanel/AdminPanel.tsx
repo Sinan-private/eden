@@ -45,7 +45,7 @@ const Resource = ({resource}: { resource: ResourceBase<ResourceKeys, ResourceTyp
   } = useGame();
 
   const updateValue = () => {
-    const newState = mergeChangeToState({...resource.state, value})
+    const newState = mergeChangeToState({...resource.store, value})
     onSetTo({key: resource.key, value})
     writeInitialResources(newState)
   }

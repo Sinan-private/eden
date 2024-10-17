@@ -16,6 +16,7 @@ export type TradeUpdate<K, T> = {
 
 export const useResource = <K extends string, T extends string>(initialState: ResourceState<K, T>[]) => {
   const [state, setState] = useState(initialState);
+  console.log(state)
 
   // Get the full Resource class
   const get = useCallback(
