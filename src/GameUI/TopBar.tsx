@@ -12,7 +12,7 @@ export const TopBar = () => {
       <>
         {state.filter(resource => type === resource.type).map(({key}) => (
           <StyledTopBarResource key={key} onClick={() => resource(key).increment(increase)}>
-            <img src={resource(key).icon} alt={resource(key).label} width={32} height={32}/>
+            <img src={resource(key).getIcon()} alt={resource(key).label} width={32} height={32}/>
             <p>{check(resource(key).key).beautify.value}</p>
           </StyledTopBarResource>
         ))}

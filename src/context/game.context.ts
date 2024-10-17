@@ -10,17 +10,15 @@ import {ResourceKeys, ResourceTypes} from "../gameRules/types.ts";
 import {useComponentMount} from "../hooks/useComponentMount.ts";
 
 const useGameBase = () => {
-  const {fetchResources, updateResources, fetchIcons} = useApi();
+  const {fetchResources, updateResources} = useApi();
   // The resource offers all info and update methods. The nextTurn is only needed here to handle turn updates only in here.
   const {nextTurn, setState, ...resources} = useResource<ResourceKeys, ResourceTypes>([]);
   const tick = useTick();
   const prevTick = usePrevious(tick.current);
   useComponentMount(async () => {
-    const a = await fetchResources();
-    console.log('a', getInitialState(a))
-    setState(getInitialState(a))
+    const rawState = await fetchResources();
+    setState(getInitialState(rawState))
   })
-
 
 
   // fetchResources();
@@ -44,8 +42,6 @@ const useGameBase = () => {
   }, [resources])
 
   const writeInitialResources = (newState = resources.state) => updateResources(newState)
-  const a = fetchIcons();
-  a.then(a => console.log(a))
 
   return {
     resources,

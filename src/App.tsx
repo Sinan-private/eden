@@ -10,7 +10,7 @@ function App() {
     <>
       <GameProvider>
         <Game/>
-        <AdminPanel />
+        {/*<AdminPanel />*/}
       </GameProvider>
     </>
   )

@@ -5,7 +5,6 @@ import path from 'path';
 import { fileURLToPath } from 'url'; // Required for ES module to handle __dirname
 import fs from 'fs';
 import {writeTypes} from "./writeTypes.js";
-import {icons} from "../gameRules/icons.ts";
 
 // Serve static frontend files
 // For ES modules, __dirname isn't available, so we calculate it using the following code
@@ -55,18 +54,6 @@ app.post('/resources', (req, res) => {
     res.json({ message: 'Resources updated successfully' });
   });
 });
-
-app.get('/icons', (req, res) => {
-  return icons
-  // fs.readFile(iconsFilePath, 'utf8', (err, data) => {
-  //   if (err) {
-  //     return res.status(500).json({ message: 'Error reading resources file', error: err });
-  //   }
-  //   const resources = JSON.parse(data);
-  //   res.json(resources);
-  // });
-});
-
 
 
 // Serve React app or any frontend from the "public" folder or build folder if applicable

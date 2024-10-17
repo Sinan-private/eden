@@ -2,10 +2,12 @@ import {
   ResourceBeautyType,
   ResourceUpdateProps,
   ResourceTypeRaw,
-  ResourceState, ResourceCost, ResourceCostUpdate,
+  ResourceState,
+  ResourceCostUpdate,
 } from "./types";
+// @ts-ignore
 import {beautifyNumber, delta, mapMultiply} from "./helpers";
-import {icons} from "../gameRules/icons.ts";
+import icons from '../assets/icons/icons.ts';
 
 type UpdateProps<K, T> = Partial<ResourceTypeRaw<K, T>>;
 
@@ -16,8 +18,8 @@ export class ResourceBase<K extends string, T extends string> {
   public readonly max: number;
   public readonly label: string;
   public readonly type: T;
-  public readonly cost: ResourceCost<K> | null;
-  public readonly icon: string;
+  public readonly cost: ResourceCostUpdate<K> | null;
+  private readonly icon: string;
 
   constructor(raw_resource: ResourceUpdateProps<K, T>) {
     const {
@@ -37,22 +39,26 @@ export class ResourceBase<K extends string, T extends string> {
     this.label = label || key ? labelFromKey(key) : 'No label';
     this.type = type || '' as T;
     this.cost = this.__createCost(cost);
+    this.icon = icon || 'empty'
     // @ts-ignore
-    this.icon = icon || icons[key];
+    // this.icon = icon || icons[key];
   }
 
-  private readonly __createCost = (cost?: ResourceCostUpdate<K> | null): ResourceCost<K> | null => {
+  public readonly getIcon = () =>
+    icons.find(icon => icon.name === this.icon)!.src
+
+  private readonly __createCost = (cost?: ResourceCostUpdate<K> | null): ResourceCostUpdate<K> | null => {
     if (!cost) {
       return null
     }
     // Here I want to iterate over each Resource and enrich it with the relevant stuff for it
     const give = cost.give.map(resource => ({
       ...resource,
-        icon: new ResourceBase(resource).icon,
+        // icon: new ResourceBase(resource).icon,
     }));
     const gain = cost.gain.map(resource => ({
       ...resource,
-      icon: new ResourceBase(resource).icon,
+      // icon: new ResourceBase(resource).icon,
     }))
     return {give, gain}
   }
@@ -66,6 +72,7 @@ export class ResourceBase<K extends string, T extends string> {
       value: this.value,
     }
     const newValue = (update.value || 0) + this.value;
+    // @ts-ignore
     return new ResourceBase({...this, ...constraints}).setValueTo(newValue);
   }
 
@@ -79,6 +86,7 @@ export class ResourceBase<K extends string, T extends string> {
       value = this.value,
       ...constraints
     } = update;
+    // @ts-ignore
     return new ResourceBase({...this, ...constraints}).setValueTo(value);
   }
 
@@ -122,6 +130,7 @@ export class ResourceBase<K extends string, T extends string> {
       label: this.label,
       type: this.type,
       cost: this.cost,
+      icon: this.icon,
     }
   }
 }
