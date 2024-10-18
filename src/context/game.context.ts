@@ -41,7 +41,10 @@ const useGameBase = () => {
     return updates
   }, [resources])
 
-  const writeInitialResources = (newState = resources.state) => updateResources(newState)
+  const writeInitialResources = (newState = resources.state) => {
+    updateResources(newState)
+    setState(newState)
+  }
 
   return {
     resources,

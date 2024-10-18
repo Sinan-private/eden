@@ -49,3 +49,4 @@ type TradeFormat<K, T> = {
 export type TurnUpdateFormat<K, T> = SimpleUpdateFormat<K, T> | TradeFormat<K, T>
 export const isTradeFormat = <K, T>(change: TurnUpdateFormat<K, T>): change is TradeFormat<K, T> =>
   change.type === 'trade';
+export type Icon = { name: string, src: string };

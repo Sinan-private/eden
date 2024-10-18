@@ -5,6 +5,7 @@ import {GetTurnUpdate, nextTurn} from "./helpers/nextTurn.ts";
 import {get as _get} from "./helpers/getResource.ts";
 import {mergeChangeToState as _mergeChangeToState} from "./helpers/stateUpdate.ts";
 import {ResourceBase} from "./ResourceBase.ts";
+import {useIcons} from "./useIcons.ts";
 // import {Resource} from "../gameRules/Resource.ts";
 
 export type Update<K, T> = ResourceUpdateProps<K, T>;
@@ -16,7 +17,7 @@ export type TradeUpdate<K, T> = {
 
 export const useResource = <K extends string, T extends string>(initialState: ResourceState<K, T>[]) => {
   const [state, setState] = useState(initialState);
-  console.log(state)
+  const icons = useIcons(state);
 
   // Get the full Resource class
   const get = useCallback(
@@ -102,6 +103,7 @@ export const useResource = <K extends string, T extends string>(initialState: Re
     nextTurn: next,
     setState,
     mergeChangeToState,
+    icons,
   }
 }
 

@@ -38,17 +38,21 @@ export class ResourceBase<K extends string, T extends string> {
       __icon,
       __cost
     } = raw_resource;
+
     this.key = key;
     this.value = typeof value === 'number' ? value : 0;
     this.min = typeof min === 'number' ? min : 0;
     this.max = typeof max === 'number' ? max : Infinity;
-    this.label = label || key ? labelFromKey(key) : 'No label';
-    this.type = type || '' as T;
+    this.label = typeof label === 'string' ? label : key ? labelFromKey(key) : 'No label';
+    this.type = typeof type === 'string' ? type : '' as T;
     // this.cost = this.__createCost(cost);
     this.__cost = cost || __cost || null;
     this.__icon = icon || __icon || 'empty'
     // @ts-ignore
     // this.icon = icon || icons[key];
+    if (label?.startsWith('Golda')) {
+      console.log(label, this.label)
+    }
   }
 
 
@@ -75,12 +79,14 @@ export class ResourceBase<K extends string, T extends string> {
   })
 
   public readonly setTo = (update: UpdateProps<K, T>): ResourceState<K, T> => {
+    // I want to be able to set every value here
     const {
       value = this.value,
-      ...constraints
+      ...rest
     } = update;
+    console.log(update)
     // @ts-ignore
-    return new ResourceBase({...this, ...constraints}).setValueTo(value);
+    return new ResourceBase({...this, ...rest}).setValueTo(value);
   }
 
   public readonly setValueTo = (value: number): ResourceState<K, T> => ({

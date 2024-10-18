@@ -5,7 +5,7 @@ type Icon = {
 };
 
 // Dynamically import all image files in the current directory
-export const icons = import.meta.glob('./*.{png,jpg,jpeg,svg}', { eager: true });
+const icons = import.meta.glob('./*.{png,jpg,jpeg,svg}', { eager: true });
 
 // Process the icons and create a typed array of objects with name and src
 const processedIcons: Icon[] = Object.keys(icons).map((key) => ({

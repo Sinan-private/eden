@@ -1,7 +1,7 @@
 [
   {
     "key": "gold",
-    "value": 1200,
+    "value": 1201,
     "min": 0,
     "max": null,
     "label": "Gold",
@@ -11,7 +11,7 @@
   },
   {
     "key": "corn",
-    "value": 100,
+    "value": 101,
     "min": 0,
     "max": null,
     "label": "Corn",
@@ -426,7 +426,7 @@
   },
   {
     "key": "bricks",
-    "value": 10,
+    "value": 12,
     "min": 0,
     "max": null,
     "label": "Bricks",

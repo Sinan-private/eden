@@ -12,6 +12,9 @@
     "start": "node src/server/server.js"
   },
   "dependencies": {
+    "@emotion/react": "^11.13.3",
+    "@emotion/styled": "^11.13.0",
+    "@mui/material": "^6.1.4",
     "@types/styled-components": "^5.1.34",
     "body-parser": "^1.20.3",
     "cors": "^2.8.5",

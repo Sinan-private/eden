@@ -1,4 +1,5 @@
-import {ResourceBase} from "../Resource";
+import {Resource} from "../Resource/Resource.ts";
+import {resourceTypes} from "./resourceTypes.ts";
 
 export type ResourceKeys =
   | BaseResourceKeys
@@ -9,13 +10,14 @@ export type ResourceKeys =
 
 export type TradeResourceKeys = BuildResourceKeys | ProcessedResourceKeys;
 
-export type ResourceTypes =
-  | 'base_resource'
-  | 'processed_resource'
-  | 'build_resource'
-  | 'citizen_resource'
-  | 'currency_resource'
-  | ''
+export type ResourceTypes = typeof resourceTypes[number];
+// export type ResourceTypes =
+//   | 'base_resource'
+//   | 'processed_resource'
+//   | 'build_resource'
+//   | 'citizen_resource'
+//   | 'currency_resource'
+//   | ''
 
 export type BaseResourceKeys =
   | 'iron'
@@ -55,4 +57,4 @@ export type CitizenResourceKeys =
 export type CurrencyResourceKeys =
   | 'money'
 
-export type ResourceClass = ResourceBase<ResourceKeys, ResourceTypes>
+export type ResourceClass = Resource<ResourceKeys, ResourceTypes>

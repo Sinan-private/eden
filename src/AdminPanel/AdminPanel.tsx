@@ -1,16 +1,15 @@
 import styled from "styled-components";
 import {useGame} from "../context/game.context.ts";
-import {useState} from "react";
-import {ResourceBase} from "../Resource";
-import {ResourceKeys, ResourceTypes} from "../gameRules/types.ts";
+import {Resource} from "./Resource.tsx";
 
 export const AdminPanel = () => {
   const {
     check,
     getType,
   } = useGame().resources;
+
   return (
-    <Container>
+    <StyledContainer>
       <div style={{display: "flex", justifyContent: "center", flexDirection: "row"}}>
         <div className="card">
           {getType("base_resource").map(({key}) => (
@@ -30,52 +29,15 @@ export const AdminPanel = () => {
           ))}
         </div>
       </div>
-    </Container>
+    </StyledContainer>
   )
 }
 
-const Resource = ({resource}: { resource: ResourceBase<ResourceKeys, ResourceTypes> }) => {
-  const [value, setValue] = useState<number>(resource.value)
-  const {
-    resources: {
-      onSetTo,
-      mergeChangeToState
-    },
-    writeInitialResources
-  } = useGame();
-
-  const updateValue = () => {
-    const newState = mergeChangeToState({...resource.store, value})
-    onSetTo({key: resource.key, value})
-    writeInitialResources(newState)
-  }
-
-  return (
-    <div style={{display: 'flex'}}>
-      <div style={{width: 100}}>
-        <div style={{display: "flex", alignItems: "center", flexDirection: "column", marginRight: 16}}>
-          <img src={resource.icon} alt={resource.label} width={32} height={32}/>
-          <span style={{fontSize: '0.7rem'}}>{resource.label}</span>
-        </div>
-        <div style={{marginRight: 8}}>
-          {resource.value}
-        </div>
-      </div>
-      <input
-        type="text"
-        value={value}
-        onChange={(e) => setValue(Number(e.target.value))}
-        onBlur={updateValue}
-      />
-    </div>
-  )
-}
-
-const Container = styled.div`
+const StyledContainer = styled.div`
     position: fixed;
     left: 0;
     top: 0;
-    min-width: 40vw;
+    min-width: 60vw;
     height: 100vh;
     overflow: auto;
     background-color: #2b2b2b;
