@@ -18,13 +18,13 @@ export const IconPicker = ({showUsed = false, onClick}: IconPickerProps) => {
     <Container>
       <IconContainer>
         {icons.getUnused().map(({name, src}) => (
-          <SingleIconContainer onClick={onClickIcon({name, src})} _filter="unused">
+          <SingleIconContainer key={name} onClick={onClickIcon({name, src})} _filter="unused">
             <img src={src} alt={name} style={{alignSelf: 'center'}}/>
             <div style={{fontSize: '0.7rem', textAlign: 'center'}}>{name}</div>
           </SingleIconContainer>
         ))}
         {showUsed && icons.getUsed().map(({name, src}) => (
-          <SingleIconContainer onClick={onClickIcon({name, src})} _filter="used">
+          <SingleIconContainer key={name} onClick={onClickIcon({name, src})} _filter="used">
             <img src={src} alt={name} style={{alignSelf: 'center'}}/>
             <div style={{fontSize: '0.7rem', textAlign: 'center'}}>{name}</div>
           </SingleIconContainer>

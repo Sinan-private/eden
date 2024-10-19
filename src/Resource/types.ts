@@ -8,9 +8,11 @@ export type ResourceTypeRaw<K, T> = {
   icon?: string;
 }
 
+export type TradeChange<K> = {key: K, value: number, icon: string};
+
 export type ResourceCost<K> = {
-  give: {key: K, value: number, icon: string}[];
-  gain: {key: K, value: number, icon: string}[];
+  give: TradeChange<K>[];
+  gain: TradeChange<K>[];
 }
 
 export type ResourceCostUpdate<K> = {

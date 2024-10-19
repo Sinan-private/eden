@@ -6,7 +6,7 @@ import {get as _get} from "./helpers/getResource.ts";
 import {mergeChangeToState as _mergeChangeToState} from "./helpers/stateUpdate.ts";
 import {ResourceBase} from "./ResourceBase.ts";
 import {useIcons} from "./useIcons.ts";
-// import {Resource} from "../gameRules/Resource.ts";
+// import {EditResource} from "../gameRules/EditResource.ts";
 
 export type Update<K, T> = ResourceUpdateProps<K, T>;
 export type TradeUpdate<K, T> = {
@@ -19,7 +19,7 @@ export const useResource = <K extends string, T extends string>(initialState: Re
   const [state, setState] = useState(initialState);
   const icons = useIcons(state);
 
-  // Get the full Resource class
+  // Get the full EditResource class
   const get = useCallback(
     (key: K, _state = state) => _get(key, _state),
     [state]);
@@ -27,7 +27,7 @@ export const useResource = <K extends string, T extends string>(initialState: Re
   const getType = (type: T) =>
     state.filter(resource => type === resource.type)
 
-  // Update a single Resource
+  // Update a single EditResource
   const onUpdate = (update: Update<K, T>) => {
     const newState = get(update.key).updateBy(update)
     setState(mergeChangeToState(newState));
@@ -94,7 +94,7 @@ export const useResource = <K extends string, T extends string>(initialState: Re
     // This includes the state as well as some methods to update the resource
     get: getExternal,
     getType,
-    // This returns the full Resource for deeper evaluations
+    // This returns the full EditResource for deeper evaluations
     check: get,
     onUpdate,
     onSetTo,

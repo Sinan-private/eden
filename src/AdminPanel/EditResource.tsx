@@ -1,4 +1,3 @@
-import {ResourceBase} from "../Resource";
 import {ResourceKeys, ResourceTypes} from "../gameRules/types.ts";
 import {useMemo, useState} from "react";
 import Select, {SelectChangeEvent} from "@mui/material/Select";
@@ -17,16 +16,22 @@ import {
 } from "@mui/material";
 import {resourceTypes} from "../gameRules/resourceTypes.ts";
 import {IconPicker} from "./IconPicker.tsx";
-import {Icon} from "../Resource/types.ts";
+import {Icon, TradeChange} from "../Resource/types.ts";
 import styled from "styled-components";
 import {Cost} from "./Cost.tsx";
+import {Resource} from "../Resource/Resource.ts";
 
 
 type ResourceProps = {
-  resource: ResourceBase<ResourceKeys, ResourceTypes>;
+  resource: Resource<ResourceKeys, ResourceTypes>;
 };
 
-export const Resource = (
+export type OnSetCost = (
+  resourceKey: ResourceKeys, // give or gain
+  change: TradeChange<ResourceKeys>
+) => void
+
+export const EditResource = (
   {
     resource,
   }: ResourceProps) => {
@@ -42,9 +47,18 @@ export const Resource = (
   const [type, setType] = useState(resource.type);
   const [icon, setIcon] = useState(resource.icon);
   const [showUsed, setShowUsed] = useState(false);
-  const [showCost, setShowCost] = useState(false);
-
+  const [showCost, setShowCost] = useState(true);
   const [open, setOpen] = useState(false);
+  const [cost, setCost] = useState(resource.cost);
+
+  // Todo here goes the rather complex updating of the cost object
+  const onSetCost = (
+    resourceKey: ResourceKeys, // give or gain
+    change: TradeChange<ResourceKeys>
+  ) => {
+    console.log(resourceKey, change)
+  }
+
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
   const onClickIcon = (clickedIcon: Icon) => {

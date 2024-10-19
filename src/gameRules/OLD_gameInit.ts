@@ -4,7 +4,7 @@ import {
   ResourceKeys,
   ResourceTypes
 } from "./types.ts";
-// import {Resource} from "./Resource.ts";
+// import {EditResource} from "./EditResource.ts";
 
 type ResourceInit = ResourceUpdateProps<ResourceKeys, ResourceTypes>[];
 

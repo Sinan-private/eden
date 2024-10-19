@@ -5,7 +5,7 @@ import {usePrevious} from "../hooks/usePrevious.ts";
 import {ResourceBase, ResourceUpdateProps, useResource} from "../Resource";
 import {getResourceTurnUpdate} from "../gameRules/getResourceTurnUpdate.ts";
 import {useApi} from "./useApi.ts";
-// import {Resource} from "../gameRules/Resource.ts";
+// import {EditResource} from "../gameRules/EditResource.ts";
 import {ResourceKeys, ResourceTypes} from "../gameRules/types.ts";
 import {useComponentMount} from "../hooks/useComponentMount.ts";
 

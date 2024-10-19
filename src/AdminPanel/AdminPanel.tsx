@@ -1,6 +1,6 @@
 import styled from "styled-components";
 import {useGame} from "../context/game.context.ts";
-import {Resource} from "./Resource.tsx";
+import {EditResource} from "./EditResource.tsx";
 
 export const AdminPanel = () => {
   const {
@@ -13,19 +13,19 @@ export const AdminPanel = () => {
       <div style={{display: "flex", justifyContent: "center", flexDirection: "row"}}>
         <div className="card">
           {getType("base_resource").map(({key}) => (
-            <Resource key={key} resource={check(key)}/>
+            <EditResource key={key} resource={check(key)}/>
           ))}
           <hr style={{color: 'gray', margin: '20px 0'}}/>
           {getType("processed_resource").map(({key}) => (
-            <Resource key={key} resource={check(key)}/>
+            <EditResource key={key} resource={check(key)}/>
           ))}
           <hr style={{color: 'gray', margin: '20px 0'}}/>
           {getType("build_resource").map(({key}) => (
-            <Resource key={key} resource={check(key)}/>
+            <EditResource key={key} resource={check(key)}/>
           ))}
           <hr style={{color: 'gray', margin: '20px 0'}}/>
           {getType("citizen_resource").map(({key}) => (
-            <Resource key={key} resource={check(key)}/>
+            <EditResource key={key} resource={check(key)}/>
           ))}
         </div>
       </div>
