@@ -308,17 +308,122 @@
       "give": [
         {
           "key": "corn",
-          "value": 5
+          "value": 5,
+          "min": 0,
+          "max": null,
+          "label": "Corn",
+          "type": "base_resource",
+          "__cost": null,
+          "__icon": "wheat"
         },
         {
           "key": "water",
-          "value": 5
+          "value": 3,
+          "min": 0,
+          "max": null,
+          "label": "Water",
+          "type": "base_resource",
+          "__cost": null,
+          "__icon": "water"
         }
       ],
       "gain": [
         {
           "key": "meat",
-          "value": 1
+          "value": 1,
+          "min": 0,
+          "max": null,
+          "label": "Meat",
+          "type": "processed_resource",
+          "__cost": {
+            "give": [
+              {
+                "key": "corn",
+                "value": 6,
+                "min": 0,
+                "max": null,
+                "label": "Corn",
+                "type": "base_resource",
+                "__cost": null,
+                "__icon": "wheat"
+              },
+              {
+                "key": "water",
+                "value": 3,
+                "min": 0,
+                "max": null,
+                "label": "Water",
+                "type": "base_resource",
+                "__cost": null,
+                "__icon": "water"
+              }
+            ],
+            "gain": [
+              {
+                "key": "meat",
+                "value": 1,
+                "min": 0,
+                "max": null,
+                "label": "Meat",
+                "type": "processed_resource",
+                "__cost": {
+                  "give": [
+                    {
+                      "key": "corn",
+                      "value": 6,
+                      "min": 0,
+                      "max": null,
+                      "label": "Corn",
+                      "type": "base_resource",
+                      "__cost": null,
+                      "__icon": "wheat"
+                    },
+                    {
+                      "key": "water",
+                      "value": 5,
+                      "min": 0,
+                      "max": null,
+                      "label": "Water",
+                      "type": "base_resource",
+                      "__cost": null,
+                      "__icon": "water"
+                    }
+                  ],
+                  "gain": [
+                    {
+                      "key": "meat",
+                      "value": 1,
+                      "min": 0,
+                      "max": null,
+                      "label": "Meat",
+                      "type": "processed_resource",
+                      "__cost": {
+                        "give": [
+                          {
+                            "key": "corn",
+                            "value": 5
+                          },
+                          {
+                            "key": "water",
+                            "value": 5
+                          }
+                        ],
+                        "gain": [
+                          {
+                            "key": "meat",
+                            "value": 1
+                          }
+                        ]
+                      },
+                      "__icon": "meat2"
+                    }
+                  ]
+                },
+                "__icon": "meat2"
+              }
+            ]
+          },
+          "__icon": "meat2"
         }
       ]
     },

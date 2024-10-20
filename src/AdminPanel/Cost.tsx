@@ -1,17 +1,22 @@
 import {Stack, TextField, Typography} from "@mui/material";
-import {ResourceKeys, ResourceTypes} from "../gameRules/types.ts";
-import {Resource} from "../Resource/Resource.ts";
-import {TradeChange} from "../Resource/types.ts";
-import {useState} from "react";
+import {ResourceKeys} from "../gameRules/types.ts";
+import {ResourceCost, TradeChange, TradeChangePlusIcon} from "../Resource/types.ts";
 import {OnSetCost} from "./EditResource.tsx";
 
 type CostProps = {
-  resource: Resource<ResourceKeys, ResourceTypes>;
+  // resource: Resource<ResourceKeys, ResourceTypes>;
+  cost: ResourceCost<ResourceKeys> | null;
   onSetCost: OnSetCost;
+  onOpenAddCost(giveOrGain: 'give' | 'gain'): void;
 };
 
-export const Cost = ({resource, onSetCost}: CostProps) => {
+export const Cost = ({cost, onSetCost, onOpenAddCost}: CostProps) => {
   // Nope, not good. The state update needs to be handled in a single place. Meaning here, or rather in the EditResource
+
+  const onOpenGive = () => onOpenAddCost('give');
+  const onOpenGain = () => onOpenAddCost('gain');
+
+  const _onSetCost = (type: 'give' | 'gain') => (change: TradeChange<ResourceKeys>) => onSetCost(type, change)
   return (
     <Stack spacing={2}>
     <Stack direction="row" alignItems="center" spacing={4}>
@@ -19,10 +24,10 @@ export const Cost = ({resource, onSetCost}: CostProps) => {
 
       Give
       </Typography>
-      {resource.cost?.give.map(give => (
-        <SingleCost resource={resource} change={give} />
-
+      {cost?.give.map(give => (
+        <SingleCost key={give.key} change={give} onSetCost={_onSetCost('give')} />
       ))}
+      <button style={{height: 56}} onClick={onOpenGive}>Add</button>
 
     </Stack>
       <Stack direction="row" alignItems="center" spacing={4}>
@@ -30,9 +35,11 @@ export const Cost = ({resource, onSetCost}: CostProps) => {
 
           Gain
         </Typography>
-        {resource.cost?.gain.map(gain => (
-          <SingleCost change={gain} onSetCost={(change: TradeChange<ResourceKeys>) => onSetCost(resource.key, change)} />
+        {cost?.gain.map(gain => (
+          <SingleCost key={gain.key} change={gain} onSetCost={_onSetCost('gain')}/>
         ))}
+        <button style={{height: 56}} onClick={onOpenGain}>Add</button>
+
       </Stack>
     </Stack>
 
@@ -41,16 +48,16 @@ export const Cost = ({resource, onSetCost}: CostProps) => {
 
 type SingleCostProps = {
   // resource: Resource<ResourceKeys, ResourceTypes>;
-  change: TradeChange<ResourceKeys>;
+  change: TradeChangePlusIcon<ResourceKeys>;
   onSetCost(change: TradeChange<ResourceKeys>): void;
 }
 
 const SingleCost = ({change, onSetCost}: SingleCostProps) => {
-  const [value, setValue] = useState(change.value);
-
+  // const [value, setValue] = useState(change.value);
+  //
   const onChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    const value = event.target.value;
-
+    const value = Number(event.target.value);
+    onSetCost({key: change.key, value});
   }
 
   return (
@@ -62,10 +69,10 @@ const SingleCost = ({change, onSetCost}: SingleCostProps) => {
         height={32}
       />
       <TextField
-        value={value}
+        value={change.value}
         type="number"
         sx={{width: 80}}
-        onChange={(e) => setValue(Number(e.target.value))}
+        onChange={onChange}
       />
     </Stack>
   )

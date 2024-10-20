@@ -4,9 +4,8 @@ import {ResourceState, ResourceTypeRaw, ResourceUpdateProps} from "./types.ts";
 import {GetTurnUpdate, nextTurn} from "./helpers/nextTurn.ts";
 import {get as _get} from "./helpers/getResource.ts";
 import {mergeChangeToState as _mergeChangeToState} from "./helpers/stateUpdate.ts";
-import {ResourceBase} from "./ResourceBase.ts";
 import {useIcons} from "./useIcons.ts";
-// import {EditResource} from "../gameRules/EditResource.ts";
+import {Resource} from "./Resource.ts";
 
 export type Update<K, T> = ResourceUpdateProps<K, T>;
 export type TradeUpdate<K, T> = {
@@ -111,4 +110,4 @@ type GetResource<K extends string, T extends string> = {
   increment(amount: number): void;
   update(update: Partial<ResourceTypeRaw<K, T>>): void;
   checkTrade(amount: number): Trade<K, T>;
-} & ResourceBase<K, T>
+} & Resource<K, T>

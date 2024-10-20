@@ -20,14 +20,17 @@ import {Icon, TradeChange} from "../Resource/types.ts";
 import styled from "styled-components";
 import {Cost} from "./Cost.tsx";
 import {Resource} from "../Resource/Resource.ts";
-
+import {SelectResourceForCost} from "./SelectResourceForCost.tsx";
+import {ResourceBase} from "../Resource";
 
 type ResourceProps = {
   resource: Resource<ResourceKeys, ResourceTypes>;
 };
 
+type GiveOrGain = 'give' | 'gain' | '';
+
 export type OnSetCost = (
-  resourceKey: ResourceKeys, // give or gain
+  changeType: 'give' | 'gain',
   change: TradeChange<ResourceKeys>
 ) => void
 
@@ -38,7 +41,7 @@ export const EditResource = (
   const {
     resources: {
       mergeChangeToState,
-      icons
+      icons,
     },
     writeInitialResources
   } = useGame();
@@ -50,19 +53,50 @@ export const EditResource = (
   const [showCost, setShowCost] = useState(true);
   const [open, setOpen] = useState(false);
   const [cost, setCost] = useState(resource.cost);
+  const [openAddCost, setOpenAddCost] = useState(false);
+  const [addGiveOrGain, setAddGiveOrGain] = useState<GiveOrGain>('');
 
   // Todo here goes the rather complex updating of the cost object
   const onSetCost = (
-    resourceKey: ResourceKeys, // give or gain
+    changeType: 'give' | 'gain', // give or gain
     change: TradeChange<ResourceKeys>
   ) => {
-    console.log(resourceKey, change)
+    if (!cost) {
+      return
+    }
+    const newCost = resource.updateCost(changeType, change)
+    setCost(newCost)
   }
+
+  const onAddCost = (
+    // changeType: 'give' | 'gain', // give or gain
+    change: TradeChange<ResourceKeys>
+  ) => {
+    if (!cost || !addGiveOrGain.length) {
+      return
+    }
+    const newCost = {
+      ...cost,
+      [addGiveOrGain]: cost[addGiveOrGain as ('give' | 'gain')].concat(new ResourceBase(change))
+    }
+    console.log(newCost)
+    setCost(newCost)
+  }
+
+  const handleOpenAddCost = (giveOrGain: GiveOrGain) => {
+    if (giveOrGain.length) {
+      setOpenAddCost(true);
+      setAddGiveOrGain(giveOrGain);
+    }
+  };
+  const handleCloseAddCost = () => {
+    setOpenAddCost(false);
+    // setAddGiveOrGain('');
+  };
 
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
   const onClickIcon = (clickedIcon: Icon) => {
-    console.log('me', clickedIcon)
     setIcon(clickedIcon.src)
     handleClose()
   }
@@ -82,24 +116,29 @@ export const EditResource = (
       value,
       label,
       type,
+      cost,
       icon: _icon
     })
     writeInitialResources(newState)
   }
 
   const isDisabled = useMemo(() => {
-    return !(value !== resource.value || label !== resource.label || type !== resource.type || icon !== resource.icon);
-  }, [value, label, type, icon, resource])
+    return !(
+      value !== resource.value
+      || label !== resource.label
+      || type !== resource.type
+      || icon !== resource.icon
+      || JSON.stringify(cost) !== JSON.stringify(resource.cost)
+    );
+  }, [value, label, type, icon, resource, cost])
 
   return (
     <>
       <Modal
         open={open}
         onClose={handleClose}
-        aria-labelledby="modal-modal-title"
-        aria-describedby="modal-modal-description"
       >
-        <Box sx={style}>
+        <Box sx={{...style, pt: 8}}>
           <Header>
             <Typography variant="body2" sx={{pr: 1}}>
 
@@ -113,6 +152,14 @@ export const EditResource = (
             />
           </Header>
           <IconPicker showUsed={showUsed} onClick={onClickIcon}/>
+        </Box>
+      </Modal>
+      <Modal
+        open={openAddCost}
+        onClose={handleCloseAddCost}
+      >
+        <Box sx={style}>
+          <SelectResourceForCost onAddCost={onAddCost}/>
         </Box>
       </Modal>
       <Stack direction="row" spacing={2} alignItems="center">
@@ -155,16 +202,16 @@ export const EditResource = (
           Save
         </button>
       </Stack>
+      <Typography onClick={onToggleCost}>Cost</Typography>
       {!!resource.__cost &&
-      <>
-        <Typography onClick={onToggleCost}>Cost</Typography>
-        <Collapse in={showCost}>
+        <>
+          <Collapse in={showCost}>
 
-          <Stack direction="row" spacing={2} mb={4} mt={2} alignItems="center">
-            <Cost resource={resource}/>
-          </Stack>
-        </Collapse>
-      </>
+            <Stack direction="row" spacing={2} mb={4} mt={2} alignItems="center">
+              <Cost cost={cost} onSetCost={onSetCost} onOpenAddCost={handleOpenAddCost}/>
+            </Stack>
+          </Collapse>
+        </>
       }
     </>
   )
@@ -186,10 +233,9 @@ const style = {
   top: '50%',
   left: '50%',
   transform: 'translate(-50%, -50%)',
-  width: '60vw',
+  // width: '60vw',
   bgcolor: 'background.paper',
   border: '2px solid #000',
   boxShadow: 24,
   p: 4,
-  pt: 8
 };
