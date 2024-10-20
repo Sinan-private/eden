@@ -1,7 +1,5 @@
 import {ResourceKeys, ResourceTypes} from "../gameRules/types.ts";
-import {useMemo, useState} from "react";
-import Select, {SelectChangeEvent} from "@mui/material/Select";
-import {useGame} from "../context/game.context.ts";
+import Select from "@mui/material/Select";
 import {
   Box,
   Collapse,
@@ -16,18 +14,16 @@ import {
 } from "@mui/material";
 import {resourceTypes} from "../gameRules/resourceTypes.ts";
 import {IconPicker} from "./IconPicker.tsx";
-import {Icon, TradeChange} from "../Resource/types.ts";
+import {TradeChange} from "../Resource/types.ts";
 import styled from "styled-components";
 import {Cost} from "./Cost.tsx";
 import {Resource} from "../Resource/Resource.ts";
 import {SelectResourceForCost} from "./SelectResourceForCost.tsx";
-import {ResourceBase} from "../Resource";
+import {useResourceEdit} from "./useResourceEdit.ts";
 
 type ResourceProps = {
   resource: Resource<ResourceKeys, ResourceTypes>;
 };
-
-type GiveOrGain = 'give' | 'gain' | '';
 
 export type OnSetCost = (
   changeType: 'give' | 'gain',
@@ -39,98 +35,31 @@ export const EditResource = (
     resource,
   }: ResourceProps) => {
   const {
-    resources: {
-      mergeChangeToState,
-      icons,
-    },
-    writeInitialResources
-  } = useGame();
-  const [value, setValue] = useState(resource.value)
-  const [label, setLabel] = useState(resource.label)
-  const [type, setType] = useState(resource.type);
-  const [icon, setIcon] = useState(resource.icon);
-  const [showUsed, setShowUsed] = useState(false);
-  const [showCost, setShowCost] = useState(true);
-  const [open, setOpen] = useState(false);
-  const [cost, setCost] = useState(resource.cost);
-  const [openAddCost, setOpenAddCost] = useState(false);
-  const [addGiveOrGain, setAddGiveOrGain] = useState<GiveOrGain>('');
-
-  // Todo here goes the rather complex updating of the cost object
-  const onSetCost = (
-    changeType: 'give' | 'gain', // give or gain
-    change: TradeChange<ResourceKeys>
-  ) => {
-    if (!cost) {
-      return
-    }
-    const newCost = resource.updateCost(changeType, change)
-    setCost(newCost)
-  }
-
-  const onAddCost = (
-    // changeType: 'give' | 'gain', // give or gain
-    change: TradeChange<ResourceKeys>
-  ) => {
-    if (!cost || !addGiveOrGain.length) {
-      return
-    }
-    const newCost = {
-      ...cost,
-      [addGiveOrGain]: cost[addGiveOrGain as ('give' | 'gain')].concat(new ResourceBase(change))
-    }
-    console.log(newCost)
-    setCost(newCost)
-  }
-
-  const handleOpenAddCost = (giveOrGain: GiveOrGain) => {
-    if (giveOrGain.length) {
-      setOpenAddCost(true);
-      setAddGiveOrGain(giveOrGain);
-    }
-  };
-  const handleCloseAddCost = () => {
-    setOpenAddCost(false);
-    // setAddGiveOrGain('');
-  };
-
-  const handleOpen = () => setOpen(true);
-  const handleClose = () => setOpen(false);
-  const onClickIcon = (clickedIcon: Icon) => {
-    setIcon(clickedIcon.src)
-    handleClose()
-  }
-
-  const onToggleFilter = () => setShowUsed(!showUsed);
-  const onToggleCost = () => setShowCost(!showCost);
-
-  const handleTypeChange = (event: SelectChangeEvent) => {
-    setType(event.target.value as ResourceTypes);
-  };
-
-
-  const updateValue = () => {
-    const _icon = icons.getBySrc(icon).name;
-    const newState = mergeChangeToState({
-      ...resource.state,
-      value,
-      label,
-      type,
-      cost,
-      icon: _icon
-    })
-    writeInitialResources(newState)
-  }
-
-  const isDisabled = useMemo(() => {
-    return !(
-      value !== resource.value
-      || label !== resource.label
-      || type !== resource.type
-      || icon !== resource.icon
-      || JSON.stringify(cost) !== JSON.stringify(resource.cost)
-    );
-  }, [value, label, type, icon, resource, cost])
+    value,
+    label,
+    type,
+    showUsed,
+    showCost,
+    open,
+    cost,
+    openAddCost,
+    icon,
+    onSetCost,
+    onAddCost,
+    handleClose,
+    handleOpen,
+    handleCloseAddCost,
+    handleTypeChange,
+    handleOpenAddCost,
+    onClickIcon,
+    isDisabled,
+    onToggleFilter,
+    onToggleCost,
+    updateValue,
+    onSetLabel,
+    onSetValue,
+    costForBla
+  } = useResourceEdit(resource);
 
   return (
     <>
@@ -159,7 +88,7 @@ export const EditResource = (
         onClose={handleCloseAddCost}
       >
         <Box sx={style}>
-          <SelectResourceForCost onAddCost={onAddCost}/>
+          <SelectResourceForCost onAddCost={onAddCost} cost={costForBla}/>
         </Box>
       </Modal>
       <Stack direction="row" spacing={2} alignItems="center">
@@ -174,13 +103,13 @@ export const EditResource = (
           type="text"
           label="Name"
           value={label}
-          onChange={(e) => setLabel(e.target.value)}
+          onChange={onSetLabel}
         />
         <TextField
           type="number"
           label="Start amount"
           value={value}
-          onChange={(e) => setValue(Number(e.target.value))}
+          onChange={onSetValue}
           // onBlur={updateValue}
         />
         <FormControl fullWidth>

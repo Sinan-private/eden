@@ -1,5 +1,5 @@
 import {useGame} from "../context/game.context.ts";
-import {useMemo, useState} from "react";
+import {ChangeEvent, useMemo, useState} from "react";
 import {Icon, TradeChange} from "../Resource/types.ts";
 import {ResourceKeys, ResourceTypes} from "../gameRules/types.ts";
 import {ResourceBase} from "../Resource";
@@ -27,7 +27,6 @@ export const useResourceEdit = (resource: Resource<ResourceKeys, ResourceTypes>)
   const [openAddCost, setOpenAddCost] = useState(false);
   const [addGiveOrGain, setAddGiveOrGain] = useState<GiveOrGain>('');
 
-  // Todo here goes the rather complex updating of the cost object
   const onSetCost = (
     changeType: 'give' | 'gain', // give or gain
     change: TradeChange<ResourceKeys>
@@ -103,10 +102,37 @@ export const useResourceEdit = (resource: Resource<ResourceKeys, ResourceTypes>)
     );
   }, [value, label, type, icon, resource, cost])
 
+  const onSetLabel = (e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => setLabel(e.target.value)
+  const onSetValue = (e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => setValue(Number(e.target.value))
+
+  const costForBla = cost && addGiveOrGain.length ? cost[addGiveOrGain as 'give' | 'gain'] : []
+
 
   return {
     value,
     label,
-
+    type,
+    showUsed,
+    showCost,
+    open,
+    cost,
+    openAddCost,
+    addGiveOrGain,
+    icon,
+    onSetCost,
+    onAddCost,
+    handleClose,
+    handleOpen,
+    handleCloseAddCost,
+    handleTypeChange,
+    handleOpenAddCost,
+    onClickIcon,
+    isDisabled,
+    onToggleFilter,
+    onToggleCost,
+    updateValue,
+    onSetLabel,
+    onSetValue,
+    costForBla,
   }
 }
