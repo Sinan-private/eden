@@ -21,17 +21,17 @@ export class Resource<K extends string, T extends string> extends ResourceBase<K
     changeType: 'give' | 'gain',
     change: TradeChange<K>
   ) => {
-    if (!this.__cost) {
+    if (!this.cost) {
       return null
     }
     console.log(change)
-    const i = this.__cost[changeType].map(({key}) => key).indexOf(change.key)
+    const i = this.cost[changeType].map(({key}) => key).indexOf(change.key)
     const newCost = {
-      ...this.__cost,
+      ...this.cost,
       [changeType]: [
-        ...this.__cost[changeType].slice(0, i),
+        ...this.cost[changeType].slice(0, i),
         change,
-        ...this.__cost[changeType].slice(i + 1),
+        ...this.cost[changeType].slice(i + 1),
       ]
     }
     return newCost

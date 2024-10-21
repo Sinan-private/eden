@@ -23,18 +23,18 @@ export const useResourceEdit = (resource: Resource<ResourceKeys, ResourceTypes>)
   const [showUsed, setShowUsed] = useState(false);
   const [showCost, setShowCost] = useState(true);
   const [open, setOpen] = useState(false);
-  const [cost, setCost] = useState(resource.__cost);
+  const [cost, setCost] = useState(resource.cost);
   const [openAddCost, setOpenAddCost] = useState(false);
   const [addGiveOrGain, setAddGiveOrGain] = useState<GiveOrGain>('');
 
   const onSetCost = (
-    changeType: 'give' | 'gain', // give or gain
+    changeKey: 'give' | 'gain', // give or gain
     change: TradeChange<ResourceKeys>
   ) => {
     if (!cost) {
       return
     }
-    const newCost = resource.updateCost(changeType, change)
+    const newCost = resource.updateCost(changeKey, change)
     setCost(newCost)
   }
 
@@ -98,7 +98,7 @@ export const useResourceEdit = (resource: Resource<ResourceKeys, ResourceTypes>)
       || label !== resource.label
       || type !== resource.type
       || icon !== resource.icon
-      || JSON.stringify(cost) !== JSON.stringify(resource.__cost)
+      || JSON.stringify(cost) !== JSON.stringify(resource.cost)
     );
   }, [value, label, type, icon, resource, cost])
 

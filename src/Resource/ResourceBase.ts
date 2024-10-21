@@ -16,7 +16,7 @@ export class ResourceBase<K extends string, T extends string> {
   public readonly max: number;
   public readonly label: string;
   public readonly type: T;
-  public readonly __cost: ResourceCostUpdate<K> | null;
+  public readonly cost: ResourceCostUpdate<K> | null;
   public readonly iconName: string;
 
   // I want to create the cost for the frontend to easily render
@@ -34,7 +34,6 @@ export class ResourceBase<K extends string, T extends string> {
       key,
       cost,
       iconName,
-      __cost
     } = raw_resource;
 
     this.key = key;
@@ -43,7 +42,7 @@ export class ResourceBase<K extends string, T extends string> {
     this.max = typeof max === 'number' ? max : Infinity;
     this.label = label ? label : key ? labelFromKey(key) : 'No label';
     this.type = typeof type === 'string' ? type : '' as T;
-    this.__cost = cost || __cost || null;
+    this.cost = cost || null;
     this.iconName = iconName || 'empty';
   }
 
@@ -113,7 +112,7 @@ export class ResourceBase<K extends string, T extends string> {
       max: this.max,
       label: this.label,
       type: this.type,
-      cost: this.__cost,
+      cost: this.cost,
       iconName: this.iconName,
     }
   }

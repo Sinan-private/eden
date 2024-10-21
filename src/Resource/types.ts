@@ -23,7 +23,7 @@ export type ResourceCostUpdate<K> = {
 
 export type ResourceUpdateProps<K, T> = {
   key: K;
-  __cost?: ResourceCostUpdate<K> | null;
+  cost?: ResourceCostUpdate<K> | null;
   iconName?: string;
 } & Partial<ResourceTypeRaw<K, T>>
 

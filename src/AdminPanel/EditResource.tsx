@@ -137,7 +137,7 @@ export const EditResource = (
         </button>
       </Stack>
       <Typography onClick={onToggleCost}>Cost</Typography>
-      {!!resource.__cost &&
+      {!!resource.cost &&
         <>
           <Collapse in={showCost}>
 
