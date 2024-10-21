@@ -39,7 +39,7 @@ export const useResourceEdit = (resource: Resource<ResourceKeys, ResourceTypes>)
   const onAddCost = (
     change: TradeChange<ResourceKeys>
   ) => {
-    const newCost = resource.onAddCost(costChangeKey, change)
+    const newCost = resource.addCost(costChangeKey, change)
     if (newCost) {
       setCost(newCost)
     }

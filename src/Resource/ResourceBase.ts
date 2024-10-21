@@ -83,10 +83,6 @@ export class ResourceBase<K extends string, T extends string> {
     update.value || 0
   )
 
-  public readonly removeCost = () => {
-
-  }
-
   private readonly __respectConstraints = (value: number): number =>
     value > this.max
       ? this.max
