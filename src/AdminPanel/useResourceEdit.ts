@@ -82,14 +82,12 @@ export const useResourceEdit = (resource: Resource<ResourceKeys, ResourceTypes>)
 
 
   const updateValue = () => {
-    // const _icon = icons.getBySrc(icon).name;
     const newState = mergeChangeToState({
       ...resource.state,
       value,
       label,
       type,
       cost,
-      // iconName: _icon
     })
     writeInitialResources(newState)
   }

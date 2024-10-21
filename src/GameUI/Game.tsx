@@ -6,7 +6,7 @@ import {TopBar} from "./TopBar.tsx";
 export const Game = () => {
   const {
     get,
-    getType,
+    getByType,
   } = useGame().resources;
 
   return (
@@ -14,16 +14,16 @@ export const Game = () => {
       <TopBar/>
       <div style={{display: "flex", justifyContent: "center", flexDirection: "row"}}>
         <div className="card">
-          {getType("base_resource").map(({key}) => (
+          {getByType("base_resource").map(({key}) => (
             <Button key={key} resource={get(key)} increment={10}/>
           ))}
           <hr style={{color: 'gray', margin: '20px 0'}}/>
-          {getType("processed_resource").map(({key}) => (
+          {getByType("processed_resource").map(({key}) => (
             <Button key={key} resource={get(key)}/>
           ))}
         </div>
         <div className="card">
-          {getType("build_resource").map(({key}) => (
+          {getByType("build_resource").map(({key}) => (
             <Button key={key} resource={get(key)}/>
           ))}
         </div>

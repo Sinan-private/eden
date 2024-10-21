@@ -1,7 +1,7 @@
 [
   {
     "key": "gold",
-    "value": 1200,
+    "value": 1201,
     "min": 0,
     "max": null,
     "label": "Gold",
@@ -310,7 +310,7 @@
         },
         {
           "key": "water",
-          "value": 6
+          "value": 4
         }
       ],
       "gain": [

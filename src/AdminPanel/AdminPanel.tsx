@@ -6,7 +6,7 @@ import {Typography} from "@mui/material";
 export const AdminPanel = () => {
   const {
     get,
-    getType,
+    getByType,
   } = useGame().resources;
 
   return (
@@ -14,19 +14,19 @@ export const AdminPanel = () => {
       <Typography variant="h2" align="left" sx={{ml: 4}}>Starting Resources</Typography>
       <div style={{display: "flex", justifyContent: "center", flexDirection: "row"}}>
         <div className="card">
-          {getType("base_resource").map(({key}) => (
+          {getByType("base_resource").map(({key}) => (
             <EditResource key={key} resource={get(key)}/>
           ))}
           <hr style={{color: 'gray', margin: '20px 0'}}/>
-          {getType("processed_resource").map(({key}) => (
+          {getByType("processed_resource").map(({key}) => (
             <EditResource key={key} resource={get(key)}/>
           ))}
           <hr style={{color: 'gray', margin: '20px 0'}}/>
-          {getType("build_resource").map(({key}) => (
+          {getByType("build_resource").map(({key}) => (
             <EditResource key={key} resource={get(key)}/>
           ))}
           <hr style={{color: 'gray', margin: '20px 0'}}/>
-          {getType("citizen_resource").map(({key}) => (
+          {getByType("citizen_resource").map(({key}) => (
             <EditResource key={key} resource={get(key)}/>
           ))}
         </div>
