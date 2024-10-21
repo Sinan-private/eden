@@ -36,7 +36,6 @@ const useGameBase = () => {
   }, [tick, prevTick, nextTurn]);
 
   const writeInitialResources = (newState?: ResourceState<ResourceKeys, ResourceTypes>[]) => {
-    console.log(getState(newState))
     updateResources(getState(newState)).then(() => (
       setState(getState(newState))
     ))

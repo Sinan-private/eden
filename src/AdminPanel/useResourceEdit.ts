@@ -36,6 +36,10 @@ export const useResourceEdit = (resource: Resource<ResourceKeys, ResourceTypes>)
     const newCost = resource.updateCost(changeKey, change)
     setCost(newCost)
   }
+  if (resource.key === 'meat') {
+
+  console.log(cost)
+  }
 
   const onAddCost = (
     // changeType: 'give' | 'gain', // give or gain
@@ -86,7 +90,7 @@ export const useResourceEdit = (resource: Resource<ResourceKeys, ResourceTypes>)
       label,
       type,
       cost,
-      iconName: _icon
+      // iconName: _icon
     })
     writeInitialResources(newState)
   }

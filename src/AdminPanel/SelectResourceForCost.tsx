@@ -12,7 +12,6 @@ type ResourceForCostProps = {
 }
 
 export const SelectResourceForCost = ({onAddCost, cost}: ResourceForCostProps) => {
-  console.log(cost)
   const {getType} = useGame().resources;
   const [selectedResource, setSelectedResource] = useState<{ key: ResourceKeys; label: string } | null>(null);
   const [selectAmount, setSelectAmount] = useState(1);
@@ -21,7 +20,7 @@ export const SelectResourceForCost = ({onAddCost, cost}: ResourceForCostProps) =
     return getType()
       .filter(resource => !toRemove.includes(resource.key))
       .map(({label, key}) => ({key, label}))
-  }, [getType])
+  }, [cost, getType])
   const onChange = (_a: SyntheticEvent<Element, Event>, change: { key: string; label: string } | null) => {
     if (!change) {
       setSelectedResource(null)
@@ -35,7 +34,7 @@ export const SelectResourceForCost = ({onAddCost, cost}: ResourceForCostProps) =
       return;
     }
     const update = {
-      ...selectedResource,
+      key: selectedResource.key,
       value: selectAmount
     };
     onAddCost(update)

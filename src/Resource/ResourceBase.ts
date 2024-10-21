@@ -90,6 +90,15 @@ export class ResourceBase<K extends string, T extends string> {
         ? this.min
         : value
 
+  private readonly __simplifyCost = () => {
+    if (!this.cost) {
+      return null
+    }
+    const give = this.cost.give.map(({key, value}) => ({key, value}))
+    const gain = this.cost.gain.map(({key, value}) => ({key, value}))
+    return {give, gain}
+  }
+
   get percentage() {
     return Math.floor(mapMultiply(this.value, this.max) * 100);
   }
@@ -112,7 +121,7 @@ export class ResourceBase<K extends string, T extends string> {
       max: this.max,
       label: this.label,
       type: this.type,
-      cost: this.cost,
+      cost: this.__simplifyCost(),
       iconName: this.iconName,
     }
   }

@@ -31,6 +31,7 @@ const mergeCostUpdate = <K>(
   if (!cost) {
     return null
   }
+  console.log(change)
   const i = cost[changeType].map(({key}) => key).indexOf(change.key)
   return {
     ...cost,

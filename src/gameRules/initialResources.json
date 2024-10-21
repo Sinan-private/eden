@@ -165,8 +165,7 @@
       "gain": [
         {
           "key": "bakery",
-          "value": 1,
-          "iconName": "empty"
+          "value": 1
         }
       ]
     },
@@ -228,8 +227,7 @@
       "gain": [
         {
           "key": "forrester",
-          "value": 1,
-          "iconName": "empty"
+          "value": 1
         }
       ]
     },
@@ -313,6 +311,16 @@
         {
           "key": "water",
           "value": 6
+        },
+        {
+          "key": "gold",
+          "value": 1,
+          "min": 0,
+          "max": null,
+          "label": "Gold",
+          "type": "",
+          "cost": null,
+          "iconName": "empty"
         }
       ],
       "gain": [
