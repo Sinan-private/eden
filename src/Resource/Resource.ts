@@ -13,6 +13,20 @@ export class Resource<K extends string, T extends string> extends ResourceBase<K
     // this.cost = cost || null;
   }
 
+  public readonly onAddCost = (
+    changeKey: 'give' | 'gain' | '',
+    change: TradeChange<K>
+  ) => {
+    if (!this.cost || !changeKey.length) {
+      return
+    }
+    return {
+      ...this.cost,
+      [changeKey]: this.cost[changeKey as 'give']
+        .concat(new Resource({...this.state, ...change}))
+    }
+  }
+
   get icon(): string {
     return icons.find(icon => icon.name === this.iconName)?.src || ''
   }

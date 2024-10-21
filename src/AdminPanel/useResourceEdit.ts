@@ -3,7 +3,7 @@ import {ChangeEvent, useMemo, useState} from "react";
 import {Icon, TradeChange} from "../Resource/types.ts";
 import {ResourceKeys, ResourceTypes} from "../gameRules/types.ts";
 import {SelectChangeEvent} from "@mui/material/Select";
-import {Resource} from "../Resource/Resource.ts";
+import {Resource} from "../Resource";
 
 type GiveOrGain = 'give' | 'gain' | '';
 
@@ -23,10 +23,10 @@ export const useResourceEdit = (resource: Resource<ResourceKeys, ResourceTypes>)
   const [open, setOpen] = useState(false);
   const [cost, setCost] = useState(resource.cost);
   const [openAddCost, setOpenAddCost] = useState(false);
-  const [addGiveOrGain, setAddGiveOrGain] = useState<GiveOrGain>('');
+  const [costChangeKey, setCostChangeKey] = useState<GiveOrGain>('');
 
   const onSetCost = (
-    changeKey: 'give' | 'gain', // give or gain
+    changeKey: 'give' | 'gain',
     change: TradeChange<ResourceKeys>
   ) => {
     if (!cost) {
@@ -35,30 +35,20 @@ export const useResourceEdit = (resource: Resource<ResourceKeys, ResourceTypes>)
     const newCost = resource.updateCost(changeKey, change)
     setCost(newCost)
   }
-  if (resource.key === 'meat') {
-
-  console.log(cost)
-  }
 
   const onAddCost = (
-    // changeType: 'give' | 'gain', // give or gain
     change: TradeChange<ResourceKeys>
   ) => {
-    if (!cost || !addGiveOrGain.length) {
-      return
+    const newCost = resource.onAddCost(costChangeKey, change)
+    if (newCost) {
+      setCost(newCost)
     }
-    const newCost = {
-      ...cost,
-      [addGiveOrGain]: cost[addGiveOrGain as ('give' | 'gain')].concat(new Resource(change))
-    }
-    console.log(newCost)
-    setCost(newCost)
   }
 
   const handleOpenAddCost = (giveOrGain: GiveOrGain) => {
     if (giveOrGain.length) {
       setOpenAddCost(true);
-      setAddGiveOrGain(giveOrGain);
+      setCostChangeKey(giveOrGain);
     }
   };
   const handleCloseAddCost = () => {
@@ -105,7 +95,7 @@ export const useResourceEdit = (resource: Resource<ResourceKeys, ResourceTypes>)
   const onSetLabel = (e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => setLabel(e.target.value)
   const onSetValue = (e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => setValue(Number(e.target.value))
 
-  const costForBla = cost && addGiveOrGain.length ? cost[addGiveOrGain as 'give' | 'gain'] : []
+  const costForBla = cost && costChangeKey.length ? cost[costChangeKey as 'give' | 'gain'] : []
 
 
   return {
@@ -117,7 +107,7 @@ export const useResourceEdit = (resource: Resource<ResourceKeys, ResourceTypes>)
     open,
     cost,
     openAddCost,
-    addGiveOrGain,
+    addGiveOrGain: costChangeKey,
     icon,
     onSetCost,
     onAddCost,
