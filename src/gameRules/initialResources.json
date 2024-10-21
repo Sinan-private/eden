@@ -314,13 +314,11 @@
         },
         {
           "key": "gold",
-          "value": 1,
-          "min": 0,
-          "max": null,
-          "label": "Gold",
-          "type": "",
-          "cost": null,
-          "iconName": "empty"
+          "value": 1
+        },
+        {
+          "key": "stone",
+          "value": 1
         }
       ],
       "gain": [

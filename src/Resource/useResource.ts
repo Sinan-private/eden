@@ -72,7 +72,8 @@ export const useResource = <K extends string, T extends string>(initialState: Re
 
   const mergeChangeToState = (update: ResourceState<K, T> | ResourceState<K, T>[]): ResourceState<K, T>[] => {
     const arr: ResourceState<K, T>[] = [];
-    return _mergeChangeToState(arr.concat(update), state);
+    const _update = arr.concat(update).map(change => new Resource(change).state)
+    return _mergeChangeToState(_update, state);
   }
 
   const getState = (newState = state): ResourceState<K, T>[] => {
