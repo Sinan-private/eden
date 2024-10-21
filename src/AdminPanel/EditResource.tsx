@@ -41,7 +41,7 @@ export const EditResource = (
     showUsed,
     showCost,
     open,
-    cost,
+    // cost,
     openAddCost,
     icon,
     onSetCost,
@@ -137,7 +137,7 @@ export const EditResource = (
           <Collapse in={showCost}>
 
             <Stack direction="row" spacing={2} mb={4} mt={2} alignItems="center">
-              <Cost cost={cost} onSetCost={onSetCost} onOpenAddCost={handleOpenAddCost}/>
+              <Cost resource={resource} onSetCost={onSetCost} onOpenAddCost={handleOpenAddCost}/>
             </Stack>
           </Collapse>
         </>

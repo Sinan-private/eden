@@ -18,13 +18,13 @@ export const IconPicker = ({showUsed = false, onClick}: IconPickerProps) => {
     <Container>
       <IconContainer>
         {icons.getUnused().map(({name, src}) => (
-          <SingleIconContainer key={name} onClick={onClickIcon({name, src})} _filter="unused">
+          <SingleIconContainer key={name} onClick={onClickIcon({name, src})} $filter="unused">
             <img src={src} alt={name} style={{alignSelf: 'center'}}/>
             <div style={{fontSize: '0.7rem', textAlign: 'center'}}>{name}</div>
           </SingleIconContainer>
         ))}
         {showUsed && icons.getUsed().map(({name, src}) => (
-          <SingleIconContainer key={name} onClick={onClickIcon({name, src})} _filter="used">
+          <SingleIconContainer key={name} onClick={onClickIcon({name, src})} $filter="used">
             <img src={src} alt={name} style={{alignSelf: 'center'}}/>
             <div style={{fontSize: '0.7rem', textAlign: 'center'}}>{name}</div>
           </SingleIconContainer>
@@ -49,7 +49,7 @@ const IconContainer = styled.div`
     max-height: 100%;
 `;
 
-const SingleIconContainer = styled.div<{ _filter: 'used' | 'unused' }>`
+const SingleIconContainer = styled.div<{ $filter: 'used' | 'unused' }>`
     display: flex;
     justify-content: center;
     width: 80px;
@@ -59,6 +59,6 @@ const SingleIconContainer = styled.div<{ _filter: 'used' | 'unused' }>`
     border: 1px solid rgba(255, 255, 255, 0.14);
     border-radius: 4px;
     flex-direction: column;
-    background-color: ${props => props._filter === 'used' ? '#0000005e' : 'transparent'};
-    opacity: ${props => props._filter === 'used' ? 0.3 : 1};
+    background-color: ${props => props.$filter === 'used' ? '#0000005e' : 'transparent'};
+    opacity: ${props => props.$filter === 'used' ? 0.3 : 1};
 `;

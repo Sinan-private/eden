@@ -23,7 +23,7 @@ export const useResourceEdit = (resource: Resource<ResourceKeys, ResourceTypes>)
   const [showUsed, setShowUsed] = useState(false);
   const [showCost, setShowCost] = useState(true);
   const [open, setOpen] = useState(false);
-  const [cost, setCost] = useState(resource.cost);
+  const [cost, setCost] = useState(resource.__cost);
   const [openAddCost, setOpenAddCost] = useState(false);
   const [addGiveOrGain, setAddGiveOrGain] = useState<GiveOrGain>('');
 
@@ -35,8 +35,10 @@ export const useResourceEdit = (resource: Resource<ResourceKeys, ResourceTypes>)
       return
     }
     const newCost = resource.updateCost(changeType, change)
+    console.log(change, newCost)
     setCost(newCost)
   }
+  console.log(cost)
 
   const onAddCost = (
     // changeType: 'give' | 'gain', // give or gain
@@ -81,13 +83,14 @@ export const useResourceEdit = (resource: Resource<ResourceKeys, ResourceTypes>)
 
   const updateValue = () => {
     const _icon = icons.getBySrc(icon).name;
+    console.log(cost)
     const newState = mergeChangeToState({
       ...resource.state,
       value,
       label,
       type,
       cost,
-      icon: _icon
+      iconName: _icon
     })
     writeInitialResources(newState)
   }

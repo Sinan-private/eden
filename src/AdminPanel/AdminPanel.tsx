@@ -1,6 +1,7 @@
 import styled from "styled-components";
 import {useGame} from "../context/game.context.ts";
 import {EditResource} from "./EditResource.tsx";
+import {Typography} from "@mui/material";
 
 export const AdminPanel = () => {
   const {
@@ -10,6 +11,7 @@ export const AdminPanel = () => {
 
   return (
     <StyledContainer>
+      <Typography variant="h2" align="left" sx={{ml: 4}}>Starting Resources</Typography>
       <div style={{display: "flex", justifyContent: "center", flexDirection: "row"}}>
         <div className="card">
           {getType("base_resource").map(({key}) => (
