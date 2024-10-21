@@ -5,7 +5,6 @@ import {GetTurnUpdate, nextTurn as getNextTurn} from "./helpers/nextTurn.ts";
 import {get as _get} from "./helpers/getResource.ts";
 import {mergeChangeToState as _mergeChangeToState} from "./helpers/stateUpdate.ts";
 import {useIcons} from "./useIcons.ts";
-import {Resource} from "./Resource.ts";
 
 export type Update<K, T> = ResourceUpdateProps<K, T>;
 export type TradeUpdate<K, T> = {
@@ -18,11 +17,8 @@ export const useResource = <K extends string, T extends string>(initialState: Re
   const [state, setState] = useState(initialState);
   const icons = useIcons(state);
 
-  const mergeChangeToState = useCallback((update: ResourceState<K, T> | ResourceState<K, T>[]): ResourceState<K, T>[] => {
-    const arr: ResourceState<K, T>[] = [];
-    const _update = arr.concat(update).map(change => new Resource(change).state)
-    return _mergeChangeToState(_update, state);
-  }, [state])
+  const mergeChangeToState = useCallback((update: ResourceState<K, T> | ResourceState<K, T>[]): ResourceState<K, T>[] =>
+    _mergeChangeToState(update, state), [state])
 
   // Get the full EditResource class
   const get = useCallback(
@@ -60,8 +56,6 @@ export const useResource = <K extends string, T extends string>(initialState: Re
 
   const nextTurn = useCallback((getTurnUpdate: GetTurnUpdate<K, T>) =>
     setState(getNextTurn(getTurnUpdate, state)), [state]);
-
-
 
   // Update a single EditResource
   const onUpdate = useCallback((update: Update<K, T>) => {

@@ -12,7 +12,7 @@ const useGameBase = () => {
   const {fetchResources, updateResources} = useApi();
   const [isFetching, setIsFetching] = useState(true);
   // The resource offers all info and update methods. The nextTurn is only needed here to handle turn updates only in here.
-  const {nextTurn, setState, getState, ...resources} = useResource<ResourceKeys, ResourceTypes>([]);
+  const {nextTurn, setState, ...resources} = useResource<ResourceKeys, ResourceTypes>([]);
   const tick = useTick();
   const prevTick = usePrevious(tick.current);
   useComponentMount(async () => {
@@ -31,8 +31,9 @@ const useGameBase = () => {
   }, [tick, prevTick, nextTurn]);
 
   const writeInitialResources = (newState?: ResourceState<ResourceKeys, ResourceTypes>[]) => {
-    updateResources(getState(newState)).then(() => (
-      setState(getState(newState))
+    if (!newState) return;
+    updateResources(newState).then(() => (
+      setState(newState)
     ))
   }
 
