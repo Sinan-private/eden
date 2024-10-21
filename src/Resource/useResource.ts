@@ -89,7 +89,7 @@ export const useResource = <K extends string, T extends string>(initialState: Re
   }
 
   return {
-    state,
+    // state,
     // This includes the state as well as some methods to update the resource
     get: getExternal,
     getType,
