@@ -5,7 +5,7 @@ export type ResourceTypeRaw<K, T> = {
   label: string;
   type?: T;
   cost: ResourceCostUpdate<K> | null;
-  icon?: string;
+  iconName?: string;
 }
 
 export type TradeChange<K> = {key: K, value: number};
@@ -24,7 +24,7 @@ export type ResourceCostUpdate<K> = {
 export type ResourceUpdateProps<K, T> = {
   key: K;
   __cost?: ResourceCostUpdate<K> | null;
-  __icon?: string;
+  iconName?: string;
 } & Partial<ResourceTypeRaw<K, T>>
 
 export type ResourceState<K, T> = ResourceTypeRaw<K, T> & {key: K};

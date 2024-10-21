@@ -12,7 +12,7 @@ export const TopBar = () => {
       <>
         {getType(type).map(({key}) => (
           <StyledTopBarResource key={key} onClick={() => resource(key).increment(increase)}>
-            <img src={resource(key).getIcon()} alt={resource(key).label} width={32} height={32}/>
+            <img src={resource(key).icon} alt={resource(key).label} width={32} height={32}/>
             <p>{check(resource(key).key).beautify.value}</p>
           </StyledTopBarResource>
         ))}
@@ -42,6 +42,7 @@ const StyledTopBar = styled.div`
     padding: 4px 20px 12px 20px;
     background: #333333;
     gap: 16px;
+    z-index: 1;
     //border: 1px solid red;
     //border-top: transparent;
 `

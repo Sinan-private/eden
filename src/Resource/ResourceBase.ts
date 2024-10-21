@@ -6,7 +6,6 @@ import {
   ResourceCostUpdate,
 } from "./types";
 import {beautifyNumber, delta, mapMultiply} from "./helpers";
-import icons from '../assets/icons/icons.ts';
 
 type UpdateProps<K, T> = Partial<ResourceTypeRaw<K, T>>;
 
@@ -18,7 +17,7 @@ export class ResourceBase<K extends string, T extends string> {
   public readonly label: string;
   public readonly type: T;
   public readonly __cost: ResourceCostUpdate<K> | null;
-  protected readonly iconName: string;
+  public readonly iconName: string;
 
   // I want to create the cost for the frontend to easily render
   // And for the storage to save in a clean way
@@ -34,8 +33,7 @@ export class ResourceBase<K extends string, T extends string> {
       type,
       key,
       cost,
-      icon,
-      __icon,
+      iconName,
       __cost
     } = raw_resource;
 
@@ -43,22 +41,11 @@ export class ResourceBase<K extends string, T extends string> {
     this.value = typeof value === 'number' ? value : 0;
     this.min = typeof min === 'number' ? min : 0;
     this.max = typeof max === 'number' ? max : Infinity;
-    this.label = typeof label === 'string' ? label : key ? labelFromKey(key) : 'No label';
+    this.label = label ? label : key ? labelFromKey(key) : 'No label';
     this.type = typeof type === 'string' ? type : '' as T;
-    // this.cost = this.__createCost(cost);
     this.__cost = cost || __cost || null;
-    this.iconName = icon || __icon || 'empty'
-    // @ts-ignore
-    // this.icon = icon || icons[key];
-    if (label?.startsWith('Golda')) {
-      console.log(label, this.label)
-    }
+    this.iconName = iconName || 'empty';
   }
-
-
-
-  public readonly getIcon = () =>
-    icons.find(icon => icon.name === this.iconName)?.src
 
   public readonly updateBy = (update: UpdateProps<K, T>): ResourceState<K, T> => {
     // This is a little complex to update constraints first before updating the value
@@ -69,7 +56,6 @@ export class ResourceBase<K extends string, T extends string> {
       value: this.value,
     }
     const newValue = (update.value || 0) + this.value;
-    // @ts-ignore
     return new ResourceBase({...this, ...constraints}).setValueTo(newValue);
   }
 
@@ -85,7 +71,6 @@ export class ResourceBase<K extends string, T extends string> {
       ...rest
     } = update;
     console.log(update)
-    // @ts-ignore
     return new ResourceBase({...this, ...rest}).setValueTo(value);
   }
 
@@ -129,13 +114,9 @@ export class ResourceBase<K extends string, T extends string> {
       label: this.label,
       type: this.type,
       cost: this.__cost,
-      icon: this.iconName,
+      iconName: this.iconName,
     }
   }
-
-  // get icon(): string {
-  //   return icons.find(icon => icon.name === this.__icon)?.src || ''
-  // }
 }
 
 const labelFromKey = (key: string) =>

@@ -7,7 +7,7 @@
     "label": "Gold",
     "type": "base_resource",
     "cost": null,
-    "icon": "brick_gold"
+    "iconName": "brick_gold"
   },
   {
     "key": "corn",
@@ -17,7 +17,7 @@
     "label": "Corn",
     "type": "base_resource",
     "cost": null,
-    "icon": "wheat"
+    "iconName": "wheat"
   },
   {
     "key": "water",
@@ -27,7 +27,7 @@
     "label": "Water",
     "type": "base_resource",
     "cost": null,
-    "icon": "water"
+    "iconName": "water"
   },
   {
     "key": "coal",
@@ -37,7 +37,7 @@
     "label": "Coal",
     "type": "base_resource",
     "cost": null,
-    "icon": "coal"
+    "iconName": "coal"
   },
   {
     "key": "stone",
@@ -47,7 +47,7 @@
     "label": "Stone",
     "type": "base_resource",
     "cost": null,
-    "icon": "stone"
+    "iconName": "stone"
   },
   {
     "key": "wood",
@@ -57,7 +57,7 @@
     "label": "Wood",
     "type": "base_resource",
     "cost": null,
-    "icon": "wood"
+    "iconName": "wood"
   },
   {
     "key": "land",
@@ -80,7 +80,7 @@
         }
       ]
     },
-    "icon": "land"
+    "iconName": "land"
   },
   {
     "key": "windmill",
@@ -111,7 +111,7 @@
         }
       ]
     },
-    "icon": "empty"
+    "iconName": "empty"
   },
   {
     "key": "field",
@@ -138,7 +138,7 @@
         }
       ]
     },
-    "icon": "empty"
+    "iconName": "empty"
   },
   {
     "key": "bakery",
@@ -166,11 +166,11 @@
         {
           "key": "bakery",
           "value": 1,
-          "icon": "empty"
+          "iconName": "empty"
         }
       ]
     },
-    "icon": "empty"
+    "iconName": "empty"
   },
   {
     "key": "well",
@@ -201,7 +201,7 @@
         }
       ]
     },
-    "icon": "empty"
+    "iconName": "empty"
   },
   {
     "key": "forrester",
@@ -229,11 +229,11 @@
         {
           "key": "forrester",
           "value": 1,
-          "icon": "empty"
+          "iconName": "empty"
         }
       ]
     },
-    "icon": "empty"
+    "iconName": "empty"
   },
   {
     "key": "wood_mill",
@@ -264,7 +264,7 @@
         }
       ]
     },
-    "icon": "empty"
+    "iconName": "empty"
   },
   {
     "key": "pasture",
@@ -295,7 +295,7 @@
         }
       ]
     },
-    "icon": "empty"
+    "iconName": "empty"
   },
   {
     "key": "meat",
@@ -322,7 +322,7 @@
         }
       ]
     },
-    "icon": "meat2"
+    "iconName": "meat2"
   },
   {
     "key": "milk",
@@ -349,7 +349,7 @@
         }
       ]
     },
-    "icon": "milk"
+    "iconName": "milk"
   },
   {
     "key": "wool",
@@ -372,7 +372,7 @@
         }
       ]
     },
-    "icon": "wool"
+    "iconName": "wool"
   },
   {
     "key": "flour",
@@ -395,7 +395,7 @@
         }
       ]
     },
-    "icon": "flour"
+    "iconName": "flour"
   },
   {
     "key": "bread",
@@ -422,7 +422,7 @@
         }
       ]
     },
-    "icon": "bread"
+    "iconName": "bread"
   },
   {
     "key": "bricks",
@@ -445,7 +445,7 @@
         }
       ]
     },
-    "icon": "brick"
+    "iconName": "brick"
   },
   {
     "key": "planks",
@@ -468,7 +468,7 @@
         }
       ]
     },
-    "icon": "plank"
+    "iconName": "plank"
   },
   {
     "key": "citizen",
@@ -478,7 +478,7 @@
     "label": "Citizen",
     "type": "citizen_resource",
     "cost": null,
-    "icon": "clothes2"
+    "iconName": "clothes2"
   },
   {
     "key": "engineer",
@@ -488,7 +488,7 @@
     "label": "Engineer",
     "type": "citizen_resource",
     "cost": null,
-    "icon": "helmet"
+    "iconName": "helmet"
   },
   {
     "key": "scientist",
@@ -498,7 +498,7 @@
     "label": "Scientist",
     "type": "citizen_resource",
     "cost": null,
-    "icon": "book2"
+    "iconName": "book2"
   },
   {
     "key": "artist",
@@ -508,7 +508,7 @@
     "label": "Artist",
     "type": "citizen_resource",
     "cost": null,
-    "icon": "harp"
+    "iconName": "harp"
   },
   {
     "key": "magician",
@@ -518,7 +518,7 @@
     "label": "Magician",
     "type": "citizen_resource",
     "cost": null,
-    "icon": "clothes"
+    "iconName": "clothes"
   },
   {
     "key": "money",
@@ -528,6 +528,6 @@
     "label": "Money",
     "type": "currency_resource",
     "cost": null,
-    "icon": "money"
+    "iconName": "money"
   }
 ]

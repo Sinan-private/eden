@@ -1,6 +1,6 @@
 import {useCallback, useState} from "react";
 import {Trade} from "./Trade.ts";
-import {ResourceState, ResourceTypeRaw, ResourceUpdateProps} from "./types.ts";
+import {ResourceState, ResourceUpdateProps} from "./types.ts";
 import {GetTurnUpdate, nextTurn} from "./helpers/nextTurn.ts";
 import {get as _get} from "./helpers/getResource.ts";
 import {mergeChangeToState as _mergeChangeToState} from "./helpers/stateUpdate.ts";
@@ -58,28 +58,13 @@ export const useResource = <K extends string, T extends string>(initialState: Re
 
   // Todo This needs cleaning. Some parts are provided, some are not
   // The exposed get method only returns the state of the resource
-  const getExternal = (key: K): GetResource<K, T> => {
-    const _this = get(key);
+  const getExternal = (key: K): Resource<K, T> => {
+    // const _this = get(key);
+    const _this = stateToRichState(get(key).state)[0];
     // const cleanResource =
-    return {
-    // ...JSON.parse(JSON.stringify(get(key))),
-      // ...removeFunctionProperties(get(key)),
-      ..._this,
-      update: (update) => onUpdate({...update, key}),
-      increment: (amount = 1) => onUpdate({value: amount, key}),
-      // checkTrade: (amount = 1) => {
-      //   const x = trade(_this.cost || {} as TradeUpdate<K, T>).limitingResources;
-      //   if (key === 'windmill') {
-      //   //   console.log(_this.cost)
-      //   // console.log(trade(_this.cost || {} as TradeUpdate<K, T>))
-      //   }
-      //   if (x.length) {
-      //
-      //   }
-      //   return trade(_this.cost || {} as TradeUpdate<K, T>)
-      // }
-    }
-  };
+    return _this;
+  }
+
   const next = (getTurnUpdate: GetTurnUpdate<K, T>) =>
     setState(nextTurn(getTurnUpdate, state))
 
@@ -87,6 +72,21 @@ export const useResource = <K extends string, T extends string>(initialState: Re
     const arr: ResourceState<K, T>[] = [];
     return _mergeChangeToState(arr.concat(update), state);
   }
+
+  const getState = (newState = state): ResourceState<K, T>[] => {
+    // Todo the idea here is that this will always return a proper clean state to handle and store. If no update is
+    //  provided it will just return the current state
+    return newState;
+  }
+
+  const stateToRichState = (newState: ResourceState<K, T> | ResourceState<K, T>[] = state) => {
+    const toEnrich = ([] as ResourceState<K, T>[]).concat(newState);
+    return toEnrich.map(resource => new Resource(resource, state))
+  }
+
+  // const getResources = (resources = state) => {
+  //   return resources.map((resource) => new Resource(resource, state))
+  // }
 
   return {
     // state,
@@ -102,12 +102,13 @@ export const useResource = <K extends string, T extends string>(initialState: Re
     nextTurn: next,
     setState,
     mergeChangeToState,
+    getState,
     icons,
   }
 }
 
-type GetResource<K extends string, T extends string> = {
-  increment(amount: number): void;
-  update(update: Partial<ResourceTypeRaw<K, T>>): void;
-  checkTrade(amount: number): Trade<K, T>;
-} & Resource<K, T>
+// type GetResource<K extends string, T extends string> = {
+//   increment(amount: number): void;
+//   update(update: Partial<ResourceTypeRaw<K, T>>): void;
+//   // checkTrade(amount: number): Trade<K, T>;
+// } & Resource<K, T>
