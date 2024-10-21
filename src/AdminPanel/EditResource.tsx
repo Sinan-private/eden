@@ -1,4 +1,4 @@
-import {ResourceKeys, ResourceTypes} from "../gameRules/types.ts";
+import styled from "styled-components";
 import Select from "@mui/material/Select";
 import {
   Box,
@@ -15,11 +15,11 @@ import {
 import {resourceTypes} from "../gameRules/resourceTypes.ts";
 import {IconPicker} from "./IconPicker.tsx";
 import {TradeChange} from "../Resource/types.ts";
-import styled from "styled-components";
 import {Cost} from "./Cost.tsx";
-import {Resource} from "../Resource/Resource.ts";
+import {Resource} from "../Resource";
 import {SelectResourceForCost} from "./SelectResourceForCost.tsx";
 import {useResourceEdit} from "./useResourceEdit.ts";
+import {ResourceKeys, ResourceTypes} from "../gameRules/types.ts";
 
 type ResourceProps = {
   resource: Resource<ResourceKeys, ResourceTypes>;
