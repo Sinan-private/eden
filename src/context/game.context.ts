@@ -2,7 +2,7 @@ import {useEffect} from "react";
 import {createContainer} from "unstated-next";
 import {useTick} from "./tick.ts";
 import {usePrevious} from "../hooks/usePrevious.ts";
-import {ResourceBase, ResourceState, ResourceUpdateProps, useResource} from "../Resource";
+import {Resource, ResourceState, ResourceUpdateProps, useResource} from "../Resource";
 import {getResourceTurnUpdate} from "../gameRules/getResourceTurnUpdate.ts";
 import {useApi} from "./useApi.ts";
 import {ResourceKeys, ResourceTypes} from "../gameRules/types.ts";
@@ -55,5 +55,5 @@ export const useGame = useGameContainer.useContainer;
 export const GameProvider = useGameContainer.Provider;
 
 const getInitialState = (raw_state: ResourceUpdateProps<ResourceKeys, ResourceTypes>[]) => raw_state.map(rawResource =>
-  new ResourceBase(rawResource).state
+  new Resource(rawResource).state
 );

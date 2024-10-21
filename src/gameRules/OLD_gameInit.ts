@@ -1,4 +1,4 @@
-import {ResourceBase, ResourceUpdateProps} from "../Resource";
+import {Resource, ResourceUpdateProps} from "../Resource";
 import {
   BaseResourceKeys,
   ResourceKeys,
@@ -178,5 +178,5 @@ export const raw_state = uncategorized_resources.concat(
 )
 
 export const initialState = raw_state.map(rawResource =>
-  new ResourceBase(rawResource).state
+  new Resource(rawResource).state
 );

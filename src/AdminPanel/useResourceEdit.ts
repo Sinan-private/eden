@@ -2,7 +2,6 @@ import {useGame} from "../context/game.context.ts";
 import {ChangeEvent, useMemo, useState} from "react";
 import {Icon, TradeChange} from "../Resource/types.ts";
 import {ResourceKeys, ResourceTypes} from "../gameRules/types.ts";
-import {ResourceBase} from "../Resource";
 import {SelectChangeEvent} from "@mui/material/Select";
 import {Resource} from "../Resource/Resource.ts";
 
@@ -47,7 +46,7 @@ export const useResourceEdit = (resource: Resource<ResourceKeys, ResourceTypes>)
     }
     const newCost = {
       ...cost,
-      [addGiveOrGain]: cost[addGiveOrGain as ('give' | 'gain')].concat(new ResourceBase(change))
+      [addGiveOrGain]: cost[addGiveOrGain as ('give' | 'gain')].concat(new Resource(change))
     }
     console.log(newCost)
     setCost(newCost)

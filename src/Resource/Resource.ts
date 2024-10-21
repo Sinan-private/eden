@@ -1,5 +1,5 @@
 import {ResourceBase} from "./ResourceBase.ts";
-import {ResourceState, ResourceUpdateProps, TradeChange} from "./types.ts";
+import {ResourceCostUpdate, ResourceUpdateProps, TradeChange} from "./types.ts";
 import icons from "../assets/icons/icons.ts";
 
 // It is a strange thing to have a Resource which receives the state. But for now this is my best approach to
@@ -7,7 +7,7 @@ import icons from "../assets/icons/icons.ts";
 
 export class Resource<K extends string, T extends string> extends ResourceBase<K, T> {
   // public readonly cost: ResourceCost<K> | null
-  constructor(raw_resource: ResourceUpdateProps<K, T>, public readonly resourceStates: ResourceState<K, T>[]) {
+  constructor(raw_resource: ResourceUpdateProps<K, T>) {
     super(raw_resource);
     // this.cost = this.__getCost(raw_resource.cost || null)
     // this.cost = cost || null;
@@ -20,36 +20,24 @@ export class Resource<K extends string, T extends string> extends ResourceBase<K
   public readonly updateCost = (
     changeType: 'give' | 'gain',
     change: TradeChange<K>
-  ) => {
-    if (!this.cost) {
-      return null
-    }
-    console.log(change)
-    const i = this.cost[changeType].map(({key}) => key).indexOf(change.key)
-    const newCost = {
-      ...this.cost,
-      [changeType]: [
-        ...this.cost[changeType].slice(0, i),
-        change,
-        ...this.cost[changeType].slice(i + 1),
-      ]
-    }
-    return newCost
-  }
+  ) => mergeCostUpdate(changeType, change, this.cost)
+}
 
-  // private readonly __getCost = (cost: ResourceCostUpdate<K> | null): ResourceCost<K> | null => {
-  //   if (!cost) {
-  //     return null
-  //   }
-  //   // I guess I only want the icon from here. But too tired to think about this
-  //   const give = cost.give.map(give => {
-  //     const _this = this.resourceStates.find(resource => resource.key === give.key)!;
-  //     return new Resource({..._this, ...give}, this.resourceStates)
-  //   })
-  //   const gain = cost.gain.map(gain => {
-  //     const _this = this.resourceStates.find(resource => resource.key === gain.key)!;
-  //     return new Resource({..._this, ...gain}, this.resourceStates)
-  //   })
-  //   return {give, gain}
-  // }
+const mergeCostUpdate = <K>(
+  changeType: 'give' | 'gain',
+  change: TradeChange<K>,
+  cost: ResourceCostUpdate<K> | null
+): ResourceCostUpdate<K> | null => {
+  if (!cost) {
+    return null
+  }
+  const i = cost[changeType].map(({key}) => key).indexOf(change.key)
+  return {
+    ...cost,
+    [changeType]: [
+      ...cost[changeType].slice(0, i),
+      change,
+      ...cost[changeType].slice(i + 1),
+    ]
+  }
 }

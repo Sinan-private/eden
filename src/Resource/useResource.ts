@@ -61,8 +61,8 @@ export const useResource = <K extends string, T extends string>(initialState: Re
   // Todo This needs cleaning. Some parts are provided, some are not
   // The exposed get method only returns the state of the resource
   const getExternal = (key: K): Resource<K, T> => {
-    // const _this = get(key);
-    const _this = stateToRichState(get(key).state)[0];
+    const _this = get(key);
+    // const _this = stateToRichState(get(key).state)[0];
     // const cleanResource =
     return _this;
   }
@@ -79,11 +79,6 @@ export const useResource = <K extends string, T extends string>(initialState: Re
     // Todo the idea here is that this will always return a proper clean state to handle and store. If no update is
     //  provided it will just return the current state
     return newState;
-  }
-
-  const stateToRichState = (newState: ResourceState<K, T> | ResourceState<K, T>[] = state) => {
-    const toEnrich = ([] as ResourceState<K, T>[]).concat(newState);
-    return toEnrich.map(resource => new Resource(resource, state))
   }
 
   // const getResources = (resources = state) => {
