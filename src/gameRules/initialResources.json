@@ -311,14 +311,6 @@
         {
           "key": "water",
           "value": 6
-        },
-        {
-          "key": "gold",
-          "value": 1
-        },
-        {
-          "key": "stone",
-          "value": 1
         }
       ],
       "gain": [

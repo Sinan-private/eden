@@ -58,15 +58,6 @@ export const useResource = <K extends string, T extends string>(initialState: Re
     }
   };
 
-  // Todo This needs cleaning. Some parts are provided, some are not
-  // The exposed get method only returns the state of the resource
-  const getExternal = (key: K): Resource<K, T> => {
-    const _this = get(key);
-    // const _this = stateToRichState(get(key).state)[0];
-    // const cleanResource =
-    return _this;
-  }
-
   const next = (getTurnUpdate: GetTurnUpdate<K, T>) =>
     setState(nextTurn(getTurnUpdate, state))
 
@@ -82,17 +73,12 @@ export const useResource = <K extends string, T extends string>(initialState: Re
     return newState;
   }
 
-  // const getResources = (resources = state) => {
-  //   return resources.map((resource) => new Resource(resource, state))
-  // }
-
   return {
     // state,
     // This includes the state as well as some methods to update the resource
-    get: getExternal,
+    get,
     getType,
     // This returns the full EditResource for deeper evaluations
-    check: get,
     onUpdate,
     onSetTo,
     // checkTrade: trade,
@@ -104,9 +90,3 @@ export const useResource = <K extends string, T extends string>(initialState: Re
     icons,
   }
 }
-
-// type GetResource<K extends string, T extends string> = {
-//   increment(amount: number): void;
-//   update(update: Partial<ResourceTypeRaw<K, T>>): void;
-//   // checkTrade(amount: number): Trade<K, T>;
-// } & Resource<K, T>

@@ -1,4 +1,4 @@
-import {useEffect} from "react";
+import {useEffect, useState} from "react";
 import {createContainer} from "unstated-next";
 import {useTick} from "./tick.ts";
 import {usePrevious} from "../hooks/usePrevious.ts";
@@ -10,21 +10,16 @@ import {useComponentMount} from "../hooks/useComponentMount.ts";
 
 const useGameBase = () => {
   const {fetchResources, updateResources} = useApi();
+  const [isFetching, setIsFetching] = useState(true);
   // The resource offers all info and update methods. The nextTurn is only needed here to handle turn updates only in here.
   const {nextTurn, setState, getState, ...resources} = useResource<ResourceKeys, ResourceTypes>([]);
   const tick = useTick();
   const prevTick = usePrevious(tick.current);
   useComponentMount(async () => {
     const rawState = await fetchResources();
-    setState(getInitialState(rawState))
+    setState(getInitialState(rawState));
+    setIsFetching(false);
   })
-
-
-  // fetchResources();
-  // updateResources([
-  //   { id: 1, name: 'Gold', quantity: 1200 },
-  //   { id: 2, name: 'Wood', quantity: 600 }
-  // ]);
 
   // With every tick a new turn is triggered with all included production
   useEffect(() => {
@@ -43,6 +38,7 @@ const useGameBase = () => {
 
   return {
     resources,
+    isFetching,
     tick,
     writeInitialResources
   };

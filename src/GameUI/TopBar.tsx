@@ -4,23 +4,23 @@ import {useGame} from "../context/game.context.ts";
 import {ResourceKeys, ResourceTypes} from "../gameRules/types.ts";
 
 export const TopBar = () => {
-  const {get, check, getType} = useGame().resources;
+  const {get, getType} = useGame().resources;
 
-  const getResource = useCallback((type: ResourceTypes, increase = 1) => {
+  const getResource = useCallback((type: ResourceTypes) => {
     const resource = (key: ResourceKeys) => get(key);
     return (
       <>
         {getType(type).map(({key}) => (
-          <StyledTopBarResource key={key} onClick={() => resource(key).increment(increase)}>
+          <StyledTopBarResource key={key}>
             <img src={resource(key).icon} alt={resource(key).label} width={32} height={32}/>
-            <p>{check(resource(key).key).beautify.value}</p>
+            <p>{get(resource(key).key).beautify.value}</p>
           </StyledTopBarResource>
         ))}
       </>
     )
   }, [getType]);
 
-  const currency = getResource('currency_resource', 100)
+  const currency = getResource('currency_resource')
   const citizens = getResource('citizen_resource')
 
   return (
