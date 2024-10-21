@@ -1,5 +1,6 @@
 import {ResourceBase} from "./ResourceBase.ts";
 import {ResourceCost, ResourceCostUpdate, ResourceState, ResourceUpdateProps, TradeChange} from "./types.ts";
+import icons from "../assets/icons/icons.ts";
 
 // It is a strange thing to have a EditResource which receives the state. But for now this is my best approach to
 // offer the cost in a nice way so that cost.icon can be called instead of passing functions
@@ -10,6 +11,10 @@ export class Resource<K extends string, T extends string> extends ResourceBase<K
     super(raw_resource);
     this.cost = this.__getCost(raw_resource.cost || null)
     // this.cost = cost || null;
+  }
+
+  get icon(): string {
+    return icons.find(icon => icon.name === this.iconName)?.src || ''
   }
   public readonly updateCost = (
     changeType: 'give' | 'gain',

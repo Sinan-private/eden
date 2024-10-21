@@ -18,7 +18,7 @@ export class ResourceBase<K extends string, T extends string> {
   public readonly label: string;
   public readonly type: T;
   public readonly __cost: ResourceCostUpdate<K> | null;
-  private readonly __icon: string;
+  protected readonly iconName: string;
 
   // I want to create the cost for the frontend to easily render
   // And for the storage to save in a clean way
@@ -47,7 +47,7 @@ export class ResourceBase<K extends string, T extends string> {
     this.type = typeof type === 'string' ? type : '' as T;
     // this.cost = this.__createCost(cost);
     this.__cost = cost || __cost || null;
-    this.__icon = icon || __icon || 'empty'
+    this.iconName = icon || __icon || 'empty'
     // @ts-ignore
     // this.icon = icon || icons[key];
     if (label?.startsWith('Golda')) {
@@ -58,7 +58,7 @@ export class ResourceBase<K extends string, T extends string> {
 
 
   public readonly getIcon = () =>
-    icons.find(icon => icon.name === this.__icon)?.src
+    icons.find(icon => icon.name === this.iconName)?.src
 
   public readonly updateBy = (update: UpdateProps<K, T>): ResourceState<K, T> => {
     // This is a little complex to update constraints first before updating the value
@@ -129,26 +129,13 @@ export class ResourceBase<K extends string, T extends string> {
       label: this.label,
       type: this.type,
       cost: this.__cost,
-      icon: this.__icon,
+      icon: this.iconName,
     }
   }
 
-  get store(): ResourceState<K, T> {
-    return {
-      key: this.key,
-      value: this.value,
-      min: this.min,
-      max: this.max,
-      label: this.label,
-      type: this.type,
-      cost: this.__cost,
-      icon: this.__icon,
-    }
-  }
-
-  get icon(): string {
-    return icons.find(icon => icon.name === this.__icon)?.src || ''
-  }
+  // get icon(): string {
+  //   return icons.find(icon => icon.name === this.__icon)?.src || ''
+  // }
 }
 
 const labelFromKey = (key: string) =>

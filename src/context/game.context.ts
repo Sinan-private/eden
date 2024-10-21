@@ -1,18 +1,17 @@
-import {useCallback, useEffect} from "react";
+import {useEffect} from "react";
 import {createContainer} from "unstated-next";
 import {useTick} from "./tick.ts";
 import {usePrevious} from "../hooks/usePrevious.ts";
-import {ResourceBase, ResourceUpdateProps, useResource} from "../Resource";
+import {ResourceBase, ResourceState, ResourceUpdateProps, useResource} from "../Resource";
 import {getResourceTurnUpdate} from "../gameRules/getResourceTurnUpdate.ts";
 import {useApi} from "./useApi.ts";
-// import {EditResource} from "../gameRules/EditResource.ts";
 import {ResourceKeys, ResourceTypes} from "../gameRules/types.ts";
 import {useComponentMount} from "../hooks/useComponentMount.ts";
 
 const useGameBase = () => {
   const {fetchResources, updateResources} = useApi();
   // The resource offers all info and update methods. The nextTurn is only needed here to handle turn updates only in here.
-  const {nextTurn, setState, ...resources} = useResource<ResourceKeys, ResourceTypes>([]);
+  const {nextTurn, setState, getState, ...resources} = useResource<ResourceKeys, ResourceTypes>([]);
   const tick = useTick();
   const prevTick = usePrevious(tick.current);
   useComponentMount(async () => {
@@ -34,23 +33,17 @@ const useGameBase = () => {
     if (isNextTurn) {
       nextTurn(getResourceTurnUpdate)
     }
-  }, [tick, prevTick, resources.state, nextTurn]);
+  }, [tick, prevTick, nextTurn]);
 
-  const turnUpdate = useCallback(() => {
-    const updates = getResourceTurnUpdate(resources.check, resources.state);
-    return updates
-  }, [resources])
-
-  const writeInitialResources = (newState = resources.state) => {
-    console.log(newState)
-    updateResources(newState)
-    setState(newState)
+  const writeInitialResources = (newState: ResourceState<ResourceKeys, ResourceTypes>[]) => {
+    console.log(getState(newState))
+    updateResources(getState(newState))
+    setState(getState(newState))
   }
 
   return {
     resources,
     tick,
-    getResourceTurnUpdate: turnUpdate,
     writeInitialResources
   };
 }
