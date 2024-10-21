@@ -82,6 +82,7 @@ const SingleCost = ({change, onSetCost}: SingleCostProps) => {
         sx={{width: 80}}
         onChange={onChange}
       />
+      <button>remove</button>
     </Stack>
   )
 }

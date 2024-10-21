@@ -4,8 +4,6 @@ import {SyntheticEvent, useMemo, useState} from "react";
 import {ResourceKeys} from "../gameRules/types.ts";
 import {TradeChange} from "../Resource/types.ts";
 
-// Todo the resources that are already part of the cost should be excluded from the selection
-
 type ResourceForCostProps = {
   onAddCost(change: TradeChange<ResourceKeys>): void;
   cost: TradeChange<ResourceKeys>[];

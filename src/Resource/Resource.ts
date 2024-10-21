@@ -21,8 +21,21 @@ export class Resource<K extends string, T extends string> extends ResourceBase<K
     }
   }
 
-  public readonly removeCost = () => {
-
+  public readonly removeCost = (
+    changeKey: 'give' | 'gain' | '',
+    resourceKey: K
+  ) => {
+    if (changeKey === '' || !this.cost) {
+      return this.cost
+    }
+    const index = this.cost[changeKey].findIndex(({key}) => key === resourceKey)
+    return {
+      ...this.cost,
+      [changeKey]: [
+        ...this.cost[changeKey].slice(0, index),
+        ...this.cost[changeKey].slice(index + 1),
+      ]
+    }
   }
 
   get icon(): string {

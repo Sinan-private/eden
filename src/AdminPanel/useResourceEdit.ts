@@ -44,6 +44,16 @@ export const useResourceEdit = (resource: Resource<ResourceKeys, ResourceTypes>)
       setCost(newCost)
     }
   }
+  // Todo this should all move into the global state because it sucks to pass all the props and callbacks
+  const onRemoveCost = (
+    changeKey: 'give' | 'gain' | '',
+    resourceKey: ResourceKeys
+  ) => {
+    const newCost = resource.removeCost(changeKey, resourceKey)
+    if (newCost) {
+      setCost(newCost)
+    }
+  }
 
   const handleOpenAddCost = (giveOrGain: GiveOrGain) => {
     if (giveOrGain.length) {
@@ -123,6 +133,7 @@ export const useResourceEdit = (resource: Resource<ResourceKeys, ResourceTypes>)
     updateValue,
     onSetLabel,
     onSetValue,
+    onRemoveCost,
     costForBla,
   }
 }
