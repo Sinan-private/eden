@@ -37,8 +37,9 @@ const useGameBase = () => {
 
   const writeInitialResources = (newState?: ResourceState<ResourceKeys, ResourceTypes>[]) => {
     console.log(getState(newState))
-    updateResources(getState(newState))
-    setState(getState(newState))
+    updateResources(getState(newState)).then(() => (
+      setState(getState(newState))
+    ))
   }
 
   return {

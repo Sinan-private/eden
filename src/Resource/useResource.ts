@@ -23,8 +23,10 @@ export const useResource = <K extends string, T extends string>(initialState: Re
     (key: K, _state = state) => _get(key, _state),
     [state]);
 
-  const getType = (type: T) =>
-    state.filter(resource => type === resource.type)
+  const getType = useCallback((type?: T | '') => type && type.length
+    ? state.filter(resource => type === resource.type)
+    : state,
+    [state])
 
   // Update a single EditResource
   const onUpdate = (update: Update<K, T>) => {

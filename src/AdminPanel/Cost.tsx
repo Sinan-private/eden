@@ -1,19 +1,24 @@
 import {Stack, TextField, Typography} from "@mui/material";
-import {ResourceKeys, ResourceTypes} from "../gameRules/types.ts";
-import {ResourceCost, TradeChange, TradeChangePlusIcon} from "../Resource/types.ts";
+import {ResourceKeys} from "../gameRules/types.ts";
+import {ResourceCostUpdate, TradeChange} from "../Resource/types.ts";
 import {OnSetCost} from "./EditResource.tsx";
-import {Resource} from "../Resource";
+import {useGame} from "../context/game.context.ts";
+
+//  The issue is that I want to store the state in the parent so that I have an intermediate state before overwriting the real one
+// But this state needs to be clean an minimal, while the rendering needs to enriched one
+// So how should the enrichment happen
+// Especially in cases like this where the resource gets deconstructed into its parts
 
 type CostProps = {
-  resource: Resource<ResourceKeys, ResourceTypes>;
-  // cost: ResourceCost<ResourceKeys> | null;
+  // resource: Resource<ResourceKeys, ResourceTypes>;
+  cost: ResourceCostUpdate<ResourceKeys> | null;
   onSetCost: OnSetCost;
   onOpenAddCost(giveOrGain: 'give' | 'gain'): void;
 };
 
-export const Cost = ({resource, onSetCost, onOpenAddCost}: CostProps) => {
+export const Cost = ({cost, onSetCost, onOpenAddCost}: CostProps) => {
   // Nope, not good. The state update needs to be handled in a single place. Meaning here, or rather in the EditResource
-
+  // console.log(cost)
   const onOpenGive = () => onOpenAddCost('give');
   const onOpenGain = () => onOpenAddCost('gain');
 
@@ -25,7 +30,7 @@ export const Cost = ({resource, onSetCost, onOpenAddCost}: CostProps) => {
 
       Give
       </Typography>
-      {resource.cost?.give.map(give => (
+      {cost?.give.map(give => (
         <SingleCost key={give.key} change={give} onSetCost={_onSetCost('give')} />
       ))}
       <button style={{height: 56}} onClick={onOpenGive}>Add</button>
@@ -36,7 +41,7 @@ export const Cost = ({resource, onSetCost, onOpenAddCost}: CostProps) => {
 
           Gain
         </Typography>
-        {resource.cost?.gain.map(gain => (
+        {cost?.gain.map(gain => (
           <SingleCost key={gain.key} change={gain} onSetCost={_onSetCost('gain')}/>
         ))}
         <button style={{height: 56}} onClick={onOpenGain}>Add</button>
@@ -49,22 +54,24 @@ export const Cost = ({resource, onSetCost, onOpenAddCost}: CostProps) => {
 
 type SingleCostProps = {
   // resource: Resource<ResourceKeys, ResourceTypes>;
-  change: TradeChangePlusIcon<ResourceKeys>;
+  change: TradeChange<ResourceKeys>;
   onSetCost(change: TradeChange<ResourceKeys>): void;
 }
 
 const SingleCost = ({change, onSetCost}: SingleCostProps) => {
+  const {get} = useGame().resources;
   // const [value, setValue] = useState(change.value);
   //
   const onChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const value = Number(event.target.value);
     onSetCost({key: change.key, value});
   }
+  const icon = get(change.key).icon
 
   return (
     <Stack spacing={1} direction="row" alignItems="center">
       <img
-        src={change.icon}
+        src={icon}
         alt={change.key}
         width={32}
         height={32}

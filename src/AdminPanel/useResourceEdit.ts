@@ -35,10 +35,8 @@ export const useResourceEdit = (resource: Resource<ResourceKeys, ResourceTypes>)
       return
     }
     const newCost = resource.updateCost(changeType, change)
-    console.log(change, newCost)
     setCost(newCost)
   }
-  console.log(cost)
 
   const onAddCost = (
     // changeType: 'give' | 'gain', // give or gain
@@ -83,7 +81,6 @@ export const useResourceEdit = (resource: Resource<ResourceKeys, ResourceTypes>)
 
   const updateValue = () => {
     const _icon = icons.getBySrc(icon).name;
-    console.log(cost)
     const newState = mergeChangeToState({
       ...resource.state,
       value,
@@ -101,7 +98,7 @@ export const useResourceEdit = (resource: Resource<ResourceKeys, ResourceTypes>)
       || label !== resource.label
       || type !== resource.type
       || icon !== resource.icon
-      || JSON.stringify(cost) !== JSON.stringify(resource.cost)
+      || JSON.stringify(cost) !== JSON.stringify(resource.__cost)
     );
   }, [value, label, type, icon, resource, cost])
 

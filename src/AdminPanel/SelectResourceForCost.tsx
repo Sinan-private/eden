@@ -2,26 +2,26 @@ import {Autocomplete, Stack, TextField} from "@mui/material";
 import {useGame} from "../context/game.context.ts";
 import {SyntheticEvent, useMemo, useState} from "react";
 import {ResourceKeys} from "../gameRules/types.ts";
-import {TradeChange, TradeChangePlusIcon} from "../Resource/types.ts";
+import {TradeChange} from "../Resource/types.ts";
 
 // Todo the resources that are already part of the cost should be excluded from the selection
 
 type ResourceForCostProps = {
   onAddCost(change: TradeChange<ResourceKeys>): void;
-  cost: TradeChangePlusIcon<ResourceKeys>[];
+  cost: TradeChange<ResourceKeys>[];
 }
 
 export const SelectResourceForCost = ({onAddCost, cost}: ResourceForCostProps) => {
   console.log(cost)
-  const {state} = useGame().resources;
+  const {getType} = useGame().resources;
   const [selectedResource, setSelectedResource] = useState<{ key: ResourceKeys; label: string } | null>(null);
   const [selectAmount, setSelectAmount] = useState(1);
   const resourcesForSelect = useMemo(() => {
     const toRemove = cost.map(({key}) => key);
-    return state
+    return getType()
       .filter(resource => !toRemove.includes(resource.key))
       .map(({label, key}) => ({key, label}))
-  }, [state])
+  }, [getType])
   const onChange = (_a: SyntheticEvent<Element, Event>, change: { key: string; label: string } | null) => {
     if (!change) {
       setSelectedResource(null)
