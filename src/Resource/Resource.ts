@@ -9,31 +9,36 @@ export class Resource<K extends string, T extends string> extends ResourceBase<K
 
   public readonly addCost = (
     changeKey: 'give' | 'gain' | '',
-    change: TradeChange<K>
-  ) => {
-    if (!this.cost || !changeKey.length) {
-      return
+    change: TradeChange<K>,
+    cost = this.cost,
+  ): ResourceCostUpdate<K> | null => {
+    if (!cost || !changeKey.length) {
+      return cost
     }
     return {
       ...this.cost,
-      [changeKey]: this.cost[changeKey as 'give']
+      [changeKey]: cost[changeKey as 'give' | 'gain']
         .concat(new Resource({...this.state, ...change}))
-    }
+    } as ResourceCostUpdate<K>
   }
 
   public readonly removeCost = (
     changeKey: 'give' | 'gain' | '',
-    resourceKey: K
+    resourceKey: K,
+    cost = this.cost,
   ) => {
-    if (changeKey === '' || !this.cost) {
-      return this.cost
+    if (changeKey === '' || !cost) {
+      return cost
     }
-    const index = this.cost[changeKey].findIndex(({key}) => key === resourceKey)
+    const index = cost[changeKey].findIndex(({key}) => key === resourceKey)
+    if (index === -1) {
+      return cost
+    }
     return {
-      ...this.cost,
+      ...cost,
       [changeKey]: [
-        ...this.cost[changeKey].slice(0, index),
-        ...this.cost[changeKey].slice(index + 1),
+        ...cost[changeKey].slice(0, index),
+        ...cost[changeKey].slice(index + 1),
       ]
     }
   }

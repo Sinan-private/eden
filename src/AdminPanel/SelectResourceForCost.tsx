@@ -36,7 +36,6 @@ export const SelectResourceForCost = ({onAddCost, cost}: ResourceForCostProps) =
       value: selectAmount
     };
     onAddCost(update)
-    console.log(update)
   }
 
   return (

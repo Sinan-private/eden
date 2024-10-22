@@ -40,18 +40,20 @@ export const useResourceEdit = (resource: Resource<ResourceKeys, ResourceTypes>)
   const onAddCost = (
     change: TradeChange<ResourceKeys>
   ) => {
-    const newCost = resource.addCost(costChangeKey, change)
+    const newCost = resource.addCost(costChangeKey, change, cost)
     if (newCost) {
       setCost(newCost)
       setOpenAddCost(false)
     }
   }
-  // Todo this should all move into the global state because it sucks to pass all the props and callbacks
+
   const onRemoveCost = (
     changeKey: 'give' | 'gain' | '',
     resourceKey: ResourceKeys
   ) => {
-    const newCost = resource.removeCost(changeKey, resourceKey)
+    const newCost = resource.removeCost(changeKey, resourceKey, cost)
+    console.log(changeKey, resourceKey)
+    console.log(newCost)
     if (newCost) {
       setCost(newCost)
     }
@@ -114,13 +116,14 @@ export const useResourceEdit = (resource: Resource<ResourceKeys, ResourceTypes>)
     value,
     label,
     type,
+    cost,
+    icon: _icon,
     showUsed,
     showCost,
     open,
-    cost,
     openAddCost,
     costChangeKey,
-    icon: _icon,
+    isDisabled,
     onSetCost,
     onAddCost,
     handleClose,
@@ -129,7 +132,6 @@ export const useResourceEdit = (resource: Resource<ResourceKeys, ResourceTypes>)
     handleTypeChange,
     handleOpenAddCost,
     onClickIcon,
-    isDisabled,
     onToggleFilter,
     onToggleCost,
     updateValue,
