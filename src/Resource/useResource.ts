@@ -1,4 +1,4 @@
-import {useCallback, useState} from "react";
+import {useCallback, useMemo, useState} from "react";
 import {Trade} from "./Trade.ts";
 import {ResourceState, ResourceUpdateProps} from "./types.ts";
 import {GetTurnUpdate, nextTurn as getNextTurn} from "./helpers/nextTurn.ts";
@@ -24,6 +24,10 @@ export const useResource = <K extends string, T extends string>(initialState: Re
   const get = useCallback(
     (key: K, _state = state) => _get(key, _state),
     [state]);
+
+  const types = useMemo(() =>
+      getUniqueValues(state.map(({type}) => type)),
+    [state])
 
   const getByType = useCallback((type?: T | '') => type && type.length
     ? state.filter(resource => type === resource.type)
@@ -71,7 +75,12 @@ export const useResource = <K extends string, T extends string>(initialState: Re
     onTrade,
     nextTurn: nextTurn,
     setState,
+    types,
     mergeChangeToState,
     icons,
   }
+}
+
+const getUniqueValues = <T>(arr: T[]): T[] => {
+  return Array.from(new Set(arr));
 }

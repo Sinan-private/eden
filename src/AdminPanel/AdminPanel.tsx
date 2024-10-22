@@ -6,6 +6,7 @@ import CableIcon from '@mui/icons-material/Cable';
 import {useGame} from "../context/game.context.ts";
 import {EditResource} from "./EditResource.tsx";
 import {AddResource} from "./AddResource.tsx";
+import {AddType} from "./AddType.tsx";
 
 export const AdminPanel = () => {
   const {
@@ -15,12 +16,13 @@ export const AdminPanel = () => {
 
   const [, setLoading] = useState(true);
   const [openNewResource, setOpenNewResource] = useState(false);
+  const [openNewType, setOpenNewType] = useState(false);
 
-  const handleCloseAddCost = () => {
-    setOpenNewResource(false);
-  };
 
-  const onAddResource = () => setOpenNewResource(true);
+  const onOpenAddResource = () => setOpenNewResource(true);
+  const onOpenAddType = () => setOpenNewType(true);
+  const onCloseAddCost = () => setOpenNewResource(false);
+  const onCloseAddType = () => setOpenNewType(false);
 
   useEffect(() => {
     // Measure when the browser has finished rendering
@@ -47,14 +49,16 @@ export const AdminPanel = () => {
         <SpeedDialAction
           icon={<BalanceIcon/>}
           tooltipTitle="Add resource"
-          onClick={onAddResource}
+          onClick={onOpenAddResource}
         />
         <SpeedDialAction
           icon={<CableIcon/>}
           tooltipTitle="Add type"
+          onClick={onOpenAddType}
         />
       </SpeedDial>
-      <AddResource open={openNewResource} onClose={handleCloseAddCost}/>
+      <AddType open={openNewType} onClose={onCloseAddType} />
+      <AddResource open={openNewResource} onClose={onCloseAddCost}/>
       <Typography variant="h2" align="left" sx={{ml: 4}}>Starting Resources</Typography>
       <div style={{display: "flex", justifyContent: "center", flexDirection: "row"}}>
         <div className="card">

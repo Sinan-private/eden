@@ -1,4 +1,4 @@
-import {ChangeEvent, useState} from "react";
+import {ChangeEvent, useMemo, useState} from "react";
 import Select from "@mui/material/Select";
 import {
   Collapse,
@@ -17,6 +17,7 @@ import {ResourceKeys, ResourceTypes} from "../gameRules/types.ts";
 import {useToggle} from "../Resource/hooks/useToggle.ts";
 import {IconPickerModal} from "./IconPickerModal.tsx";
 import {AddCostModal} from "./AddCostModal.tsx";
+import {useGame} from "../context/game.context.ts";
 
 type ResourceProps = {
   resource: Partial<ResourceState<ResourceKeys, ResourceTypes>>;
@@ -33,6 +34,7 @@ export const EditResource = (
   {
     resource,
   }: ResourceProps) => {
+  const {get} = useGame().resources;
   const [openIconPicker, setOpenIconPicker] = useState(false);
   const [showCost, onToggleCost] = useToggle(false);
   const [filterUsed, onToggleFilter] = useToggle(false);
@@ -97,6 +99,27 @@ export const EditResource = (
 
   const costToSelectFrom = cost && costChangeKey.length ? cost[costChangeKey as 'give' | 'gain'] : []
   const _onAddCost = (change: TradeChange<ResourceKeys>) => onAddCost(costChangeKey, change);
+
+  const costButton = useMemo(() => {
+    const icon = (key: ResourceKeys) => get(key).icon
+    return (
+    <Stack direction="row" alignItems="center" spacing={1} minHeight={40}>
+      <Typography onClick={onToggleCost}>Cost</Typography>
+      <Stack direction="row" spacing={0.5}>
+        {resource.cost?.give && resource.cost.give.map(cost => (
+          <img src={icon(cost.key)} width={16} height={16}/>
+        ))}
+      </Stack>
+      {resource.cost?.gain && resource.cost?.gain.length > 1 &&
+        <Stack direction="row" alignItems="center" spacing={0.5}>
+          <Typography>{"->"}</Typography>
+          {resource.cost?.gain && resource.cost?.gain.length > 1 && resource.cost.gain.map(cost => (
+            <img src={icon(cost.key)} width={16} height={16}/>
+          ))}
+        </Stack>
+      }
+    </Stack>
+  )}, [onToggleCost, resource])
 
   return (
     <>
@@ -167,7 +190,7 @@ export const EditResource = (
           Save
         </button>
       </Stack>
-      <Typography onClick={onToggleCost}>Cost</Typography>
+      {costButton}
       {!!resource.cost &&
         <>
           <Collapse in={showCost}>
