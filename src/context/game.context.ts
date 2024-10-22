@@ -1,12 +1,12 @@
 import {useEffect, useState} from "react";
 import {createContainer} from "unstated-next";
 import {useTick} from "./tick.ts";
-import {usePrevious} from "../hooks/usePrevious.ts";
+import {usePrevious} from "../Resource/hooks/usePrevious.ts";
 import {Resource, ResourceState, ResourceUpdateProps, useResource} from "../Resource";
 import {getResourceTurnUpdate} from "../gameRules/getResourceTurnUpdate.ts";
 import {useApi} from "./useApi.ts";
 import {ResourceKeys, ResourceTypes} from "../gameRules/types.ts";
-import {useComponentMount} from "../hooks/useComponentMount.ts";
+import {useComponentMount} from "../Resource/hooks/useComponentMount.ts";
 
 const useGameBase = () => {
   const {fetchResources, updateResources} = useApi();

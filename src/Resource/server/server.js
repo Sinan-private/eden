@@ -2,6 +2,7 @@ import express from 'express';
 import bodyParser from 'body-parser';
 import cors from 'cors';
 import path from 'path';
+import {PATH} from './path.js';
 import { fileURLToPath } from 'url'; // Required for ES module to handle __dirname
 import fs from 'fs';
 import {writeTypes} from "./writeTypes.js";
@@ -25,8 +26,7 @@ let resources = [
   { id: 3, name: 'Stone', quantity: 300 }
 ];
 
-const resourcesFilePath = path.join(__dirname, '../gameRules/initialResources.json');
-const iconsFilePath = path.join(__dirname, '../gameRules/icons.ts');
+const resourcesFilePath = path.join(__dirname, PATH + 'initialResources.json');
 
 // Get all resources
 app.get('/resources', (req, res) => {
@@ -42,7 +42,7 @@ app.get('/resources', (req, res) => {
 
 // Add a new resource
 app.post('/resources', (req, res) => {
-  const tempTarget = './src/gameRules/initialResources_test.json'
+  // const tempTarget = './src/gameRules/initialResources_test.json'
   const newResources = req.body;
 
   // Write the new resources data to the resources.json file

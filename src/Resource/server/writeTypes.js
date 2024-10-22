@@ -1,15 +1,16 @@
 import fs from 'fs';
 import path from 'path';
+import {PATH} from './path.js';
 import {fileURLToPath} from "url";
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
 // Path to the JSON file
-const resourceFilePath = path.join(__dirname, '../gameRules/resourceTypes.json');
+const resourceFilePath = path.join(__dirname, PATH + 'resourceTypes.json');
 
 // Path where the TypeScript file will be written
-const tsFilePath = path.join(__dirname, '../gameRules/generatedTypes.ts');
+const tsFilePath = path.join(__dirname, PATH + 'generatedTypes.ts');
 
 // Step 1: Read the JSON file
 const resources = JSON.parse(fs.readFileSync(resourceFilePath, 'utf-8'));

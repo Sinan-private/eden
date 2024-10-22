@@ -15,7 +15,7 @@ import {Cost} from "./Cost.tsx";
 import {Resource} from "../Resource";
 import {ResourceCloneConfig, useResourceClone} from "../Resource/useResourceClone.ts";
 import {ResourceKeys, ResourceTypes} from "../gameRules/types.ts";
-import {useToggle} from "../hooks/useToggle.ts";
+import {useToggle} from "../Resource/hooks/useToggle.ts";
 import {IconPickerModal} from "./IconPickerModal.tsx";
 import {AddCostModal} from "./AddCostModal.tsx";
 
