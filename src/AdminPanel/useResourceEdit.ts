@@ -1,6 +1,6 @@
 import {useGame} from "../context/game.context.ts";
 import {ChangeEvent, useMemo, useState} from "react";
-import {Icon, TradeChange} from "../Resource/types.ts";
+import {TradeChange} from "../Resource/types.ts";
 import {ResourceKeys, ResourceTypes} from "../gameRules/types.ts";
 import {SelectChangeEvent} from "@mui/material/Select";
 import {Resource} from "../Resource";
@@ -19,9 +19,6 @@ export const useResourceEdit = (resource: Resource<ResourceKeys, ResourceTypes>)
   const [label, setLabel] = useState(resource.label)
   const [type, setType] = useState(resource.type);
   const [icon, setIcon] = useState(resource.iconName);
-  const [showUsed, setShowUsed] = useState(false);
-  const [showCost, setShowCost] = useState(false);
-  const [open, setOpen] = useState(false);
   const [cost, setCost] = useState(resource.cost);
   const [openAddCost, setOpenAddCost] = useState(false);
   const [costChangeKey, setCostChangeKey] = useState<GiveOrGain>('');
@@ -52,8 +49,6 @@ export const useResourceEdit = (resource: Resource<ResourceKeys, ResourceTypes>)
     resourceKey: ResourceKeys
   ) => {
     const newCost = resource.removeCost(changeKey, resourceKey, cost)
-    console.log(changeKey, resourceKey)
-    console.log(newCost)
     if (newCost) {
       setCost(newCost)
     }
@@ -69,16 +64,6 @@ export const useResourceEdit = (resource: Resource<ResourceKeys, ResourceTypes>)
     setOpenAddCost(false);
     // setAddGiveOrGain('');
   };
-
-  const handleOpen = () => setOpen(true);
-  const handleClose = () => setOpen(false);
-  const onClickIcon = (clickedIcon: Icon) => {
-    setIcon(clickedIcon.name)
-    handleClose()
-  }
-
-  const onToggleFilter = () => setShowUsed(!showUsed);
-  const onToggleCost = () => setShowCost(!showCost);
 
   const handleTypeChange = (event: SelectChangeEvent) => {
     setType(event.target.value as ResourceTypes);
@@ -118,22 +103,15 @@ export const useResourceEdit = (resource: Resource<ResourceKeys, ResourceTypes>)
     type,
     cost,
     icon: _icon,
-    showUsed,
-    showCost,
-    open,
     openAddCost,
     costChangeKey,
     isDisabled,
     onSetCost,
     onAddCost,
-    handleClose,
-    handleOpen,
     handleCloseAddCost,
     handleTypeChange,
     handleOpenAddCost,
-    onClickIcon,
-    onToggleFilter,
-    onToggleCost,
+    setIcon,
     updateValue,
     onSetLabel,
     onSetValue,

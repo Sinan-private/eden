@@ -14,12 +14,14 @@ import {
 } from "@mui/material";
 import {resourceTypes} from "../gameRules/resourceTypes.ts";
 import {IconPicker} from "./IconPicker.tsx";
-import {TradeChange} from "../Resource/types.ts";
+import {Icon, TradeChange} from "../Resource/types.ts";
 import {Cost} from "./Cost.tsx";
 import {Resource} from "../Resource";
 import {SelectResourceForCost} from "./SelectResourceForCost.tsx";
 import {useResourceEdit} from "./useResourceEdit.ts";
 import {ResourceKeys, ResourceTypes} from "../gameRules/types.ts";
+import {useState} from "react";
+import {useToggle} from "../hooks/useToggle.ts";
 
 type ResourceProps = {
   resource: Resource<ResourceKeys, ResourceTypes>;
@@ -38,29 +40,33 @@ export const EditResource = (
     value,
     label,
     type,
-    showUsed,
-    showCost,
-    open,
     cost,
     openAddCost,
     icon,
     onSetCost,
     onAddCost,
-    handleClose,
-    handleOpen,
     handleCloseAddCost,
     handleTypeChange,
     handleOpenAddCost,
-    onClickIcon,
     isDisabled,
-    onToggleFilter,
-    onToggleCost,
     updateValue,
     onSetLabel,
     onSetValue,
     onRemoveCost,
+    setIcon,
     costChangeKey,
   } = useResourceEdit(resource);
+  const [openIconPicker, setOpenIconPicker] = useState(false);
+  const [showCost, onToggleCost] = useToggle(false);
+  const [showUsed, onToggleFilter] = useToggle(false);
+
+
+  const handleOpenIconPicker = () => setOpenIconPicker(true);
+  const handleCloseIconPicker = () => setOpenIconPicker(false);
+  const onSelectIcon = (clickedIcon: Icon) => {
+    setIcon(clickedIcon.name)
+    handleCloseIconPicker()
+  }
 
   const costToSelectFrom = cost && costChangeKey.length ? cost[costChangeKey as 'give' | 'gain'] : []
 
@@ -68,8 +74,8 @@ export const EditResource = (
   return (
     <>
       <Modal
-        open={open}
-        onClose={handleClose}
+        open={openIconPicker}
+        onClose={handleCloseIconPicker}
       >
         <Box sx={{...style, pt: 8}}>
           <Header>
@@ -84,7 +90,7 @@ export const EditResource = (
               sx={{mr: 2}}
             />
           </Header>
-          <IconPicker showUsed={showUsed} onClick={onClickIcon}/>
+          <IconPicker showUsed={showUsed} onClick={onSelectIcon}/>
         </Box>
       </Modal>
       <Modal
@@ -101,7 +107,7 @@ export const EditResource = (
           alt={resource.label}
           width={32}
           height={32}
-          onClick={handleOpen}
+          onClick={handleOpenIconPicker}
         />
         <TextField
           type="text"
