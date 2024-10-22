@@ -2,15 +2,19 @@ import {useGame} from "../context/game.context.ts";
 import {ChangeEvent, useMemo, useState} from "react";
 import {ResourceState, TradeChange} from "./types.ts";
 import {SelectChangeEvent} from "@mui/material/Select";
-import {Resource} from "./index.ts";
 import icons from "../assets/icons/icons.ts";
+import {Resource} from "./Resource.ts";
 
 export type ResourceCloneConfig<K, T> = {
   onAddCost(resourceState: ResourceState<K, T>): void;
   onRemoveCost(resourceState: ResourceState<K, T>): void;
 }
 
-export const useResourceClone = <K extends string, T extends string>(resource: Resource<K, T>, config?: Partial<ResourceCloneConfig<K, T>>) => {
+export const useResourceClone = <K extends string, T extends string>(
+  resource: Partial<ResourceState<K, T>>,
+  config?: Partial<ResourceCloneConfig<K, T>>
+) => {
+  const _resource = new Resource(resource as ResourceState<K, T>)
   const {
     resources: {
       mergeChangeToState,
@@ -18,14 +22,14 @@ export const useResourceClone = <K extends string, T extends string>(resource: R
     writeInitialResources
   } = useGame();
   const safeConfig = createConfig(config);
-  const [key, setKey] = useState(resource.key)
-  const [min, setMin] = useState(resource.min)
-  const [max, setMax] = useState(resource.max)
-  const [value, setValue] = useState(resource.value)
-  const [label, setLabel] = useState(resource.label)
-  const [type, setType] = useState(resource.type);
-  const [iconName, setIconName] = useState(resource.iconName);
-  const [cost, setCost] = useState(resource.cost);
+  const [key, setKey] = useState(_resource.key!)
+  const [min, setMin] = useState(_resource.min)
+  const [max, setMax] = useState(_resource.max)
+  const [value, setValue] = useState(_resource.value)
+  const [label, setLabel] = useState(_resource.label)
+  const [type, setType] = useState(_resource.type);
+  const [iconName, setIconName] = useState(_resource.iconName);
+  const [cost, setCost] = useState(_resource.cost);
 
   const getResourceState = (update?: Partial<ResourceState<K, T>>): ResourceState<K, T> => ({
     key,
@@ -39,6 +43,7 @@ export const useResourceClone = <K extends string, T extends string>(resource: R
     ...update,
   })
 
+
   const onSetCost = (
     changeKey: 'give' | 'gain',
     change: TradeChange<K>
@@ -46,7 +51,7 @@ export const useResourceClone = <K extends string, T extends string>(resource: R
     if (!cost) {
       return
     }
-    const newCost = resource.updateCost(changeKey, change)
+    const newCost = _resource.updateCost(changeKey, change)
     setCost(newCost)
   }
 
@@ -54,7 +59,7 @@ export const useResourceClone = <K extends string, T extends string>(resource: R
     changeKey: 'give' | 'gain' | '',
     change: TradeChange<K>
   ) => {
-    const newCost = resource.addCost(changeKey, change, cost)
+    const newCost = _resource.addCost(changeKey, change, cost)
     if (newCost) {
       setCost(newCost)
       safeConfig.onAddCost(getResourceState({cost: newCost}));
@@ -65,7 +70,7 @@ export const useResourceClone = <K extends string, T extends string>(resource: R
     changeKey: 'give' | 'gain' | '',
     resourceKey: K
   ) => {
-    const newCost = resource.removeCost(changeKey, resourceKey, cost)
+    const newCost = _resource.removeCost(changeKey, resourceKey, cost)
     if (newCost) {
       setCost(newCost)
       safeConfig.onRemoveCost(getResourceState({cost: newCost}));

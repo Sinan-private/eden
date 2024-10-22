@@ -10,9 +10,8 @@ import {
   Typography
 } from "@mui/material";
 import {resourceTypes} from "../gameRules/resourceTypes.ts";
-import {Icon, TradeChange} from "../Resource/types.ts";
+import {Icon, ResourceState, TradeChange} from "../Resource/types.ts";
 import {Cost} from "./Cost.tsx";
-import {Resource} from "../Resource";
 import {ResourceCloneConfig, useResourceClone} from "../Resource/useResourceClone.ts";
 import {ResourceKeys, ResourceTypes} from "../gameRules/types.ts";
 import {useToggle} from "../Resource/hooks/useToggle.ts";
@@ -20,7 +19,7 @@ import {IconPickerModal} from "./IconPickerModal.tsx";
 import {AddCostModal} from "./AddCostModal.tsx";
 
 type ResourceProps = {
-  resource: Resource<ResourceKeys, ResourceTypes>;
+  resource: Partial<ResourceState<ResourceKeys, ResourceTypes>>;
 };
 export type ChangeKey = 'give' | 'gain' | '';
 

@@ -3,7 +3,7 @@ import {useGame} from "../context/game.context.ts";
 import {EditResource} from "./EditResource.tsx";
 import {Typography} from "@mui/material";
 import {useEffect, useState} from "react";
-import {NewResource} from "./NewResource.tsx";
+import {AddResource} from "./AddResource.tsx";
 
 export const AdminPanel = () => {
   const {
@@ -35,7 +35,7 @@ export const AdminPanel = () => {
 
   return (
     <StyledContainer>
-      <NewResource open={openNewResource} onClose={handleCloseAddCost} />
+      <AddResource open={openNewResource} onClose={handleCloseAddCost} />
       <Typography variant="h2" align="left" sx={{ml: 4}}>Starting Resources</Typography>
       <div style={{display: "flex", justifyContent: "center", flexDirection: "row"}}>
         <div className="card">
