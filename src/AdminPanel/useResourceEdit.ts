@@ -4,6 +4,7 @@ import {Icon, TradeChange} from "../Resource/types.ts";
 import {ResourceKeys, ResourceTypes} from "../gameRules/types.ts";
 import {SelectChangeEvent} from "@mui/material/Select";
 import {Resource} from "../Resource";
+import icons from "../assets/icons/icons.ts";
 
 type GiveOrGain = 'give' | 'gain' | '';
 
@@ -17,7 +18,7 @@ export const useResourceEdit = (resource: Resource<ResourceKeys, ResourceTypes>)
   const [value, setValue] = useState(resource.value)
   const [label, setLabel] = useState(resource.label)
   const [type, setType] = useState(resource.type);
-  const [icon, setIcon] = useState(resource.icon);
+  const [icon, setIcon] = useState(resource.iconName);
   const [showUsed, setShowUsed] = useState(false);
   const [showCost, setShowCost] = useState(false);
   const [open, setOpen] = useState(false);
@@ -70,7 +71,7 @@ export const useResourceEdit = (resource: Resource<ResourceKeys, ResourceTypes>)
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
   const onClickIcon = (clickedIcon: Icon) => {
-    setIcon(clickedIcon.src)
+    setIcon(clickedIcon.name)
     handleClose()
   }
 
@@ -99,7 +100,7 @@ export const useResourceEdit = (resource: Resource<ResourceKeys, ResourceTypes>)
       value !== resource.value
       || label !== resource.label
       || type !== resource.type
-      || icon !== resource.icon
+      || icon !== resource.iconName
       || JSON.stringify(cost) !== JSON.stringify(resource.cost)
     );
   }, [value, label, type, icon, resource, cost])
@@ -107,6 +108,7 @@ export const useResourceEdit = (resource: Resource<ResourceKeys, ResourceTypes>)
   const onSetLabel = (e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => setLabel(e.target.value)
   const onSetValue = (e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => setValue(Number(e.target.value))
 
+  const _icon = icons.find(({name}) => name === icon)?.src || '';
 
   return {
     value,
@@ -118,7 +120,7 @@ export const useResourceEdit = (resource: Resource<ResourceKeys, ResourceTypes>)
     cost,
     openAddCost,
     costChangeKey,
-    icon,
+    icon: _icon,
     onSetCost,
     onAddCost,
     handleClose,
