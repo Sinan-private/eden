@@ -15,10 +15,14 @@ export class Resource<K extends string, T extends string> extends ResourceBase<K
     if (!cost || !changeKey.length) {
       return cost
     }
+    const addedCost = {
+      key: change.key,
+      value: new Resource({...this.state, ...change}).value
+    }
     return {
       ...this.cost,
       [changeKey]: cost[changeKey as 'give' | 'gain']
-        .concat(new Resource({...this.state, ...change}))
+        .concat(addedCost)
     } as ResourceCostUpdate<K>
   }
 

@@ -9,7 +9,7 @@ type ResourceForCostProps = {
   cost: TradeChange<ResourceKeys>[];
 }
 
-export const SelectResourceForCost = ({onAddCost, cost}: ResourceForCostProps) => {
+export const AddCost = ({onAddCost, cost}: ResourceForCostProps) => {
   const {getByType} = useGame().resources;
   const [selectedResource, setSelectedResource] = useState<{ key: ResourceKeys; label: string } | null>(null);
   const [selectAmount, setSelectAmount] = useState(1);
