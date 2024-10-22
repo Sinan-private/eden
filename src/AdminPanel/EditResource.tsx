@@ -68,7 +68,6 @@ export const EditResource = (
   };
   const handleCloseAddCost = () => {
     setOpenAddCost(false);
-    // setAddGiveOrGain('');
   };
 
   const handleOpenIconPicker = () => setOpenIconPicker(true);
@@ -85,7 +84,7 @@ export const EditResource = (
     <>
       <IconPickerModal
         openIconPicker={openIconPicker}
-        handleCloseIconPicker={handleCloseAddCost}
+        handleCloseIconPicker={handleCloseIconPicker}
         filterUsed={filterUsed}
         onToggleFilter={onToggleFilter}
         onSelectIcon={onSelectIcon}

@@ -1,5 +1,6 @@
 import {IconPicker, IconPickerProps} from "./IconPicker.tsx";
-import {Box, Modal, Switch, Typography} from "@mui/material";
+import {Switch, Typography} from "@mui/material";
+import Modal from "./Modal.tsx";
 import styled from "styled-components";
 import {Icon} from "../Resource/types.ts";
 
@@ -23,8 +24,9 @@ export const IconPickerModal = (
     <Modal
       open={openIconPicker}
       onClose={handleCloseIconPicker}
+      sx={{pt: 8}}
     >
-      <Box sx={{...style, pt: 8}}>
+      <>
         <Header>
           <Typography variant="body2" sx={{pr: 1}}>
             Used items
@@ -37,7 +39,7 @@ export const IconPickerModal = (
           />
         </Header>
         <IconPicker showUsed={filterUsed} onClick={onSelectIcon}/>
-      </Box>
+      </>
     </Modal>
   )
 }
@@ -52,14 +54,3 @@ const Header = styled.div`
     justify-content: flex-end;
     align-items: center;
 `;
-const style = {
-  position: 'absolute',
-  top: '50%',
-  left: '50%',
-  transform: 'translate(-50%, -50%)',
-  // width: '60vw',
-  bgcolor: 'background.paper',
-  border: '2px solid #000',
-  boxShadow: 24,
-  p: 4,
-};

@@ -3,6 +3,7 @@ import {useGame} from "../context/game.context.ts";
 import {EditResource} from "./EditResource.tsx";
 import {Typography} from "@mui/material";
 import {useEffect, useState} from "react";
+import {NewResource} from "./NewResource.tsx";
 
 export const AdminPanel = () => {
   const {
@@ -11,6 +12,11 @@ export const AdminPanel = () => {
   } = useGame().resources;
 
   const [loading, setLoading] = useState(true);
+  const [openNewResource, setOpenNewResource] = useState(true);
+
+  const handleCloseAddCost = () => {
+    setOpenNewResource(false);
+  };
 
   useEffect(() => {
     // Measure when the browser has finished rendering
@@ -29,6 +35,7 @@ export const AdminPanel = () => {
 
   return (
     <StyledContainer>
+      <NewResource open={openNewResource} onClose={handleCloseAddCost} />
       <Typography variant="h2" align="left" sx={{ml: 4}}>Starting Resources</Typography>
       <div style={{display: "flex", justifyContent: "center", flexDirection: "row"}}>
         <div className="card">

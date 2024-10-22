@@ -1,4 +1,4 @@
-import {Resource} from "../Resource/Resource.ts";
+import {Resource} from "../Resource";
 import {resourceTypes} from "./resourceTypes.ts";
 
 export type ResourceKeys =
