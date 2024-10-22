@@ -1,5 +1,5 @@
 import {useGame} from "../context/game.context.ts";
-import {ChangeEvent, useMemo, useState} from "react";
+import {useMemo, useState} from "react";
 import {ResourceState, TradeChange} from "./types.ts";
 import {SelectChangeEvent} from "@mui/material/Select";
 import icons from "../assets/icons/icons.ts";
@@ -94,12 +94,13 @@ export const useResourceClone = <K extends string, T extends string>(
       || label !== resource.label
       || type !== resource.type
       || iconName !== resource.iconName
+      || min !== resource.min
+      || max !== resource.max
       || JSON.stringify(cost) !== JSON.stringify(resource.cost)
     );
-  }, [value, label, type, iconName, resource, cost])
+  }, [value, resource, label, type, iconName, min, max, cost])
 
-  const onSetLabel = (e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => setLabel(e.target.value)
-  const onSetValue = (e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => setValue(Number(e.target.value))
+
 
   const icon = icons.find(({name}) => name === iconName)?.src || '';
 
@@ -117,8 +118,8 @@ export const useResourceClone = <K extends string, T extends string>(
     onAddCost,
     handleTypeChange,
     updateResource,
-    onSetLabel,
-    onSetValue,
+    setLabel,
+    setValue,
     onRemoveCost,
     setIconName,
     setKey,

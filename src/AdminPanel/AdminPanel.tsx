@@ -11,7 +11,7 @@ export const AdminPanel = () => {
     getByType,
   } = useGame().resources;
 
-  const [loading, setLoading] = useState(true);
+  const [, setLoading] = useState(true);
   const [openNewResource, setOpenNewResource] = useState(true);
 
   const handleCloseAddCost = () => {

@@ -1,4 +1,4 @@
-import {useState} from "react";
+import {ChangeEvent, useState} from "react";
 import Select from "@mui/material/Select";
 import {
   Collapse,
@@ -43,6 +43,8 @@ export const EditResource = (
   }
   const {
     value,
+    min,
+    max,
     label,
     type,
     cost,
@@ -52,10 +54,12 @@ export const EditResource = (
     handleTypeChange,
     isDisabled,
     updateResource,
-    onSetLabel,
-    onSetValue,
     onRemoveCost,
     setIconName,
+    setLabel,
+    setValue,
+    setMin,
+    setMax,
   } = useResourceClone(resource, config);
 
 
@@ -76,6 +80,21 @@ export const EditResource = (
     handleCloseIconPicker()
   }
 
+  const onSetLabel = (e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => setLabel(e.target.value)
+  const onSetValue = (e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => setValue(Number(e.target.value))
+  const onSetMin = (e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => setMin(Number(e.target.value))
+  const onSetMax = (e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+    const max = Number(e.target.value);
+      setMax(isNaN(max) ? 0 : max)
+  }
+  const onBlurMax = () => {
+    const shouldBeInfinite = max < 1
+
+    if (shouldBeInfinite) {
+      setMax(Infinity)
+    }
+  }
+
   const costToSelectFrom = cost && costChangeKey.length ? cost[costChangeKey as 'give' | 'gain'] : []
   const _onAddCost = (change: TradeChange<ResourceKeys>) => onAddCost(costChangeKey, change);
 
@@ -87,13 +106,13 @@ export const EditResource = (
         filterUsed={filterUsed}
         onToggleFilter={onToggleFilter}
         onSelectIcon={onSelectIcon}
-        />
+      />
       <AddCostModal
         openAddCost={openAddCost}
         handleCloseAddCost={handleCloseAddCost}
         onAddCost={_onAddCost}
         costToSelectFrom={costToSelectFrom}
-        />
+      />
 
       <Stack direction="row" spacing={2} alignItems="center">
         <img
@@ -109,13 +128,26 @@ export const EditResource = (
           value={label}
           onChange={onSetLabel}
         />
-        <TextField
-          type="number"
-          label="Start amount"
-          value={value}
-          onChange={onSetValue}
-          // onBlur={updateValue}
-        />
+        <Stack direction="row">
+
+          <TextField
+            type="number"
+            label="Start amount"
+            value={value}
+            onChange={onSetValue}
+          />
+          <TextField
+            type="number"
+            label="min"
+            value={min}
+            onChange={onSetMin}
+          />
+          <MaxInput
+            value={max}
+            onChange={onSetMax}
+            onBlur={onBlurMax}
+          />
+        </Stack>
         <FormControl fullWidth>
           <InputLabel id="demo-simple-select-label">Type</InputLabel>
           <Select
@@ -152,5 +184,30 @@ export const EditResource = (
         </>
       }
     </>
+  )
+}
+
+type ConstraintInputProps = {
+  value: number;
+  onChange(e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>): void;
+  onBlur(): void;
+}
+
+const MaxInput = (
+  {
+    value,
+    onChange,
+    onBlur
+  }: ConstraintInputProps) => {
+  const isInfinity = value === Infinity;
+
+  return (
+    <TextField
+      type={isInfinity ? "text" : "number"}
+      label="Max"
+      value={value}
+      onChange={onChange}
+      onBlur={onBlur}
+    />
   )
 }
