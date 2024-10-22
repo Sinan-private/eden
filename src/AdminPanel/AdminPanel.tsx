@@ -31,7 +31,7 @@ export const AdminPanel = () => {
       handleRenderingComplete();
     });
   }, []);
-  console.log(loading)
+  // console.log(loading)
 
   return (
     <StyledContainer>

@@ -82,6 +82,7 @@ export const useResourceClone = <K extends string, T extends string>(
   };
 
   const updateResource = () => {
+    console.log(getResourceState())
     // @ts-ignore
     const newState = mergeChangeToState(getResourceState())
     writeInitialResources(newState)
