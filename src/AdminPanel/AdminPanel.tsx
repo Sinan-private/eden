@@ -2,12 +2,30 @@ import styled from "styled-components";
 import {useGame} from "../context/game.context.ts";
 import {EditResource} from "./EditResource.tsx";
 import {Typography} from "@mui/material";
+import {useEffect, useState} from "react";
 
 export const AdminPanel = () => {
   const {
     get,
     getByType,
   } = useGame().resources;
+
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    // Measure when the browser has finished rendering
+    const handleRenderingComplete = () => {
+      // Rendering is done, stop the spinner
+      setLoading(false);
+    };
+
+    // `requestAnimationFrame` queues up the task after rendering is done
+    requestAnimationFrame(() => {
+      // The first frame after the render is complete
+      handleRenderingComplete();
+    });
+  }, []);
+  console.log(loading)
 
   return (
     <StyledContainer>
@@ -44,4 +62,5 @@ const StyledContainer = styled.div`
     overflow: auto;
     background-color: #2b2b2b;
     box-shadow: 10px 0 74px 0 #22183887;
+    z-index: 1000;
 `

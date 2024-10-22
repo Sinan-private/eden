@@ -9,7 +9,9 @@
     "build": "tsc -b && vite build",
     "lint": "eslint .",
     "preview": "vite preview",
-    "start": "node src/server/server.js"
+    "frontend": "vite",
+    "backend": "node ./src/server/server.js",
+    "start": "npm run backend & npm run frontend"
   },
   "dependencies": {
     "@emotion/react": "^11.13.3",

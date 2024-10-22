@@ -73,18 +73,21 @@ const Button = ({resource, increment = 1}: ButtonProps) => {
 
 const GameControl = () => {
   const {
-    writeInitialResources,
+    // writeInitialResources,
+    setShowAdminPanel,
+    showAdminPanel,
     tick: {
     current, isActive, start, stop
   }} = useGame();
-  const writeUpdate = () => writeInitialResources()
+  // const writeUpdate = () => writeInitialResources()
   return (
     <StylesGameControl>
       <div>
         <span>Turn {current}</span>
         <button onClick={isActive ? stop : start}>{isActive ? 'x' : '>'}</button>
       </div>
-      <button onClick={writeUpdate}>Save</button>
+      <button onClick={() => setShowAdminPanel(!showAdminPanel)}>Admin</button>
+      {/*<button onClick={writeUpdate}>Save</button>*/}
     </StylesGameControl>
   )
 }

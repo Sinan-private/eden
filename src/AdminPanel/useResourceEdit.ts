@@ -19,7 +19,7 @@ export const useResourceEdit = (resource: Resource<ResourceKeys, ResourceTypes>)
   const [type, setType] = useState(resource.type);
   const [icon, setIcon] = useState(resource.icon);
   const [showUsed, setShowUsed] = useState(false);
-  const [showCost, setShowCost] = useState(true);
+  const [showCost, setShowCost] = useState(false);
   const [open, setOpen] = useState(false);
   const [cost, setCost] = useState(resource.cost);
   const [openAddCost, setOpenAddCost] = useState(false);
@@ -42,6 +42,7 @@ export const useResourceEdit = (resource: Resource<ResourceKeys, ResourceTypes>)
     const newCost = resource.addCost(costChangeKey, change)
     if (newCost) {
       setCost(newCost)
+      setOpenAddCost(false)
     }
   }
   // Todo this should all move into the global state because it sucks to pass all the props and callbacks
@@ -88,6 +89,7 @@ export const useResourceEdit = (resource: Resource<ResourceKeys, ResourceTypes>)
       label,
       type,
       cost,
+      iconName: icon,
     })
     writeInitialResources(newState)
   }
@@ -105,8 +107,6 @@ export const useResourceEdit = (resource: Resource<ResourceKeys, ResourceTypes>)
   const onSetLabel = (e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => setLabel(e.target.value)
   const onSetValue = (e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => setValue(Number(e.target.value))
 
-  const costForBla = cost && costChangeKey.length ? cost[costChangeKey as 'give' | 'gain'] : []
-
 
   return {
     value,
@@ -117,7 +117,7 @@ export const useResourceEdit = (resource: Resource<ResourceKeys, ResourceTypes>)
     open,
     cost,
     openAddCost,
-    addGiveOrGain: costChangeKey,
+    costChangeKey,
     icon,
     onSetCost,
     onAddCost,
@@ -134,6 +134,5 @@ export const useResourceEdit = (resource: Resource<ResourceKeys, ResourceTypes>)
     onSetLabel,
     onSetValue,
     onRemoveCost,
-    costForBla,
   }
 }

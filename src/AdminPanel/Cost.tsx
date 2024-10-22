@@ -14,9 +14,10 @@ type CostProps = {
   cost: ResourceCostUpdate<ResourceKeys> | null;
   onSetCost: OnSetCost;
   onOpenAddCost(giveOrGain: 'give' | 'gain'): void;
+  onRemoveCost(changeKey: 'give' | 'gain', resourceKey: ResourceKeys): void;
 };
 
-export const Cost = ({cost, onSetCost, onOpenAddCost}: CostProps) => {
+export const Cost = ({cost, onSetCost, onOpenAddCost, onRemoveCost}: CostProps) => {
   // Nope, not good. The state update needs to be handled in a single place. Meaning here, or rather in the EditResource
   // console.log(cost)
   const onOpenGive = () => onOpenAddCost('give');
@@ -31,7 +32,12 @@ export const Cost = ({cost, onSetCost, onOpenAddCost}: CostProps) => {
       Give
       </Typography>
       {cost?.give.map(give => (
-        <SingleCost key={give.key} change={give} onSetCost={_onSetCost('give')} />
+        <SingleCost
+          key={give.key}
+          change={give}
+          onSetCost={_onSetCost('give')}
+          onRemoveCost={() => onRemoveCost("give", give.key)}
+        />
       ))}
       <button style={{height: 56}} onClick={onOpenGive}>Add</button>
 
@@ -42,7 +48,12 @@ export const Cost = ({cost, onSetCost, onOpenAddCost}: CostProps) => {
           Gain
         </Typography>
         {cost?.gain.map(gain => (
-          <SingleCost key={gain.key} change={gain} onSetCost={_onSetCost('gain')}/>
+          <SingleCost
+            key={gain.key}
+            change={gain}
+            onSetCost={_onSetCost('gain')}
+            onRemoveCost={() => onRemoveCost("gain", gain.key)}
+          />
         ))}
         <button style={{height: 56}} onClick={onOpenGain}>Add</button>
 
@@ -56,9 +67,10 @@ type SingleCostProps = {
   // resource: Resource<ResourceKeys, ResourceTypes>;
   change: TradeChange<ResourceKeys>;
   onSetCost(change: TradeChange<ResourceKeys>): void;
+  onRemoveCost(): void;
 }
 
-const SingleCost = ({change, onSetCost}: SingleCostProps) => {
+const SingleCost = ({change, onSetCost, onRemoveCost}: SingleCostProps) => {
   const {get} = useGame().resources;
   // const [value, setValue] = useState(change.value);
   //
@@ -82,7 +94,7 @@ const SingleCost = ({change, onSetCost}: SingleCostProps) => {
         sx={{width: 80}}
         onChange={onChange}
       />
-      <button>remove</button>
+      <button onClick={onRemoveCost}>remove</button>
     </Stack>
   )
 }

@@ -58,13 +58,12 @@ export const EditResource = (
     updateValue,
     onSetLabel,
     onSetValue,
-    costForBla
+    onRemoveCost,
+    costChangeKey,
   } = useResourceEdit(resource);
-  // if (resource.key === 'meat') {
-  //
-  // cost && console.log(cost.give[0])
-  // cost && console.log(enrichCost(cost).give[0])
-  // }
+
+  const costToSelectFrom = cost && costChangeKey.length ? cost[costChangeKey as 'give' | 'gain'] : []
+
 
   return (
     <>
@@ -93,7 +92,7 @@ export const EditResource = (
         onClose={handleCloseAddCost}
       >
         <Box sx={style}>
-          <SelectResourceForCost onAddCost={onAddCost} cost={costForBla}/>
+          <SelectResourceForCost onAddCost={onAddCost} cost={costToSelectFrom}/>
         </Box>
       </Modal>
       <Stack direction="row" spacing={2} alignItems="center">
@@ -144,6 +143,7 @@ export const EditResource = (
             <Stack direction="row" spacing={2} mb={4} mt={2} alignItems="center">
               <Cost
                 // resource={resource}
+                onRemoveCost={onRemoveCost}
                 cost={cost}
                 onSetCost={onSetCost}
                 onOpenAddCost={handleOpenAddCost}
