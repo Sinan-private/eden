@@ -1,8 +1,10 @@
+import {useEffect, useState} from "react";
 import styled from "styled-components";
+import {SpeedDial, SpeedDialAction, SpeedDialIcon, Typography} from "@mui/material";
+import BalanceIcon from '@mui/icons-material/Balance';
+import CableIcon from '@mui/icons-material/Cable';
 import {useGame} from "../context/game.context.ts";
 import {EditResource} from "./EditResource.tsx";
-import {Typography} from "@mui/material";
-import {useEffect, useState} from "react";
 import {AddResource} from "./AddResource.tsx";
 
 export const AdminPanel = () => {
@@ -12,11 +14,13 @@ export const AdminPanel = () => {
   } = useGame().resources;
 
   const [, setLoading] = useState(true);
-  const [openNewResource, setOpenNewResource] = useState(true);
+  const [openNewResource, setOpenNewResource] = useState(false);
 
   const handleCloseAddCost = () => {
     setOpenNewResource(false);
   };
+
+  const onAddResource = () => setOpenNewResource(true);
 
   useEffect(() => {
     // Measure when the browser has finished rendering
@@ -35,7 +39,22 @@ export const AdminPanel = () => {
 
   return (
     <StyledContainer>
-      <AddResource open={openNewResource} onClose={handleCloseAddCost} />
+      <SpeedDial
+        ariaLabel="SpeedDial basic example"
+        sx={{position: 'absolute', bottom: 16, right: 16}}
+        icon={<SpeedDialIcon/>}
+      >
+        <SpeedDialAction
+          icon={<BalanceIcon/>}
+          tooltipTitle="Add resource"
+          onClick={onAddResource}
+        />
+        <SpeedDialAction
+          icon={<CableIcon/>}
+          tooltipTitle="Add type"
+        />
+      </SpeedDial>
+      <AddResource open={openNewResource} onClose={handleCloseAddCost}/>
       <Typography variant="h2" align="left" sx={{ml: 4}}>Starting Resources</Typography>
       <div style={{display: "flex", justifyContent: "center", flexDirection: "row"}}>
         <div className="card">

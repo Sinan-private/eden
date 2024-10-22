@@ -1,8 +1,8 @@
 [
   {
     "key": "gold",
-    "value": 1200,
-    "min": 0,
+    "value": 1249,
+    "min": -12,
     "max": null,
     "label": "Gold",
     "type": "base_resource",
