@@ -7,39 +7,29 @@ const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
 // Path to the JSON file
-const resourceFilePath = path.join(__dirname, PATH + 'resourceTypes.json');
+const typeFilePath = path.join(__dirname, PATH + 'resourceTypes.json');
+const keyFilePath = path.join(__dirname, PATH + 'resourceKeys.json');
 
-// Path where the TypeScript file will be written
-const tsFilePath = path.join(__dirname, PATH + 'generatedTypes.ts');
+const typesFromFile = JSON.parse(fs.readFileSync(typeFilePath, 'utf-8'));
+const keysFromFile = JSON.parse(fs.readFileSync(keyFilePath, 'utf-8'));
 
-// Step 1: Read the JSON file
-const resources = JSON.parse(fs.readFileSync(resourceFilePath, 'utf-8'));
-
-// Step 2: Generate TypeScript content from JSON data
-let tsContent = `
-export type BaseResourceKeys = ${resources.BaseResourceKeys.map(key => `'${key}'`).join(' | ')};
-export type BuildResourceKeys = ${resources.BuildResourceKeys.map(key => `'${key}'`).join(' | ')};
-export type ProcessedResourceKeys = ${resources.ProcessedResourceKeys.map(key => `'${key}'`).join(' | ')};
-export type CitizenResourceKeys = ${resources.CitizenResourceKeys.map(key => `'${key}'`).join(' | ')};
-export type CurrencyResourceKeys = ${resources.CurrencyResourceKeys.map(key => `'${key}'`).join(' | ')};
-
-export type ResourceKeys =
-  | BaseResourceKeys
-  | BuildResourceKeys
-  | ProcessedResourceKeys
-  | CitizenResourceKeys
-  | CurrencyResourceKeys;
-
-export type TradeResourceKeys = BuildResourceKeys | ProcessedResourceKeys;
-
-export type ResourceTypes = ${resources.ResourceTypes.map(type => `'${type}'`).join(' | ')};
-`;
-
-
-// Step 3: Write the TypeScript content to the file
-export const writeTypes = () => {
-  fs.writeFileSync(tsFilePath, tsContent, (err) => {
+export const writeTypes = (newResources) => {
+  const types = newResources.map(({type}) => type).concat(typesFromFile);
+  const cleanTypes = getUniqueValues(types);
+  fs.writeFileSync(typeFilePath, JSON.stringify(cleanTypes, null, 2), (err) => {
     if (err) throw err;
-    console.log('TypeScript types generated successfully!');
+    console.log('Types generated successfully!');
   });
+
+  const keys = newResources.map(({key}) => key).concat(keysFromFile);
+  const cleanKeys = getUniqueValues(keys);
+  console.log(cleanKeys)
+  fs.writeFileSync(keyFilePath, JSON.stringify(cleanKeys, null, 2), (err) => {
+    if (err) throw err;
+    console.log('Types generated successfully!');
+  });
+}
+
+const getUniqueValues = (arr) => {
+  return Array.from(new Set(arr));
 }

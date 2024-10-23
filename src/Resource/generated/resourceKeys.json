@@ -1,5 +1,4 @@
 [
-  "iron",
   "gold",
   "corn",
   "water",
@@ -14,17 +13,18 @@
   "forrester",
   "wood_mill",
   "pasture",
-  "bread",
   "meat",
   "milk",
   "wool",
   "flour",
-  "planks",
+  "bread",
   "bricks",
+  "planks",
   "citizen",
   "engineer",
   "scientist",
   "artist",
   "magician",
-  "money"
+  "money",
+  "iron"
 ]

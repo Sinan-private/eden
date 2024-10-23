@@ -107,7 +107,7 @@ export const EditResource = (
       <Typography onClick={onToggleCost}>Cost</Typography>
       <Stack direction="row" spacing={0.5}>
         {resource.cost?.give && resource.cost.give.map(cost => (
-          <img src={icon(cost.key)} width={16} height={16}/>
+          <img key={cost.key} src={icon(cost.key)} width={16} height={16}/>
         ))}
       </Stack>
       {resource.cost?.gain && resource.cost?.gain.length > 1 &&

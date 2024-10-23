@@ -13,12 +13,10 @@ export const mergeChangeToState = <K extends string, T extends string>(
 }
 
 const changeToState = <K extends string, T extends string>(updates: ResourceState<K, T>[], state: ResourceState<K, T>[]) => {
-  // Todo since the state is mapped new items will not be stored
   // Create a map for quick lookup of updates by key
   const updatesMap = new Map(updates.map(update => [update.key, update]));
   const resourceKeys = state.map(({key}) => key);
   const newResources = updates.filter(({key}) => !resourceKeys.includes(key));
-  console.log(newResources)
   // Iterate through the state and either take the update (if exists) or keep the current state item
   return state
     .map(item => updatesMap.get(item.key) || item)

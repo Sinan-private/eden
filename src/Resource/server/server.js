@@ -40,7 +40,7 @@ app.get('/resources', (req, res) => {
 });
 
 
-// Add a new resource
+// Update od add new resources
 app.post('/resources', (req, res) => {
   // const tempTarget = './src/gameRules/initialResources_test.json'
   const newResources = req.body;
@@ -50,7 +50,7 @@ app.post('/resources', (req, res) => {
     if (err) {
       return res.status(500).json({ message: 'Error writing to resources file', error: err });
     }
-      writeTypes();
+    writeTypes(newResources);
     res.json({ message: 'Resources updated successfully' });
   });
 });
