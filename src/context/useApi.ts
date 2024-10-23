@@ -1,3 +1,6 @@
+import {ResourceState} from "../Resource";
+import {ResourceKeys, ResourceTypes} from "../Resource/types.ts";
+
 export const useApi = () => {
   const fetchResources = async () => {
     try {
@@ -8,7 +11,8 @@ export const useApi = () => {
     }
   };
 
-  const updateResources = async (newResources: any) => {
+  const updateResources = async (newResources?: ResourceState<ResourceKeys, ResourceTypes>[]) => {
+    if (!newResources) return;
     try {
       const response = await fetch('/api/resources', {
         method: 'POST',
@@ -24,20 +28,54 @@ export const useApi = () => {
     }
   };
 
-  // NOT Working!!!
-  const fetchIcons = async () => {
+  const addType = async (type: string[]) => {
     try {
-      const response = await fetch('/api/icons');  // This will proxy to http://localhost:5001/resources
-      const data = await response.json();
-      return data
+      const response = await fetch('/api/add_type', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(type),
+      });
+      const result = await response.json();
+      console.log(result.message);  // Success message
     } catch (error) {
-      console.error('Error fetching resources:', error);
+      console.error('Error updating resources:', error);
     }
-  };
+  }
+
+  const removeType = async (type: ResourceTypes[]) => {
+    try {
+      const response = await fetch('/api/remove_type', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(type),
+      });
+      const result = await response.json();
+      console.log(result.message);  // Success message
+    } catch (error) {
+      console.error('Error updating resources:', error);
+    }
+  }
+
+  // NOT Working!!!
+  // const fetchIcons = async () => {
+  //   try {
+  //     const response = await fetch('/api/icons');  // This will proxy to http://localhost:5001/resources
+  //     const data = await response.json();
+  //     return data
+  //   } catch (error) {
+  //     console.error('Error fetching resources:', error);
+  //   }
+  // };
 
   return {
     fetchResources,
     updateResources,
-    fetchIcons,
+    addType,
+    removeType,
+    // fetchIcons,
   }
 }

@@ -7,6 +7,7 @@ import {useGame} from "../context/game.context.ts";
 import {EditResource} from "./EditResource.tsx";
 import {AddResource} from "./AddResource.tsx";
 import {AddType} from "./AddType.tsx";
+import {HandleTypes} from "./HandleTypes.tsx";
 
 export const AdminPanel = () => {
   const {
@@ -41,6 +42,7 @@ export const AdminPanel = () => {
 
   return (
     <StyledContainer>
+      <HandleTypes />
       <SpeedDial
         ariaLabel="SpeedDial basic example"
         sx={{position: 'absolute', bottom: 16, right: 16}}

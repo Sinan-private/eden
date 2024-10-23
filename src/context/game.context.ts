@@ -9,7 +9,12 @@ import {useComponentMount} from "../Resource/hooks/useComponentMount.ts";
 import {ResourceKeys, ResourceTypes} from "../Resource/types.ts";
 
 const useGameBase = () => {
-  const {fetchResources, updateResources} = useApi();
+  const {
+    fetchResources,
+    updateResources,
+    addType,
+    removeType,
+  } = useApi();
   const [isFetching, setIsFetching] = useState(true);
   const [showAdminPanel, setShowAdminPanel] = useState(false);
   // The resource offers all info and update methods. The nextTurn is only needed here to handle turn updates only in here.
@@ -38,6 +43,26 @@ const useGameBase = () => {
     ))
   }
 
+  const writeAddType = (type: string | string[]) => {
+    const arr: string[] = [];
+    addType(arr.concat(type))
+  }
+
+  const writeRemoveType = (type: ResourceTypes | ResourceTypes[]) => {
+    const usedTypes = resources.getByType().map(({type}) => type);
+    const typesToRemove = ([] as ResourceTypes[]).concat(type);
+   const matches =  typesToRemove.filter(value => usedTypes.includes(value!));
+   if (matches.length) {
+     console.error('These Types are being in used and can not be removed', matches)
+     return;
+   }
+   removeType(typesToRemove)
+   // const toRemove = [].concat(types);
+    // const newTypes = existingTypes
+    //   .filter(type => !toRemove.includes(type));
+    // removeType(arr)
+  }
+
   return {
     resources,
     isFetching,
@@ -45,6 +70,8 @@ const useGameBase = () => {
     writeInitialResources,
     showAdminPanel,
     setShowAdminPanel,
+    writeAddType,
+    writeRemoveType,
   };
 }
 

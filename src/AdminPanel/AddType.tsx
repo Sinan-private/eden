@@ -15,11 +15,16 @@ export const AddType = (
     onClose
   }: AddTypeProps
 ) => {
-  const {types} = useGame().resources;
+  const {
+    writeAddType,
+    resources: {
+    types
+  }} = useGame();
   const [input, setInput] = useState('');
   const onChange = (e: ChangeEvent<HTMLInputElement>) => setInput(e.target.value)
   const isError = types.includes(input as ResourceTypes);
   const helperText = isError ? "Already exists" : "";
+  const onSubmit = () => writeAddType(input);
   return (
     <Modal open={open} onClose={onClose}>
       <Stack direction="row" alignItems="center" spacing={2}>
@@ -32,7 +37,7 @@ export const AddType = (
         onChange={onChange}
         helperText={helperText}
       />
-      <button>
+      <button onClick={onSubmit}>
         Save
       </button>
       </Stack>

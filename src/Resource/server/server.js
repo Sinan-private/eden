@@ -6,6 +6,8 @@ import {PATH} from './path.js';
 import { fileURLToPath } from 'url'; // Required for ES module to handle __dirname
 import fs from 'fs';
 import {writeKeys} from "./writeKeys.js";
+import {writeTypes} from "./writeTypes.js";
+import {removeType} from "./removeType.js";
 
 // Serve static frontend files
 // For ES modules, __dirname isn't available, so we calculate it using the following code
@@ -46,6 +48,24 @@ app.post('/resources', (req, res) => {
     writeKeys(newResources);
     res.json({ message: 'Resources updated successfully' });
   });
+});
+
+app.post('/add_type', (req, res) => {
+  // const tempTarget = './src/gameRules/initialResources_test.json'
+  const type = req.body;
+  writeTypes(type)
+  // Write the new resources data to the resources.json file
+
+});
+
+app.post('/remove_type', (req, res) => {
+  // const tempTarget = './src/gameRules/initialResources_test.json'
+  const type = req.body;
+  console.log(type);
+  removeType(type)
+
+  // Write the new resources data to the resources.json file
+
 });
 
 
