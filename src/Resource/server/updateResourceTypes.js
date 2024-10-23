@@ -21,11 +21,14 @@ export const updateResourceTypes = () => {
     const arrayPattern = /export\s+const\s+resourceTypes\s+=\s+\[(.*?)\] as const;/s;
     const match = data.match(arrayPattern);
     if (!match) {
-      console.error("Array pattern not found!");
+      console.error("Something is wrong with the file");
       return;
     }
 
-    let resourceArray = eval(`[${match[1]}]`); // Parse the array into an actual array
+    // Step 2: Extract the array content (without eval)
+    const resourceArray = match[1]
+      .split(',')
+      .map(item => item.trim().replace(/["']/g, '')); // Remove extra quotes and whitespace
 
     console.log("Original array:", resourceArray);
 

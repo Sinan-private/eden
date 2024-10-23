@@ -1,10 +1,10 @@
-import resourceTypes from "./generated/resourceTypes.json";
-import resourceKeys from "./generated/resourceTypes.json";
+import {resourceTypes} from "./generated/resourceTypes.ts";
+import {resourceKeys} from "./generated/resourceKeys.ts";
 
 export type ResourceTypes = typeof resourceTypes[number];
 export type ResourceKeys = typeof resourceKeys[number];
 
-const a: ResourceTypes = 'base'
+const a: ResourceTypes = 'new_resource'
 console.log(a)
 
 export type ResourceTypeRaw<K, T> = {
