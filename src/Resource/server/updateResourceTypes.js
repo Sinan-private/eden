@@ -7,9 +7,9 @@ const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
 // Path to your file (adjust this to match your setup)
-const filePath = path.join(__dirname, PATH + 'resourceTypes.ts');
 
-export const updateResourceTypes = () => {
+export const updateResourceTypes = (fileName, fileConversion) => {
+const filePath = path.join(__dirname, PATH + fileName + '.ts');
 // Step 1: Read the file
   fs.readFile(filePath, 'utf8', (err, data) => {
     if (err) {

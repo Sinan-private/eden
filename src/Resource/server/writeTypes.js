@@ -15,7 +15,7 @@ import {updateResourceTypes} from "./updateResourceTypes.js";
 // const keysFromFile = JSON.parse(fs.readFileSync(keyFilePath, 'utf-8'));
 
 export const writeTypes = (newResources) => {
-  updateResourceTypes(newResources);
+  updateResourceTypes('resourceTypes');
   // const types = newResources.map(({type}) => type).concat(typesFromFile);
   // const cleanTypes = getUniqueValues(types);
   // fs.writeFileSync(typeFilePath, JSON.stringify(cleanTypes, null, 2), (err) => {
