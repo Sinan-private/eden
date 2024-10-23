@@ -25,6 +25,5 @@ export const resourceKeys = [
   "scientist",
   "artist",
   "magician",
-  "money",
-  "iron"
+  "money"
 ] as const;

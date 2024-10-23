@@ -4,9 +4,6 @@ import {resourceKeys} from "./generated/resourceKeys.ts";
 export type ResourceTypes = typeof resourceTypes[number];
 export type ResourceKeys = typeof resourceKeys[number];
 
-const a: ResourceTypes = 'new_resource'
-console.log(a)
-
 export type ResourceTypeRaw<K, T> = {
   value: number;
   min: number;

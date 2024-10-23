@@ -5,7 +5,7 @@ import path from 'path';
 import {PATH} from './path.js';
 import { fileURLToPath } from 'url'; // Required for ES module to handle __dirname
 import fs from 'fs';
-import {writeTypes} from "./writeTypes.js";
+import {writeKeys} from "./writeKeys.js";
 
 // Serve static frontend files
 // For ES modules, __dirname isn't available, so we calculate it using the following code
@@ -50,7 +50,7 @@ app.post('/resources', (req, res) => {
     if (err) {
       return res.status(500).json({ message: 'Error writing to resources file', error: err });
     }
-    writeTypes(newResources);
+    writeKeys(newResources);
     res.json({ message: 'Resources updated successfully' });
   });
 });

@@ -18,31 +18,27 @@ const filePath = path.join(__dirname, PATH + fileName + '.ts');
     }
 
     // Step 2: Extract the array
-    const arrayPattern = /export\s+const\s+resourceTypes\s+=\s+\[(.*?)\] as const;/s;
+    const arrayPattern = new RegExp(`export\\s+const\\s+${fileName}\\s+=\\s+\\[(.*?)\\] as const;`, 's');
     const match = data.match(arrayPattern);
     if (!match) {
       console.error("Something is wrong with the file");
       return;
     }
 
-    // Step 2: Extract the array content (without eval)
-    const resourceArray = match[1]
+    // Step 2: Extract the array content
+    const values = match[1]
       .split(',')
       .map(item => item.trim().replace(/["']/g, '')); // Remove extra quotes and whitespace
 
-    console.log("Original array:", resourceArray);
-
-    // Step 3: Modify the array (for example, adding a new resource type)
-    resourceArray.push('new_resource');
-
-    console.log("Updated array:", resourceArray);
+    // Step 3: Firing the calback
+    const updatedValues = typeof fileConversion === 'function' ? fileConversion(values) : values;
 
     // Step 4: Update the file content with the modified array
-    const newArrayString = JSON.stringify(resourceArray, null, 2)
+    const newArrayString = JSON.stringify(updatedValues, null, 2)
       .replace(/^\[|\]$/g, '') // Remove square brackets
       .replace(/"/g, '\"');    // Escape quotes for TypeScript format
 
-    const updatedContent = data.replace(arrayPattern, `export const resourceTypes = [${newArrayString}] as const;`);
+    const updatedContent = data.replace(arrayPattern, `export const ${fileName} = [${newArrayString}] as const;`);
 
     // Step 5: Write the updated file
     fs.writeFile(filePath, updatedContent, 'utf8', (err) => {
