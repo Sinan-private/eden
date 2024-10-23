@@ -1,8 +1,7 @@
 import {Autocomplete, Stack, TextField} from "@mui/material";
 import {useGame} from "../context/game.context.ts";
 import {SyntheticEvent, useMemo, useState} from "react";
-import {ResourceKeys} from "../gameRules/types.ts";
-import {TradeChange} from "../Resource/types.ts";
+import {ResourceKeys, TradeChange} from "../Resource/types.ts";
 
 type ResourceForCostProps = {
   onAddCost(change: TradeChange<ResourceKeys>): void;

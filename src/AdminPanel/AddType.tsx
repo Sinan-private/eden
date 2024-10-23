@@ -2,7 +2,7 @@ import Modal from "./Modal.tsx";
 import {Stack, TextField} from "@mui/material";
 import {useGame} from "../context/game.context.ts";
 import {ChangeEvent, useState} from "react";
-import {ResourceTypes} from "../gameRules/types.ts";
+import {ResourceTypes} from "../Resource/types.ts";
 
 type AddTypeProps = {
   open: boolean;

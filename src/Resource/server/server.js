@@ -19,13 +19,6 @@ const PORT = process.env.PORT || 5001;
 app.use(bodyParser.json());
 app.use(cors());
 
-// Sample in-memory data structure (resources)
-let resources = [
-  { id: 1, name: 'Gold', quantity: 1000 },
-  { id: 2, name: 'Wood', quantity: 500 },
-  { id: 3, name: 'Stone', quantity: 300 }
-];
-
 const resourcesFilePath = path.join(__dirname, PATH + 'initialResources.json');
 
 // Get all resources

@@ -1,6 +1,6 @@
 import {ResourceState, ResourceUpdateProps} from "../Resource";
+import {ResourceKeys, ResourceTypes} from "../Resource/types.ts";
 
-import {ResourceKeys, ResourceTypes} from "../gameRules/types.ts";
 // import {EditResource} from "../gameRules/EditResource.ts";
 
 export type Update = ResourceUpdateProps<ResourceKeys, ResourceTypes>;

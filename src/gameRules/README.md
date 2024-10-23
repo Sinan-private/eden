@@ -3,14 +3,12 @@ Why the complex setup with a Resource here extending a Base class in Resource?
 Because I am copying the base class between my different projcets and I want it to stay clean.
 
 # Adding a resource
-[TL:DR] types.ts, gameInit.ts, icons.ts, ResourceConversion.ts (unless it is a `base_resource`)
 
 You should find everything in src/gameRules
 
 
 
 ## Adding a new resource
-in types.ts you need to add the type of resource.
 
 ### base_resource
 This comes without a cost. Meaning it will not have the extension of the trade value.

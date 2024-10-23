@@ -5,8 +5,8 @@ import {usePrevious} from "../Resource/hooks/usePrevious.ts";
 import {Resource, ResourceState, ResourceUpdateProps, useResource} from "../Resource";
 import {getResourceTurnUpdate} from "../gameRules/getResourceTurnUpdate.ts";
 import {useApi} from "./useApi.ts";
-import {ResourceKeys, ResourceTypes} from "../gameRules/types.ts";
 import {useComponentMount} from "../Resource/hooks/useComponentMount.ts";
+import {ResourceKeys, ResourceTypes} from "../Resource/types.ts";
 
 const useGameBase = () => {
   const {fetchResources, updateResources} = useApi();

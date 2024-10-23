@@ -1,7 +1,8 @@
 import styled from "styled-components";
 import {useGame} from "../context/game.context.ts";
-import {ResourceClass} from "../gameRules/types.ts";
 import {TopBar} from "./TopBar.tsx";
+import {Resource} from "../Resource";
+import {ResourceKeys, ResourceTypes} from "../Resource/types.ts";
 
 export const Game = () => {
   const {
@@ -34,7 +35,7 @@ export const Game = () => {
 }
 
 type ButtonProps = {
-  resource: ResourceClass;
+  resource: Resource<ResourceKeys, ResourceTypes>;
   increment?: number;
 }
 

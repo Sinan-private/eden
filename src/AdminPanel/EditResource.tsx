@@ -9,15 +9,14 @@ import {
   TextField,
   Typography
 } from "@mui/material";
-import {resourceTypes} from "../gameRules/resourceTypes.ts";
-import {Icon, ResourceState, TradeChange} from "../Resource/types.ts";
+import {Icon, ResourceKeys, ResourceState, ResourceTypes, TradeChange} from "../Resource/types.ts";
 import {Cost} from "./Cost.tsx";
 import {ResourceCloneConfig, useResourceClone} from "../Resource/useResourceClone.ts";
-import {ResourceKeys, ResourceTypes} from "../gameRules/types.ts";
 import {useToggle} from "../Resource/hooks/useToggle.ts";
 import {IconPickerModal} from "./IconPickerModal.tsx";
 import {AddCostModal} from "./AddCostModal.tsx";
 import {useGame} from "../context/game.context.ts";
+import {resourceTypes} from "../Resource/generated/resourceTypes.ts";
 
 type ResourceProps = {
   resource: Partial<ResourceState<ResourceKeys, ResourceTypes>>;

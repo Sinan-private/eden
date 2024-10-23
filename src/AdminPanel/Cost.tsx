@@ -1,6 +1,5 @@
 import {Stack, TextField, Typography} from "@mui/material";
-import {ResourceKeys} from "../gameRules/types.ts";
-import {ResourceCostUpdate, TradeChange} from "../Resource/types.ts";
+import {ResourceCostUpdate, ResourceKeys, TradeChange} from "../Resource/types.ts";
 import {OnSetCost} from "./EditResource.tsx";
 import {useGame} from "../context/game.context.ts";
 
