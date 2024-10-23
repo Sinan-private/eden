@@ -2,6 +2,7 @@ import fs from 'fs';
 import path from 'path';
 import {PATH} from './path.js';
 import {fileURLToPath} from "url";
+import {updateResourceTypes} from "./updateResourceTypes.js";
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -16,6 +17,7 @@ const keysFromFile = JSON.parse(fs.readFileSync(keyFilePath, 'utf-8'));
 export const writeTypes = (newResources) => {
   const types = newResources.map(({type}) => type).concat(typesFromFile);
   const cleanTypes = getUniqueValues(types);
+  updateResourceTypes(newResources)
   fs.writeFileSync(typeFilePath, JSON.stringify(cleanTypes, null, 2), (err) => {
     if (err) throw err;
     console.log('Types generated successfully!');
