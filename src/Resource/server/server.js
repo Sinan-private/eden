@@ -54,6 +54,7 @@ app.post('/add_type', (req, res) => {
   // const tempTarget = './src/gameRules/initialResources_test.json'
   const type = req.body;
   writeTypes(type)
+  res.json({ message: 'Type added successfully' });
   // Write the new resources data to the resources.json file
 
 });
@@ -63,6 +64,7 @@ app.post('/remove_type', (req, res) => {
   const type = req.body;
   console.log(type);
   removeType(type)
+  res.json({ message: 'Type removed successfully' });
 
   // Write the new resources data to the resources.json file
 

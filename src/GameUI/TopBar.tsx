@@ -18,7 +18,7 @@ export const TopBar = () => {
         ))}
       </>
     )
-  }, [getByType]);
+  }, [get, getByType]);
 
   const currency = getResource('currency_resource')
   const citizens = getResource('citizen_resource')

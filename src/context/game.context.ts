@@ -43,10 +43,8 @@ const useGameBase = () => {
     ))
   }
 
-  const writeAddType = (type: string | string[]) => {
-    const arr: string[] = [];
-    addType(arr.concat(type))
-  }
+  const writeAddType = (type: string | string[]) =>
+    addType(([] as string[]).concat(type))
 
   const writeRemoveType = (type: ResourceTypes | ResourceTypes[]) => {
     const usedTypes = resources.getByType().map(({type}) => type);
