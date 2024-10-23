@@ -9,7 +9,6 @@ export type ResourceKeys =
   | CurrencyResourceKeys
 
 export type TradeResourceKeys = BuildResourceKeys | ProcessedResourceKeys;
-
 export type ResourceTypes = typeof resourceTypes[number];
 // export type ResourceTypes =
 //   | 'base_resource'

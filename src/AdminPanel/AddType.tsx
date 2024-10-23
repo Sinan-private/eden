@@ -1,5 +1,5 @@
 import Modal from "./Modal.tsx";
-import {TextField} from "@mui/material";
+import {Stack, TextField} from "@mui/material";
 import {useGame} from "../context/game.context.ts";
 import {ChangeEvent, useState} from "react";
 import {ResourceTypes} from "../gameRules/types.ts";
@@ -22,6 +22,8 @@ export const AddType = (
   const helperText = isError ? "Already exists" : "";
   return (
     <Modal open={open} onClose={onClose}>
+      <Stack direction="row" alignItems="center" spacing={2}>
+
       <TextField
         type="text"
         label="New Type"
@@ -30,6 +32,10 @@ export const AddType = (
         onChange={onChange}
         helperText={helperText}
       />
+      <button>
+        Save
+      </button>
+      </Stack>
     </Modal>
   )
 }

@@ -1,3 +1,9 @@
+import resourceTypes from "./generated/resourceTypes.json";
+import resourceKeys from "./generated/resourceTypes.json";
+
+export type ResourceTypes = typeof resourceTypes[number];
+export type ResourceKeys = typeof resourceKeys[number];
+
 export type ResourceTypeRaw<K, T> = {
   value: number;
   min: number;
