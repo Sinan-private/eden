@@ -2,7 +2,7 @@ import {ChangeEvent, useMemo, useState} from "react";
 import Select from "@mui/material/Select";
 import {
   Collapse,
-  FormControl,
+  FormControl, IconButton,
   InputLabel,
   MenuItem,
   Stack, SxProps,
@@ -17,10 +17,13 @@ import {IconPickerModal} from "./IconPickerModal.tsx";
 import {AddCostModal} from "./AddCostModal.tsx";
 import {useGame} from "../context/game.context.ts";
 import {resourceTypes} from "../Resource/generated/resourceTypes.ts";
+import Close from "@mui/icons-material/Close";
+import Box from "@mui/material/Box";
 
 type EditResourceProps = {
   resource?: Partial<ResourceState<ResourceKeys, ResourceTypes>>;
   onSubmit?(): void;
+  onClose?(): void;
   enableKeyEdit?: boolean;
   sx?: SxProps;
 };
@@ -37,6 +40,7 @@ export const EditResource = (
     resource,
     enableKeyEdit,
     sx,
+    onClose,
     onSubmit = () => {
     },
   }: EditResourceProps) => {
@@ -46,6 +50,7 @@ export const EditResource = (
   const [filterUsed, onToggleFilter] = useToggle(false);
   const [openAddCost, setOpenAddCost] = useState(false);
   const [costChangeKey, setCostChangeKey] = useState<ChangeKey>('');
+  const [isKeyPristine, setIsKeyPristine] = useState(true);
   const config: Partial<ResourceCloneConfig<ResourceKeys, ResourceTypes>> = {
     onAddCost: () => setOpenAddCost(false)
   }
@@ -92,8 +97,18 @@ export const EditResource = (
     handleCloseIconPicker()
   }
 
-  const onSetKey = (e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => setKey(e.target.value as ResourceKeys)
-  const onSetLabel = (e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => setLabel(e.target.value)
+  const onSetKey = (e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+    setKey(e.target.value as ResourceKeys);
+    if (isKeyPristine) {
+      setIsKeyPristine(false)
+    }
+  }
+  const onSetLabel = (e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+    setLabel(e.target.value)
+    if (isKeyPristine) {
+      setKey(e.target.value.replace(/[^a-zA-Z0-9]+/g, '_').toLowerCase() as ResourceKeys)
+    }
+  }
   const onSetValue = (e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => setValue(Number(e.target.value))
   const onSetMin = (e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => setMin(Number(e.target.value))
   const onSetMax = (e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
@@ -142,7 +157,14 @@ export const EditResource = (
   }, [get, onToggleCost, resource, sx])
 
   return (
-    <>
+    <Box position="relative" pt={4}>
+      {!!onClose &&
+        <Box sx={{position: 'absolute', top: 0, right: 0}}>
+          <IconButton onClick={() => onClose()} size="small">
+            <Close fontSize="inherit"/>
+          </IconButton>
+        </Box>
+      }
       <IconPickerModal
         openIconPicker={openIconPicker}
         handleCloseIconPicker={handleCloseIconPicker}
@@ -232,7 +254,7 @@ export const EditResource = (
           </Collapse>
         </>
       }
-    </>
+    </Box>
   )
 }
 

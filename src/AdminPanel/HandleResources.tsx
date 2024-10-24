@@ -4,9 +4,10 @@ import {useGame} from "../context/game.context.ts";
 import {ResourceKeys, ResourceState, ResourceTypes} from "../Resource/types.ts";
 import Box from "@mui/material/Box";
 import {EditResource} from "./EditResource.tsx";
+import {useState} from "react";
 
 export const HandleResources = () => {
-  const {get, getByType} = useGame().resources;
+  const {getByType} = useGame().resources;
   const _sortedResources = getByType().reduce((result, curr) => {
     const type = curr.type || 'empty'
     const value = result[type] || []
@@ -20,18 +21,49 @@ export const HandleResources = () => {
       <div style={{display: "flex", justifyContent: "center", flexDirection: "row"}}>
         <div className="card">
           {Object.entries(_sortedResources).map(([key, resourcesByType]) => (
-            <Box key={key}>
-              <Typography align="left" variant="h5" paragraph>{key}</Typography>
-              {resourcesByType.map(({key}) => (
-                <AdminResource key={key} resource={get(key)}/>
-              ))}
-              <button>Add resource</button>
-              <EditResource enableKeyEdit resource={{type: resourcesByType[0].type}} />
-            <div style={{height: 60}} />
-            </Box>
+            <ResourceType key={key} resourceKey={key as ResourceKeys} resource={resourcesByType}/>
           ))}
         </div>
       </div>
     </>
+  )
+}
+
+type ResourceTypeProps = {
+  resourceKey: ResourceKeys;
+  resource: ResourceState<ResourceKeys, ResourceTypes>[];
+}
+
+const ResourceType = (
+  {
+    resourceKey,
+    resource,
+  }: ResourceTypeProps
+) => {
+  const {get} = useGame().resources;
+  const [isAddMode, setIsAddMode] = useState(false);
+  const closeAddMode = () => setIsAddMode(false);
+  return (
+    <Box>
+      <Typography align="left" variant="h5" paragraph>{resourceKey}</Typography>
+      {resource.map(({key}) => (
+        <AdminResource key={key} resource={get(key)}/>
+      ))}
+      {!isAddMode
+      ? <button onClick={() => setIsAddMode(true)}>Add resource</button>
+      : (
+          <Box maxWidth={1000}>
+            <EditResource
+              enableKeyEdit
+              resource={{type: resource[0].type}}
+              onSubmit={closeAddMode}
+              onClose={closeAddMode}
+            />
+          </Box>
+        )
+      }
+
+      <div style={{height: 60}}/>
+    </Box>
   )
 }
