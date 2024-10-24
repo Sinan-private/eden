@@ -7,8 +7,9 @@ export const mergeChangeToState = <K extends string, T extends string>(
   update: ResourceUpdateProps<K, T> | ResourceUpdateProps<K, T>[],
   state: ResourceState<K, T>[],
   ): ResourceState<K, T>[] => {
-  const arr: ResourceUpdateProps<K, T>[] = [];
-  const _update = arr.concat(update).map(change => new Resource(change).state)
+  const _update = ([] as ResourceUpdateProps<K, T>[])
+    .concat(update)
+    .map(change => new Resource(change).state)
   return changeToState(_update, state);
 }
 
