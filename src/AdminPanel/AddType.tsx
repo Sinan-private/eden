@@ -6,10 +6,7 @@ import {resourceTypes} from "../Resource/generated/resourceTypes.ts";
 
 export const AddType = () => {
   const {
-    writeAddType,
-    resources: {
-      // existingTypes
-    }
+    writeAddType
   } = useGame();
   const [input, setInput] = useState('');
   const onChange = (e: ChangeEvent<HTMLInputElement>) => setInput(e.target.value)

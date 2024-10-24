@@ -175,13 +175,6 @@ export const EditResource = (
           enableKeyEdit={enableKeyEdit}
           keyAlreadyExists={keyAlreadyExists}
         />
-        <TextField
-          type="text"
-          label="Key"
-          value={key}
-          onChange={onSetKey}
-          disabled={!enableKeyEdit}
-        />
         <Stack direction="row">
 
           <TextField

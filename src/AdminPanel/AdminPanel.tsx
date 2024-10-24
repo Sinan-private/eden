@@ -1,19 +1,19 @@
 import {useEffect, useState} from "react";
 import styled from "styled-components";
-import {SpeedDial, SpeedDialAction, SpeedDialIcon, Typography} from "@mui/material";
+import {IconButton, SpeedDial, SpeedDialAction, SpeedDialIcon} from "@mui/material";
 import BalanceIcon from '@mui/icons-material/Balance';
 import CableIcon from '@mui/icons-material/Cable';
 import {useGame} from "../context/game.context.ts";
-import {AddResource} from "./AddResource.tsx";
+import {AddResourceModal} from "./AddResourceModal.tsx";
 import {HandleTypes} from "./HandleTypes.tsx";
-import {AdminResource} from "./AdminResource.tsx";
 import {AddTypeModal} from "./AddTypeModal.tsx";
+import Box from "@mui/material/Box";
+import Close from "@mui/icons-material/Close";
+import {HandleResources} from "./HandleResources.tsx";
+import TabNav from "./TabNav.tsx";
 
 export const AdminPanel = () => {
-  const {
-    get,
-    getByType,
-  } = useGame().resources;
+  const {onCloseAdminPanel} = useGame();
 
   const [, setLoading] = useState(true);
   const [openNewResource, setOpenNewResource] = useState(false);
@@ -26,23 +26,23 @@ export const AdminPanel = () => {
   const onCloseAddType = () => setOpenNewType(false);
 
   useEffect(() => {
-    // Measure when the browser has finished rendering
     const handleRenderingComplete = () => {
-      // Rendering is done, stop the spinner
       setLoading(false);
     };
 
-    // `requestAnimationFrame` queues up the task after rendering is done
     requestAnimationFrame(() => {
-      // The first frame after the render is complete
       handleRenderingComplete();
     });
   }, []);
-  // console.log(loading)
 
   return (
     <StyledContainer>
-      <HandleTypes />
+      <Box position="absolute" top={10} right={10}>
+        <IconButton onClick={onCloseAdminPanel}>
+          <Close/>
+        </IconButton>
+
+      </Box>
       <SpeedDial
         ariaLabel="SpeedDial basic example"
         sx={{position: 'absolute', bottom: 16, right: 16}}
@@ -59,28 +59,22 @@ export const AdminPanel = () => {
           onClick={onOpenAddType}
         />
       </SpeedDial>
-      <AddTypeModal open={openNewType} onClose={onCloseAddType} />
-      <AddResource open={openNewResource} onClose={onCloseAddCost}/>
-      <Typography variant="h2" align="left" sx={{ml: 4}}>Starting Resources</Typography>
-      <div style={{display: "flex", justifyContent: "center", flexDirection: "row"}}>
-        <div className="card">
-          {getByType("base_resource").map(({key}) => (
-            <AdminResource key={key} resource={get(key)}/>
-          ))}
-          <hr style={{color: 'gray', margin: '20px 0'}}/>
-          {getByType("processed_resource").map(({key}) => (
-            <AdminResource key={key} resource={get(key)}/>
-          ))}
-          <hr style={{color: 'gray', margin: '20px 0'}}/>
-          {getByType("build_resource").map(({key}) => (
-            <AdminResource key={key} resource={get(key)}/>
-          ))}
-          <hr style={{color: 'gray', margin: '20px 0'}}/>
-          {getByType("citizen_resource").map(({key}) => (
-            <AdminResource key={key} resource={get(key)}/>
-          ))}
-        </div>
-      </div>
+      <AddTypeModal open={openNewType} onClose={onCloseAddType}/>
+      <AddResourceModal open={openNewResource} onClose={onCloseAddCost}/>
+
+      <Content>
+        <TabNav tabs={[
+          {
+            label: 'Resources',
+            Component: HandleResources,
+          },
+          {
+            label: 'Types',
+            Component: HandleTypes,
+          },
+        ]} />
+      </Content>
+
     </StyledContainer>
   )
 }
@@ -90,9 +84,12 @@ const StyledContainer = styled.div`
     left: 0;
     top: 0;
     min-width: 60vw;
-    height: 100vh;
-    overflow: auto;
     background-color: #2b2b2b;
     box-shadow: 10px 0 74px 0 #22183887;
     z-index: 1000;
+`
+const Content = styled.div`
+    height: 100vh;
+    overflow: auto;
+
 `

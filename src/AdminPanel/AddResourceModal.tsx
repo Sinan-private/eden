@@ -7,7 +7,7 @@ type NewResourceProps = {
   onClose(): void;
 }
 
-export const AddResource = (
+export const AddResourceModal = (
   {
     open,
     onClose
