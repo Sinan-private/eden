@@ -25,6 +25,16 @@ export class ResourceBase<K extends string, T extends string> {
   // - stateToStorage
 
   constructor(raw_resource: ResourceUpdateProps<K, T>) {
+    const defaultResource:ResourceBase<K, T>['state'] = {
+      key: '' as K,
+      value: 1,
+      min: 0,
+      max: Infinity,
+      label: '',
+      type: '' as T,
+      cost: null,
+      iconName: 'empty',
+    }
     const {
       min,
       max,
@@ -34,13 +44,16 @@ export class ResourceBase<K extends string, T extends string> {
       key,
       cost,
       iconName,
-    } = raw_resource;
+    } = {
+      ...defaultResource,
+      ...raw_resource
+    };
 
     this.key = key;
-    this.value = typeof value === 'number' ? value : 0;
+    this.value = value;
     this.min = typeof min === 'number' ? min : 0;
     this.max = typeof max === 'number' ? max : Infinity;
-    this.label = label ? label : key ? labelFromKey(key) : 'No label';
+    this.label = label ? label : key ? labelFromKey(key) : '';
     this.type = typeof type === 'string' ? type : '' as T;
     this.cost = cost || null;
     this.iconName = iconName || 'empty';

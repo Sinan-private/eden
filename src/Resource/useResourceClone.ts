@@ -11,7 +11,7 @@ export type ResourceCloneConfig<K, T> = {
 }
 
 export const useResourceClone = <K extends string, T extends string>(
-  resource: Partial<ResourceState<K, T>>,
+  resource?: Partial<ResourceState<K, T>>,
   config?: Partial<ResourceCloneConfig<K, T>>
 ) => {
   const _resource = new Resource(resource as ResourceState<K, T>)
@@ -91,14 +91,14 @@ export const useResourceClone = <K extends string, T extends string>(
 
   const isDisabled = useMemo(() => {
     return !(
-      key !== resource.key
-      || value !== resource.value
-      || label !== resource.label
-      || type !== resource.type
-      || iconName !== resource.iconName
-      || min !== resource.min
-      || max !== resource.max
-      || JSON.stringify(cost) !== JSON.stringify(resource.cost)
+      key !== resource?.key
+      || value !== resource?.value
+      || label !== resource?.label
+      || type !== resource?.type
+      || iconName !== resource?.iconName
+      || min !== resource?.min
+      || max !== resource?.max
+      || JSON.stringify(cost) !== JSON.stringify(resource?.cost)
     );
   }, [key, value, resource, label, type, iconName, min, max, cost])
 

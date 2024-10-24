@@ -19,7 +19,7 @@ import {useGame} from "../context/game.context.ts";
 import {resourceTypes} from "../Resource/generated/resourceTypes.ts";
 
 type EditResourceProps = {
-  resource: Partial<ResourceState<ResourceKeys, ResourceTypes>>;
+  resource?: Partial<ResourceState<ResourceKeys, ResourceTypes>>;
   onSubmit?(): void;
   enableKeyEdit?: boolean;
   sx?: SxProps;
@@ -117,17 +117,19 @@ export const EditResource = (
     }
   }
 
+  const saveDisabled = isDisabled || (enableKeyEdit && keyAlreadyExists) || !key.length;
+
   const costButton = useMemo(() => {
     const icon = (key: ResourceKeys) => get(key).icon
     return (
       <Stack direction="row" alignItems="center" spacing={1} minHeight={40} sx={sx}>
         <Typography onClick={onToggleCost}>Cost</Typography>
         <Stack direction="row" spacing={0.5}>
-          {resource.cost?.give && resource.cost.give.map(cost => (
+          {resource?.cost?.give && resource.cost.give.map(cost => (
             <img key={cost.key} src={icon(cost.key)} width={16} height={16} alt={cost.key}/>
           ))}
         </Stack>
-        {resource.cost?.gain && resource.cost?.gain.length > 1 &&
+        {resource?.cost?.gain && resource.cost?.gain.length > 1 &&
           <Stack direction="row" alignItems="center" spacing={0.5}>
             <Typography>{"->"}</Typography>
             {resource.cost?.gain && resource.cost?.gain.length > 1 && resource.cost.gain.map(cost => (
@@ -137,7 +139,7 @@ export const EditResource = (
         }
       </Stack>
     )
-  }, [get, onToggleCost, resource.cost])
+  }, [get, onToggleCost, resource, sx])
 
   return (
     <>
@@ -210,12 +212,12 @@ export const EditResource = (
           </Select>
         </FormControl>
 
-        <button onClick={onSubmitChanges} disabled={isDisabled || (enableKeyEdit && keyAlreadyExists)}>
+        <button onClick={onSubmitChanges} disabled={saveDisabled}>
           Save
         </button>
       </Stack>
       {costButton}
-      {!!resource.cost &&
+      {!!resource?.cost &&
         <>
           <Collapse in={showCost}>
 
@@ -280,6 +282,7 @@ const KeyInput = (
       label="Key"
       value={value}
       onChange={onChange}
+      disabled={!enableKeyEdit}
       error={enableKeyEdit && keyAlreadyExists}
     />
   )

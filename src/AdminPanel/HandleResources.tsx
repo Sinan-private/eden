@@ -3,6 +3,7 @@ import {AdminResource} from "./AdminResource.tsx";
 import {useGame} from "../context/game.context.ts";
 import {ResourceKeys, ResourceState, ResourceTypes} from "../Resource/types.ts";
 import Box from "@mui/material/Box";
+import {EditResource} from "./EditResource.tsx";
 
 export const HandleResources = () => {
   const {get, getByType} = useGame().resources;
@@ -24,6 +25,8 @@ export const HandleResources = () => {
               {resourcesByType.map(({key}) => (
                 <AdminResource key={key} resource={get(key)}/>
               ))}
+              <button>Add resource</button>
+              <EditResource enableKeyEdit resource={{type: resourcesByType[0].type}} />
             <div style={{height: 60}} />
             </Box>
           ))}
