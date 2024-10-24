@@ -90,7 +90,8 @@ export const useResourceClone = <K extends string, T extends string>(
 
   const isDisabled = useMemo(() => {
     return !(
-      value !== resource.value
+      key !== resource.key
+      || value !== resource.value
       || label !== resource.label
       || type !== resource.type
       || iconName !== resource.iconName
@@ -98,7 +99,7 @@ export const useResourceClone = <K extends string, T extends string>(
       || max !== resource.max
       || JSON.stringify(cost) !== JSON.stringify(resource.cost)
     );
-  }, [value, resource, label, type, iconName, min, max, cost])
+  }, [key, value, resource, label, type, iconName, min, max, cost])
 
 
 

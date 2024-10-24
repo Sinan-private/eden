@@ -6,7 +6,8 @@ export const theme = createTheme({
   typography: {
     h2: {
       fontSize: '2.5rem',
-    }
+    },
+    fontFamily: '"Roboto", "Helvetica", "Arial", sans-serif',
   },
   palette: {
   mode: 'dark',

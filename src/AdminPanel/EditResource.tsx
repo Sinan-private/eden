@@ -5,7 +5,7 @@ import {
   FormControl,
   InputLabel,
   MenuItem,
-  Stack,
+  Stack, SxProps,
   TextField,
   Typography
 } from "@mui/material";
@@ -18,8 +18,11 @@ import {AddCostModal} from "./AddCostModal.tsx";
 import {useGame} from "../context/game.context.ts";
 import {resourceTypes} from "../Resource/generated/resourceTypes.ts";
 
-type ResourceProps = {
+type EditResourceProps = {
   resource: Partial<ResourceState<ResourceKeys, ResourceTypes>>;
+  onSubmit?(): void;
+  enableKeyEdit?: boolean;
+  sx?: SxProps;
 };
 export type ChangeKey = 'give' | 'gain' | '';
 
@@ -32,8 +35,12 @@ export type OnSetCost = (
 export const EditResource = (
   {
     resource,
-  }: ResourceProps) => {
-  const {get} = useGame().resources;
+    enableKeyEdit,
+    sx,
+    onSubmit = () => {
+    },
+  }: EditResourceProps) => {
+  const {get, getByType} = useGame().resources;
   const [openIconPicker, setOpenIconPicker] = useState(false);
   const [showCost, onToggleCost] = useToggle(false);
   const [filterUsed, onToggleFilter] = useToggle(false);
@@ -42,7 +49,9 @@ export const EditResource = (
   const config: Partial<ResourceCloneConfig<ResourceKeys, ResourceTypes>> = {
     onAddCost: () => setOpenAddCost(false)
   }
+
   const {
+    key,
     value,
     min,
     max,
@@ -56,6 +65,7 @@ export const EditResource = (
     isDisabled,
     updateResource,
     onRemoveCost,
+    setKey,
     setIconName,
     setLabel,
     setValue,
@@ -63,6 +73,7 @@ export const EditResource = (
     setMax,
   } = useResourceClone(resource, config);
 
+  const keyAlreadyExists = getByType().map(({key}) => key).includes(key);
 
   const handleOpenAddCost = (giveOrGain: ChangeKey) => {
     if (giveOrGain.length) {
@@ -81,12 +92,13 @@ export const EditResource = (
     handleCloseIconPicker()
   }
 
+  const onSetKey = (e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => setKey(e.target.value as ResourceKeys)
   const onSetLabel = (e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => setLabel(e.target.value)
   const onSetValue = (e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => setValue(Number(e.target.value))
   const onSetMin = (e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => setMin(Number(e.target.value))
   const onSetMax = (e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     const max = Number(e.target.value);
-      setMax(isNaN(max) ? 0 : max)
+    setMax(isNaN(max) ? 0 : max)
   }
   const onBlurMax = () => {
     const shouldBeInfinite = max < 1
@@ -98,27 +110,34 @@ export const EditResource = (
 
   const costToSelectFrom = cost && costChangeKey.length ? cost[costChangeKey as 'give' | 'gain'] : []
   const _onAddCost = (change: TradeChange<ResourceKeys>) => onAddCost(costChangeKey, change);
+  const onSubmitChanges = () => {
+    if (!keyAlreadyExists) {
+      updateResource();
+      onSubmit();
+    }
+  }
 
   const costButton = useMemo(() => {
     const icon = (key: ResourceKeys) => get(key).icon
     return (
-    <Stack direction="row" alignItems="center" spacing={1} minHeight={40}>
-      <Typography onClick={onToggleCost}>Cost</Typography>
-      <Stack direction="row" spacing={0.5}>
-        {resource.cost?.give && resource.cost.give.map(cost => (
-          <img key={cost.key} src={icon(cost.key)} width={16} height={16} alt={cost.key}/>
-        ))}
-      </Stack>
-      {resource.cost?.gain && resource.cost?.gain.length > 1 &&
-        <Stack direction="row" alignItems="center" spacing={0.5}>
-          <Typography>{"->"}</Typography>
-          {resource.cost?.gain && resource.cost?.gain.length > 1 && resource.cost.gain.map(cost => (
+      <Stack direction="row" alignItems="center" spacing={1} minHeight={40} sx={sx}>
+        <Typography onClick={onToggleCost}>Cost</Typography>
+        <Stack direction="row" spacing={0.5}>
+          {resource.cost?.give && resource.cost.give.map(cost => (
             <img key={cost.key} src={icon(cost.key)} width={16} height={16} alt={cost.key}/>
           ))}
         </Stack>
-      }
-    </Stack>
-  )}, [onToggleCost, resource])
+        {resource.cost?.gain && resource.cost?.gain.length > 1 &&
+          <Stack direction="row" alignItems="center" spacing={0.5}>
+            <Typography>{"->"}</Typography>
+            {resource.cost?.gain && resource.cost?.gain.length > 1 && resource.cost.gain.map(cost => (
+              <img key={cost.key} src={icon(cost.key)} width={16} height={16} alt={cost.key}/>
+            ))}
+          </Stack>
+        }
+      </Stack>
+    )
+  }, [get, onToggleCost, resource.cost])
 
   return (
     <>
@@ -149,6 +168,14 @@ export const EditResource = (
           label="Name"
           value={label}
           onChange={onSetLabel}
+        />
+        <KeyInput value={key} onChange={onSetKey} keyAlreadyExists={keyAlreadyExists}/>
+        <TextField
+          type="text"
+          label="Key"
+          value={key}
+          onChange={onSetKey}
+          disabled={!enableKeyEdit}
         />
         <Stack direction="row">
 
@@ -185,7 +212,7 @@ export const EditResource = (
           </Select>
         </FormControl>
 
-        <button onClick={updateResource} disabled={isDisabled}>
+        <button onClick={onSubmitChanges} disabled={isDisabled || keyAlreadyExists}>
           Save
         </button>
       </Stack>
@@ -230,6 +257,30 @@ const MaxInput = (
       value={value}
       onChange={onChange}
       onBlur={onBlur}
+    />
+  )
+}
+
+type KeyInputProps = {
+  value: ResourceKeys;
+  onChange(e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>): void;
+  keyAlreadyExists: boolean;
+}
+
+const KeyInput = (
+  {
+    value,
+    onChange,
+    keyAlreadyExists,
+  }: KeyInputProps
+) => {
+  return (
+    <TextField
+      type="text"
+      label="Key"
+      value={value}
+      onChange={onChange}
+      error={keyAlreadyExists}
     />
   )
 }

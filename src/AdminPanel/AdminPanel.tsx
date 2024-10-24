@@ -4,10 +4,10 @@ import {SpeedDial, SpeedDialAction, SpeedDialIcon, Typography} from "@mui/materi
 import BalanceIcon from '@mui/icons-material/Balance';
 import CableIcon from '@mui/icons-material/Cable';
 import {useGame} from "../context/game.context.ts";
-import {EditResource} from "./EditResource.tsx";
 import {AddResource} from "./AddResource.tsx";
 import {AddType} from "./AddType.tsx";
 import {HandleTypes} from "./HandleTypes.tsx";
+import {AdminResource} from "./AdminResource.tsx";
 
 export const AdminPanel = () => {
   const {
@@ -65,19 +65,19 @@ export const AdminPanel = () => {
       <div style={{display: "flex", justifyContent: "center", flexDirection: "row"}}>
         <div className="card">
           {getByType("base_resource").map(({key}) => (
-            <EditResource key={key} resource={get(key)}/>
+            <AdminResource key={key} resource={get(key)}/>
           ))}
           <hr style={{color: 'gray', margin: '20px 0'}}/>
           {getByType("processed_resource").map(({key}) => (
-            <EditResource key={key} resource={get(key)}/>
+            <AdminResource key={key} resource={get(key)}/>
           ))}
           <hr style={{color: 'gray', margin: '20px 0'}}/>
           {getByType("build_resource").map(({key}) => (
-            <EditResource key={key} resource={get(key)}/>
+            <AdminResource key={key} resource={get(key)}/>
           ))}
           <hr style={{color: 'gray', margin: '20px 0'}}/>
           {getByType("citizen_resource").map(({key}) => (
-            <EditResource key={key} resource={get(key)}/>
+            <AdminResource key={key} resource={get(key)}/>
           ))}
         </div>
       </div>

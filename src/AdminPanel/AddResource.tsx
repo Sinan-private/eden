@@ -16,10 +16,14 @@ export const AddResource = (
 
   return (
     <Modal open={open} onClose={onClose}>
-      <EditResource resource={{
-        key: 'new' as ResourceKeys,
-        iconName: 'empty'
-      }} />
+      <EditResource
+        resource={{
+          key: 'new' as ResourceKeys,
+          iconName: 'empty'
+        }}
+        enableKeyEdit
+        sx={{minWidth: 1000}}
+      />
     </Modal>
   )
 }

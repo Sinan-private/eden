@@ -3,6 +3,5 @@ export const resourceTypes = [
   "build_resource",
   "processed_resource",
   "citizen_resource",
-  "currency_resource",
-  "test_type"
+  "currency_resource"
 ] as const;
