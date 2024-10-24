@@ -16,7 +16,6 @@ const filePath = path.join(__dirname, PATH + fileName + '.ts');
       console.error("Error reading the file:", err);
       return;
     }
-    console.log(fileConversion);
 
     // Step 2: Extract the array
     const arrayPattern = new RegExp(`export\\s+const\\s+${fileName}\\s+=\\s+\\[(.*?)\\] as const;`, 's');

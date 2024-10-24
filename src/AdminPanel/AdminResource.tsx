@@ -12,12 +12,14 @@ export const AdminResource = ({resource: _resource}: { resource: ResourceState<R
   const {
     writeRemoveResource,
     resources: {
-      get
+      get,
+      canRemoveResource,
     }
   } = useGame();
   const resource = get(_resource.key)
   const [edit, setEdit] = useState(false);
-  const onCloseEdit = () => setEdit(false)
+  const onCloseEdit = () => setEdit(false);
+  const onDeleteResource = () => writeRemoveResource(resource.key);
 
   const cost = useMemo(() => (
     <Stack direction="column" minWidth={80} spacing={1}>
@@ -51,12 +53,12 @@ export const AdminResource = ({resource: _resource}: { resource: ResourceState<R
   return (
     <Box position="relative">
       <IconButton
-        onClick={() => writeRemoveResource(resource.key)}
+        onClick={onDeleteResource}
         size="small"
-        color="error"
+        disabled={!canRemoveResource(resource.key)}
         sx={{position: 'absolute', left: -40, top: '50%', transform: 'translateY(-50%)'}}
       >
-        <DeleteOutlineIcon fontSize="inherit" />
+        <DeleteOutlineIcon fontSize="inherit"/>
       </IconButton>
       <Paper sx={{p: 1, mb: 2, width: 1000}}>
         <Stack

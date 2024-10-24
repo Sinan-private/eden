@@ -3,7 +3,6 @@ import {updateResourceTypes} from "./updateResourceTypes.js";
 export const writeKeys = (newResources) => {
   const onUpdateResourceKeys = () => {
     const keys = newResources.map(({key}) => key);
-  console.log('write keys', keys)
     return getUniqueValues(keys)
   }
   updateResourceTypes('resourceKeys', onUpdateResourceKeys);

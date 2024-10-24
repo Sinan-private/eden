@@ -68,7 +68,12 @@ export const useResource = <K extends string, T extends string>(initialState: Re
   const onUpdate = useCallback((update: Update<K, T>) => {
     const newState = get(update.key).updateBy(update)
     setState(mergeChangeToState(newState));
-  }, [get, mergeChangeToState])
+  }, [get, mergeChangeToState]);
+
+  const canRemoveResource = (key: K) => {
+    const newResources = removeResorceByKey(key, state)
+    return safeToRemoveResource(key, newResources);
+  }
 
   const removeResource = (key: K) => {
     const newResources = removeResorceByKey(key, state)
@@ -91,6 +96,7 @@ export const useResource = <K extends string, T extends string>(initialState: Re
     usedTypes,
     // existingTypes,
     mergeChangeToState,
+    canRemoveResource,
     removeResource,
     icons,
   }
