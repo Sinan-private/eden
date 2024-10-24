@@ -20,11 +20,11 @@ export const HandleResources = () => {
         <div className="card">
           {Object.entries(_sortedResources).map(([key, resourcesByType]) => (
             <Box key={key}>
-              <Typography align="left" variant="h5">{key}</Typography>
+              <Typography align="left" variant="h5" paragraph>{key}</Typography>
               {resourcesByType.map(({key}) => (
                 <AdminResource key={key} resource={get(key)}/>
               ))}
-            <hr />
+            <div style={{height: 60}} />
             </Box>
           ))}
         </div>
