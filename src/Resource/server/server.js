@@ -41,11 +41,11 @@ app.post('/resources', (req, res) => {
   const newResources = req.body;
 
   // Write the new resources data to the resources.json file
+    writeKeys(newResources);
   fs.writeFile(resourcesFilePath, JSON.stringify(newResources, null, 2), 'utf8', (err) => {
     if (err) {
       return res.status(500).json({ message: 'Error writing to resources file', error: err });
     }
-    writeKeys(newResources);
     res.json({ message: 'Resources updated successfully' });
   });
 });

@@ -72,7 +72,6 @@ export const useResource = <K extends string, T extends string>(initialState: Re
 
   const removeResource = (key: K) => {
     const newResources = removeResorceByKey(key, state)
-    console.log(newResources)
     // It is important to use the newState here since otherwise the resource will possibly block its own deletion
     if (safeToRemoveResource(key, newResources)) {
       setState(newResources);

@@ -1,18 +1,20 @@
 import {useMemo, useState} from "react";
-import ModeEditOutlineIcon from '@mui/icons-material/ModeEditOutline';
+import Box from "@mui/material/Box";
+import DeleteOutlineIcon from '@mui/icons-material/DeleteOutline';
 import {Chip, IconButton, Paper, Stack, Typography} from "@mui/material";
+import ModeEditOutlineIcon from '@mui/icons-material/ModeEditOutline';
 import {ResourceState} from "../Resource";
 import {ResourceKeys, ResourceTypes} from "../Resource/types.ts";
 import {useGame} from "../context/game.context.ts";
 import {EditResource} from "./EditResource.tsx";
-import Box from "@mui/material/Box";
 
 export const AdminResource = ({resource: _resource}: { resource: ResourceState<ResourceKeys, ResourceTypes> }) => {
   const {
     writeRemoveResource,
     resources: {
-    get
-  }} = useGame();
+      get
+    }
+  } = useGame();
   const resource = get(_resource.key)
   const [edit, setEdit] = useState(false);
   const onCloseEdit = () => setEdit(false)
@@ -47,51 +49,60 @@ export const AdminResource = ({resource: _resource}: { resource: ResourceState<R
   }
 
   return (
-    <Paper sx={{p: 1, mb: 2, width: 1000}}>
-      <Stack
-        direction="row"
-        spacing={1}
-        alignItems="center"
-        justifyContent="space-between"
-        sx={{width: '100%'}
-        }>
-        <Stack direction="row" alignItems="center" spacing={1}>
+    <Box position="relative">
+      <IconButton
+        onClick={() => writeRemoveResource(resource.key)}
+        size="small"
+        color="error"
+        sx={{position: 'absolute', left: -40, top: '50%', transform: 'translateY(-50%)'}}
+      >
+        <DeleteOutlineIcon fontSize="inherit" />
+      </IconButton>
+      <Paper sx={{p: 1, mb: 2, width: 1000}}>
+        <Stack
+          direction="row"
+          spacing={1}
+          alignItems="center"
+          justifyContent="space-between"
+          sx={{width: '100%'}
+          }>
           <Stack direction="row" alignItems="center" spacing={1}>
-            <Box sx={{
-              backgroundColor: 'rgb(255 255 255 / 3%)',
-              borderRadius: 20,
-              height: 40,
-              width: 40,
-              display: 'flex',
-              justifyContent: 'center',
-              alignItems: 'center',
-            }}>
-              <img src={resource.icon} alt={resource.label} width={32} height={32}/>
-            </Box>
-            <Stack width={80} alignItems="flex-end">
-              <Typography sx={{mb: -1}} variant="caption">{resource.label}</Typography>
-              <Typography sx={{fontSize: '1.2rem', fontWeight: 'bold'}}>
-                {resource.beautify.value}
-                <Typography
-                  component="span"
-                  variant="body2"
-                  color="text.secondary"
-                >
-                  {resource.max !== Infinity ? `(${resource.max})` : ''}
+            <Stack direction="row" alignItems="center" spacing={1}>
+              <Box sx={{
+                backgroundColor: 'rgb(255 255 255 / 3%)',
+                borderRadius: 20,
+                height: 40,
+                width: 40,
+                display: 'flex',
+                justifyContent: 'center',
+                alignItems: 'center',
+              }}>
+                <img src={resource.icon} alt={resource.label} width={32} height={32}/>
+              </Box>
+              <Stack width={80} alignItems="flex-end">
+                <Typography sx={{mb: -1}} variant="caption">{resource.label}</Typography>
+                <Typography sx={{fontSize: '1.2rem', fontWeight: 'bold'}}>
+                  {resource.beautify.value}
+                  <Typography
+                    component="span"
+                    variant="body2"
+                    color="text.secondary"
+                  >
+                    {resource.max !== Infinity ? `(${resource.max})` : ''}
+                  </Typography>
                 </Typography>
-              </Typography>
+              </Stack>
             </Stack>
+            {cost}
           </Stack>
-          {cost}
+          <Stack direction="row" alignItems="center" spacing={1}>
+            <Chip label={resource.type} size="small" variant="outlined"/>
+            <IconButton onClick={() => setEdit(true)} sx={{alignSelf: 'flex-end'}}>
+              <ModeEditOutlineIcon/>
+            </IconButton>
+          </Stack>
         </Stack>
-        <Stack direction="row" alignItems="center" spacing={1}>
-          <Chip label={resource.type} size="small" variant="outlined"/>
-          <IconButton onClick={() => setEdit(true)} sx={{alignSelf: 'flex-end'}}>
-            <ModeEditOutlineIcon/>
-          </IconButton>
-        </Stack>
-      </Stack>
-      <button onClick={() => writeRemoveResource(resource.key)}>trash</button>
-    </Paper>
+      </Paper>
+    </Box>
   )
 }
