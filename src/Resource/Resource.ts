@@ -12,6 +12,7 @@ export class Resource<K extends string, T extends string> extends ResourceBase<K
     change: TradeChange<K>,
     cost = this.cost,
   ): ResourceCostUpdate<K> | null => {
+    console.log(changeKey, cost);
     if (!cost || !changeKey.length) {
       return cost
     }
@@ -24,6 +25,13 @@ export class Resource<K extends string, T extends string> extends ResourceBase<K
       [changeKey]: cost[changeKey as 'give' | 'gain']
         .concat(addedCost)
     } as ResourceCostUpdate<K>
+  }
+
+  public readonly createCost = (change: TradeChange<K>): ResourceCostUpdate<K> => {
+    return {
+      give: [change],
+      gain: [{key: this.key, value: 1}]
+    }
   }
 
   public readonly removeCost = (

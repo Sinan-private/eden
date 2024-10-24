@@ -1,6 +1,6 @@
 import {useGame} from "../context/game.context.ts";
 import {useMemo, useState} from "react";
-import {ResourceState, TradeChange} from "./types.ts";
+import {ResourceCostUpdate, ResourceState, TradeChange} from "./types.ts";
 import {SelectChangeEvent} from "@mui/material/Select";
 import icons from "../assets/icons/icons.ts";
 import {Resource} from "./Resource.ts";
@@ -18,6 +18,7 @@ export const useResourceClone = <K extends string, T extends string>(
   const {
     resources: {
       mergeChangeToState,
+      get,
     },
     writeInitialResources
   } = useGame();
@@ -60,10 +61,18 @@ export const useResourceClone = <K extends string, T extends string>(
     change: TradeChange<K>
   ) => {
     const newCost = _resource.addCost(changeKey, change, cost)
+    console.log('In here I am not considering the addition to a former blank cost', newCost)
+    // Todo I can expect that if a "give" is added, the default for the gain is the resource itself with an amount of 1
     if (newCost) {
       setCost(newCost)
       safeConfig.onAddCost(getResourceState({cost: newCost}));
     }
+  }
+
+  const onCreateCost = (change: TradeChange<K>) => {
+    // @ts-ignore
+    const newCost: ResourceCostUpdate<K> = get(key).createCost(change);
+    setCost(newCost)
   }
 
   const onRemoveCost = (
@@ -118,6 +127,7 @@ export const useResourceClone = <K extends string, T extends string>(
     isDisabled,
     onSetCost,
     onAddCost,
+    onCreateCost,
     handleTypeChange,
     updateResource,
     setLabel,

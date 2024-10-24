@@ -19,6 +19,7 @@ import {useGame} from "../context/game.context.ts";
 import {resourceTypes} from "../Resource/generated/resourceTypes.ts";
 import Close from "@mui/icons-material/Close";
 import Box from "@mui/material/Box";
+import {AddCost} from "./AddCost.tsx";
 
 type EditResourceProps = {
   resource?: Partial<ResourceState<ResourceKeys, ResourceTypes>>;
@@ -46,7 +47,7 @@ export const EditResource = (
   }: EditResourceProps) => {
   const {get, getByType} = useGame().resources;
   const [openIconPicker, setOpenIconPicker] = useState(false);
-  const [showCost, onToggleCost] = useToggle(false);
+  const [showCost, onToggleCost] = useToggle(true);
   const [filterUsed, onToggleFilter] = useToggle(false);
   const [openAddCost, setOpenAddCost] = useState(false);
   const [costChangeKey, setCostChangeKey] = useState<ChangeKey>('');
@@ -76,6 +77,7 @@ export const EditResource = (
     setValue,
     setMin,
     setMax,
+    onCreateCost,
   } = useResourceClone(resource, config);
 
   const keyAlreadyExists = getByType().map(({key}) => key).includes(key);
@@ -122,8 +124,12 @@ export const EditResource = (
       setMax(Infinity)
     }
   }
+  console.log(cost)
 
   const costToSelectFrom = cost && costChangeKey.length ? cost[costChangeKey as 'give' | 'gain'] : []
+  const onCreateNewCost = (change: TradeChange<ResourceKeys>) => {
+    onCreateCost(change)
+  }
   const _onAddCost = (change: TradeChange<ResourceKeys>) => onAddCost(costChangeKey, change);
   const onSubmitChanges = () => {
     if (!(keyAlreadyExists && enableKeyEdit)) {
@@ -239,7 +245,13 @@ export const EditResource = (
         </button>
       </Stack>
       {costButton}
-      {!!resource?.cost &&
+      {!cost &&
+      <AddCost
+        onAddCost={onCreateNewCost}
+        cost={costToSelectFrom}
+      />
+      }
+      {!!cost &&
         <>
           <Collapse in={showCost}>
 
