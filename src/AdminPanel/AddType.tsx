@@ -2,21 +2,21 @@ import {Stack, TextField} from "@mui/material";
 import {useGame} from "../context/game.context.ts";
 import {ChangeEvent, useState} from "react";
 import {ResourceTypes} from "../Resource/types.ts";
+import {resourceTypes} from "../Resource/generated/resourceTypes.ts";
 
 export const AddType = () => {
   const {
     writeAddType,
     resources: {
-      existingTypes
+      // existingTypes
     }
   } = useGame();
   const [input, setInput] = useState('');
   const onChange = (e: ChangeEvent<HTMLInputElement>) => setInput(e.target.value)
-  const isError = existingTypes.includes(input as ResourceTypes);
+  const isError = resourceTypes.includes(input as ResourceTypes);
   const helperText = isError ? "Already exists" : "";
   const onSubmit = () => {
-    // setInput('')
-    writeAddType(input)
+    writeAddType(input).then(() => setInput(''))
   };
   return (
     <Stack direction="row" alignItems="center" spacing={2}>

@@ -55,10 +55,6 @@ const useGameBase = () => {
      return;
    }
    removeType(typesToRemove)
-   // const toRemove = [].concat(types);
-    // const newTypes = existingTypes
-    //   .filter(type => !toRemove.includes(type));
-    // removeType(arr)
   }
 
   return {

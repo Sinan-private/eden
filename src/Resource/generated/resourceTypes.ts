@@ -4,7 +4,5 @@ export const resourceTypes = [
   "processed_resource",
   "citizen_resource",
   "currency_resource",
-  "test",
-  "me",
-  "my"
+  "level"
 ] as const;

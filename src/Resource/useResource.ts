@@ -5,7 +5,7 @@ import {GetTurnUpdate, nextTurn as getNextTurn} from "./helpers/nextTurn.ts";
 import {get as _get} from "./helpers/getResource.ts";
 import {mergeChangeToState as _mergeChangeToState} from "./helpers/stateUpdate.ts";
 import {useIcons} from "./useIcons.ts";
-import {resourceTypes} from "./generated/resourceTypes.ts";
+// import {resourceTypes} from "./generated/resourceTypes.ts";
 
 export type Update<K, T> = ResourceUpdateProps<K, T>;
 export type TradeUpdate<K, T> = {
@@ -26,7 +26,7 @@ export const useResource = <K extends string, T extends string>(initialState: Re
     (key: K, _state = state) => _get(key, _state),
     [state]);
 
-  const existingTypes = resourceTypes
+  // const existingTypes = useMemo(() => resourceTypes, [])
 
   const usedTypes = useMemo(() =>
       getUniqueValues(state.map(({type}) => type)),
@@ -79,7 +79,7 @@ export const useResource = <K extends string, T extends string>(initialState: Re
     nextTurn: nextTurn,
     setState,
     usedTypes,
-    existingTypes,
+    // existingTypes,
     mergeChangeToState,
     icons,
   }
