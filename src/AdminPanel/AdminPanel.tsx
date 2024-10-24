@@ -5,9 +5,9 @@ import BalanceIcon from '@mui/icons-material/Balance';
 import CableIcon from '@mui/icons-material/Cable';
 import {useGame} from "../context/game.context.ts";
 import {AddResource} from "./AddResource.tsx";
-import {AddType} from "./AddType.tsx";
 import {HandleTypes} from "./HandleTypes.tsx";
 import {AdminResource} from "./AdminResource.tsx";
+import {AddTypeModal} from "./AddTypeModal.tsx";
 
 export const AdminPanel = () => {
   const {
@@ -59,7 +59,7 @@ export const AdminPanel = () => {
           onClick={onOpenAddType}
         />
       </SpeedDial>
-      <AddType open={openNewType} onClose={onCloseAddType} />
+      <AddTypeModal open={openNewType} onClose={onCloseAddType} />
       <AddResource open={openNewResource} onClose={onCloseAddCost}/>
       <Typography variant="h2" align="left" sx={{ml: 4}}>Starting Resources</Typography>
       <div style={{display: "flex", justifyContent: "center", flexDirection: "row"}}>

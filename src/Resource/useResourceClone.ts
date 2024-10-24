@@ -83,7 +83,8 @@ export const useResourceClone = <K extends string, T extends string>(
 
   const updateResource = () => {
     console.log(getResourceState())
-    // @ts-ignore
+    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+    // @ts-expect-error
     const newState = mergeChangeToState(getResourceState())
     writeInitialResources(newState)
   }

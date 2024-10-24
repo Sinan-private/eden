@@ -5,6 +5,7 @@ import {GetTurnUpdate, nextTurn as getNextTurn} from "./helpers/nextTurn.ts";
 import {get as _get} from "./helpers/getResource.ts";
 import {mergeChangeToState as _mergeChangeToState} from "./helpers/stateUpdate.ts";
 import {useIcons} from "./useIcons.ts";
+import {resourceTypes} from "./generated/resourceTypes.ts";
 
 export type Update<K, T> = ResourceUpdateProps<K, T>;
 export type TradeUpdate<K, T> = {
@@ -17,7 +18,7 @@ export const useResource = <K extends string, T extends string>(initialState: Re
   const [state, setState] = useState(initialState);
   const icons = useIcons(state);
 
-  const mergeChangeToState = useCallback((update: ResourceState<K, T> | ResourceState<K, T>[]): ResourceState<K, T>[] =>
+  const mergeChangeToState = useCallback((update: ResourceUpdateProps<K, T> | ResourceUpdateProps<K, T>[]): ResourceState<K, T>[] =>
     _mergeChangeToState(update, state), [state])
 
   // Get the full EditResource class
@@ -25,7 +26,9 @@ export const useResource = <K extends string, T extends string>(initialState: Re
     (key: K, _state = state) => _get(key, _state),
     [state]);
 
-  const types = useMemo(() =>
+  const existingTypes = resourceTypes
+
+  const usedTypes = useMemo(() =>
       getUniqueValues(state.map(({type}) => type)),
     [state])
 
@@ -75,7 +78,8 @@ export const useResource = <K extends string, T extends string>(initialState: Re
     onTrade,
     nextTurn: nextTurn,
     setState,
-    types,
+    usedTypes,
+    existingTypes,
     mergeChangeToState,
     icons,
   }

@@ -1,13 +1,13 @@
-import {isTradeFormat, ResourceState, TurnUpdateFormat} from "../types.ts";
+import {isTradeFormat, ResourceState, ResourceUpdateProps, TurnUpdateFormat} from "../types.ts";
 import {Trade} from "../Trade.ts";
 import {get} from "./getResource.ts";
 import {Resource} from "../Resource.ts";
 
 export const mergeChangeToState = <K extends string, T extends string>(
-  update: ResourceState<K, T> | ResourceState<K, T>[],
+  update: ResourceUpdateProps<K, T> | ResourceUpdateProps<K, T>[],
   state: ResourceState<K, T>[],
   ): ResourceState<K, T>[] => {
-  const arr: ResourceState<K, T>[] = [];
+  const arr: ResourceUpdateProps<K, T>[] = [];
   const _update = arr.concat(update).map(change => new Resource(change).state)
   return changeToState(_update, state);
 }

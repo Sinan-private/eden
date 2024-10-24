@@ -111,7 +111,7 @@ export const EditResource = (
   const costToSelectFrom = cost && costChangeKey.length ? cost[costChangeKey as 'give' | 'gain'] : []
   const _onAddCost = (change: TradeChange<ResourceKeys>) => onAddCost(costChangeKey, change);
   const onSubmitChanges = () => {
-    if (!keyAlreadyExists) {
+    if (!(keyAlreadyExists && enableKeyEdit)) {
       updateResource();
       onSubmit();
     }
@@ -169,7 +169,12 @@ export const EditResource = (
           value={label}
           onChange={onSetLabel}
         />
-        <KeyInput value={key} onChange={onSetKey} keyAlreadyExists={keyAlreadyExists}/>
+        <KeyInput
+          value={key}
+          onChange={onSetKey}
+          enableKeyEdit={enableKeyEdit}
+          keyAlreadyExists={keyAlreadyExists}
+        />
         <TextField
           type="text"
           label="Key"
@@ -212,7 +217,7 @@ export const EditResource = (
           </Select>
         </FormControl>
 
-        <button onClick={onSubmitChanges} disabled={isDisabled || keyAlreadyExists}>
+        <button onClick={onSubmitChanges} disabled={isDisabled || (enableKeyEdit && keyAlreadyExists)}>
           Save
         </button>
       </Stack>
@@ -265,6 +270,7 @@ type KeyInputProps = {
   value: ResourceKeys;
   onChange(e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>): void;
   keyAlreadyExists: boolean;
+  enableKeyEdit?: boolean;
 }
 
 const KeyInput = (
@@ -272,6 +278,7 @@ const KeyInput = (
     value,
     onChange,
     keyAlreadyExists,
+    enableKeyEdit
   }: KeyInputProps
 ) => {
   return (
@@ -280,7 +287,7 @@ const KeyInput = (
       label="Key"
       value={value}
       onChange={onChange}
-      error={keyAlreadyExists}
+      error={enableKeyEdit && keyAlreadyExists}
     />
   )
 }
