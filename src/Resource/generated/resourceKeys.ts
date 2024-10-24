@@ -2,7 +2,6 @@ export const resourceKeys = [
   "gold",
   "corn",
   "water",
-  "coal",
   "stone",
   "wood",
   "land",

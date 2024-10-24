@@ -18,7 +18,7 @@ const useGameBase = () => {
   const [isFetching, setIsFetching] = useState(true);
   const [showAdminPanel, setShowAdminPanel] = useState(false);
   // The resource offers all info and update methods. The nextTurn is only needed here to handle turn updates only in here.
-  const {nextTurn, setState, ...resources} = useResource<ResourceKeys, ResourceTypes>([]);
+  const {nextTurn, setState, state, ...resources} = useResource<ResourceKeys, ResourceTypes>([]);
   const tick = useTick();
   const prevTick = usePrevious(tick.current);
   useComponentMount(async () => {
@@ -46,31 +46,40 @@ const useGameBase = () => {
     ))
   }
 
+  const writeRemoveResource = (key: ResourceKeys) => {
+    const updatedState = resources.removeResource(key);
+    console.log(updatedState)
+    if (updatedState) {
+      updateResources(updatedState)
+    }
+  }
+
   const writeAddType = (type: string | string[]) =>
     addType(([] as string[]).concat(type))
 
   const writeRemoveType = (type: ResourceTypes | ResourceTypes[]) => {
-    const usedTypes = resources.getByType().map(({type}) => type);
+    const usedTypes = state.map(({type}) => type);
     const typesToRemove = ([] as ResourceTypes[]).concat(type);
-   const matches =  typesToRemove.filter(value => usedTypes.includes(value!));
-   if (matches.length) {
-     console.error('These Types are being in used and can not be removed', matches)
-     return;
-   }
-   removeType(typesToRemove)
+    const matches = typesToRemove.filter(value => usedTypes.includes(value!));
+    if (matches.length) {
+      console.error('These Types are being in used and can not be removed', matches)
+      return;
+    }
+    removeType(typesToRemove)
   }
 
   return {
     resources,
     isFetching,
     tick,
-    writeInitialResources,
     showAdminPanel,
     // setShowAdminPanel,
     onOpenAdminPanel,
     onCloseAdminPanel,
+    writeInitialResources,
     writeAddType,
     writeRemoveType,
+    writeRemoveResource,
   };
 }
 

@@ -70,7 +70,18 @@ export const useResource = <K extends string, T extends string>(initialState: Re
     setState(mergeChangeToState(newState));
   }, [get, mergeChangeToState])
 
+  const removeResource = (key: K) => {
+    const newResources = removeResorceByKey(key, state)
+    console.log(newResources)
+    // It is important to use the newState here since otherwise the resource will possibly block its own deletion
+    if (safeToRemoveResource(key, newResources)) {
+      setState(newResources);
+      return newResources;
+    }
+  }
+
   return {
+    state,
     get,
     getByType,
     onUpdate,
@@ -81,10 +92,35 @@ export const useResource = <K extends string, T extends string>(initialState: Re
     usedTypes,
     // existingTypes,
     mergeChangeToState,
+    removeResource,
     icons,
   }
 }
 
 const getUniqueValues = <T>(arr: T[]): T[] => {
   return Array.from(new Set(arr));
+}
+
+const removeResorceByKey = <K, T>(key: K, state: ResourceState<K, T>[]): ResourceState<K, T>[] => {
+  const index = state.findIndex(state => state.key === key);
+  return [
+    ...state.slice(0, index),
+    ...state.slice(index + 1),
+  ]
+}
+
+const safeToRemoveResource = <K, T>(key: K, state: ResourceState<K, T>[]): boolean => {
+  let isInUse = false;
+  // It is important to use the newState here since otherwise the resource will possibly block its own deletion
+  state.forEach(({cost}) => {
+      if (!cost) return
+      const flatCost = Object.values(cost).flat();
+      flatCost.forEach(cost => {
+        if (cost.key === key) {
+          isInUse = true
+        }
+      })
+    }
+  )
+  return !isInUse;
 }

@@ -8,7 +8,11 @@ import {EditResource} from "./EditResource.tsx";
 import Box from "@mui/material/Box";
 
 export const AdminResource = ({resource: _resource}: { resource: ResourceState<ResourceKeys, ResourceTypes> }) => {
-  const {get} = useGame().resources;
+  const {
+    writeRemoveResource,
+    resources: {
+    get
+  }} = useGame();
   const resource = get(_resource.key)
   const [edit, setEdit] = useState(false);
   const onCloseEdit = () => setEdit(false)
@@ -87,6 +91,7 @@ export const AdminResource = ({resource: _resource}: { resource: ResourceState<R
           </IconButton>
         </Stack>
       </Stack>
+      <button onClick={() => writeRemoveResource(resource.key)}>trash</button>
     </Paper>
   )
 }
