@@ -14,11 +14,11 @@ import {Cost} from "./Cost.tsx";
 import {ResourceCloneConfig, useResourceClone} from "../Resource/useResourceClone.ts";
 import {useToggle} from "../Resource/hooks/useToggle.ts";
 import {IconPickerModal} from "./IconPickerModal.tsx";
-import {AddCostModal} from "./AddCostModal.tsx";
+import {AddCostModal} from "./Add/AddCostModal.tsx";
 import {resourceTypes} from "../Resource/generated/resourceTypes.ts";
 import Close from "@mui/icons-material/Close";
 import Box from "@mui/material/Box";
-import {AddCost} from "./AddCost.tsx";
+import {AddCost} from "./Add/AddCost.tsx";
 import {ResourceKeys, ResourceTypes} from "../Resource/specificTypes.ts";
 import {useAdmin} from "../Resource/Admin/admin.context.ts";
 
@@ -261,6 +261,7 @@ export const EditResource = (
                 cost={cost}
                 onSetCost={onSetCost}
                 onOpenAddCost={handleOpenAddCost}
+                onAddCost={onAddCost}
               />
             </Stack>
           </Collapse>

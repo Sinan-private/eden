@@ -1,70 +1,77 @@
-import {Stack, TextField, Typography} from "@mui/material";
+import {useState} from "react";
+import {IconButton, Stack, TextField, Typography} from "@mui/material";
+import DeleteOutlineIcon from "@mui/icons-material/DeleteOutline";
 import {ResourceCostUpdate, TradeChange} from "../Resource/genericTypes.ts";
 import {OnSetCost} from "./EditResource.tsx";
 import {ResourceKeys} from "../Resource/specificTypes.ts";
 import {useAdmin} from "../Resource/Admin/admin.context.ts";
-
-//  The issue is that I want to store the state in the parent so that I have an intermediate state before overwriting the real one
-// But this state needs to be clean an minimal, while the rendering needs to enriched one
-// So how should the enrichment happen
-// Especially in cases like this where the resource gets deconstructed into its parts
+import {capitalizeFirstLetter} from "../Resource/helpers/captializeFirstLetter.ts";
+import {AddCost} from "./Add/AddCost.tsx";
 
 type CostProps = {
-  // resource: Resource<ResourceKeys, ResourceTypes>;
   cost: ResourceCostUpdate<ResourceKeys> | null;
   onSetCost: OnSetCost;
   onOpenAddCost(giveOrGain: 'give' | 'gain'): void;
   onRemoveCost(changeKey: 'give' | 'gain', resourceKey: ResourceKeys): void;
+  onAddCost(changeKey: 'give' | 'gain' | '', change: TradeChange<ResourceKeys>): void
 };
 
-export const Cost = ({cost, onSetCost, onOpenAddCost, onRemoveCost}: CostProps) => {
-  // Nope, not good. The state update needs to be handled in a single place. Meaning here, or rather in the EditResource
-  // console.log(cost)
-  const onOpenGive = () => onOpenAddCost('give');
-  const onOpenGain = () => onOpenAddCost('gain');
-
-  const _onSetCost = (type: 'give' | 'gain') => (change: TradeChange<ResourceKeys>) => onSetCost(type, change)
+export const Cost = (props: CostProps) => {
   return (
-    <Stack spacing={2}>
-    <Stack direction="row" alignItems="center" spacing={4}>
-      <Typography>
-
-      Give
-      </Typography>
-      {cost?.give.map(give => (
-        <SingleCost
-          key={give.key}
-          change={give}
-          onSetCost={_onSetCost('give')}
-          onRemoveCost={() => onRemoveCost("give", give.key)}
-        />
-      ))}
-      <button style={{height: 56}} onClick={onOpenGive}>Add</button>
-
-    </Stack>
-      <Stack direction="row" alignItems="center" spacing={4}>
-        <Typography>
-
-          Gain
-        </Typography>
-        {cost?.gain.map(gain => (
-          <SingleCost
-            key={gain.key}
-            change={gain}
-            onSetCost={_onSetCost('gain')}
-            onRemoveCost={() => onRemoveCost("gain", gain.key)}
-          />
-        ))}
-        <button style={{height: 56}} onClick={onOpenGain}>Add</button>
-
-      </Stack>
+    <Stack spacing={10} direction="row" pl={8}>
+      <CostChange {...props} changeKey="give"/>
+      <CostChange {...props} changeKey="gain"/>
     </Stack>
 
   )
 }
 
+type CostChangeProps = {
+  changeKey: 'give' | 'gain';
+} & CostProps
+
+const CostChange = (
+  {
+    cost,
+    onSetCost,
+    changeKey,
+    onRemoveCost,
+    onAddCost,
+  }: CostChangeProps
+) => {
+  const [showAddCost, setShowAddCost] = useState(false);
+  const _onSetCost = (change: TradeChange<ResourceKeys>) => onSetCost(changeKey, change);
+  const _onAddCost = (change: TradeChange<ResourceKeys>) => {
+    setShowAddCost(false);
+    onAddCost(changeKey, change);
+  };
+  const change = cost?.give ? cost[changeKey] : [];
+
+  return (
+    <Stack direction="column" spacing={2}>
+      <Typography>
+        {capitalizeFirstLetter(changeKey)}
+      </Typography>
+      {change.map(singleChange => (
+        <SingleCost
+          key={singleChange.key}
+          change={singleChange}
+          onSetCost={_onSetCost}
+          onRemoveCost={() => onRemoveCost(changeKey, singleChange.key)}
+        />
+      ))}
+      {
+        showAddCost
+          ? <AddCost onAddCost={_onAddCost} cost={change} sx={{width: 280}}/>
+          : <button style={{height: 56}} onClick={() => setShowAddCost(true)}>Add</button>
+      }
+
+
+    </Stack>
+  )
+}
+
 type SingleCostProps = {
-  // resource: Resource<ResourceKeys, ResourceTypes>;
   change: TradeChange<ResourceKeys>;
   onSetCost(change: TradeChange<ResourceKeys>): void;
   onRemoveCost(): void;
@@ -72,8 +79,6 @@ type SingleCostProps = {
 
 const SingleCost = ({change, onSetCost, onRemoveCost}: SingleCostProps) => {
   const {get} = useAdmin().resources;
-  // const [value, setValue] = useState(change.value);
-  //
   const onChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const value = Number(event.target.value);
     onSetCost({key: change.key, value});
@@ -93,8 +98,14 @@ const SingleCost = ({change, onSetCost, onRemoveCost}: SingleCostProps) => {
         type="number"
         sx={{width: 80}}
         onChange={onChange}
+        size="small"
       />
-      <button onClick={onRemoveCost}>remove</button>
+      <IconButton
+        onClick={onRemoveCost}
+        size="small"
+      >
+        <DeleteOutlineIcon fontSize="inherit"/>
+      </IconButton>
     </Stack>
   )
 }

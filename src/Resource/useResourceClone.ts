@@ -61,8 +61,6 @@ export const useResourceClone = <K extends string, T extends string>(
     change: TradeChange<K>
   ) => {
     const newCost = _resource.addCost(changeKey, change, cost)
-    console.log('In here I am not considering the addition to a former blank cost', newCost)
-    // Todo I can expect that if a "give" is added, the default for the gain is the resource itself with an amount of 1
     if (newCost) {
       setCost(newCost)
       safeConfig.onAddCost(getResourceState({cost: newCost}));

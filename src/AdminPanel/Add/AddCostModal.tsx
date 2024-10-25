@@ -1,7 +1,7 @@
-import Modal from './Modal.tsx'
+import Modal from '../Modal.tsx'
 import {AddCost} from "./AddCost.tsx";
-import {TradeChange} from "../Resource/genericTypes.ts";
-import {ResourceKeys} from "../Resource/specificTypes.ts";
+import {TradeChange} from "../../Resource/genericTypes.ts";
+import {ResourceKeys} from "../../Resource/specificTypes.ts";
 
 type AddCostModalProps = {
   openAddCost: boolean;

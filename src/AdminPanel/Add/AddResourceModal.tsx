@@ -1,7 +1,7 @@
-import Modal from "./Modal.tsx";
-import {EditResource} from "./EditResource.tsx";
+import Modal from "../Modal.tsx";
+import {EditResource} from "../EditResource.tsx";
 
-import {ResourceKeys} from "../Resource/specificTypes.ts";
+import {ResourceKeys} from "../../Resource/specificTypes.ts";
 
 type NewResourceProps = {
   open: boolean;

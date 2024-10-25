@@ -4,9 +4,9 @@ import {IconButton, SpeedDial, SpeedDialAction, SpeedDialIcon} from "@mui/materi
 import BalanceIcon from '@mui/icons-material/Balance';
 import CableIcon from '@mui/icons-material/Cable';
 import {useGame} from "../context/game.context.ts";
-import {AddResourceModal} from "./AddResourceModal.tsx";
+import {AddResourceModal} from "./Add/AddResourceModal.tsx";
 import {HandleTypes} from "./HandleTypes.tsx";
-import {AddTypeModal} from "./AddTypeModal.tsx";
+import {AddTypeModal} from "./Add/AddTypeModal.tsx";
 import Box from "@mui/material/Box";
 import Close from "@mui/icons-material/Close";
 import {HandleResources} from "./HandleResources.tsx";

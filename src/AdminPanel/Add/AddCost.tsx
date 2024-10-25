@@ -1,15 +1,17 @@
-import {Autocomplete, Stack, TextField} from "@mui/material";
 import {SyntheticEvent, useMemo, useState} from "react";
-import {TradeChange} from "../Resource/genericTypes.ts";
-import {ResourceKeys} from "../Resource/specificTypes.ts";
-import {useAdmin} from "../Resource/Admin/admin.context.ts";
+import {Autocomplete, IconButton, Stack, SxProps, TextField} from "@mui/material";
+import CheckIcon from '@mui/icons-material/Check';
+import {TradeChange} from "../../Resource/genericTypes.ts";
+import {ResourceKeys} from "../../Resource/specificTypes.ts";
+import {useAdmin} from "../../Resource/Admin/admin.context.ts";
 
 type ResourceForCostProps = {
   onAddCost(change: TradeChange<ResourceKeys>): void;
   cost: TradeChange<ResourceKeys>[];
+  sx?: SxProps;
 }
 
-export const AddCost = ({onAddCost, cost}: ResourceForCostProps) => {
+export const AddCost = ({onAddCost, cost, sx}: ResourceForCostProps) => {
   const {getByType} = useAdmin().resources;
   const [selectedResource, setSelectedResource] = useState<{ key: ResourceKeys; label: string } | null>(null);
   const [selectAmount, setSelectAmount] = useState(1);
@@ -39,11 +41,11 @@ export const AddCost = ({onAddCost, cost}: ResourceForCostProps) => {
   }
 
   return (
-    <Stack direction="row" alignItems="center" spacing={1}>
+    <Stack direction="row" alignItems="center" spacing={1} sx={sx}>
       <Autocomplete
         disablePortal
         options={resourcesForSelect}
-        sx={{width: 300}}
+        sx={sx}
         renderInput={(params) => <TextField {...params} label="Resource"/>}
         onChange={onChange}
         onReset={() => setSelectedResource(null)}
@@ -54,7 +56,9 @@ export const AddCost = ({onAddCost, cost}: ResourceForCostProps) => {
         value={selectAmount}
         disabled={!selectedResource}
       />
-      <button onClick={onSubmit} disabled={!selectedResource}>Submit</button>
+      <IconButton onClick={onSubmit} disabled={!selectedResource} color="success">
+        <CheckIcon />
+      </IconButton>
     </Stack>
   )
 }
