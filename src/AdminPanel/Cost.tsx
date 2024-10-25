@@ -83,9 +83,9 @@ const SingleCost = ({change, onSetCost, onRemoveCost}: SingleCostProps) => {
     const value = Number(event.target.value);
     onSetCost({key: change.key, value});
   }
-  // const icon = icons.getByKey(change.key)
+  // This one is a nasty little bitch. The already annoying situation that I need to get cost icons this way
+  // really brakes the chain here. A newly created resource can not provide this yet. -> See getResource.ts
   const icon = get(change.key)?.icon
-  console.log(icon)
 
   return (
     <Stack spacing={1} direction="row" alignItems="center">
