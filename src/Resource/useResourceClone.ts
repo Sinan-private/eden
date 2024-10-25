@@ -14,7 +14,7 @@ export const useResourceClone = <K extends string, T extends string>(
   resource?: Partial<ResourceState<K, T>>,
   config?: Partial<ResourceCloneConfig<K, T>>
 ) => {
-  const _resource = new Resource(resource as ResourceState<K, T>)
+  const _resource = new Resource<K, T>(resource as ResourceState<K, T>)
   const {
     resources: {
       mergeChangeToState,
@@ -69,8 +69,8 @@ export const useResourceClone = <K extends string, T extends string>(
     }
   }
 
-  const onCreateCost = (change: TradeChange<K>) => {
     // @ts-ignore
+  const onCreateCost = (change: TradeChange<K>) => {
     const newCost: ResourceCostUpdate<K> = get(key).createCost(change);
     setCost(newCost)
   }

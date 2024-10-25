@@ -5,7 +5,6 @@ import {GetTurnUpdate, nextTurn as getNextTurn} from "./helpers/nextTurn.ts";
 import {get as _get} from "./helpers/getResource.ts";
 import {mergeChangeToState as _mergeChangeToState} from "./helpers/stateUpdate.ts";
 import {useIcons} from "./useIcons.ts";
-// import {resourceTypes} from "./generated/resourceTypes.ts";
 
 export type Update<K, T> = ResourceUpdateProps<K, T>;
 export type TradeUpdate<K, T> = {
@@ -75,7 +74,7 @@ export const useResource = <K extends string, T extends string>(initialState: Re
     return safeToRemoveResource(key, newResources);
   }
 
-  const removeResource = (key: K) => {
+  const removeResource = (key: K): ResourceState<K, T>[] | undefined => {
     const newResources = removeResorceByKey(key, state)
     // It is important to use the newState here since otherwise the resource will possibly block its own deletion
     if (safeToRemoveResource(key, newResources)) {
