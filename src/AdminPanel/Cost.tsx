@@ -83,7 +83,9 @@ const SingleCost = ({change, onSetCost, onRemoveCost}: SingleCostProps) => {
     const value = Number(event.target.value);
     onSetCost({key: change.key, value});
   }
-  const icon = get(change.key).icon
+  // const icon = icons.getByKey(change.key)
+  const icon = get(change.key)?.icon
+  console.log(icon)
 
   return (
     <Stack spacing={1} direction="row" alignItems="center">

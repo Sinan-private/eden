@@ -18,11 +18,12 @@ export const useResource = <K extends string, T extends string>(initialState: Re
   const [state, setState] = useState(initialState);
   const icons = useIcons(state);
 
-  const setSafeState = (raw_state: ResourceUpdateProps<K, T>[]) => {
+  const setSafeState = (raw_state: (ResourceUpdateProps<K, T> | ResourceState<K, T>)[]) => {
     const safeState = raw_state.map(rawResource =>
       new Resource(rawResource).state
     );
     setState(safeState)
+    return safeState;
   }
 
 

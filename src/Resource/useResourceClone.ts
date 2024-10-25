@@ -1,5 +1,5 @@
 import {useMemo, useState} from "react";
-import {ResourceCostUpdate, ResourceState, TradeChange} from "./genericTypes.ts";
+import {ResourceState, TradeChange} from "./genericTypes.ts";
 import {SelectChangeEvent} from "@mui/material/Select";
 import icons from "../assets/icons/icons.ts";
 import {Resource} from "./Resource.ts";
@@ -16,12 +16,11 @@ export const useResourceClone = <K extends string, T extends string>(
 ) => {
   const _resource = new Resource<K, T>(resource as ResourceState<K, T>)
   const {
+    write__initialResources,
     resources: {
       mergeChangeToState,
-      get,
     }
   } = useAdmin();
-  const {write__initialResources} = useAdmin();
   const safeConfig = createConfig(config);
   const [key, setKey] = useState(_resource.key!)
   const [min, setMin] = useState(_resource.min)
@@ -67,9 +66,13 @@ export const useResourceClone = <K extends string, T extends string>(
     }
   }
 
-  const onCreateCost = (change: TradeChange<K>) => {
     // @ts-ignore
-    const newCost: ResourceCostUpdate<K> = get(key).createCost(change);
+  const onCreateCost = (change: TradeChange<K>) => {
+    const newResource = new Resource(getResourceState());
+    const newCost = new Resource(getResourceState()).createCost(change)
+    // const newCost: ResourceCostUpdate<K> = get(key).createCost(change);
+    console.log(newResource, newCost)
+
     setCost(newCost)
   }
 
@@ -135,6 +138,7 @@ export const useResourceClone = <K extends string, T extends string>(
     setKey,
     setMin,
     setMax,
+    // getResourceState,
   }
 }
 

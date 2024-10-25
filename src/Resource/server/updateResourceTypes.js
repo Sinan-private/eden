@@ -18,7 +18,7 @@ const filePath = path.join(__dirname, PATH + fileName + '.ts');
     }
 
     // Step 2: Extract the array
-    const arrayPattern = new RegExp(`export\\s+const\\s+${fileName}\\s+=\\s+\\[(.*?) as const;`, 's');
+    const arrayPattern = new RegExp(`export\\s+const\\s+${fileName}\\s+=\\s+\\[(.*?)\\] as const;`, 's');
     const match = data.match(arrayPattern);
     if (!match) {
       console.error("Something is wrong with the file");
@@ -35,7 +35,7 @@ const filePath = path.join(__dirname, PATH + fileName + '.ts');
 
     // Step 4: Update the file content with the modified array
     const newArrayString = JSON.stringify(updatedValues, null, 2)
-      .replace(/^\[|$/g, '') // Remove square brackets
+      .replace(/^\[|\]$/g, '') // Remove square brackets
       .replace(/"/g, '\"');    // Escape quotes for TypeScript format
 
     const updatedContent = data.replace(arrayPattern, `export const ${fileName} = [${newArrayString}] as const;`);
