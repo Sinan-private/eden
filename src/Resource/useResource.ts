@@ -5,6 +5,7 @@ import {GetTurnUpdate, nextTurn as getNextTurn} from "./helpers/nextTurn.ts";
 import {get as _get} from "./helpers/getResource.ts";
 import {mergeChangeToState as _mergeChangeToState} from "./helpers/stateUpdate.ts";
 import {useIcons} from "./useIcons.ts";
+import {Resource} from "./Resource.ts";
 
 export type Update<K, T> = ResourceUpdateProps<K, T>;
 export type TradeUpdate<K, T> = {
@@ -16,6 +17,14 @@ export type TradeUpdate<K, T> = {
 export const useResource = <K extends string, T extends string>(initialState: ResourceState<K, T>[]) => {
   const [state, setState] = useState(initialState);
   const icons = useIcons(state);
+
+  const setSafeState = (raw_state: ResourceUpdateProps<K, T>[]) => {
+    const safeState = raw_state.map(rawResource =>
+      new Resource(rawResource).state
+    );
+    setState(safeState)
+  }
+
 
   const mergeChangeToState = useCallback((update: ResourceUpdateProps<K, T> | ResourceUpdateProps<K, T>[]): ResourceState<K, T>[] =>
     _mergeChangeToState(update, state), [state])
@@ -91,7 +100,7 @@ export const useResource = <K extends string, T extends string>(initialState: Re
     onSetTo,
     onTrade,
     nextTurn: nextTurn,
-    setState,
+    setState: setSafeState,
     usedTypes,
     // existingTypes,
     mergeChangeToState,

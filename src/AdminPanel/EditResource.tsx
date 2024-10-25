@@ -15,12 +15,12 @@ import {ResourceCloneConfig, useResourceClone} from "../Resource/useResourceClon
 import {useToggle} from "../Resource/hooks/useToggle.ts";
 import {IconPickerModal} from "./IconPickerModal.tsx";
 import {AddCostModal} from "./AddCostModal.tsx";
-import {useGame} from "../context/game.context.ts";
 import {resourceTypes} from "../Resource/generated/resourceTypes.ts";
 import Close from "@mui/icons-material/Close";
 import Box from "@mui/material/Box";
 import {AddCost} from "./AddCost.tsx";
 import {ResourceKeys, ResourceTypes} from "../Resource/specificTypes.ts";
+import {useAdmin} from "../Resource/Admin/admin.context.ts";
 
 type EditResourceProps = {
   resource?: Partial<ResourceState<ResourceKeys, ResourceTypes>>;
@@ -46,7 +46,7 @@ export const EditResource = (
     onSubmit = () => {
     },
   }: EditResourceProps) => {
-  const {get, getByType} = useGame().resources;
+  const {get, getByType} = useAdmin().resources;
   const [openIconPicker, setOpenIconPicker] = useState(false);
   const [showCost, onToggleCost] = useToggle(true);
   const [filterUsed, onToggleFilter] = useToggle(false);
@@ -125,7 +125,6 @@ export const EditResource = (
       setMax(Infinity)
     }
   }
-  console.log(cost)
 
   const costToSelectFrom = cost && costChangeKey.length ? cost[costChangeKey as 'give' | 'gain'] : []
   const onCreateNewCost = (change: TradeChange<ResourceKeys>) => {

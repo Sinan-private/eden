@@ -1,8 +1,8 @@
 import {Autocomplete, Stack, TextField} from "@mui/material";
-import {useGame} from "../context/game.context.ts";
 import {SyntheticEvent, useMemo, useState} from "react";
 import {TradeChange} from "../Resource/genericTypes.ts";
 import {ResourceKeys} from "../Resource/specificTypes.ts";
+import {useAdmin} from "../Resource/Admin/admin.context.ts";
 
 type ResourceForCostProps = {
   onAddCost(change: TradeChange<ResourceKeys>): void;
@@ -10,7 +10,7 @@ type ResourceForCostProps = {
 }
 
 export const AddCost = ({onAddCost, cost}: ResourceForCostProps) => {
-  const {getByType} = useGame().resources;
+  const {getByType} = useAdmin().resources;
   const [selectedResource, setSelectedResource] = useState<{ key: ResourceKeys; label: string } | null>(null);
   const [selectAmount, setSelectAmount] = useState(1);
   const resourcesForSelect = useMemo(() => {

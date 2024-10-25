@@ -1,8 +1,8 @@
 import {Stack, TextField, Typography} from "@mui/material";
 import {ResourceCostUpdate, TradeChange} from "../Resource/genericTypes.ts";
 import {OnSetCost} from "./EditResource.tsx";
-import {useGame} from "../context/game.context.ts";
 import {ResourceKeys} from "../Resource/specificTypes.ts";
+import {useAdmin} from "../Resource/Admin/admin.context.ts";
 
 //  The issue is that I want to store the state in the parent so that I have an intermediate state before overwriting the real one
 // But this state needs to be clean an minimal, while the rendering needs to enriched one
@@ -71,7 +71,7 @@ type SingleCostProps = {
 }
 
 const SingleCost = ({change, onSetCost, onRemoveCost}: SingleCostProps) => {
-  const {get} = useGame().resources;
+  const {get} = useAdmin().resources;
   // const [value, setValue] = useState(change.value);
   //
   const onChange = (event: React.ChangeEvent<HTMLInputElement>) => {

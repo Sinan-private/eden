@@ -4,17 +4,18 @@ import DeleteOutlineIcon from '@mui/icons-material/DeleteOutline';
 import {Chip, IconButton, Paper, Stack, Typography} from "@mui/material";
 import ModeEditOutlineIcon from '@mui/icons-material/ModeEditOutline';
 import {ResourceState} from "../Resource";
-import {useGame} from "../context/game.context.ts";
 import {EditResource} from "./EditResource.tsx";
 import {ResourceKeys, ResourceTypes} from "../Resource/specificTypes.ts";
 import {useAdmin} from "../Resource/Admin/admin.context.ts";
 
 export const AdminResource = ({resource: _resource}: { resource: ResourceState<ResourceKeys, ResourceTypes> }) => {
   const {
-      get,
+    write__removeResource,
+    resources: {
+    get,
       canRemoveResource,
-  } = useGame().resources;
-  const {write__removeResource} = useAdmin()
+  }
+  } = useAdmin();
   const resource = get(_resource.key)
   const [edit, setEdit] = useState(false);
   const onCloseEdit = () => setEdit(false);

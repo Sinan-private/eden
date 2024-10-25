@@ -1,14 +1,14 @@
 import {Typography} from "@mui/material";
 import {AdminResource} from "./AdminResource.tsx";
-import {useGame} from "../context/game.context.ts";
 import {ResourceState} from "../Resource";
 import Box from "@mui/material/Box";
 import {EditResource} from "./EditResource.tsx";
 import {useState} from "react";
 import {ResourceKeys, ResourceTypes} from "../Resource/specificTypes.ts";
+import {useAdmin} from "../Resource/Admin/admin.context.ts";
 
 export const HandleResources = () => {
-  const {getByType} = useGame().resources;
+  const {getByType} = useAdmin().resources;
   const _sortedResources = getByType().reduce((result, curr) => {
     const type = curr.type || 'empty'
     const value = result[type] || []
@@ -41,7 +41,7 @@ const ResourceType = (
     resource,
   }: ResourceTypeProps
 ) => {
-  const {get} = useGame().resources;
+  const {get} = useAdmin().resources;
   const [isAddMode, setIsAddMode] = useState(false);
   const closeAddMode = () => setIsAddMode(false);
   return (

@@ -1,6 +1,6 @@
-import {useGame} from "../context/game.context.ts";
-import {Icon} from "../Resource/genericTypes.ts";
 import styled from "styled-components";
+import {Icon} from "../Resource/genericTypes.ts";
+import {useAdmin} from "../Resource/Admin/admin.context.ts";
 
 export type IconPickerProps = {
   // filter?: 'used' | 'unused' | 'all';
@@ -9,7 +9,7 @@ export type IconPickerProps = {
 }
 
 export const IconPicker = ({showUsed = false, onClick}: IconPickerProps) => {
-  const {icons} = useGame().resources;
+  const {icons} = useAdmin().resources;
   const onClickIcon = (icon: Icon) => () =>
     onClick ? onClick(icon) : () => {
     }
