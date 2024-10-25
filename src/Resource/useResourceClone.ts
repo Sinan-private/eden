@@ -138,7 +138,6 @@ export const useResourceClone = <K extends string, T extends string>(
     setKey,
     setMin,
     setMax,
-    // getResourceState,
   }
 }
 
