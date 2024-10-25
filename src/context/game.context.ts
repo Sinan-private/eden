@@ -29,6 +29,7 @@ const useGameBase = () => {
 
   const onOpenAdminPanel = () => setShowAdminPanel(true);
   const onCloseAdminPanel = () => setShowAdminPanel(false);
+  const onToggleAdminPanel = () => setShowAdminPanel(!showAdminPanel);
 
   // With every tick a new turn is triggered with all included production
   useEffect(() => {
@@ -73,9 +74,9 @@ const useGameBase = () => {
     isFetching,
     tick,
     showAdminPanel,
-    // setShowAdminPanel,
     onOpenAdminPanel,
     onCloseAdminPanel,
+    onToggleAdminPanel,
     writeInitialResources,
     writeAddType,
     writeRemoveType,

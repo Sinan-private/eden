@@ -42,11 +42,12 @@ type ButtonProps = {
 const Button = ({resource, increment = 1}: ButtonProps) => {
   const {
     // getResourceTurnUpdate,
-  resources: {
-    onUpdate,
-    onTrade,
-    get
-  }} = useGame();
+    resources: {
+      onUpdate,
+      onTrade,
+      get
+    }
+  } = useGame();
   const onButtonClick = () => resource.cost
     ? onTrade(resource.cost)
     : onUpdate({key: resource.key, value: increment})
@@ -60,7 +61,7 @@ const Button = ({resource, increment = 1}: ButtonProps) => {
         <span style={{fontSize: '0.7rem'}}>{resource.label}</span>
       </div>
       <div style={{marginRight: 8}}>
-      {resource.value}
+        {resource.value}
       </div>
       {resource.cost?.give.map(give => (
         <div key={'give' + give.key} style={{marginLeft: 6}}>
@@ -75,18 +76,21 @@ const Button = ({resource, increment = 1}: ButtonProps) => {
 const GameControl = () => {
   const {
     // writeInitialResources,
-    onOpenAdminPanel,
+    onToggleAdminPanel,
     tick: {
-    current, isActive, start, stop
-  }} = useGame();
-  // const writeUpdate = () => writeInitialResources()
+      current,
+      isActive,
+      start,
+      stop,
+    }
+  } = useGame();
   return (
     <StylesGameControl>
       <div>
         <span>Turn {current}</span>
         <button onClick={isActive ? stop : start}>{isActive ? 'x' : '>'}</button>
       </div>
-      <button onClick={onOpenAdminPanel}>Admin</button>
+      <button onClick={onToggleAdminPanel}>Admin</button>
     </StylesGameControl>
   )
 }
@@ -97,9 +101,10 @@ const StylesGameControl = styled.div`
     min-height: 40px;
     top: 20px;
     right: 20px;
+
     div {
         display: flex;
-    align-items: center;
+        align-items: center;
         gap: 8px;
     }
 `;

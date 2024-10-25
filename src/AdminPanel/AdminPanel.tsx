@@ -38,7 +38,7 @@ export const AdminPanel = () => {
   return (
     <StyledContainer>
       <Box position="absolute" top={10} right={10}>
-        <IconButton onClick={onCloseAdminPanel}>
+        <IconButton onClick={onCloseAdminPanel} sx={{zIndex: 100}}>
           <Close/>
         </IconButton>
 
