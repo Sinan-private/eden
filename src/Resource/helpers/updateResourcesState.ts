@@ -1,4 +1,4 @@
-import {ResourceState, ResourceUpdateProps} from "../types.ts";
+import {ResourceState, ResourceUpdateProps} from "../genericTypes.ts";
 
 // Function to update the state based on partial updates
 export function updateResourceState<K extends string, T extends string>(

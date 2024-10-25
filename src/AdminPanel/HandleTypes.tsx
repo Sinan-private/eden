@@ -2,11 +2,13 @@ import {IconButton, Stack, Typography} from "@mui/material";
 import CancelIcon from '@mui/icons-material/Cancel';
 import {useGame} from "../context/game.context.ts";
 import {resourceTypes} from "../Resource/generated/resourceTypes.ts";
-import {ResourceTypes} from "../Resource/types.ts";
 import {AddType} from "./AddType.tsx";
+import {ResourceTypes} from "../Resource/specificTypes.ts";
+import {useAdmin} from "../Resource/Admin/admin.context.ts";
 
 export const HandleTypes = () => {
-  const {writeRemoveType, resources} = useGame();
+  const {resources} = useGame();
+  const {write__removeType} = useAdmin();
   const usedTypes = resources.getByType().map(({type}) => type);
 
   return (
@@ -19,7 +21,7 @@ export const HandleTypes = () => {
               {resourceType}
             </Typography>
             <IconButton
-              onClick={() => writeRemoveType(resourceType)}
+              onClick={() => write__removeType(resourceType)}
               size="small"
               disabled={usedTypes.includes(resourceType)}
             >

@@ -1,7 +1,8 @@
 // import {Box, Modal} from "@mui/material";
 import Modal from './Modal.tsx'
 import {AddCost} from "./AddCost.tsx";
-import {ResourceKeys, TradeChange} from "../Resource/types.ts";
+import {TradeChange} from "../Resource/genericTypes.ts";
+import {ResourceKeys} from "../Resource/specificTypes.ts";
 
 type AddCostModalProps = {
   openAddCost: boolean;

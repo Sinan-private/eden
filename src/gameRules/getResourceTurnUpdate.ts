@@ -1,5 +1,6 @@
-import {ResourceKeys, ResourceTypes, TurnUpdateFormat} from "../Resource/types.ts";
+import {TurnUpdateFormat} from "../Resource/genericTypes.ts";
 import {GetTurnUpdate} from "../Resource/helpers/nextTurn.ts";
+import {ResourceKeys, ResourceTypes} from "../Resource/specificTypes.ts";
 
 export const getResourceTurnUpdate: GetTurnUpdate<ResourceKeys, ResourceTypes> = (get): TurnUpdateFormat<ResourceKeys, ResourceTypes>[] => {
 

@@ -1,9 +1,3 @@
-import {resourceTypes} from "./generated/resourceTypes.ts";
-import {resourceKeys} from "./generated/resourceKeys.ts";
-
-export type ResourceTypes = typeof resourceTypes[number];
-export type ResourceKeys = typeof resourceKeys[number];
-
 export type ResourceTypeRaw<K, T> = {
   value: number;
   min: number;

@@ -1,10 +1,10 @@
 import {useState} from "react";
 import {createContainer} from "unstated-next";
-import {ResourceKeys, ResourceState, ResourceTypes, ResourceUpdateProps} from "../types.ts";
 import {useApi} from "../../context/useApi.ts";
 import {useComponentMount} from "../hooks/useComponentMount.ts";
 import {Resource} from "../Resource.ts";
 import {useResource} from "../useResource.ts";
+import {ResourceKeys, ResourceState, ResourceTypes, ResourceUpdateProps} from "../specificTypes.ts";
 
 const useAdminBase = () => {
   const {
@@ -22,7 +22,7 @@ const useAdminBase = () => {
     setIsFetching(false);
   })
 
-  const write__initialResources = (newState?: ResourceState<ResourceKeys, ResourceTypes>[]) => {
+  const write__initialResources = (newState?: ResourceState[]) => {
     if (!newState) return;
     updateResources(newState).then(() => (
       setState(newState)
@@ -52,6 +52,7 @@ const useAdminBase = () => {
   }
 
   return {
+    resources,
     isFetching,
     write__addType,
     write__removeType,
@@ -64,6 +65,6 @@ const useAdminContainer = createContainer(useAdminBase);
 export const useAdmin = useAdminContainer.useContainer;
 export const AdminProvider = useAdminContainer.Provider;
 
-const getInitialState = (raw_state: ResourceUpdateProps<ResourceKeys, ResourceTypes>[]) => raw_state.map(rawResource =>
+const getInitialState = (raw_state: ResourceUpdateProps[]) => raw_state.map(rawResource =>
   new Resource(rawResource).state
 );

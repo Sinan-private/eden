@@ -1,5 +1,5 @@
 import {mapMultiply} from "./mapMultiply";
-import {ResourceTypeRaw} from "../types";
+import {ResourceTypeRaw} from "../genericTypes.ts";
 
 type DeltaType = 'INCREMENT' | 'DECREMENT';
 export type DeltaResponse<K extends string, T extends string> = Increment<K, T> | Decrement<K, T>

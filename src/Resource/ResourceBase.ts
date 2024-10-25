@@ -4,7 +4,7 @@ import {
   ResourceTypeRaw,
   ResourceState,
   ResourceCostUpdate,
-} from "./types";
+} from "./genericTypes.ts";
 import {beautifyNumber, delta, mapMultiply} from "./helpers";
 
 type UpdateProps<K, T> = Partial<ResourceTypeRaw<K, T>>;

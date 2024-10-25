@@ -1,4 +1,4 @@
-import {isTradeFormat, ResourceState, ResourceUpdateProps, TurnUpdateFormat} from "../types.ts";
+import {isTradeFormat, ResourceState, ResourceUpdateProps, TurnUpdateFormat} from "../genericTypes.ts";
 import {Trade} from "../Trade.ts";
 import {get} from "./getResource.ts";
 import {Resource} from "../Resource.ts";

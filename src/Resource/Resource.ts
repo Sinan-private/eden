@@ -1,5 +1,5 @@
 import {ResourceBase} from "./ResourceBase.ts";
-import {ResourceCostUpdate, ResourceUpdateProps, TradeChange} from "./types.ts";
+import {ResourceCostUpdate, ResourceUpdateProps, TradeChange} from "./genericTypes.ts";
 import icons from "../assets/icons/icons.ts";
 
 export class Resource<K extends string, T extends string> extends ResourceBase<K, T> {

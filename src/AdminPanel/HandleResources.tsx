@@ -1,10 +1,11 @@
 import {Typography} from "@mui/material";
 import {AdminResource} from "./AdminResource.tsx";
 import {useGame} from "../context/game.context.ts";
-import {ResourceKeys, ResourceState, ResourceTypes} from "../Resource/types.ts";
+import {ResourceState} from "../Resource";
 import Box from "@mui/material/Box";
 import {EditResource} from "./EditResource.tsx";
 import {useState} from "react";
+import {ResourceKeys, ResourceTypes} from "../Resource/specificTypes.ts";
 
 export const HandleResources = () => {
   const {getByType} = useGame().resources;

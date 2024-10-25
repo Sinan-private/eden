@@ -6,19 +6,20 @@ import {Resource, ResourceState, ResourceUpdateProps, useResource} from "../Reso
 import {getResourceTurnUpdate} from "../gameRules/getResourceTurnUpdate.ts";
 import {useApi} from "./useApi.ts";
 import {useComponentMount} from "../Resource/hooks/useComponentMount.ts";
-import {ResourceKeys, ResourceTypes} from "../Resource/types.ts";
+
+import {ResourceKeys, ResourceTypes} from "../Resource/specificTypes.ts";
 
 const useGameBase = () => {
   const {
     fetchResources,
-    updateResources,
-    addType,
-    removeType,
+    // updateResources,
+    // addType,
+    // removeType,
   } = useApi();
   const [isFetching, setIsFetching] = useState(true);
   const [showAdminPanel, setShowAdminPanel] = useState(false);
   // The resource offers all info and update methods. The nextTurn is only needed here to handle turn updates only in here.
-  const {nextTurn, setState, state, ...resources} = useResource<ResourceKeys, ResourceTypes>([]);
+  const {nextTurn, setState, ...resources} = useResource<ResourceKeys, ResourceTypes>([]);
   const tick = useTick();
   const prevTick = usePrevious(tick.current);
   useComponentMount(async () => {
@@ -40,34 +41,34 @@ const useGameBase = () => {
     }
   }, [tick, prevTick, nextTurn]);
 
-  const writeInitialResources = (newState?: ResourceState<ResourceKeys, ResourceTypes>[]) => {
-    if (!newState) return;
-    updateResources(newState).then(() => (
-      setState(newState)
-    ))
-  }
-
-  const writeRemoveResource = (key: ResourceKeys) => {
-    const updatedState = resources.removeResource(key);
-    console.log(updatedState)
-    if (updatedState) {
-      updateResources(updatedState)
-    }
-  }
-
-  const writeAddType = (type: string | string[]) =>
-    addType(([] as string[]).concat(type))
-
-  const writeRemoveType = (type: ResourceTypes | ResourceTypes[]) => {
-    const usedTypes = state.map(({type}) => type);
-    const typesToRemove = ([] as ResourceTypes[]).concat(type);
-    const matches = typesToRemove.filter(value => usedTypes.includes(value!));
-    if (matches.length) {
-      console.error('These Types are being in used and can not be removed', matches)
-      return;
-    }
-    removeType(typesToRemove)
-  }
+  // const writeInitialResources = (newState?: ResourceState<ResourceKeys, ResourceTypes>[]) => {
+  //   if (!newState) return;
+  //   updateResources(newState).then(() => (
+  //     setState(newState)
+  //   ))
+  // }
+  //
+  // const writeRemoveResource = (key: ResourceKeys) => {
+  //   const updatedState = resources.removeResource(key);
+  //   console.log(updatedState)
+  //   if (updatedState) {
+  //     updateResources(updatedState)
+  //   }
+  // }
+  //
+  // const writeAddType = (type: string | string[]) =>
+  //   addType(([] as string[]).concat(type))
+  //
+  // const writeRemoveType = (type: ResourceTypes | ResourceTypes[]) => {
+  //   const usedTypes = state.map(({type}) => type);
+  //   const typesToRemove = ([] as ResourceTypes[]).concat(type);
+  //   const matches = typesToRemove.filter(value => usedTypes.includes(value!));
+  //   if (matches.length) {
+  //     console.error('These Types are being in used and can not be removed', matches)
+  //     return;
+  //   }
+  //   removeType(typesToRemove)
+  // }
 
   return {
     resources,
@@ -77,10 +78,10 @@ const useGameBase = () => {
     onOpenAdminPanel,
     onCloseAdminPanel,
     onToggleAdminPanel,
-    writeInitialResources,
-    writeAddType,
-    writeRemoveType,
-    writeRemoveResource,
+    // writeInitialResources,
+    // writeAddType,
+    // writeRemoveType,
+    // writeRemoveResource,
   };
 }
 

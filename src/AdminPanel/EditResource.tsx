@@ -9,7 +9,7 @@ import {
   TextField,
   Typography
 } from "@mui/material";
-import {Icon, ResourceKeys, ResourceState, ResourceTypes, TradeChange} from "../Resource/types.ts";
+import {Icon, ResourceState, TradeChange} from "../Resource/genericTypes.ts";
 import {Cost} from "./Cost.tsx";
 import {ResourceCloneConfig, useResourceClone} from "../Resource/useResourceClone.ts";
 import {useToggle} from "../Resource/hooks/useToggle.ts";
@@ -20,6 +20,7 @@ import {resourceTypes} from "../Resource/generated/resourceTypes.ts";
 import Close from "@mui/icons-material/Close";
 import Box from "@mui/material/Box";
 import {AddCost} from "./AddCost.tsx";
+import {ResourceKeys, ResourceTypes} from "../Resource/specificTypes.ts";
 
 type EditResourceProps = {
   resource?: Partial<ResourceState<ResourceKeys, ResourceTypes>>;

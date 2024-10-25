@@ -1,9 +1,9 @@
-import {useGame} from "../context/game.context.ts";
 import {useMemo, useState} from "react";
-import {ResourceCostUpdate, ResourceState, TradeChange} from "./types.ts";
+import {ResourceCostUpdate, ResourceState, TradeChange} from "./genericTypes.ts";
 import {SelectChangeEvent} from "@mui/material/Select";
 import icons from "../assets/icons/icons.ts";
 import {Resource} from "./Resource.ts";
+import {useAdmin} from "./Admin/admin.context.ts";
 
 export type ResourceCloneConfig<K, T> = {
   onAddCost(resourceState: ResourceState<K, T>): void;
@@ -19,9 +19,9 @@ export const useResourceClone = <K extends string, T extends string>(
     resources: {
       mergeChangeToState,
       get,
-    },
-    writeInitialResources
-  } = useGame();
+    }
+  } = useAdmin();
+  const {write__initialResources} = useAdmin();
   const safeConfig = createConfig(config);
   const [key, setKey] = useState(_resource.key!)
   const [min, setMin] = useState(_resource.min)
@@ -69,8 +69,8 @@ export const useResourceClone = <K extends string, T extends string>(
     }
   }
 
-    // @ts-ignore
   const onCreateCost = (change: TradeChange<K>) => {
+    // @ts-ignore
     const newCost: ResourceCostUpdate<K> = get(key).createCost(change);
     setCost(newCost)
   }
@@ -95,7 +95,7 @@ export const useResourceClone = <K extends string, T extends string>(
     // eslint-disable-next-line @typescript-eslint/ban-ts-comment
     // @ts-expect-error
     const newState = mergeChangeToState(getResourceState())
-    writeInitialResources(newState)
+    write__initialResources(newState)
   }
 
   const isDisabled = useMemo(() => {

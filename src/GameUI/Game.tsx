@@ -2,7 +2,8 @@ import styled from "styled-components";
 import {useGame} from "../context/game.context.ts";
 import {TopBar} from "./TopBar.tsx";
 import {Resource} from "../Resource";
-import {ResourceKeys, ResourceTypes} from "../Resource/types.ts";
+
+import {ResourceKeys, ResourceTypes} from "../Resource/specificTypes.ts";
 
 export const Game = () => {
   const {

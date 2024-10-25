@@ -1,5 +1,5 @@
 import {useGame} from "../context/game.context.ts";
-import {Icon} from "../Resource/types.ts";
+import {Icon} from "../Resource/genericTypes.ts";
 import styled from "styled-components";
 
 export type IconPickerProps = {

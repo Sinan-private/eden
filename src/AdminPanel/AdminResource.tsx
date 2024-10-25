@@ -4,22 +4,21 @@ import DeleteOutlineIcon from '@mui/icons-material/DeleteOutline';
 import {Chip, IconButton, Paper, Stack, Typography} from "@mui/material";
 import ModeEditOutlineIcon from '@mui/icons-material/ModeEditOutline';
 import {ResourceState} from "../Resource";
-import {ResourceKeys, ResourceTypes} from "../Resource/types.ts";
 import {useGame} from "../context/game.context.ts";
 import {EditResource} from "./EditResource.tsx";
+import {ResourceKeys, ResourceTypes} from "../Resource/specificTypes.ts";
+import {useAdmin} from "../Resource/Admin/admin.context.ts";
 
 export const AdminResource = ({resource: _resource}: { resource: ResourceState<ResourceKeys, ResourceTypes> }) => {
   const {
-    writeRemoveResource,
-    resources: {
       get,
       canRemoveResource,
-    }
-  } = useGame();
+  } = useGame().resources;
+  const {write__removeResource} = useAdmin()
   const resource = get(_resource.key)
   const [edit, setEdit] = useState(false);
   const onCloseEdit = () => setEdit(false);
-  const onDeleteResource = () => writeRemoveResource(resource.key);
+  const onDeleteResource = () => write__removeResource(resource.key);
 
   const cost = useMemo(() => (
     <Stack direction="column" minWidth={80} spacing={1}>

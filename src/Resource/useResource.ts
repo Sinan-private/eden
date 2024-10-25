@@ -1,6 +1,6 @@
 import {useCallback, useMemo, useState} from "react";
 import {Trade} from "./Trade.ts";
-import {ResourceState, ResourceUpdateProps} from "./types.ts";
+import {ResourceState, ResourceUpdateProps} from "./genericTypes.ts";
 import {GetTurnUpdate, nextTurn as getNextTurn} from "./helpers/nextTurn.ts";
 import {get as _get} from "./helpers/getResource.ts";
 import {mergeChangeToState as _mergeChangeToState} from "./helpers/stateUpdate.ts";

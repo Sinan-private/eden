@@ -1,4 +1,4 @@
-import {ResourceState, TurnUpdateFormat} from "../types.ts";
+import {ResourceState, TurnUpdateFormat} from "../genericTypes.ts";
 import {get} from "./getResource.ts";
 import {mergeChangeToState, singleChange} from "./stateUpdate.ts";
 import {ResourceBase} from "../ResourceBase.ts";

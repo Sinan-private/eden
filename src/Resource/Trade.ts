@@ -1,4 +1,4 @@
-import {ResourceState, ResourceUpdateProps} from "./types.ts";
+import {ResourceState, ResourceUpdateProps} from "./genericTypes.ts";
 import {ResourceBase} from "./ResourceBase.ts";
 
 // limiting resource multiplied until I have the right possibleTradingAmount

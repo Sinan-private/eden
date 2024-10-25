@@ -1,4 +1,4 @@
-import {ResourceState} from "../types.ts";
+import {ResourceState} from "../genericTypes.ts";
 import {Resource} from "../Resource.ts";
 
 export const get = <K extends string, T extends string>(key: K, state: ResourceState<K, T>[]): Resource<K, T> => {
