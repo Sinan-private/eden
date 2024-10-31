@@ -20,13 +20,6 @@ export const getResourceTurnUpdate: GetTurnUpdate<ResourceKeys, ResourceTypes> =
       }
     },
     {
-      type: "decrement",
-      update: {
-        key: 'water',
-        value: 2
-      }
-    },
-    {
       type: "trade",
       update: {
         ...get('bread').cost!,

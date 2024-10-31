@@ -1,15 +1,5 @@
 [
   {
-    "key": "gold",
-    "value": 1254,
-    "min": -4,
-    "max": null,
-    "label": "Gold",
-    "type": "base_resource",
-    "cost": null,
-    "iconName": "brick_gold"
-  },
-  {
     "key": "corn",
     "value": 100,
     "min": 0,
@@ -69,8 +59,8 @@
     "cost": {
       "give": [
         {
-          "key": "gold",
-          "value": 10
+          "key": "money",
+          "value": 1
         }
       ],
       "gain": [
@@ -96,12 +86,12 @@
           "value": 1
         },
         {
-          "key": "gold",
-          "value": 20
-        },
-        {
           "key": "bricks",
           "value": 3
+        },
+        {
+          "key": "money",
+          "value": 20
         }
       ],
       "gain": [
@@ -127,7 +117,7 @@
           "value": 1
         },
         {
-          "key": "gold",
+          "key": "money",
           "value": 10
         }
       ],
@@ -154,7 +144,7 @@
           "value": 1
         },
         {
-          "key": "gold",
+          "key": "money",
           "value": 20
         },
         {
@@ -185,7 +175,7 @@
           "value": 1
         },
         {
-          "key": "gold",
+          "key": "money",
           "value": 20
         },
         {
@@ -216,7 +206,7 @@
           "value": 1
         },
         {
-          "key": "gold",
+          "key": "money",
           "value": 20
         },
         {
@@ -247,7 +237,7 @@
           "value": 1
         },
         {
-          "key": "gold",
+          "key": "money",
           "value": 20
         },
         {
@@ -278,7 +268,7 @@
           "value": 1
         },
         {
-          "key": "gold",
+          "key": "money",
           "value": 20
         },
         {
@@ -526,6 +516,148 @@
     "label": "Money",
     "type": "currency_resource",
     "cost": null,
-    "iconName": "money"
+    "iconName": "money_gold"
+  },
+  {
+    "key": "silver_ore",
+    "value": 0,
+    "min": 0,
+    "max": null,
+    "label": "Silver ore",
+    "type": "base_resource",
+    "cost": null,
+    "iconName": "silver_ore"
+  },
+  {
+    "key": "iron_ore",
+    "value": 10,
+    "min": 0,
+    "max": null,
+    "label": "Iron ore",
+    "type": "base_resource",
+    "cost": null,
+    "iconName": "iron_ore"
+  },
+  {
+    "key": "copper_ore",
+    "value": 0,
+    "min": 0,
+    "max": null,
+    "label": "Copper ore",
+    "type": "base_resource",
+    "cost": null,
+    "iconName": "copper_ore"
+  },
+  {
+    "key": "silver_brick",
+    "value": 0,
+    "min": 0,
+    "max": null,
+    "label": "Silver Brick",
+    "type": "processed_resource",
+    "cost": {
+      "give": [
+        {
+          "key": "silver_ore",
+          "value": 2
+        }
+      ],
+      "gain": [
+        {
+          "key": "silver_brick",
+          "value": 1
+        }
+      ]
+    },
+    "iconName": "silver_brick"
+  },
+  {
+    "key": "iron_brick",
+    "value": 0,
+    "min": 0,
+    "max": null,
+    "label": "Iron Brick",
+    "type": "processed_resource",
+    "cost": {
+      "give": [
+        {
+          "key": "iron_ore",
+          "value": 2
+        }
+      ],
+      "gain": [
+        {
+          "key": "iron_brick",
+          "value": 1
+        }
+      ]
+    },
+    "iconName": "iron_brick"
+  },
+  {
+    "key": "copper_brick",
+    "value": 0,
+    "min": 0,
+    "max": null,
+    "label": "Copper Brick",
+    "type": "processed_resource",
+    "cost": {
+      "give": [
+        {
+          "key": "copper_ore",
+          "value": 2
+        }
+      ],
+      "gain": [
+        {
+          "key": "copper_brick",
+          "value": 1
+        }
+      ]
+    },
+    "iconName": "copper_brick"
+  },
+  {
+    "key": "gold_ore",
+    "value": 0,
+    "min": 0,
+    "max": null,
+    "label": "Gold ore",
+    "type": "base_resource",
+    "cost": null,
+    "iconName": "gold_ore"
+  },
+  {
+    "key": "gold_brick",
+    "value": 0,
+    "min": 0,
+    "max": null,
+    "label": "Gold Brick",
+    "type": "processed_resource",
+    "cost": {
+      "give": [
+        {
+          "key": "gold_ore",
+          "value": 2
+        }
+      ],
+      "gain": [
+        {
+          "key": "gold_brick",
+          "value": 1
+        }
+      ]
+    },
+    "iconName": "gold_brick"
+  },
+  {
+    "key": "level",
+    "value": 1,
+    "min": 0,
+    "max": null,
+    "label": "Level",
+    "type": "level",
+    "cost": null,
+    "iconName": "arrow_up"
   }
 ]

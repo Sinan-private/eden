@@ -1,7 +1,7 @@
 import {useMemo, useState} from "react";
 import {ResourceState, TradeChange} from "./genericTypes.ts";
 import {SelectChangeEvent} from "@mui/material/Select";
-import icons from "../assets/icons/icons.ts";
+import icons from "./assets/icons/icons.ts";
 import {Resource} from "./Resource.ts";
 import {useAdmin} from "./Admin/admin.context.ts";
 
@@ -66,10 +66,9 @@ export const useResourceClone = <K extends string, T extends string>(
     }
   }
 
-    // @ts-ignore
   const onCreateCost = (change: TradeChange<K>) => {
     const newResource = new Resource(getResourceState());
-    const newCost = new Resource(getResourceState()).createCost(change)
+    const newCost = newResource.createCost(change)
     // const newCost: ResourceCostUpdate<K> = get(key).createCost(change);
     console.log(newResource, newCost)
 

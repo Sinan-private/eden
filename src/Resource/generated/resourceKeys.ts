@@ -1,5 +1,4 @@
 export const resourceKeys = [
-  "gold",
   "corn",
   "water",
   "coal",
@@ -25,5 +24,14 @@ export const resourceKeys = [
   "scientist",
   "artist",
   "magician",
-  "money"
+  "money",
+  "silver_ore",
+  "iron_ore",
+  "copper_ore",
+  "silver_brick",
+  "iron_brick",
+  "copper_brick",
+  "gold_ore",
+  "gold_brick",
+  "level"
 ] as const;
