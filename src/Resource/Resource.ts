@@ -14,51 +14,22 @@ export class Resource<K extends string, T extends string> extends ResourceBase<K
     }
   }
 
-  public readonly addCost = (
-    changeKey: 'give' | 'gain' | '',
-    change: TradeChange<K>,
-    cost = this.cost,
-  ) => addTrade(changeKey, change, cost)
-
-  public readonly addRevealedAt = (
-    changeKey: 'give' | 'gain' | '',
-    change: TradeChange<K>,
-    revealedAt = this.revealedAt,
-  ) => addTrade(changeKey, change, revealedAt)
-
-  public readonly removeCost = (
-    changeKey: 'give' | 'gain' | '',
-    resourceKey: K,
-    cost = this.cost,
-  ) => removeTrade(changeKey, resourceKey, cost)
-
-  public readonly removeRevealedAt = (
-    changeKey: 'give' | 'gain' | '',
-    resourceKey: K,
-    revealedAt = this.revealedAt,
-  ) => removeTrade(changeKey, resourceKey, revealedAt)
-
-  public readonly updateCost = (
-    changeType: 'give' | 'gain',
-    change: TradeChange<K>,
-    cost = this.cost,
-  ) => mergeCostUpdate(changeType, change, cost)
-
-  public readonly updateRevealedAt = (
-    changeType: 'give' | 'gain',
-    change: TradeChange<K>,
-    revealedAt = this.revealedAt
-  ) => mergeCostUpdate(changeType, change, revealedAt)
+  public readonly addCost = addTrade(this.cost);
+  public readonly addRevealedAt = addTrade(this.revealedAt);
+  public readonly removeCost = removeTrade(this.cost);
+  public readonly removeRevealedAt = removeTrade(this.revealedAt);
+  public readonly updateCost = mergeCostUpdate(this.cost);
+  public readonly updateRevealedAt = mergeCostUpdate(this.revealedAt);
 
   get icon(): string {
     return icons.find(icon => icon.name === this.iconName)?.src || ''
   }
 }
 
-const addTrade = <K>(
+const addTrade = <K>(tradeOriginalState: ResourceCostUpdate<K> | null) => (
   changeKey: 'give' | 'gain' | '',
   change: TradeChange<K>,
-  trade?: ResourceCostUpdate<K> | null,
+  trade = tradeOriginalState
 ): ResourceCostUpdate<K> | null => {
   if (!trade || !changeKey.length) {
     return null
@@ -70,10 +41,10 @@ const addTrade = <K>(
   } as ResourceCostUpdate<K>
 }
 
-const mergeCostUpdate = <K>(
+const mergeCostUpdate = <K>(tradeOriginalState: ResourceCostUpdate<K> | null) => (
   changeType: 'give' | 'gain',
   change: TradeChange<K>,
-  cost: ResourceCostUpdate<K> | null
+  cost = tradeOriginalState
 ): ResourceCostUpdate<K> | null => {
   if (!cost) {
     return null
@@ -89,10 +60,10 @@ const mergeCostUpdate = <K>(
   }
 }
 
-const removeTrade = <K>(
+const removeTrade = <K>(tradeOriginalState: ResourceCostUpdate<K> | null) => (
   changeKey: 'give' | 'gain' | '',
   resourceKey: K,
-  trade?: ResourceCostUpdate<K> | null,
+  trade = tradeOriginalState
 ) => {
   if (changeKey === '' || !trade) {
     return null
