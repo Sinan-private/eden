@@ -45,6 +45,7 @@ https://pinetools.com/split-image
 - Adding a resource to the cost and then removing it before saving creates a weird issue
 - Replacing an Icon currently doesn't work
 - I had to turn of the warning when a resource was not found. The current handling of costs sucks
+- When changing a second entry within the cost object before saving the previous changes reset
 
 
 

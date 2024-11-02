@@ -1,24 +1,23 @@
-import {ChangeEvent, useMemo, useState} from "react";
+import {ChangeEvent, useState} from "react";
 import Select from "@mui/material/Select";
 import {
-  Collapse,
-  FormControl, IconButton,
+  FormControl,
+  IconButton,
   InputLabel,
   MenuItem,
-  Stack, SxProps,
+  Stack,
   TextField,
-  Typography
+  Typography,
+  SxProps,
 } from "@mui/material";
 import {Icon, ResourceState, TradeChange} from "../Resource/genericTypes.ts";
 import {Cost} from "./Cost.tsx";
-import {ResourceCloneConfig, useResourceClone} from "../Resource/useResourceClone.ts";
+import {useResourceClone} from "../Resource";
 import {useToggle} from "../Resource/hooks/useToggle.ts";
 import {IconPickerModal} from "./IconPickerModal.tsx";
-import {AddCostModal} from "./Add/AddCostModal.tsx";
 import {resourceTypes} from "../Resource/generated/resourceTypes.ts";
 import Close from "@mui/icons-material/Close";
 import Box from "@mui/material/Box";
-import {AddCost} from "./Add/AddCost.tsx";
 import {ResourceKeys, ResourceTypes} from "../Resource/specificTypes.ts";
 import {useAdmin} from "../Resource/Admin/admin.context.ts";
 
@@ -29,8 +28,6 @@ type EditResourceProps = {
   enableKeyEdit?: boolean;
   sx?: SxProps;
 };
-export type ChangeKey = 'give' | 'gain' | '';
-
 
 export type OnSetCost = (
   changeType: 'give' | 'gain',
@@ -41,21 +38,14 @@ export const EditResource = (
   {
     resource,
     enableKeyEdit,
-    sx,
     onClose,
     onSubmit = () => {
     },
   }: EditResourceProps) => {
-  const {get, getByType} = useAdmin().resources;
+  const {getByType} = useAdmin().resources;
   const [openIconPicker, setOpenIconPicker] = useState(false);
-  const [showCost, onToggleCost] = useToggle(true);
   const [filterUsed, onToggleFilter] = useToggle(false);
-  const [openAddCost, setOpenAddCost] = useState(false);
-  const [costChangeKey, setCostChangeKey] = useState<ChangeKey>('');
   const [isKeyPristine, setIsKeyPristine] = useState(true);
-  const config: Partial<ResourceCloneConfig<ResourceKeys, ResourceTypes>> = {
-    onAddCost: () => setOpenAddCost(false)
-  }
 
   const {
     key,
@@ -65,33 +55,27 @@ export const EditResource = (
     label,
     type,
     cost,
+    revealedAt,
     icon,
     onSetCost,
     onAddCost,
+    onRemoveCost,
+    // onCreateRevealedAt,
+    onSetRevealedAt,
+    onAddRevealedAt,
+    onRemoveRevealedAt,
     handleTypeChange,
     isDisabled,
     updateResource,
-    onRemoveCost,
     setKey,
     setIconName,
     setLabel,
     setValue,
     setMin,
     setMax,
-    onCreateCost,
-  } = useResourceClone(resource, config);
+  } = useResourceClone(resource);
 
   const keyAlreadyExists = getByType().map(({key}) => key).includes(key);
-
-  const handleOpenAddCost = (giveOrGain: ChangeKey) => {
-    if (giveOrGain.length) {
-      setOpenAddCost(true);
-      setCostChangeKey(giveOrGain);
-    }
-  };
-  const handleCloseAddCost = () => {
-    setOpenAddCost(false);
-  };
 
   const handleOpenIconPicker = () => setOpenIconPicker(true);
   const handleCloseIconPicker = () => setOpenIconPicker(false);
@@ -126,11 +110,6 @@ export const EditResource = (
     }
   }
 
-  const costToSelectFrom = cost && costChangeKey.length ? cost[costChangeKey as 'give' | 'gain'] : []
-  const onCreateNewCost = (change: TradeChange<ResourceKeys>) => {
-    onCreateCost(change)
-  }
-  const _onAddCost = (change: TradeChange<ResourceKeys>) => onAddCost(costChangeKey, change);
   const onSubmitChanges = () => {
     if (!(keyAlreadyExists && enableKeyEdit)) {
       updateResource();
@@ -140,27 +119,6 @@ export const EditResource = (
 
   const saveDisabled = isDisabled || (enableKeyEdit && keyAlreadyExists) || !key.length;
 
-  const costButton = useMemo(() => {
-    const icon = (key: ResourceKeys) => get(key).icon
-    return (
-      <Stack direction="row" alignItems="center" spacing={1} minHeight={40} sx={sx}>
-        <Typography onClick={onToggleCost}>Cost</Typography>
-        <Stack direction="row" spacing={0.5}>
-          {resource?.cost?.give && resource.cost.give.map(cost => (
-            <img key={cost.key} src={icon(cost.key)} width={16} height={16} alt={cost.key}/>
-          ))}
-        </Stack>
-        {resource?.cost?.gain && resource.cost?.gain.length > 1 &&
-          <Stack direction="row" alignItems="center" spacing={0.5}>
-            <Typography>{"->"}</Typography>
-            {resource.cost?.gain && resource.cost?.gain.length > 1 && resource.cost.gain.map(cost => (
-              <img key={cost.key} src={icon(cost.key)} width={16} height={16} alt={cost.key}/>
-            ))}
-          </Stack>
-        }
-      </Stack>
-    )
-  }, [get, onToggleCost, resource, sx])
 
   return (
     <Box position="relative" pt={4}>
@@ -178,12 +136,12 @@ export const EditResource = (
         onToggleFilter={onToggleFilter}
         onSelectIcon={onSelectIcon}
       />
-      <AddCostModal
-        openAddCost={openAddCost}
-        handleCloseAddCost={handleCloseAddCost}
-        onAddCost={_onAddCost}
-        costToSelectFrom={costToSelectFrom}
-      />
+      {/*<AddCostModal*/}
+      {/*  openAddCost={openAddCost}*/}
+      {/*  handleCloseAddCost={handleCloseAddCost}*/}
+      {/*  onAddCost={_onAddCost}*/}
+      {/*  costToSelectFrom={costToSelectFrom}*/}
+      {/*/>*/}
 
       <Stack direction="row" spacing={2} alignItems="center">
         <img
@@ -244,29 +202,27 @@ export const EditResource = (
           Save
         </button>
       </Stack>
-      {costButton}
-      {!cost &&
-      <AddCost
-        onAddCost={onCreateNewCost}
-        cost={costToSelectFrom}
-      />
-      }
-      {!!cost &&
-        <>
-          <Collapse in={showCost}>
+      <Typography>Cost</Typography>
 
-            <Stack direction="row" spacing={2} mb={4} mt={2} alignItems="center">
-              <Cost
-                onRemoveCost={onRemoveCost}
-                cost={cost}
-                onSetCost={onSetCost}
-                onOpenAddCost={handleOpenAddCost}
-                onAddCost={onAddCost}
-              />
-            </Stack>
-          </Collapse>
-        </>
-      }
+      {/*{costButton}*/}
+
+        <Stack direction="row" spacing={2} mb={4} mt={2} alignItems="center">
+          <Cost
+            onRemoveCost={onRemoveCost}
+            cost={cost}
+            onSetCost={onSetCost}
+            onAddCost={onAddCost}
+          />
+        </Stack>
+      <Typography>Reveal at</Typography>
+      <Stack direction="row" spacing={2} mb={4} mt={2} alignItems="center">
+        <Cost
+          onRemoveCost={onRemoveRevealedAt}
+          cost={revealedAt}
+          onSetCost={onSetRevealedAt}
+          onAddCost={onAddRevealedAt}
+        />
+      </Stack>
     </Box>
   )
 }

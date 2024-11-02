@@ -17,6 +17,7 @@ export class ResourceBase<K extends string, T extends string> {
   public readonly label: string;
   public readonly type: T;
   public readonly cost: ResourceCostUpdate<K> | null;
+  public readonly revealedAt: ResourceCostUpdate<K> | null;
   public readonly iconName: string;
 
   // I want to create the cost for the frontend to easily render
@@ -33,6 +34,7 @@ export class ResourceBase<K extends string, T extends string> {
       label: '',
       type: '' as T,
       cost: null,
+      revealedAt: null,
       iconName: 'empty',
     }
     const {
@@ -43,6 +45,7 @@ export class ResourceBase<K extends string, T extends string> {
       type,
       key,
       cost,
+      revealedAt,
       iconName,
     } = {
       ...defaultResource,
@@ -56,6 +59,7 @@ export class ResourceBase<K extends string, T extends string> {
     this.label = label ? label : key ? labelFromKey(key) : '';
     this.type = typeof type === 'string' ? type : '' as T;
     this.cost = cost || null;
+    this.revealedAt = revealedAt || null;
     this.iconName = iconName || 'empty';
   }
 
@@ -103,12 +107,12 @@ export class ResourceBase<K extends string, T extends string> {
         ? this.min
         : value
 
-  private readonly __simplifyCost = () => {
-    if (!this.cost) {
+  private readonly __simplifyCost = (val: ResourceCostUpdate<K> | null) => {
+    if (!val) {
       return null
     }
-    const give = this.cost.give.map(({key, value}) => ({key, value}))
-    const gain = this.cost.gain.map(({key, value}) => ({key, value}))
+    const give = val.give.map(({key, value}) => ({key, value}))
+    const gain = val.gain.map(({key, value}) => ({key, value}))
     return {give, gain}
   }
 
@@ -134,7 +138,8 @@ export class ResourceBase<K extends string, T extends string> {
       max: this.max,
       label: this.label,
       type: this.type,
-      cost: this.__simplifyCost(),
+      cost: this.__simplifyCost(this.cost),
+      revealedAt: this.__simplifyCost(this.revealedAt),
       iconName: this.iconName,
     }
   }

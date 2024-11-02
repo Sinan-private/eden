@@ -8,6 +8,8 @@ import {useAdmin} from "./Admin/admin.context.ts";
 export type ResourceCloneConfig<K, T> = {
   onAddCost(resourceState: ResourceState<K, T>): void;
   onRemoveCost(resourceState: ResourceState<K, T>): void;
+  onAddRevealedAt(resourceState: ResourceState<K, T>): void;
+  onRemoveRevealedAt(resourceState: ResourceState<K, T>): void;
 }
 
 export const useResourceClone = <K extends string, T extends string>(
@@ -30,6 +32,7 @@ export const useResourceClone = <K extends string, T extends string>(
   const [type, setType] = useState(_resource.type);
   const [iconName, setIconName] = useState(_resource.iconName);
   const [cost, setCost] = useState(_resource.cost);
+  const [revealedAt, setRevealedAt] = useState(_resource.revealedAt);
 
   const getResourceState = (update?: Partial<ResourceState<K, T>>): ResourceState<K, T> => ({
     key,
@@ -40,6 +43,7 @@ export const useResourceClone = <K extends string, T extends string>(
     label,
     iconName,
     cost,
+    revealedAt,
     ...update,
   })
 
@@ -51,7 +55,7 @@ export const useResourceClone = <K extends string, T extends string>(
     if (!cost) {
       return
     }
-    const newCost = _resource.updateCost(changeKey, change)
+    const newCost = _resource.updateCost(changeKey, change, cost)
     setCost(newCost)
   }
 
@@ -59,6 +63,7 @@ export const useResourceClone = <K extends string, T extends string>(
     changeKey: 'give' | 'gain' | '',
     change: TradeChange<K>
   ) => {
+    if (!cost) {onCreateCost(change)}
     const newCost = _resource.addCost(changeKey, change, cost)
     if (newCost) {
       setCost(newCost)
@@ -86,12 +91,52 @@ export const useResourceClone = <K extends string, T extends string>(
     }
   }
 
+  const onSetRevealedAt = (
+    changeKey: 'give' | 'gain',
+    change: TradeChange<K>
+  ) => {
+    if (!revealedAt) {
+      return
+    }
+    const newCost = _resource.updateRevealedAt(changeKey, change, revealedAt)
+    setRevealedAt(newCost)
+  }
+
+  const onAddRevealedAt = (
+    changeKey: 'give' | 'gain' | '',
+    change: TradeChange<K>
+  ) => {
+    const newCost = _resource.addRevealedAt(changeKey, change, cost)
+    if (newCost) {
+      setRevealedAt(newCost)
+      safeConfig.onAddRevealedAt(getResourceState({cost: newCost}));
+    }
+  }
+
+  const onCreateRevealedAt = (change: TradeChange<K>) => {
+    const newResource = new Resource(getResourceState());
+    const newCost = newResource.createRevealedAt(change)
+    // const newCost: ResourceCostUpdate<K> = get(key).createCost(change);
+
+    setRevealedAt(newCost)
+  }
+
+  const onRemoveRevealedAt = (
+    changeKey: 'give' | 'gain' | '',
+    resourceKey: K
+  ) => {
+    const newCost = _resource.removeRevealedAt(changeKey, resourceKey, revealedAt)
+    if (newCost) {
+      setRevealedAt(newCost)
+      safeConfig.onRemoveRevealedAt(getResourceState({cost: newCost}));
+    }
+  }
+
   const handleTypeChange = (event: SelectChangeEvent) => {
     setType(event.target.value as T);
   };
 
   const updateResource = () => {
-    console.log(getResourceState())
     // eslint-disable-next-line @typescript-eslint/ban-ts-comment
     // @ts-expect-error
     const newState = mergeChangeToState(getResourceState())
@@ -108,8 +153,9 @@ export const useResourceClone = <K extends string, T extends string>(
       || min !== resource?.min
       || max !== resource?.max
       || JSON.stringify(cost) !== JSON.stringify(resource?.cost)
+      || JSON.stringify(revealedAt) !== JSON.stringify(resource?.revealedAt)
     );
-  }, [key, value, resource, label, type, iconName, min, max, cost])
+  }, [key, value, resource, label, type, iconName, min, max, cost, revealedAt])
 
 
 
@@ -123,16 +169,21 @@ export const useResourceClone = <K extends string, T extends string>(
     label,
     type,
     cost,
+    revealedAt,
     icon,
     isDisabled,
     onSetCost,
     onAddCost,
     onCreateCost,
+    onRemoveCost,
+    onSetRevealedAt,
+    onAddRevealedAt,
+    onCreateRevealedAt,
+    onRemoveRevealedAt,
     handleTypeChange,
     updateResource,
     setLabel,
     setValue,
-    onRemoveCost,
     setIconName,
     setKey,
     setMin,
@@ -145,6 +196,8 @@ const createConfig = <K, T>(config?: Partial<ResourceCloneConfig<K, T>>): Resour
   const defaultConfig: Record<keyof ResourceCloneConfig<K, T>, () => void> = {
     onAddCost: empty,
     onRemoveCost: empty,
+    onAddRevealedAt: empty,
+    onRemoveRevealedAt: empty,
   }
   return {
     ...defaultConfig,

@@ -5,6 +5,7 @@ export type ResourceTypeRaw<K, T> = {
   label: string;
   type?: T;
   cost: ResourceCostUpdate<K> | null;
+  revealedAt: ResourceCostUpdate<K> | null;
   iconName?: string;
 }
 
@@ -24,6 +25,7 @@ export type ResourceCostUpdate<K> = {
 export type ResourceUpdateProps<K, T> = {
   key: K;
   cost?: ResourceCostUpdate<K> | null;
+  revealedAt?: ResourceCostUpdate<K> | null;
   iconName?: string;
 } & Partial<ResourceTypeRaw<K, T>>
 

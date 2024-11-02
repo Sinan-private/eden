@@ -11,7 +11,6 @@ import {AddCost} from "./Add/AddCost.tsx";
 type CostProps = {
   cost: ResourceCostUpdate<ResourceKeys> | null;
   onSetCost: OnSetCost;
-  onOpenAddCost(giveOrGain: 'give' | 'gain'): void;
   onRemoveCost(changeKey: 'give' | 'gain', resourceKey: ResourceKeys): void;
   onAddCost(changeKey: 'give' | 'gain' | '', change: TradeChange<ResourceKeys>): void
 };

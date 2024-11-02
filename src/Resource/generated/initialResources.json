@@ -1,12 +1,38 @@
 [
   {
     "key": "corn",
-    "value": 100,
+    "value": 102,
     "min": 0,
     "max": null,
     "label": "Corn",
     "type": "base_resource",
-    "cost": null,
+    "cost": {
+      "give": [
+        {
+          "key": "land",
+          "value": 1
+        },
+        {
+          "key": "money",
+          "value": 20
+        }
+      ],
+      "gain": [
+        {
+          "key": "windmill",
+          "value": 1
+        }
+      ]
+    },
+    "revealedAt": {
+      "give": [
+        {
+          "key": "money",
+          "value": 2000
+        }
+      ],
+      "gain": []
+    },
     "iconName": "wheat"
   },
   {
@@ -17,6 +43,7 @@
     "label": "Water",
     "type": "base_resource",
     "cost": null,
+    "revealedAt": null,
     "iconName": "water"
   },
   {
@@ -27,6 +54,7 @@
     "label": "Coal",
     "type": "base_resource",
     "cost": null,
+    "revealedAt": null,
     "iconName": "coal"
   },
   {
@@ -37,6 +65,7 @@
     "label": "Stone",
     "type": "base_resource",
     "cost": null,
+    "revealedAt": null,
     "iconName": "stone"
   },
   {
@@ -47,6 +76,7 @@
     "label": "Wood",
     "type": "base_resource",
     "cost": null,
+    "revealedAt": null,
     "iconName": "wood"
   },
   {
@@ -70,6 +100,7 @@
         }
       ]
     },
+    "revealedAt": null,
     "iconName": "land"
   },
   {
@@ -101,6 +132,7 @@
         }
       ]
     },
+    "revealedAt": null,
     "iconName": "empty"
   },
   {
@@ -128,6 +160,7 @@
         }
       ]
     },
+    "revealedAt": null,
     "iconName": "empty"
   },
   {
@@ -159,6 +192,7 @@
         }
       ]
     },
+    "revealedAt": null,
     "iconName": "empty"
   },
   {
@@ -190,6 +224,7 @@
         }
       ]
     },
+    "revealedAt": null,
     "iconName": "empty"
   },
   {
@@ -221,6 +256,7 @@
         }
       ]
     },
+    "revealedAt": null,
     "iconName": "empty"
   },
   {
@@ -252,6 +288,7 @@
         }
       ]
     },
+    "revealedAt": null,
     "iconName": "empty"
   },
   {
@@ -283,6 +320,7 @@
         }
       ]
     },
+    "revealedAt": null,
     "iconName": "empty"
   },
   {
@@ -310,6 +348,7 @@
         }
       ]
     },
+    "revealedAt": null,
     "iconName": "meat2"
   },
   {
@@ -337,6 +376,7 @@
         }
       ]
     },
+    "revealedAt": null,
     "iconName": "milk"
   },
   {
@@ -360,6 +400,7 @@
         }
       ]
     },
+    "revealedAt": null,
     "iconName": "wool"
   },
   {
@@ -383,6 +424,7 @@
         }
       ]
     },
+    "revealedAt": null,
     "iconName": "flour"
   },
   {
@@ -410,6 +452,7 @@
         }
       ]
     },
+    "revealedAt": null,
     "iconName": "bread"
   },
   {
@@ -433,6 +476,7 @@
         }
       ]
     },
+    "revealedAt": null,
     "iconName": "brick"
   },
   {
@@ -456,6 +500,7 @@
         }
       ]
     },
+    "revealedAt": null,
     "iconName": "plank"
   },
   {
@@ -466,6 +511,7 @@
     "label": "Citizen",
     "type": "citizen_resource",
     "cost": null,
+    "revealedAt": null,
     "iconName": "clothes2"
   },
   {
@@ -476,6 +522,7 @@
     "label": "Engineer",
     "type": "citizen_resource",
     "cost": null,
+    "revealedAt": null,
     "iconName": "helmet"
   },
   {
@@ -486,6 +533,7 @@
     "label": "Scientist",
     "type": "citizen_resource",
     "cost": null,
+    "revealedAt": null,
     "iconName": "book2"
   },
   {
@@ -496,6 +544,7 @@
     "label": "Artist",
     "type": "citizen_resource",
     "cost": null,
+    "revealedAt": null,
     "iconName": "harp"
   },
   {
@@ -506,6 +555,7 @@
     "label": "Magician",
     "type": "citizen_resource",
     "cost": null,
+    "revealedAt": null,
     "iconName": "clothes"
   },
   {
@@ -516,6 +566,7 @@
     "label": "Money",
     "type": "currency_resource",
     "cost": null,
+    "revealedAt": null,
     "iconName": "money_gold"
   },
   {
@@ -526,6 +577,7 @@
     "label": "Silver ore",
     "type": "base_resource",
     "cost": null,
+    "revealedAt": null,
     "iconName": "silver_ore"
   },
   {
@@ -536,6 +588,7 @@
     "label": "Iron ore",
     "type": "base_resource",
     "cost": null,
+    "revealedAt": null,
     "iconName": "iron_ore"
   },
   {
@@ -546,6 +599,7 @@
     "label": "Copper ore",
     "type": "base_resource",
     "cost": null,
+    "revealedAt": null,
     "iconName": "copper_ore"
   },
   {
@@ -569,6 +623,7 @@
         }
       ]
     },
+    "revealedAt": null,
     "iconName": "silver_brick"
   },
   {
@@ -592,6 +647,7 @@
         }
       ]
     },
+    "revealedAt": null,
     "iconName": "iron_brick"
   },
   {
@@ -615,6 +671,7 @@
         }
       ]
     },
+    "revealedAt": null,
     "iconName": "copper_brick"
   },
   {
@@ -625,6 +682,7 @@
     "label": "Gold ore",
     "type": "base_resource",
     "cost": null,
+    "revealedAt": null,
     "iconName": "gold_ore"
   },
   {
@@ -648,6 +706,7 @@
         }
       ]
     },
+    "revealedAt": null,
     "iconName": "gold_brick"
   },
   {
@@ -658,6 +717,7 @@
     "label": "Level",
     "type": "level",
     "cost": null,
+    "revealedAt": null,
     "iconName": "arrow_up"
   }
 ]
