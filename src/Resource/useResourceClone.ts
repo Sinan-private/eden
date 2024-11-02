@@ -1,4 +1,4 @@
-import {useMemo, useState} from "react";
+import {useCallback, useMemo, useState} from "react";
 import {ResourceState, TradeChange} from "./genericTypes.ts";
 import {SelectChangeEvent} from "@mui/material/Select";
 import icons from "./assets/icons/icons.ts";
@@ -34,7 +34,7 @@ export const useResourceClone = <K extends string, T extends string>(
   const [cost, setCost] = useState(_resource.cost);
   const [revealedAt, setRevealedAt] = useState(_resource.revealedAt);
 
-  const getResourceState = (update?: Partial<ResourceState<K, T>>): ResourceState<K, T> => ({
+  const getResourceState = useCallback((update?: Partial<ResourceState<K, T>>): ResourceState<K, T> => ({
     key,
     min,
     max,
@@ -45,7 +45,7 @@ export const useResourceClone = <K extends string, T extends string>(
     cost,
     revealedAt,
     ...update,
-  })
+  }), [cost, iconName, key, label, max, min, revealedAt, type, value])
 
 
   const onSetCost = (
@@ -73,7 +73,7 @@ export const useResourceClone = <K extends string, T extends string>(
 
   const onCreateCost = (change: TradeChange<K>) => {
     const newResource = new Resource(getResourceState());
-    const newCost = newResource.createCost(change)
+    const newCost = newResource.createTrade(change)
     // const newCost: ResourceCostUpdate<K> = get(key).createCost(change);
     console.log(newResource, newCost)
 
@@ -115,7 +115,7 @@ export const useResourceClone = <K extends string, T extends string>(
 
   const onCreateRevealedAt = (change: TradeChange<K>) => {
     const newResource = new Resource(getResourceState());
-    const newCost = newResource.createRevealedAt(change)
+    const newCost = newResource.createTrade(change)
     // const newCost: ResourceCostUpdate<K> = get(key).createCost(change);
 
     setRevealedAt(newCost)

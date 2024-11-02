@@ -7,7 +7,7 @@ export class Resource<K extends string, T extends string> extends ResourceBase<K
     super(raw_resource);
   }
 
-  public readonly createCost = (change: TradeChange<K>): ResourceCostUpdate<K> => {
+  public readonly createTrade = (change: TradeChange<K>): ResourceCostUpdate<K> => {
     return {
       give: [change],
       gain: [{key: this.key, value: 1}]
@@ -18,97 +18,31 @@ export class Resource<K extends string, T extends string> extends ResourceBase<K
     changeKey: 'give' | 'gain' | '',
     change: TradeChange<K>,
     cost = this.cost,
-  ): ResourceCostUpdate<K> | null => {
-    if (!cost || !changeKey.length) {
-      return cost
-    }
-    console.log('Add cost')
-    console.log(this.state, change)
-    console.log(new Resource({...this.state, ...change}).value)
-    const addedCost = {
-      key: change.key,
-      value: new Resource({...this.state, ...change}).value
-    }
-    return {
-      ...this.cost,
-      [changeKey]: cost[changeKey as 'give' | 'gain']
-        .concat(addedCost)
-    } as ResourceCostUpdate<K>
-  }
+  ) => addTrade(changeKey, change, cost)
+
+  public readonly addRevealedAt = (
+    changeKey: 'give' | 'gain' | '',
+    change: TradeChange<K>,
+    revealedAt = this.revealedAt,
+  ) => addTrade(changeKey, change, revealedAt)
 
   public readonly removeCost = (
     changeKey: 'give' | 'gain' | '',
     resourceKey: K,
     cost = this.cost,
-  ) => {
-    if (changeKey === '' || !cost) {
-      return cost
-    }
-    const index = cost[changeKey].findIndex(({key}) => key === resourceKey)
-    if (index === -1) {
-      return cost
-    }
-    return {
-      ...cost,
-      [changeKey]: [
-        ...cost[changeKey].slice(0, index),
-        ...cost[changeKey].slice(index + 1),
-      ]
-    }
-  }
+  ) => removeTrade(changeKey, resourceKey, cost)
+
+  public readonly removeRevealedAt = (
+    changeKey: 'give' | 'gain' | '',
+    resourceKey: K,
+    revealedAt = this.revealedAt,
+  ) => removeTrade(changeKey, resourceKey, revealedAt)
 
   public readonly updateCost = (
     changeType: 'give' | 'gain',
     change: TradeChange<K>,
     cost = this.cost,
   ) => mergeCostUpdate(changeType, change, cost)
-
-  public readonly createRevealedAt = (change: TradeChange<K>): ResourceCostUpdate<K> => {
-    return {
-      give: [change],
-      gain: [{key: this.key, value: 1}]
-    }
-  }
-
-  public readonly addRevealedAt = (
-    changeKey: 'give' | 'gain' | '',
-    change: TradeChange<K>,
-    revealedAt = this.revealedAt,
-  ): ResourceCostUpdate<K> | null => {
-    if (!revealedAt || !changeKey.length) {
-      return revealedAt
-    }
-    const addedCost = {
-      key: change.key,
-      value: new Resource({...this.state, ...change}).value
-    }
-    return {
-      ...this.revealedAt,
-      [changeKey]: revealedAt[changeKey as 'give' | 'gain']
-        .concat(addedCost)
-    } as ResourceCostUpdate<K>
-  }
-
-  public readonly removeRevealedAt = (
-    changeKey: 'give' | 'gain' | '',
-    resourceKey: K,
-    cost = this.cost,
-  ) => {
-    if (changeKey === '' || !cost) {
-      return cost
-    }
-    const index = cost[changeKey].findIndex(({key}) => key === resourceKey)
-    if (index === -1) {
-      return cost
-    }
-    return {
-      ...cost,
-      [changeKey]: [
-        ...cost[changeKey].slice(0, index),
-        ...cost[changeKey].slice(index + 1),
-      ]
-    }
-  }
 
   public readonly updateRevealedAt = (
     changeType: 'give' | 'gain',
@@ -119,6 +53,21 @@ export class Resource<K extends string, T extends string> extends ResourceBase<K
   get icon(): string {
     return icons.find(icon => icon.name === this.iconName)?.src || ''
   }
+}
+
+const addTrade = <K>(
+  changeKey: 'give' | 'gain' | '',
+  change: TradeChange<K>,
+  trade?: ResourceCostUpdate<K> | null,
+): ResourceCostUpdate<K> | null => {
+  if (!trade || !changeKey.length) {
+    return null
+  }
+  return {
+    ...trade,
+    [changeKey]: trade[changeKey as 'give' | 'gain']
+      .concat(change)
+  } as ResourceCostUpdate<K>
 }
 
 const mergeCostUpdate = <K>(
@@ -136,6 +85,27 @@ const mergeCostUpdate = <K>(
       ...cost[changeType].slice(0, i),
       change,
       ...cost[changeType].slice(i + 1),
+    ]
+  }
+}
+
+const removeTrade = <K>(
+  changeKey: 'give' | 'gain' | '',
+  resourceKey: K,
+  trade?: ResourceCostUpdate<K> | null,
+) => {
+  if (changeKey === '' || !trade) {
+    return null
+  }
+  const index = trade[changeKey].findIndex(({key}) => key === resourceKey)
+  if (index === -1) {
+    return trade
+  }
+  return {
+    ...trade,
+    [changeKey]: [
+      ...trade[changeKey].slice(0, index),
+      ...trade[changeKey].slice(index + 1),
     ]
   }
 }
