@@ -26,8 +26,8 @@ export const useResource = <K extends string, T extends string>(initialState: Re
     return safeState;
   }
 
-
-  const mergeChangeToState = useCallback((update: ResourceUpdateProps<K, T> | ResourceUpdateProps<K, T>[]): ResourceState<K, T>[] =>
+  type StateUpdatePossibilities = ResourceUpdateProps<K, T> | ResourceState<K, T> | (ResourceUpdateProps<K, T> | ResourceState<K, T>)[]
+  const mergeChangeToState = useCallback((update: StateUpdatePossibilities): ResourceState<K, T>[] =>
     _mergeChangeToState(update, state), [state])
 
   // Get the full EditResource class

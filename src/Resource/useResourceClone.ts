@@ -1,5 +1,5 @@
-import {useCallback, useMemo, useState} from "react";
-import {ResourceState, TradeChange} from "./genericTypes.ts";
+import {Dispatch, SetStateAction, useCallback, useState} from "react";
+import {ResourceCostUpdate, ResourceState, TradeChange} from "./genericTypes.ts";
 import {SelectChangeEvent} from "@mui/material/Select";
 import icons from "./assets/icons/icons.ts";
 import {Resource} from "./Resource.ts";
@@ -23,7 +23,7 @@ export const useResourceClone = <K extends string, T extends string>(
       mergeChangeToState,
     }
   } = useAdmin();
-  const safeConfig = createConfig(config);
+  const callbacks = createConfig(config);
   const [key, setKey] = useState(_resource.key!)
   const [min, setMin] = useState(_resource.min)
   const [max, setMax] = useState(_resource.max)
@@ -47,38 +47,63 @@ export const useResourceClone = <K extends string, T extends string>(
     ...update,
   }), [cost, iconName, key, label, max, min, revealedAt, type, value])
 
-
-  const onSetCost = (
+  const onSetTrade = (
+    setState: Dispatch<SetStateAction<ResourceCostUpdate<K> | null>>,
+    trade?: ResourceCostUpdate<K> | null
+  ) => (
     changeKey: 'give' | 'gain',
     change: TradeChange<K>
   ) => {
-    if (!cost) {
+    if (!trade) {
       return
     }
-    const newCost = _resource.updateCost(changeKey, change, cost)
-    setCost(newCost)
+    const newCost = _resource.updateTrade(changeKey, change, trade)
+    setState(newCost)
   }
+
+  const onCreateTrade = (setState: Dispatch<SetStateAction<ResourceCostUpdate<K> | null>>) => (change: TradeChange<K>) => {
+    const newResource = new Resource(getResourceState());
+    const newCost = newResource.createTrade(change)
+    setState(newCost)
+  }
+
+  // This gets hideous because of the callback that offers the possibility to close the component after saving
+  // const onAddTrade= (
+  //   setState: Dispatch<SetStateAction<ResourceCostUpdate<K> | null>>,
+  //   trade?: ResourceCostUpdate<K> | null
+  // ) => (
+  //   changeKey: 'give' | 'gain' | '',
+  //   change: TradeChange<K>
+  // ) => {
+  //   if (!trade) {
+  //     onCreateTrade(setState)(change)
+  //   }
+  //   const newTrade = _resource.addTrade(changeKey, change, trade)
+  //   if (newTrade) {
+  //     setState(newTrade)
+  //     // callbacks.onAddCost(getResourceState({cost: newTrade}));
+  //   }
+  // }
+
+  const onSetCost = onSetTrade(setCost, cost)
+  const onSetRevealedAt = onSetTrade(setRevealedAt, revealedAt)
 
   const onAddCost = (
     changeKey: 'give' | 'gain' | '',
     change: TradeChange<K>
   ) => {
-    if (!cost) {onCreateCost(change)}
+    if (!cost) {
+      onCreateCost(change)
+    }
     const newCost = _resource.addCost(changeKey, change, cost)
     if (newCost) {
       setCost(newCost)
-      safeConfig.onAddCost(getResourceState({cost: newCost}));
+      callbacks.onAddCost(getResourceState({cost: newCost}));
     }
   }
 
-  const onCreateCost = (change: TradeChange<K>) => {
-    const newResource = new Resource(getResourceState());
-    const newCost = newResource.createTrade(change)
-    // const newCost: ResourceCostUpdate<K> = get(key).createCost(change);
-    console.log(newResource, newCost)
-
-    setCost(newCost)
-  }
+  const onCreateCost = onCreateTrade(setCost);
+  const onCreateRevealedAt = onCreateTrade(setRevealedAt);
 
   const onRemoveCost = (
     changeKey: 'give' | 'gain' | '',
@@ -87,38 +112,19 @@ export const useResourceClone = <K extends string, T extends string>(
     const newCost = _resource.removeCost(changeKey, resourceKey, cost)
     if (newCost) {
       setCost(newCost)
-      safeConfig.onRemoveCost(getResourceState({cost: newCost}));
+      callbacks.onRemoveCost(getResourceState({cost: newCost}));
     }
-  }
-
-  const onSetRevealedAt = (
-    changeKey: 'give' | 'gain',
-    change: TradeChange<K>
-  ) => {
-    if (!revealedAt) {
-      return
-    }
-    const newCost = _resource.updateRevealedAt(changeKey, change, revealedAt)
-    setRevealedAt(newCost)
   }
 
   const onAddRevealedAt = (
     changeKey: 'give' | 'gain' | '',
     change: TradeChange<K>
   ) => {
-    const newCost = _resource.addRevealedAt(changeKey, change, cost)
+    const newCost = _resource.addRevealedAt(changeKey, change, revealedAt)
     if (newCost) {
       setRevealedAt(newCost)
-      safeConfig.onAddRevealedAt(getResourceState({cost: newCost}));
+      callbacks.onAddRevealedAt(getResourceState({cost: newCost}));
     }
-  }
-
-  const onCreateRevealedAt = (change: TradeChange<K>) => {
-    const newResource = new Resource(getResourceState());
-    const newCost = newResource.createTrade(change)
-    // const newCost: ResourceCostUpdate<K> = get(key).createCost(change);
-
-    setRevealedAt(newCost)
   }
 
   const onRemoveRevealedAt = (
@@ -128,7 +134,7 @@ export const useResourceClone = <K extends string, T extends string>(
     const newCost = _resource.removeRevealedAt(changeKey, resourceKey, revealedAt)
     if (newCost) {
       setRevealedAt(newCost)
-      safeConfig.onRemoveRevealedAt(getResourceState({cost: newCost}));
+      callbacks.onRemoveRevealedAt(getResourceState({cost: newCost}));
     }
   }
 
@@ -143,22 +149,7 @@ export const useResourceClone = <K extends string, T extends string>(
     write__initialResources(newState)
   }
 
-  const isDisabled = useMemo(() => {
-    return !(
-      key !== resource?.key
-      || value !== resource?.value
-      || label !== resource?.label
-      || type !== resource?.type
-      || iconName !== resource?.iconName
-      || min !== resource?.min
-      || max !== resource?.max
-      || JSON.stringify(cost) !== JSON.stringify(resource?.cost)
-      || JSON.stringify(revealedAt) !== JSON.stringify(resource?.revealedAt)
-    );
-  }, [key, value, resource, label, type, iconName, min, max, cost, revealedAt])
-
-
-
+  const isDisabled = areObjectsEqual(getResourceState(), resource)
   const icon = icons.find(({name}) => name === iconName)?.src || '';
 
   return {
@@ -203,4 +194,26 @@ const createConfig = <K, T>(config?: Partial<ResourceCloneConfig<K, T>>): Resour
     ...defaultConfig,
     ...config,
   }
+}
+
+
+const areObjectsEqual = <K extends string, T extends string>(obj1: ResourceState<K, T>, obj2?: Partial<ResourceState<K, T>>): boolean => {
+  if (obj1 === obj2) return true;
+
+  if (typeof obj1 !== 'object' || typeof obj2 !== 'object' || obj1 === null || obj2 === null) {
+    return false;
+  }
+
+  const keys1 = Object.keys(obj1) as K[];
+  const keys2 = Object.keys(obj2) as K[];
+
+  for (const key of keys1) {
+    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+    // @ts-expect-error
+    if (!keys2.includes(key) || !areObjectsEqual(obj1[key], obj2[key])) {
+      return false;
+    }
+  }
+
+  return true;
 }

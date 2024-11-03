@@ -8,7 +8,7 @@ import {
   Stack,
   TextField,
   Typography,
-  SxProps,
+  SxProps, Paper,
 } from "@mui/material";
 import {Icon, ResourceState, TradeChange} from "../Resource/genericTypes.ts";
 import {Cost} from "./Cost.tsx";
@@ -202,10 +202,10 @@ export const EditResource = (
           Save
         </button>
       </Stack>
-      <Typography>Cost</Typography>
 
       {/*{costButton}*/}
-
+      <Paper sx={{border: '1px solid #ffffff2e', mt: 2}}>
+      <Typography>Cost</Typography>
         <Stack direction="row" spacing={2} mb={4} mt={2} alignItems="center">
           <Cost
             onRemoveCost={onRemoveCost}
@@ -214,6 +214,7 @@ export const EditResource = (
             onAddCost={onAddCost}
           />
         </Stack>
+      </Paper>
       <Typography>Reveal at</Typography>
       <Stack direction="row" spacing={2} mb={4} mt={2} alignItems="center">
         <Cost
