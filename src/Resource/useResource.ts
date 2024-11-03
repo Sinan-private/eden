@@ -80,18 +80,20 @@ export const useResource = <K extends string, T extends string>(initialState: Re
   }, [get, mergeChangeToState]);
 
   const canRemoveResource = (key: K) => {
-    const newResources = removeResorceByKey(key, state)
+    const newResources = removeResourceByKey(key, state)
     return safeToRemoveResource(key, newResources);
   }
 
   const removeResource = (key: K): ResourceState<K, T>[] | undefined => {
-    const newResources = removeResorceByKey(key, state)
+    const newResources = removeResourceByKey(key, state)
     // It is important to use the newState here since otherwise the resource will possibly block its own deletion
     if (safeToRemoveResource(key, newResources)) {
       setState(newResources);
       return newResources;
     }
   }
+
+  const getByCost = useCallback((key?: K) => getResourcesWithCost(key, state), [state])
 
   return {
     state,
@@ -108,6 +110,7 @@ export const useResource = <K extends string, T extends string>(initialState: Re
     canRemoveResource,
     removeResource,
     icons,
+    getResourcesWithCost: getByCost,
   }
 }
 
@@ -115,7 +118,7 @@ const getUniqueValues = <T>(arr: T[]): T[] => {
   return Array.from(new Set(arr));
 }
 
-const removeResorceByKey = <K, T>(key: K, state: ResourceState<K, T>[]): ResourceState<K, T>[] => {
+const removeResourceByKey = <K, T>(key: K, state: ResourceState<K, T>[]): ResourceState<K, T>[] => {
   const index = state.findIndex(state => state.key === key);
   return [
     ...state.slice(0, index),
@@ -124,17 +127,26 @@ const removeResorceByKey = <K, T>(key: K, state: ResourceState<K, T>[]): Resourc
 }
 
 const safeToRemoveResource = <K, T>(key: K, state: ResourceState<K, T>[]): boolean => {
-  let isInUse = false;
-  // It is important to use the newState here since otherwise the resource will possibly block its own deletion
-  state.forEach(({cost}) => {
-      if (!cost) return
-      const flatCost = Object.values(cost).flat();
-      flatCost.forEach(cost => {
-        if (cost.key === key) {
-          isInUse = true
-        }
-      })
-    }
-  )
-  return !isInUse;
+  return !getResourcesWithCost(key, state).length
 }
+
+const getResourcesWithCost = <K, T>(key: K | undefined, state: ResourceState<K, T>[]): ResourceState<K, T>[] => {
+  if (!key) {
+    return []
+  }
+  const resourcesUsingKey: ResourceState<K, T>[] = [];
+
+  state.forEach(resource => {
+    const { cost } = resource;
+    if (!cost) return;
+
+    const flatCost = Object.values(cost).flat();
+    const isKeyUsed = flatCost.some(cost => cost.key === key);
+
+    if (isKeyUsed) {
+      resourcesUsingKey.push(resource);
+    }
+  });
+
+  return resourcesUsingKey.filter(used => used.key !== key);
+};

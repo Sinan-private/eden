@@ -1,29 +1,18 @@
 import {useEffect, useState} from "react";
 import styled from "styled-components";
-import {IconButton, SpeedDial, SpeedDialAction, SpeedDialIcon} from "@mui/material";
-import BalanceIcon from '@mui/icons-material/Balance';
-import CableIcon from '@mui/icons-material/Cable';
-import {useGame} from "../context/game.context.ts";
-import {AddResourceModal} from "./Add/AddResourceModal.tsx";
+import {IconButton} from "@mui/material";
+import {useGame} from "../../context/game.context.ts";
 import {HandleTypes} from "./HandleTypes.tsx";
-import {AddTypeModal} from "./Add/AddTypeModal.tsx";
 import Box from "@mui/material/Box";
 import Close from "@mui/icons-material/Close";
 import {HandleResources} from "./HandleResources.tsx";
 import TabNav from "./TabNav.tsx";
+import {Dependencies} from "./Dependencies.tsx";
 
 export const AdminPanel = () => {
   const {onCloseAdminPanel} = useGame();
 
   const [, setLoading] = useState(true);
-  const [openNewResource, setOpenNewResource] = useState(false);
-  const [openNewType, setOpenNewType] = useState(false);
-
-
-  const onOpenAddResource = () => setOpenNewResource(true);
-  const onOpenAddType = () => setOpenNewType(true);
-  const onCloseAddCost = () => setOpenNewResource(false);
-  const onCloseAddType = () => setOpenNewType(false);
 
   useEffect(() => {
     const handleRenderingComplete = () => {
@@ -43,24 +32,6 @@ export const AdminPanel = () => {
         </IconButton>
 
       </Box>
-      <SpeedDial
-        ariaLabel="SpeedDial basic example"
-        sx={{position: 'absolute', bottom: 16, right: 16}}
-        icon={<SpeedDialIcon/>}
-      >
-        <SpeedDialAction
-          icon={<BalanceIcon/>}
-          tooltipTitle="Add resource"
-          onClick={onOpenAddResource}
-        />
-        <SpeedDialAction
-          icon={<CableIcon/>}
-          tooltipTitle="Add type"
-          onClick={onOpenAddType}
-        />
-      </SpeedDial>
-      <AddTypeModal open={openNewType} onClose={onCloseAddType}/>
-      <AddResourceModal open={openNewResource} onClose={onCloseAddCost}/>
 
       <Content>
         <TabNav tabs={[
@@ -71,6 +42,10 @@ export const AdminPanel = () => {
           {
             label: 'Types',
             Component: HandleTypes,
+          },
+          {
+            label: 'Dependencies',
+            Component: Dependencies,
           },
         ]} />
       </Content>

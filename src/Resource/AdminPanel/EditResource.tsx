@@ -11,17 +11,17 @@ import {
   SxProps,
   Paper,
 } from "@mui/material";
-import {Icon, ResourceState, TradeChange} from "../Resource/genericTypes.ts";
+import {Icon, ResourceState, TradeChange} from "../genericTypes.ts";
 import {Cost} from "./Cost.tsx";
-import {useResourceClone} from "../Resource";
-import {useToggle} from "../Resource/hooks/useToggle.ts";
+import {useResourceClone} from "../index.ts";
+import {useToggle} from "../hooks/useToggle.ts";
 import {IconPickerModal} from "./IconPickerModal.tsx";
-import {resourceTypes} from "../Resource/generated/resourceTypes.ts";
+import {resourceTypes} from "../generated/resourceTypes.ts";
 import Close from "@mui/icons-material/Close";
 import Box from "@mui/material/Box";
-import {ResourceKeys, ResourceTypes} from "../Resource/specificTypes.ts";
-import {useAdmin} from "../Resource/Admin/admin.context.ts";
-import {themeColors} from "../Resource/assets/colors.ts";
+import {ResourceKeys, ResourceTypes} from "../specificTypes.ts";
+import {useAdmin} from "../Admin/admin.context.ts";
+import {themeColors} from "../assets/colors.ts";
 
 type EditResourceProps = {
   resource?: Partial<ResourceState<ResourceKeys, ResourceTypes>>;

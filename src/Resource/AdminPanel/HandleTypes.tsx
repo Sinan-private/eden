@@ -1,9 +1,9 @@
 import {IconButton, Stack, Typography} from "@mui/material";
 import CancelIcon from '@mui/icons-material/Cancel';
-import {resourceTypes} from "../Resource/generated/resourceTypes.ts";
-import {AddType} from "./Add/AddType.tsx";
-import {ResourceTypes} from "../Resource/specificTypes.ts";
-import {useAdmin} from "../Resource/Admin/admin.context.ts";
+import {resourceTypes} from "../generated/resourceTypes.ts";
+import {AddType} from "./AddType.tsx";
+import {ResourceTypes} from "../specificTypes.ts";
+import {useAdmin} from "../Admin/admin.context.ts";
 
 export const HandleTypes = () => {
   const {write__removeType, resources} = useAdmin();
