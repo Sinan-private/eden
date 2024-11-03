@@ -7,6 +7,10 @@ import {ResourceKeys} from "../Resource/specificTypes.ts";
 import {useAdmin} from "../Resource/Admin/admin.context.ts";
 import {capitalizeFirstLetter} from "../Resource/helpers/captializeFirstLetter.ts";
 import {AddCost} from "./Add/AddCost.tsx";
+import {themeColors} from "../Resource/assets/colors.ts";
+import styled from "styled-components";
+import Box from "@mui/material/Box";
+import Close from "@mui/icons-material/Close";
 
 type CostProps = {
   cost: ResourceCostUpdate<ResourceKeys> | null;
@@ -17,11 +21,10 @@ type CostProps = {
 
 export const Cost = (props: CostProps) => {
   return (
-    <Stack spacing={10} direction="row" pl={8}>
+    <Stack spacing={2} direction="row" pl={8}>
       <CostChange {...props} changeKey="give"/>
       <CostChange {...props} changeKey="gain"/>
     </Stack>
-
   )
 }
 
@@ -47,8 +50,8 @@ const CostChange = (
   const change = cost?.give ? cost[changeKey] : [];
 
   return (
-    <Stack direction="column" spacing={2}>
-      <Typography>
+    <Stack direction="column" spacing={1} sx={{minWidth: 300}}>
+      <Typography align="left" sx={{color: themeColors.color5}}>
         {capitalizeFirstLetter(changeKey)}
       </Typography>
       {change.map(singleChange => (
@@ -61,14 +64,32 @@ const CostChange = (
       ))}
       {
         showAddCost
-          ? <AddCost onAddCost={_onAddCost} cost={change} sx={{width: 280}}/>
-          : <button style={{height: 56}} onClick={() => setShowAddCost(true)}>Add</button>
+          ? (
+            <Box position="relative">
+              <AddCost onAddCost={_onAddCost} cost={change} sx={{width: 280}}/>
+              <IconButton onClick={() => setShowAddCost(false)} sx={{position: 'absolute', top: -25, left: -25, color: "text.secondary"}} size="small">
+                <Close fontSize="inherit" />
+              </IconButton>
+            </Box>
+          )
+          : <StyledButton onClick={() => setShowAddCost(true)}>Add</StyledButton>
       }
-
-
     </Stack>
   )
 }
+
+const StyledButton = styled('button')`
+    background: transparent;
+    border: 1px solid ${themeColors.color5};
+    color: ${themeColors.color5};
+    border-radius: 50px;
+    text-transform: uppercase;
+    font-size: 14px;
+    width: 80px;
+    text-align: center;
+    margin-left: 40px!important;
+    margin-bottom: 20px!important;
+`;
 
 type SingleCostProps = {
   change: TradeChange<ResourceKeys>;

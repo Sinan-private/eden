@@ -11,7 +11,6 @@ import Box from "@mui/material/Box";
 import Close from "@mui/icons-material/Close";
 import {HandleResources} from "./HandleResources.tsx";
 import TabNav from "./TabNav.tsx";
-import {themeColors} from "../Resource/assets/colors.ts";
 
 export const AdminPanel = () => {
   const {onCloseAdminPanel} = useGame();
@@ -85,7 +84,7 @@ const StyledContainer = styled.div`
     left: 0;
     top: 0;
     min-width: 60vw;
-    background-color: ${themeColors.color1};
+    background: linear-gradient(180deg, rgb(53, 57, 70) 0%, rgba(35, 42, 60, 1) 100%);
     box-shadow: 10px 0 74px 0 #22183887;
     z-index: 1000;
 `

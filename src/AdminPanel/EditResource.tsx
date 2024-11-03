@@ -1,4 +1,4 @@
-import {ChangeEvent, useState} from "react";
+import {ChangeEvent, ReactNode, useState} from "react";
 import Select from "@mui/material/Select";
 import {
   FormControl,
@@ -8,7 +8,8 @@ import {
   Stack,
   TextField,
   Typography,
-  SxProps, Paper,
+  SxProps,
+  Paper,
 } from "@mui/material";
 import {Icon, ResourceState, TradeChange} from "../Resource/genericTypes.ts";
 import {Cost} from "./Cost.tsx";
@@ -20,6 +21,7 @@ import Close from "@mui/icons-material/Close";
 import Box from "@mui/material/Box";
 import {ResourceKeys, ResourceTypes} from "../Resource/specificTypes.ts";
 import {useAdmin} from "../Resource/Admin/admin.context.ts";
+import {themeColors} from "../Resource/assets/colors.ts";
 
 type EditResourceProps = {
   resource?: Partial<ResourceState<ResourceKeys, ResourceTypes>>;
@@ -163,24 +165,34 @@ export const EditResource = (
           enableKeyEdit={enableKeyEdit}
           keyAlreadyExists={keyAlreadyExists}
         />
-        <Stack direction="row">
+        <Stack direction="row" alignItems="center">
 
-          <TextField
-            type="number"
-            label="Start amount"
-            value={value}
-            onChange={onSetValue}
-          />
           <TextField
             type="number"
             label="min"
             value={min}
             onChange={onSetMin}
+            size="small"
+            sx={{
+              right: -1,
+              '& .MuiOutlinedInput-root': {
+                borderRadius: '8px',
+                borderTopRightRadius: 0,
+                borderBottomRightRadius: 0,
+              },
+            }}
+          />
+          <TextField
+            type="number"
+            label="Initial"
+            value={value}
+            onChange={onSetValue}
           />
           <MaxInput
             value={max}
             onChange={onSetMax}
             onBlur={onBlurMax}
+
           />
         </Stack>
         <FormControl fullWidth>
@@ -204,29 +216,50 @@ export const EditResource = (
       </Stack>
 
       {/*{costButton}*/}
-      <Paper sx={{border: '1px solid #ffffff2e', mt: 2}}>
-      <Typography>Cost</Typography>
-        <Stack direction="row" spacing={2} mb={4} mt={2} alignItems="center">
-          <Cost
-            onRemoveCost={onRemoveCost}
-            cost={cost}
-            onSetCost={onSetCost}
-            onAddCost={onAddCost}
-          />
-        </Stack>
-      </Paper>
-      <Typography>Reveal at</Typography>
-      <Stack direction="row" spacing={2} mb={4} mt={2} alignItems="center">
+      <StyledCostBox title="Cost">
+        <Cost
+          onRemoveCost={onRemoveCost}
+          cost={cost}
+          onSetCost={onSetCost}
+          onAddCost={onAddCost}
+        />
+      </StyledCostBox>
+      <StyledCostBox title="Reveal">
         <Cost
           onRemoveCost={onRemoveRevealedAt}
           cost={revealedAt}
           onSetCost={onSetRevealedAt}
           onAddCost={onAddRevealedAt}
         />
-      </Stack>
+      </StyledCostBox>
     </Box>
   )
 }
+
+type StyledCostBoxProps = {
+  children: ReactNode;
+  title: string;
+}
+
+const StyledCostBox = ({children, title}: StyledCostBoxProps) => (
+  <Paper sx={{
+    mx: 2,
+    mt: 2,
+    p: 1,
+    pl: 3,
+    backgroundColor: themeColors.color1,
+    borderRadius: 8,
+    display: 'flex',
+    // alignItems: 'center',
+  }}>
+    <Typography variant="h6" fontWeight="bold" color={themeColors.color5} sx={{mr: 2, width: 120}} align="left">
+      {title}
+    </Typography>
+    <Stack direction="row" spacing={2} alignItems="center">
+      {children}
+    </Stack>
+  </Paper>
+)
 
 type ConstraintInputProps = {
   value: number;
@@ -249,6 +282,15 @@ const MaxInput = (
       value={value}
       onChange={onChange}
       onBlur={onBlur}
+      size="small"
+      sx={{
+        left: -1,
+        '& .MuiOutlinedInput-root': {
+          borderRadius: '8px',
+          borderTopLeftRadius: 0,
+          borderBottomLeftRadius: 0,
+        },
+      }}
     />
   )
 }

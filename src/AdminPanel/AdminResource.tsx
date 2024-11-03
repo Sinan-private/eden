@@ -7,6 +7,7 @@ import {ResourceState} from "../Resource";
 import {EditResource} from "./EditResource.tsx";
 import {ResourceKeys, ResourceTypes} from "../Resource/specificTypes.ts";
 import {useAdmin} from "../Resource/Admin/admin.context.ts";
+import {themeColors} from "../Resource/assets/colors.ts";
 
 export const AdminResource = ({resource: _resource}: { resource: ResourceState<ResourceKeys, ResourceTypes> }) => {
   const {
@@ -43,7 +44,7 @@ export const AdminResource = ({resource: _resource}: { resource: ResourceState<R
   if (edit) {
     return (
       <Stack width={1000} position="relative">
-        <Paper sx={{p: 1, mb: 2, width: 1000}}>
+        <Paper sx={{p: 1, mb: 2, width: 1000, backgroundColor: themeColors.bg}}>
           <EditResource resource={resource} onSubmit={onCloseEdit} onClose={onCloseEdit}/>
         </Paper>
       </Stack>
@@ -60,7 +61,7 @@ export const AdminResource = ({resource: _resource}: { resource: ResourceState<R
       >
         <DeleteOutlineIcon fontSize="inherit"/>
       </IconButton>
-      <Paper sx={{p: 1, mb: 2, width: 1000}}>
+      <Paper id="Resource edit review" sx={{p: 1, mb: 2, width: 1000, backgroundColor: themeColors.bg}}>
         <Stack
           direction="row"
           spacing={1}

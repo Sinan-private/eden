@@ -338,7 +338,7 @@
         },
         {
           "key": "water",
-          "value": 6
+          "value": 5
         }
       ],
       "gain": [
@@ -390,6 +390,10 @@
       "give": [
         {
           "key": "corn",
+          "value": 5
+        },
+        {
+          "key": "water",
           "value": 5
         }
       ],
@@ -614,6 +618,10 @@
         {
           "key": "silver_ore",
           "value": 2
+        },
+        {
+          "key": "coal",
+          "value": 5
         }
       ],
       "gain": [
@@ -638,6 +646,10 @@
         {
           "key": "iron_ore",
           "value": 2
+        },
+        {
+          "key": "coal",
+          "value": 5
         }
       ],
       "gain": [
@@ -662,6 +674,10 @@
         {
           "key": "copper_ore",
           "value": 2
+        },
+        {
+          "key": "coal",
+          "value": 5
         }
       ],
       "gain": [
@@ -697,6 +713,10 @@
         {
           "key": "gold_ore",
           "value": 2
+        },
+        {
+          "key": "coal",
+          "value": 5
         }
       ],
       "gain": [
