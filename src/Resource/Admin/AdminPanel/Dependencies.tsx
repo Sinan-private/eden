@@ -37,7 +37,7 @@ export const Dependencies = () => {
         const res = resources.get(r)
         return (
           <Stack key={res.key} width={100} alignItems="center" spacing={2} direction="row" mb={2}>
-            <img src={res.icon} width={32} height={32}/>
+            <img src={res.icon} width={32} height={32} alt={res.iconName}/>
             <Typography>{res.label}</Typography>
           </Stack>
         )

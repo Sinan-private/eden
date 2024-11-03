@@ -46,7 +46,7 @@ const ResourceType = (
   const closeAddMode = () => setIsAddMode(false);
   return (
     <Box>
-      <Typography align="left" variant="h5" paragraph>{resourceKey}</Typography>
+      <Typography align="left" variant="h5">{resourceKey}</Typography>
       {resource.map(({key}) => (
         <AdminResource key={key} resource={get(key)}/>
       ))}
