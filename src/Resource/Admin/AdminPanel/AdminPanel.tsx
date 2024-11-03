@@ -1,7 +1,7 @@
 import {useEffect, useState} from "react";
 import styled from "styled-components";
 import {IconButton} from "@mui/material";
-import {useGame} from "../../context/game.context.ts";
+import {useGame} from "../../../context/game.context.ts";
 import {HandleTypes} from "./HandleTypes.tsx";
 import Box from "@mui/material/Box";
 import Close from "@mui/icons-material/Close";

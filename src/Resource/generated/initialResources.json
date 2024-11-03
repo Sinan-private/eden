@@ -10,16 +10,24 @@
       "give": [
         {
           "key": "land",
-          "value": 4
+          "value": 5
         },
         {
           "key": "coal",
-          "value": 5
+          "value": 4
+        },
+        {
+          "key": "wood",
+          "value": 1
         }
       ],
       "gain": [
         {
           "key": "corn",
+          "value": 1
+        },
+        {
+          "key": "land",
           "value": 1
         }
       ]

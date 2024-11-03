@@ -1,11 +1,11 @@
 import {Typography} from "@mui/material";
 import {AdminResource} from "./AdminResource.tsx";
-import {ResourceState} from "../index.ts";
+import {ResourceState} from "../../index.ts";
 import Box from "@mui/material/Box";
-import {EditResource} from "./EditResource.tsx";
 import {useState} from "react";
-import {ResourceKeys, ResourceTypes} from "../specificTypes.ts";
-import {useAdmin} from "../Admin/admin.context.ts";
+import {ResourceKeys, ResourceTypes} from "../../specificTypes.ts";
+import {useAdmin} from "../admin.context.ts";
+import EditResource from "./EditResource";
 
 export const HandleResources = () => {
   const {getByType} = useAdmin().resources;

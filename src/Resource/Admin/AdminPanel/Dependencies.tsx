@@ -1,6 +1,6 @@
-import {useGame} from "../../context/game.context.ts";
+import {useGame} from "../../../context/game.context.ts";
 import {SyntheticEvent, useMemo, useState} from "react";
-import {ResourceKeys} from "../specificTypes.ts";
+import {ResourceKeys} from "../../specificTypes.ts";
 import {Autocomplete, Stack, TextField, Typography} from "@mui/material";
 
 export const Dependencies = () => {

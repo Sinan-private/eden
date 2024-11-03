@@ -30,7 +30,7 @@ export const useResource = <K extends string, T extends string>(initialState: Re
   const mergeChangeToState = useCallback((update: StateUpdatePossibilities): ResourceState<K, T>[] =>
     _mergeChangeToState(update, state), [state])
 
-  // Get the full EditResource class
+  // Get the full EditResourceController class
   const get = useCallback(
     (key: K, _state = state) => _get(key, _state),
     [state]);
@@ -73,7 +73,7 @@ export const useResource = <K extends string, T extends string>(initialState: Re
   const nextTurn = useCallback((getTurnUpdate: GetTurnUpdate<K, T>) =>
     setState(getNextTurn(getTurnUpdate, state)), [state]);
 
-  // Update a single EditResource
+  // Update a single EditResourceController
   const onUpdate = useCallback((update: Update<K, T>) => {
     const newState = get(update.key).updateBy(update)
     setState(mergeChangeToState(newState));

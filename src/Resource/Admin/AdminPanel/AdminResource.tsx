@@ -3,11 +3,11 @@ import Box from "@mui/material/Box";
 import DeleteOutlineIcon from '@mui/icons-material/DeleteOutline';
 import {Chip, IconButton, Paper, Stack, Typography} from "@mui/material";
 import ModeEditOutlineIcon from '@mui/icons-material/ModeEditOutline';
-import {ResourceState} from "../index.ts";
-import {EditResource} from "./EditResource.tsx";
-import {ResourceKeys, ResourceTypes} from "../specificTypes.ts";
-import {useAdmin} from "../Admin/admin.context.ts";
-import {themeColors} from "../assets/colors.ts";
+import {ResourceState} from "../../index.ts";
+import {ResourceKeys, ResourceTypes} from "../../specificTypes.ts";
+import {useAdmin} from "../admin.context.ts";
+import {themeColors} from "../../assets/colors.ts";
+import EditResource from "./EditResource";
 
 export const AdminResource = ({resource: _resource}: { resource: ResourceState<ResourceKeys, ResourceTypes> }) => {
   const {
