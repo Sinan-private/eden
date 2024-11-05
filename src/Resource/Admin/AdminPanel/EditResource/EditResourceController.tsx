@@ -79,7 +79,7 @@ export const EditResourceController = (
   return (
     <EditResourceView
       {...resourceCloneProps}
-      key={key}
+      _key={key}
       onClose={onClose}
       openIconPicker={openIconPicker}
       filterUsed={filterUsed}

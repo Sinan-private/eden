@@ -67,6 +67,7 @@ export const useResourceClone = <K extends string, T extends string>(
     setState(newCost)
   }
 
+
   // This gets hideous because of the callback that offers the possibility to close the component after saving
   // const onAddTrade= (
   //   setState: Dispatch<SetStateAction<ResourceCostUpdate<K> | null>>,
@@ -104,6 +105,9 @@ export const useResourceClone = <K extends string, T extends string>(
 
   const onCreateCost = onCreateTrade(setCost);
   const onCreateRevealedAt = onCreateTrade(setRevealedAt);
+  const onDeleteCost = () => setCost(null);
+  const onDeleteRevealedAt = () => setRevealedAt(null);
+
 
   const onRemoveCost = (
     changeKey: 'give' | 'gain' | '',
@@ -167,6 +171,8 @@ export const useResourceClone = <K extends string, T extends string>(
     onAddCost,
     onCreateCost,
     onRemoveCost,
+    onDeleteCost,
+    onDeleteRevealedAt,
     onSetRevealedAt,
     onAddRevealedAt,
     onCreateRevealedAt,

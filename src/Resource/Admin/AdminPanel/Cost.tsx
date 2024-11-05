@@ -6,7 +6,7 @@ import {OnSetCost} from "./EditResource";
 import {ResourceKeys} from "../../specificTypes.ts";
 import {useAdmin} from "../admin.context.ts";
 import {capitalizeFirstLetter} from "../../helpers/captializeFirstLetter.ts";
-import {AddCost} from "./AddCost.tsx";
+import {AddCost} from "./EditResource/AddCost.tsx";
 import {themeColors} from "../../assets/colors.ts";
 import styled from "styled-components";
 import Box from "@mui/material/Box";

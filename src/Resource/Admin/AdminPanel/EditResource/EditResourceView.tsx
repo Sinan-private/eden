@@ -5,51 +5,15 @@ import {IconPickerModal} from "../IconPickerModal.tsx";
 import Select from "@mui/material/Select";
 import {resourceTypes} from "../../../generated/resourceTypes.ts";
 import {Cost} from "../Cost.tsx";
-import {ChangeEvent, ReactNode} from "react";
+import {ReactNode} from "react";
 import {themeColors} from "../../../assets/colors.ts";
-import {ResourceKeys, ResourceTypes} from "../../../specificTypes.ts";
-import {EditAmount, EditAmountProps} from "./EditAmount.tsx";
-import {useResourceClone} from "../../../useResourceClone.ts";
-import {Icon} from "../../../genericTypes.ts";
-import {EditResourceProps} from "./types.ts";
-
-type ResourceCloneProps<K extends string, T extends string> = Pick<
-  ReturnType<typeof useResourceClone<K, T>>,
-  'min'
-  | 'max'
-  | 'value'
-  | 'key'
-  | 'label'
-  | 'type'
-  | 'cost'
-  | 'revealedAt'
-  | 'icon'
-  | 'onSetCost'
-  | 'onAddCost'
-  | 'onRemoveCost'
-  | 'onSetRevealedAt'
-  | 'onAddRevealedAt'
-  | 'onRemoveRevealedAt'
-  | 'handleTypeChange'
->
-
-type EditResourceViewProps = {
-  openIconPicker: boolean;
-  filterUsed: boolean;
-  handleCloseIconPicker(): void;
-  handleOpenIconPicker(): void;
-  onToggleFilter(): void;
-  onSelectIcon(clickedIcon: Icon): void;
-  onSetLabel(e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>): void;
-  onSetKey(e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>): void;
-  keyAlreadyExists: boolean;
-  onSubmitChanges(): void;
-  saveDisabled: boolean;
-} & EditAmountProps & ResourceCloneProps<ResourceKeys, ResourceTypes> & EditResourceProps;
+import {EditAmount} from "./EditAmount.tsx";
+import {EditResourceViewProps, KeyInputProps} from "./types.ts";
+import DeleteOutlineIcon from "@mui/icons-material/DeleteOutline";
 
 export const EditResourceView = (
   {
-    key,
+    _key,
     label,
     type,
     cost,
@@ -58,7 +22,6 @@ export const EditResourceView = (
     onSetCost,
     onAddCost,
     onRemoveCost,
-    // onCreateRevealedAt,
     onSetRevealedAt,
     onAddRevealedAt,
     onRemoveRevealedAt,
@@ -76,6 +39,8 @@ export const EditResourceView = (
     keyAlreadyExists,
     onSubmitChanges,
     saveDisabled,
+    onDeleteCost,
+    onDeleteRevealedAt,
     ...valueProps
   }: EditResourceViewProps
 ) => (
@@ -110,7 +75,7 @@ export const EditResourceView = (
         onChange={onSetLabel}
       />
       <KeyInput
-        value={key}
+        value={_key}
         onChange={onSetKey}
         enableKeyEdit={enableKeyEdit}
         keyAlreadyExists={keyAlreadyExists}
@@ -135,7 +100,7 @@ export const EditResourceView = (
         Save
       </button>
     </Stack>
-    <StyledCostBox title="Cost">
+    <StyledCostBox title="Cost" onDelete={onDeleteCost}>
       <Cost
         onRemoveCost={onRemoveCost}
         cost={cost}
@@ -143,7 +108,7 @@ export const EditResourceView = (
         onAddCost={onAddCost}
       />
     </StyledCostBox>
-    <StyledCostBox title="Reveal">
+    <StyledCostBox title="Reveal" onDelete={onDeleteRevealedAt}>
       <Cost
         onRemoveCost={onRemoveRevealedAt}
         cost={revealedAt}
@@ -158,9 +123,10 @@ export const EditResourceView = (
 type StyledCostBoxProps = {
   children: ReactNode;
   title: string;
+  onDelete(): void;
 }
 
-const StyledCostBox = ({children, title}: StyledCostBoxProps) => (
+const StyledCostBox = ({children, title, onDelete}: StyledCostBoxProps) => (
   <Paper sx={{
     mx: 2,
     mt: 2,
@@ -169,24 +135,23 @@ const StyledCostBox = ({children, title}: StyledCostBoxProps) => (
     backgroundColor: themeColors.color1,
     borderRadius: 8,
     display: 'flex',
-    // alignItems: 'center',
+    position: 'relative'
   }}>
+    <Stack direction="row" spacing={2} sx={{alignSelf: 'baseline'}}>
+
+    <IconButton size="small" onClick={onDelete}>
+      <DeleteOutlineIcon fontSize="inherit" />
+    </IconButton>
     <Typography variant="h6" fontWeight="bold" color={themeColors.color5} sx={{mr: 2, width: 120}} align="left">
       {title}
     </Typography>
+    </Stack>
     <Stack direction="row" spacing={2} alignItems="center">
       {children}
     </Stack>
   </Paper>
 )
 
-
-type KeyInputProps = {
-  value: ResourceKeys;
-  onChange(e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>): void;
-  keyAlreadyExists: boolean;
-  enableKeyEdit?: boolean;
-}
 
 const KeyInput = (
   {

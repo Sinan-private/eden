@@ -6,32 +6,7 @@
     "max": null,
     "label": "Corn",
     "type": "base_resource",
-    "cost": {
-      "give": [
-        {
-          "key": "land",
-          "value": 5
-        },
-        {
-          "key": "coal",
-          "value": 4
-        },
-        {
-          "key": "wood",
-          "value": 1
-        }
-      ],
-      "gain": [
-        {
-          "key": "corn",
-          "value": 1
-        },
-        {
-          "key": "land",
-          "value": 1
-        }
-      ]
-    },
+    "cost": null,
     "revealedAt": {
       "give": [
         {
