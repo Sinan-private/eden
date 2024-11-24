@@ -4,12 +4,27 @@ import {TopBar} from "./TopBar.tsx";
 import {Resource} from "../Resource";
 
 import {ResourceKeys, ResourceTypes} from "../Resource/specificTypes.ts";
+import {ResourceBase} from "../Resource_MobX/ResourceBase";
+import {useResources} from "../Resource_MobX/resources.context.ts";
+import {useComponentMount} from "../Resource/hooks/useComponentMount.ts";
+
+
 
 export const Game = () => {
   const {
     get,
     getByType,
   } = useGame().resources;
+  const resources = useResources();
+  console.log(resources.allResources)
+  useComponentMount(() => {
+    resources.initializeResources([
+      dummyCorn,
+      dummyWater
+    ])
+  })
+  window.corn = new ResourceBase(get('corn').state);
+  window.resources = resources;
 
   return (
     <>
@@ -109,3 +124,48 @@ const StylesGameControl = styled.div`
         gap: 8px;
     }
 `;
+
+const dummyCorn = {
+  "key": "corn",
+  "value": 102,
+  "min": 0,
+  "max": null,
+  "label": "Corn",
+  "type": "base_resource",
+  "cost": {
+    "give": [
+      {
+        "key": "water",
+        "value": 2
+      }
+    ],
+    "gain": [
+      {
+        "key": "corn",
+        "value": 1
+      }
+    ]
+  },
+  "revealedAt": {
+    "give": [
+      {
+        "key": "money",
+        "value": 2000
+      }
+    ],
+    "gain": []
+  },
+  "iconName": "wheat"
+}
+
+const dummyWater = {
+  "key": "water",
+  "value": 30,
+  "min": 0,
+  "max": null,
+  "label": "Water",
+  "type": "base_resource",
+  "cost": null,
+  "revealedAt": null,
+  "iconName": "water"
+}

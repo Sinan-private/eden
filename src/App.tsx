@@ -5,6 +5,7 @@ import AdminPanel from "./Resource/Admin/AdminPanel";
 import {ThemeProvider} from "@mui/material";
 import {theme} from "../globalTheme.ts";
 import {AdminProvider} from "./Resource/Admin/admin.context.ts";
+import {ResourcesProvider} from "./Resource_MobX/resources.context.ts";
 
 
 function App() {
@@ -12,12 +13,15 @@ function App() {
   return (
     <>
       <ThemeProvider theme={theme}>
-        <GameProvider>
-          <AdminProvider>
-            <Game/>
-            <AdminPanel/>
-          </AdminProvider>
-        </GameProvider>
+        <ResourcesProvider>
+
+          <GameProvider>
+            <AdminProvider>
+              <Game/>
+              <AdminPanel/>
+            </AdminProvider>
+          </GameProvider>
+        </ResourcesProvider>
       </ThemeProvider>
     </>
   )

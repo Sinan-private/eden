@@ -13,6 +13,7 @@ const useGameBase = () => {
   const {fetchResources} = useApi();
   const [isFetching, setIsFetching] = useState(true);
   const [showAdminPanel, setShowAdminPanel] = useState(false);
+
   // The resource offers all info and update methods. The nextTurn is only needed here to handle turn updates only in here.
   const {nextTurn, setState, ...resources} = useResource<ResourceKeys, ResourceTypes>([]);
   const tick = useTick();
