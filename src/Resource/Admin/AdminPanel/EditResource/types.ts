@@ -52,10 +52,3 @@ export type EditResourceViewProps = {
   onDeleteCost(): void;
   onDeleteRevealedAt(): void;
 } & EditAmountProps & ResourceCloneProps<ResourceKeys, ResourceTypes> & EditResourceProps;
-
-export type KeyInputProps = {
-  value: ResourceKeys;
-  onChange(e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>): void;
-  keyAlreadyExists: boolean;
-  enableKeyEdit?: boolean;
-}

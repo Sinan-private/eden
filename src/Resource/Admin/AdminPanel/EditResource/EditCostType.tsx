@@ -9,8 +9,8 @@ import {OnSetCost} from "./types.ts";
 
 type EditCostTypeProps = {
   onDelete(): void;
-  onRemove(): void;
-  object: ResourceCostUpdate<ResourceKeys>;
+  onRemove(changeKey: 'give' | 'gain' | '', resourceKey: ResourceKeys): void;
+  object: ResourceCostUpdate<ResourceKeys> | null;
   onSet: OnSetCost;
   onAdd: OnSetCost;
 }

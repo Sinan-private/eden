@@ -1,15 +1,12 @@
 import Box from "@mui/material/Box";
-import {FormControl, IconButton, InputLabel, MenuItem, Paper, Stack, TextField, Typography} from "@mui/material";
+import {FormControl, IconButton, InputLabel, MenuItem, Stack, TextField} from "@mui/material";
 import Close from "@mui/icons-material/Close";
 import {IconPickerModal} from "../IconPickerModal.tsx";
 import Select from "@mui/material/Select";
 import {resourceTypes} from "../../../generated/resourceTypes.ts";
-import {Cost} from "../Cost.tsx";
-import {ReactNode} from "react";
-import {themeColors} from "../../../assets/colors.ts";
 import {EditAmount} from "./EditAmount.tsx";
-import {EditResourceViewProps, KeyInputProps} from "./types.ts";
-import DeleteOutlineIcon from "@mui/icons-material/DeleteOutline";
+import {EditResourceViewProps} from "./types.ts";
+import {EditCostType} from "./EditCostType.tsx";
 
 export const EditResourceView = (
   {
@@ -59,7 +56,6 @@ export const EditResourceView = (
       onToggleFilter={onToggleFilter}
       onSelectIcon={onSelectIcon}
     />
-
     <Stack direction="row" spacing={2} alignItems="center">
       <img
         src={icon}
@@ -74,11 +70,14 @@ export const EditResourceView = (
         value={label}
         onChange={onSetLabel}
       />
-      <KeyInput
+
+      <TextField
+        type="text"
+        label="Key"
         value={_key}
         onChange={onSetKey}
-        enableKeyEdit={enableKeyEdit}
-        keyAlreadyExists={keyAlreadyExists}
+        disabled={!enableKeyEdit}
+        error={enableKeyEdit && keyAlreadyExists}
       />
       <EditAmount {...valueProps} />
       <FormControl fullWidth>
@@ -95,80 +94,23 @@ export const EditResourceView = (
           ))}
         </Select>
       </FormControl>
-
       <button onClick={onSubmitChanges} disabled={saveDisabled}>
         Save
       </button>
     </Stack>
-    <StyledCostBox title="Cost" onDelete={onDeleteCost}>
-      <Cost
-        onRemoveCost={onRemoveCost}
-        cost={cost}
-        onSetCost={onSetCost}
-        onAddCost={onAddCost}
-      />
-    </StyledCostBox>
-    <StyledCostBox title="Reveal" onDelete={onDeleteRevealedAt}>
-      <Cost
-        onRemoveCost={onRemoveRevealedAt}
-        cost={revealedAt}
-        onSetCost={onSetRevealedAt}
-        onAddCost={onAddRevealedAt}
-      />
-    </StyledCostBox>
+    <EditCostType
+      onDelete={onDeleteCost}
+      onRemove={onRemoveCost}
+      object={cost}
+      onSet={onSetCost}
+      onAdd={onAddCost}
+    />
+    <EditCostType
+      onDelete={onDeleteRevealedAt}
+      onRemove={onRemoveRevealedAt}
+      object={revealedAt}
+      onSet={onSetRevealedAt}
+      onAdd={onAddRevealedAt}
+    />
   </Box>
 )
-
-
-type StyledCostBoxProps = {
-  children: ReactNode;
-  title: string;
-  onDelete(): void;
-}
-
-const StyledCostBox = ({children, title, onDelete}: StyledCostBoxProps) => (
-  <Paper sx={{
-    mx: 2,
-    mt: 2,
-    p: 1,
-    pl: 3,
-    backgroundColor: themeColors.color1,
-    borderRadius: 8,
-    display: 'flex',
-    position: 'relative'
-  }}>
-    <Stack direction="row" spacing={2} sx={{alignSelf: 'baseline'}}>
-
-    <IconButton size="small" onClick={onDelete}>
-      <DeleteOutlineIcon fontSize="inherit" />
-    </IconButton>
-    <Typography variant="h6" fontWeight="bold" color={themeColors.color5} sx={{mr: 2, width: 120}} align="left">
-      {title}
-    </Typography>
-    </Stack>
-    <Stack direction="row" spacing={2} alignItems="center">
-      {children}
-    </Stack>
-  </Paper>
-)
-
-
-const KeyInput = (
-  {
-    value,
-    onChange,
-    keyAlreadyExists,
-    enableKeyEdit
-  }: KeyInputProps
-) => {
-  return (
-    <TextField
-      type="text"
-      label="Key"
-      value={value}
-      onChange={onChange}
-      disabled={!enableKeyEdit}
-      error={enableKeyEdit && keyAlreadyExists}
-    />
-  )
-}
