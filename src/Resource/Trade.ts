@@ -4,10 +4,7 @@ import {ResourceBase} from "./ResourceBase.ts";
 // limiting resource multiplied until I have the right possibleTradingAmount
 
 export class Trade<K extends string, T extends string> {
-  // public readonly giveApproach: ResourceUpdateProps<K, T>[];
-  // public readonly gainApproach: ResourceUpdateProps<K, T>[];
   public readonly limitingResources: LimitingResource<K>[];
-  // public readonly possibleFactor: number;
   public readonly isFullyPossible: boolean;
   public readonly isPartlyPossible: boolean;
   public readonly stateUpdates: ResourceState<K, T>[];

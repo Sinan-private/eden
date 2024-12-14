@@ -55,6 +55,7 @@ export class ResourceBase<K extends string, T extends string> {
     this.key = key;
     this.value = value;
     this.min = typeof min === 'number' ? min : 0;
+    this.min = typeof min === 'number' ? min : 0;
     this.max = typeof max === 'number' ? max : Infinity;
     this.label = label ? label : key ? labelFromKey(key) : '';
     this.type = typeof type === 'string' ? type : '' as T;

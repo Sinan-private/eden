@@ -7,13 +7,19 @@ import {observer} from "mobx-react";
 
 
 export const Game = () => {
-  const {groupByType} = useGame().resources;
+  const {groupByType, getByType} = useGame().resources;
   const resourceGroups = groupByType();
+  const x = getByType('processed_resource');
 
 
   return (
     <>
       <TopBar/>
+          <div >
+        {x.map(resource => (
+            <Button key={resource.key} resource={resource} increment={10}/>
+        ))}
+          </div>
       <div style={{display: "flex", justifyContent: "center", flexDirection: "row"}}>
         {resourceGroups.map(group => (
           <div className="card" key={group[0].type}>
