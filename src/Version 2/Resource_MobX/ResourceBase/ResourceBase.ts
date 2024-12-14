@@ -2,11 +2,11 @@ import {
   ResourceBeautyType,
   ResourceUpdateProps,
   ResourceTypeRaw,
-  ResourceState,
   ResourceCostUpdate,
 } from "./genericTypes.ts";
 import {beautifyNumber, mapMultiply} from "./helpers";
 import {makeAutoObservable} from "mobx";
+import icons from "../../../Resource/assets/icons/icons.ts";
 
 type UpdateProps<K, T> = Partial<ResourceTypeRaw<K, T>>;
 
@@ -27,8 +27,7 @@ export class ResourceBase<K extends string, T extends string> {
   // - stateToStorage
 
   constructor(raw_resource: ResourceUpdateProps<K, T>) {
-    makeAutoObservable(this)
-    const defaultResource:ResourceBase<K, T>['state'] = {
+    const defaultResource = {
       key: '' as K,
       value: 1,
       min: 0,
@@ -63,6 +62,7 @@ export class ResourceBase<K extends string, T extends string> {
     this.cost = cost || null;
     this.revealedAt = revealedAt || null;
     this.iconName = iconName || 'empty';
+    makeAutoObservable(this)
   }
 
   public readonly updateBy = (update: UpdateProps<K, T>): ResourceBase<K, T> => {
@@ -78,6 +78,7 @@ export class ResourceBase<K extends string, T extends string> {
   }
 
   public readonly updateValueBy = (value: number): ResourceBase<K, T> => {
+    console.log('my new value', value + this.value)
     this.value = this.__respectConstraints(this.value + value)
     return this;
   }
@@ -108,14 +109,14 @@ export class ResourceBase<K extends string, T extends string> {
         ? this.min
         : value
 
-  private readonly __simplifyCost = (val: ResourceCostUpdate<K> | null) => {
-    if (!val) {
-      return null
-    }
-    const give = val.give.map(({key, value}) => ({key, value}))
-    const gain = val.gain.map(({key, value}) => ({key, value}))
-    return {give, gain}
-  }
+  // private readonly __simplifyCost = (val: ResourceCostUpdate<K> | null) => {
+  //   if (!val) {
+  //     return null
+  //   }
+  //   const give = val.give.map(({key, value}) => ({key, value}))
+  //   const gain = val.gain.map(({key, value}) => ({key, value}))
+  //   return {give, gain}
+  // }
 
   get percentage() {
     return Math.floor(mapMultiply(this.value, this.max) * 100);
@@ -131,18 +132,21 @@ export class ResourceBase<K extends string, T extends string> {
     }
   }
 
-  get state(): ResourceState<K, T> {
-    return {
-      key: this.key,
-      value: this.value,
-      min: this.min,
-      max: this.max,
-      label: this.label,
-      type: this.type,
-      cost: this.__simplifyCost(this.cost),
-      revealedAt: this.__simplifyCost(this.revealedAt),
-      iconName: this.iconName,
-    }
+  // get state(): ResourceState<K, T> {
+  //   return {
+  //     key: this.key,
+  //     value: this.value,
+  //     min: this.min,
+  //     max: this.max,
+  //     label: this.label,
+  //     type: this.type,
+  //     cost: this.__simplifyCost(this.cost),
+  //     revealedAt: this.__simplifyCost(this.revealedAt),
+  //     iconName: this.iconName,
+  //   }
+  // }
+  get icon(): string {
+    return icons.find(icon => icon.name === this.iconName)?.src || ''
   }
 }
 

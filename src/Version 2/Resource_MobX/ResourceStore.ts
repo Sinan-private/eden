@@ -4,13 +4,17 @@ import {ResourceBase, ResourceUpdateProps} from "./ResourceBase";
 export class ResourceStore<K extends string, T extends string> {
   public resources: Map<K, ResourceBase<K, T>> = new Map();
   constructor(initialResources?: ResourceUpdateProps<K, T>[]) {
-    makeAutoObservable(this);
     if (initialResources) {
       this.initializeResources(initialResources);
     }
+    makeAutoObservable(this);
   }
 
-  public get(key: K) {
+  // public getByType = (type?: T | '') => type && type.length
+  //   ? [...this.resources].filter(([,resource]) => type === resource.type)
+  //   : [...this.resources];
+
+  public get = (key: K) => {
     return this.resources.get(key)
   };
 
@@ -20,7 +24,7 @@ export class ResourceStore<K extends string, T extends string> {
     });
   }
 
-  public addResource(resource: ResourceUpdateProps<K, T>) {
+  public addResource = (resource: ResourceUpdateProps<K, T>) => {
     this.resources.set(resource.key, new ResourceBase(resource));
   }
 
@@ -34,11 +38,33 @@ export class ResourceStore<K extends string, T extends string> {
   //   }
   // }
 
-  public removeResource(key: K) {
+  public removeResource = (key: K)=> {
     this.resources.delete(key);
+  }
+
+  public getByType = (type: T): ResourceBase<K, T>[] => {
+    return this.allResources
+      .filter(resource => resource.type === type)
+  }
+
+  public groupByType = (): ResourceBase<K, T>[][] => {
+    return groupedByType(this.allResources);
   }
 
   get allResources() {
     return Array.from(this.resources.values());
   }
+
 }
+
+const groupedByType = <K extends string, T extends string>(resources: ResourceBase<K, T>[]): ResourceBase<K, T>[][] => Object.values(
+  resources.reduce((acc, item) => {
+    // Initialize the group if it doesn't exist
+    if (!acc[item.type]) {
+      acc[item.type] = [];
+    }
+    // Add the current item to the group
+    acc[item.type].push(item);
+    return acc;
+  }, {} as Record<string, ResourceBase<K, T>[]>)
+);

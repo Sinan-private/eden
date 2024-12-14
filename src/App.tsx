@@ -1,19 +1,16 @@
 import './App.css'
 import {GameProvider} from "./context/game.context.ts";
-import {Game} from "./GameUI/Game.tsx";
 import AdminPanel from "./Resource/Admin/AdminPanel";
 import {ThemeProvider} from "@mui/material";
 import {theme} from "../globalTheme.ts";
 import {AdminProvider} from "./Resource/Admin/admin.context.ts";
-import {ResourcesProvider} from "./Resource_MobX/resources.context.ts";
-
+import Game from "./Version 2/Game";
 
 function App() {
 
   return (
     <>
       <ThemeProvider theme={theme}>
-        <ResourcesProvider>
 
           <GameProvider>
             <AdminProvider>
@@ -21,7 +18,6 @@ function App() {
               <AdminPanel/>
             </AdminProvider>
           </GameProvider>
-        </ResourcesProvider>
       </ThemeProvider>
     </>
   )

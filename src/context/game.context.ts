@@ -1,26 +1,25 @@
-import {useEffect, useState} from "react";
+import {useMemo, useState} from "react";
 import {createContainer} from "unstated-next";
 import {useTick} from "./tick.ts";
-import {usePrevious} from "../Resource/hooks/usePrevious.ts";
-import {useResource} from "../Resource";
-import {getResourceTurnUpdate} from "../gameRules/getResourceTurnUpdate.ts";
 import {useApi} from "./useApi.ts";
 import {useComponentMount} from "../Resource/hooks/useComponentMount.ts";
-
+import {ResourceStore} from "../Version 2/Resource_MobX/ResourceStore.ts";
 import {ResourceKeys, ResourceTypes} from "../Resource/specificTypes.ts";
 
+
 const useGameBase = () => {
+  const resources = useMemo(() => new ResourceStore<ResourceKeys, ResourceTypes>(), []);
   const {fetchResources} = useApi();
   const [isFetching, setIsFetching] = useState(true);
   const [showAdminPanel, setShowAdminPanel] = useState(false);
-
   // The resource offers all info and update methods. The nextTurn is only needed here to handle turn updates only in here.
-  const {nextTurn, setState, ...resources} = useResource<ResourceKeys, ResourceTypes>([]);
+  // const {nextTurn, setState, ...resources} = useResource<ResourceKeys, ResourceTypes>([]);
   const tick = useTick();
-  const prevTick = usePrevious(tick.current);
+  // const prevTick = usePrevious(tick.current);
   useComponentMount(async () => {
     const rawState = await fetchResources();
-    setState(rawState);
+    // setState(rawState);
+    resources.initializeResources(rawState)
     setIsFetching(false);
   })
 
@@ -29,13 +28,13 @@ const useGameBase = () => {
   const onToggleAdminPanel = () => setShowAdminPanel(!showAdminPanel);
 
   // With every tick a new turn is triggered with all included production
-  useEffect(() => {
-    const {isActive, current} = tick;
-    const isNextTurn = isActive && prevTick !== current;
-    if (isNextTurn) {
-      nextTurn(getResourceTurnUpdate)
-    }
-  }, [tick, prevTick, nextTurn]);
+  // useEffect(() => {
+  //   const {isActive, current} = tick;
+  //   const isNextTurn = isActive && prevTick !== current;
+  //   if (isNextTurn) {
+  //     nextTurn(getResourceTurnUpdate)
+  //   }
+  // }, [tick, prevTick, nextTurn]);
 
   return {
     resources,

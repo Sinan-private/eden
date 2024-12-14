@@ -4,9 +4,6 @@ import {TopBar} from "./TopBar.tsx";
 import {Resource} from "../Resource";
 
 import {ResourceKeys, ResourceTypes} from "../Resource/specificTypes.ts";
-import {ResourceBase} from "../Resource_MobX/ResourceBase";
-import {useResources} from "../Resource_MobX/resources.context.ts";
-import {useComponentMount} from "../Resource/hooks/useComponentMount.ts";
 
 
 
@@ -15,16 +12,7 @@ export const Game = () => {
     get,
     getByType,
   } = useGame().resources;
-  const resources = useResources();
-  console.log(resources.allResources)
-  useComponentMount(() => {
-    resources.initializeResources([
-      dummyCorn,
-      dummyWater
-    ])
-  })
-  window.corn = new ResourceBase(get('corn').state);
-  window.resources = resources;
+
 
   return (
     <>
