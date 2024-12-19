@@ -15,9 +15,9 @@ export const Game = () => {
     <>
       <TopBar/>
           <div >
-        {x.map(resource => (
-            <TradeButton key={resource.key} resource={resource} increment={1}/>
-        ))}
+            {x.map(resource => (
+                <TradeButton key={resource.key} resource={resource} increment={1}/>
+            ))}
           </div>
       <div style={{display: "flex", justifyContent: "center", flexDirection: "row"}}>
         {resourceGroups.map(group => (
@@ -38,6 +38,7 @@ const TradeButton = observer(({resource, increment = 1}: ButtonProps) => {
     // resource.updateValueBy(5)
     produce(resource.key, increment)
   }
+  // console.log(resource.id, resource.label)
 
   return (
     <button onClick={onButtonClick}>

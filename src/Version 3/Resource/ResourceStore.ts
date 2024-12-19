@@ -9,6 +9,7 @@ export class ResourceStore<K extends string, T extends string> {
       this.initializeResources(initialResources);
     }
     makeAutoObservable(this);
+    console.log(this.resources, initialResources)
   }
 
   public get = (key: K) => {
