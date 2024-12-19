@@ -8,10 +8,12 @@ import {beautifyNumber, mapMultiply} from "./helpers";
 import {makeAutoObservable} from "mobx";
 import icons from "../../../Resource/assets/icons/icons.ts";
 import {delta} from "./helpers";
+import {id} from "./helpers/id.ts";
 
 type UpdateProps<K, T> = Partial<ResourceTypeRaw<K, T>>;
 
-export class ResourceBase<K extends string, T extends string> {
+export class Resource<K extends string, T extends string> {
+  public id: string;
   public key: K;
   public value: number;
   public min: number;
@@ -49,6 +51,7 @@ export class ResourceBase<K extends string, T extends string> {
       ...raw_resource
     };
 
+    this.id = id();
     this.key = key;
     this.value = value;
     this.min = typeof min === 'number' ? min : 0;
@@ -61,7 +64,7 @@ export class ResourceBase<K extends string, T extends string> {
     makeAutoObservable(this)
   }
 
-  public readonly updateBy = (update: UpdateProps<K, T>): ResourceBase<K, T> => {
+  public readonly updateBy = (update: UpdateProps<K, T>): Resource<K, T> => {
     // This is a little complex to update constraints first before updating the value
     // This respects that the new value might be different after e.g. the max value raised.
     const constraints = {
@@ -73,13 +76,12 @@ export class ResourceBase<K extends string, T extends string> {
     return Object.assign(this, constraints).setValueTo(newValue);
   }
 
-  public readonly updateValueBy = (value: number): ResourceBase<K, T> => {
-    console.log('my new value', value + this.value)
+  public readonly updateValueBy = (value: number): Resource<K, T> => {
     this.value = this.__respectConstraints(this.value + value)
     return this;
   }
 
-  public readonly setTo = (update: UpdateProps<K, T>): ResourceBase<K, T> => {
+  public readonly setTo = (update: UpdateProps<K, T>): Resource<K, T> => {
     // I want to be able to set every value here
     const {
       value = this.value,
@@ -88,9 +90,8 @@ export class ResourceBase<K extends string, T extends string> {
     return Object.assign(this, rest).setValueTo(value);
   }
 
-  public readonly setValueTo = (value: number): ResourceBase<K, T> => {
+  public readonly setValueTo = (value: number): Resource<K, T> => {
     this.value = this.__respectConstraints(value)
-    console.log(this.key, value)
     return this
   };
 
@@ -112,7 +113,6 @@ export class ResourceBase<K extends string, T extends string> {
 
   get beautify(): ResourceBeautyType {
     return {
-      // ...this.state,
       value: beautifyNumber(this.value),
       min: beautifyNumber(this.min),
       max: beautifyNumber(this.max),

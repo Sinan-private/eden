@@ -1,12 +1,12 @@
 import {ResourceState, ResourceUpdateProps} from "../../Resource";
-import {TradeLimitingResource, TradeResourceUpdateType} from "./ResourceBase/genericTypes.ts";
+import {TradeLimitingResource, TradeResourceUpdateType} from "./Single/genericTypes.ts";
 import {
   createChanges,
   getLimitingResources,
   getLowestFactor,
   mergeWithState,
   toNegative
-} from "./ResourceBase/helpers/trade.ts";
+} from "./Single/helpers/trade.ts";
 
 
 export class Trade<K extends string, T extends string> {

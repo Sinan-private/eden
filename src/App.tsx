@@ -4,14 +4,13 @@ import AdminPanel from "./Resource/Admin/AdminPanel";
 import {ThemeProvider} from "@mui/material";
 import {theme} from "../globalTheme.ts";
 import {AdminProvider} from "./Resource/Admin/admin.context.ts";
-import Game from "./Version 2/Game";
+import Game from "./Version 3/Game";
 
 function App() {
 
   return (
     <>
       <ThemeProvider theme={theme}>
-
           <GameProvider>
             <AdminProvider>
               <Game/>

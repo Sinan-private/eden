@@ -402,6 +402,10 @@
         {
           "key": "corn",
           "value": 2
+        },
+        {
+          "key": "coal",
+          "value": 1
         }
       ],
       "gain": [

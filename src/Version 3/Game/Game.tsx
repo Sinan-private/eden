@@ -1,9 +1,9 @@
+import {observer} from "mobx-react";
 import styled from "styled-components";
 import {useGame} from "../../context/game.context.ts";
 import {TopBar} from "../../GameUI/TopBar.tsx";
+import {Resource} from "../Resource/Single";
 import {ResourceKeys, ResourceTypes} from "../../Resource/specificTypes.ts";
-import {ResourceBase} from "../Resource_MobX/ResourceBase";
-import {observer} from "mobx-react";
 
 
 export const Game = () => {
@@ -34,7 +34,8 @@ export const Game = () => {
 const TradeButton = observer(({resource, increment = 1}: ButtonProps) => {
   const {produce} = useGame().resources;
   const onButtonClick = () => {
-    console.log('me', resource.key)
+    // console.log('me', resource.key)
+    // resource.updateValueBy(5)
     produce(resource.key, increment)
   }
 
@@ -56,7 +57,7 @@ const TradeButton = observer(({resource, increment = 1}: ButtonProps) => {
   )
 })
 
-const ResourceGroup = ({resources}: { resources: ResourceBase<ResourceKeys, ResourceTypes>[] }) => {
+const ResourceGroup = ({resources}: { resources: Resource<ResourceKeys, ResourceTypes>[] }) => {
 
   return (
     <>
@@ -68,7 +69,7 @@ const ResourceGroup = ({resources}: { resources: ResourceBase<ResourceKeys, Reso
 }
 
 type ButtonProps = {
-  resource: ResourceBase<ResourceKeys, ResourceTypes>;
+  resource: Resource<ResourceKeys, ResourceTypes>;
   increment?: number;
 }
 const Button = observer(({resource, increment = 1}: ButtonProps) => {
