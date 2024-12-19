@@ -1,5 +1,9 @@
-import {ResourceState, ResourceUpdateProps} from "../../Resource";
-import {TradeLimitingResource, TradeResourceUpdateType} from "./Single/genericTypes.ts";
+import {
+  ResourceState,
+  ResourceUpdateProps,
+  TradeLimitingResource,
+  TradeResourceUpdateType
+} from "./Single/genericTypes.ts";
 import {
   createChanges,
   getLimitingResources,

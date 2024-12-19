@@ -1,4 +1,4 @@
-import {useMemo, useState} from "react";
+import {useRef, useState, MutableRefObject} from "react";
 import {createContainer} from "unstated-next";
 import {useTick} from "./tick.ts";
 import {useApi} from "./useApi.ts";
@@ -8,7 +8,8 @@ import {ResourceKeys, ResourceTypes} from "../Resource/specificTypes.ts";
 
 
 const useGameBase = () => {
-  const resources = useMemo(() => new ResourceStore<ResourceKeys, ResourceTypes>(), []);
+  const resourceRef = useRef<ResourceStore<ResourceKeys, ResourceTypes> | null>(null) as MutableRefObject<ResourceStore<ResourceKeys, ResourceTypes> | null>;
+  const resources = resourceRef.current as ResourceStore<ResourceKeys, ResourceTypes>;
   const {fetchResources} = useApi();
   const [isFetching, setIsFetching] = useState(true);
   const [showAdminPanel, setShowAdminPanel] = useState(false);
@@ -18,10 +19,10 @@ const useGameBase = () => {
   // const prevTick = usePrevious(tick.current);
   useComponentMount(async () => {
     const rawState = await fetchResources();
-    // setState(rawState);
-    resources.initializeResources(rawState)
+    resourceRef.current = new ResourceStore(rawState);
     setIsFetching(false);
   })
+  // console.log(resourceRef.current)
 
   const onOpenAdminPanel = () => setShowAdminPanel(true);
   const onCloseAdminPanel = () => setShowAdminPanel(false);

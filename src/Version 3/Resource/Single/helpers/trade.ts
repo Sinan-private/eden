@@ -65,7 +65,7 @@ export const mergeWithState = <K extends string, T extends string>(
     }
   })
 }
-const forceNegative = (val: number | null = 0) => -Math.abs(val)
+const forceNegative = (val: number | null = 0) => -Math.abs(Number(val))
 export const toNegative = <K extends string, T extends string>(give: ResourceUpdateProps<K, T>[]): ResourceUpdateProps<K, T>[] => give
   .map(({key, min, max, value}) => ({
     key,
