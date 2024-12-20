@@ -7,7 +7,7 @@ import {ResourceKeys, ResourceTypes} from "../../Resource/specificTypes.ts";
 
 
 export const Game = () => {
-  const {groupByType, getByType} = useGame().resources;
+  const {groupByType, getByType, produce} = useGame().resources;
   const resourceGroups = groupByType();
   const x = getByType('processed_resource');
 
@@ -19,6 +19,9 @@ export const Game = () => {
                 <TradeButton key={resource.key} resource={resource} increment={1}/>
             ))}
           </div>
+      <div onClick={() => produce('water', 10)}>
+        water
+      </div>
       <div style={{display: "flex", justifyContent: "center", flexDirection: "row"}}>
         {resourceGroups.map(group => (
           <div className="card" key={group[0].type}>

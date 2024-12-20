@@ -12,7 +12,7 @@ export class ResourceStore<K extends string, T extends string> {
   }
 
   public get = (key: K) => {
-    return this.resources.get(key)
+    return this.resources.get(key)!
   };
 
   public initializeResources(resources: ResourceUpdateProps<K, T>[]) {
@@ -42,6 +42,7 @@ export class ResourceStore<K extends string, T extends string> {
     const resource = this.get(key)!;
     const cost = resource.cost;
     if (!cost) {
+      resource.updateValueBy(amount || 0)
       return null;
     }
     const trade = this.trade(cost.give, cost.gain, amount)

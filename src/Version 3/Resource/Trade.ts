@@ -33,7 +33,6 @@ export class Trade<K extends string, T extends string> {
     const maxByGains = this.gains.map(({ resource, amount }) =>
       Math.floor((resource.max - resource.value) / amount)
     );
-
     return Math.min(...maxByCosts, ...maxByGains, this.amount);
   }
 

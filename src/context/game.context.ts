@@ -1,10 +1,12 @@
-import {useRef, useState, MutableRefObject} from "react";
+import {useRef, useState, MutableRefObject, useEffect} from "react";
 import {createContainer} from "unstated-next";
 import {useTick} from "./tick.ts";
 import {useApi} from "./useApi.ts";
 import {useComponentMount} from "../Resource/hooks/useComponentMount.ts";
 import {ResourceStore} from "../Version 3/Resource/ResourceStore.ts";
 import {ResourceKeys, ResourceTypes} from "../Resource/specificTypes.ts";
+import {usePrevious} from "../Resource/hooks/usePrevious.ts";
+import {resourceTurnUpdate} from "../gameRules/getResourceTurnUpdate.ts";
 
 
 const useGameBase = () => {
@@ -16,12 +18,19 @@ const useGameBase = () => {
   // The resource offers all info and update methods. The nextTurn is only needed here to handle turn updates only in here.
   // const {nextTurn, setState, ...resources} = useResource<ResourceKeys, ResourceTypes>([]);
   const tick = useTick();
-  // const prevTick = usePrevious(tick.current);
+  const prevTick = usePrevious(tick.current);
   useComponentMount(async () => {
     const rawState = await fetchResources();
     resourceRef.current = new ResourceStore(rawState);
     setIsFetching(false);
   })
+
+  useEffect(() => {
+    const nextTick = tick.isActive && tick.current && tick.current !== prevTick;
+    if (nextTick) {
+      resourceTurnUpdate(resources)
+    }
+  }, [prevTick, resources, tick]);
   // console.log(resourceRef.current)
 
   const onOpenAdminPanel = () => setShowAdminPanel(true);

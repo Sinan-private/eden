@@ -7,7 +7,6 @@ import {
 import {beautifyNumber, mapMultiply} from "./helpers";
 import {makeAutoObservable} from "mobx";
 import icons from "../../../Resource/assets/icons/icons.ts";
-import {delta} from "./helpers";
 import {id} from "./helpers/id.ts";
 
 type UpdateProps<K, T> = Partial<ResourceTypeRaw<K, T>>;
@@ -94,11 +93,6 @@ export class Resource<K extends string, T extends string> {
     this.value = this.respectConstraints(value)
     return this
   };
-
-  // public readonly delta = (update: UpdateProps<K, T>) => delta(
-  //   {...this},
-  //   update.value || 0
-  // );
 
   public readonly respectConstraints = (value: number): number =>
     value > this.max

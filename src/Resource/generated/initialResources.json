@@ -1,7 +1,7 @@
 [
   {
     "key": "corn",
-    "value": 102,
+    "value": 2,
     "min": 0,
     "max": null,
     "label": "Corn",
@@ -20,7 +20,7 @@
   },
   {
     "key": "water",
-    "value": 30,
+    "value": 10,
     "min": 0,
     "max": null,
     "label": "Water",
@@ -392,7 +392,7 @@
   },
   {
     "key": "flour",
-    "value": 1,
+    "value": 2,
     "min": 0,
     "max": null,
     "label": "Flour",
@@ -402,10 +402,6 @@
         {
           "key": "corn",
           "value": 2
-        },
-        {
-          "key": "coal",
-          "value": 1
         }
       ],
       "gain": [
