@@ -1,6 +1,7 @@
 import {makeAutoObservable} from 'mobx'
 import {Resource, ResourceUpdateProps} from "./Single";
-import {Trade} from "./Trade.ts";
+import {ResourceTrade, Trade} from "./Trade.ts";
+import {ResourceCostUpdate} from "./Single/genericTypes.ts";
 
 export class ResourceStore<K extends string, T extends string> {
   public resources: Map<K, Resource<K, T>> = new Map();
@@ -37,23 +38,33 @@ export class ResourceStore<K extends string, T extends string> {
     return groupedByType(this.allResources);
   }
 
-  public produce = (key: K, amount = 1) => {
+  public produce = (key: K, amount?: number) => {
     const resource = this.get(key)!;
     const cost = resource.cost;
     if (!cost) {
       return null;
     }
-    const trade = new Trade(cost.give, cost.gain, this.allResources, amount)
-    trade.stateUpdates.forEach(({key, value}) => {
-      this.get(key)!.setValueTo(value)
-    })
+    const trade = this.trade(cost.give, cost.gain, amount)
+    if (trade.isTradePossible()) {
+      trade.executeTrade()
+    }
   }
 
   public trade = (
-    give: ResourceUpdateProps<K, T>[],
-    gain: ResourceUpdateProps<K, T>[],
+    give: ResourceCostUpdate<K>['give'],
+    gain: ResourceCostUpdate<K>['gain'],
     amount = 1
-  ) => new Trade(give, gain, this.allResources, amount)
+  ) => {
+    const _give: ResourceTrade<K, T>[] = give.map(({key, value}) => ({
+      resource: this.get(key)!,
+      amount: value,
+    }))
+    const _gain: ResourceTrade<K, T>[] = gain.map(({key, value}) => ({
+      resource: this.get(key)!,
+      amount: value,
+    }))
+    return new Trade(_give, _gain, amount)
+  }
 
   get allResources() {
     return Array.from(this.resources.values());

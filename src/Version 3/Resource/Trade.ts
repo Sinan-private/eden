@@ -1,53 +1,101 @@
-import {
-  ResourceState,
-  ResourceUpdateProps,
-  TradeLimitingResource,
-  TradeResourceUpdateType
-} from "./Single/genericTypes.ts";
-import {
-  createChanges,
-  getLimitingResources,
-  getLowestFactor,
-  mergeWithState,
-  toNegative
-} from "./Single/helpers/trade.ts";
+import {Resource} from "./Single";
+import {makeAutoObservable} from "mobx";
 
+export type ResourceTrade<K extends string, T extends string> = {
+  resource: Resource<K, T>;
+  amount: number;
+};
 
 export class Trade<K extends string, T extends string> {
-  public readonly limitingResources: TradeLimitingResource<K>[];
-  public readonly isFullyPossible: boolean;
-  public readonly isPartlyPossible: boolean;
-  public readonly stateUpdates: ResourceState<K, T>[];
-  public readonly newState: ResourceState<K, T>[];
-  public readonly possibleTradingAmount: number; // 6 bakeries can still create a single bread
+  public costs: ResourceTrade<K, T>[];
+  public gains: ResourceTrade<K, T>[];
+  public amount: number;
+
   constructor(
-    private readonly __give: ResourceUpdateProps<K, T>[], // [{key: 'corn', value: 1}, {key: 'water', value: 2}]
-    private readonly __gain: ResourceUpdateProps<K, T>[], // [{key: 'bread', value: 1}]
-    private readonly __state: ResourceState<K, T>[],
-    public readonly tradingAmount: number
+    costs: ResourceTrade<K, T>[],
+    gains: ResourceTrade<K, T>[],
+    amount: number = 1
   ) {
-    this.possibleTradingAmount = this.__getPossibleTradingAmount();
-    const changes = this.__getMergedChanges(this.possibleTradingAmount);
-    this.limitingResources = getLimitingResources(changes);
-    this.isFullyPossible = this.possibleTradingAmount === this.tradingAmount;
-    this.isPartlyPossible = this.possibleTradingAmount > 0;
-    this.stateUpdates = this.isPartlyPossible ? createChanges<K, T>(changes) : [];
-    this.newState = __state.map(resource =>
-      new Set(this.stateUpdates.map(({key}) => key)).has(resource.key)
-        ? this.stateUpdates.find(({key}) => key === resource.key) as ResourceState<K, T>
-        : resource
-    )
-  }
-  private readonly __getMergedChanges = (tradingAmount = 1): TradeResourceUpdateType<K, T>[] => {
-    // toNegative() is just done so that a loss of 10 can be passed while being processed as -10
-    const giveApproach = mergeWithState<K, T>(toNegative(this.__give), this.__state, tradingAmount);
-    const gainApproach = mergeWithState<K, T>(this.__gain, this.__state, tradingAmount);
-    return giveApproach.concat(gainApproach)
+    this.costs = costs;
+    this.gains = gains;
+    this.amount = amount;
+    makeAutoObservable(this);
   }
 
-  private readonly __getPossibleTradingAmount = () => {
-    const changes = this.__getMergedChanges(this.tradingAmount);
-    const lowest = getLowestFactor<K>(getLimitingResources(changes));
-    return Math.floor(lowest * this.tradingAmount)
+  /**
+   * Calculates the maximum possible amount for the trade based on resource constraints.
+   */
+  public getMaxPossibleAmount(): number {
+    const maxByCosts = this.costs.map(({ resource, amount }) =>
+      Math.floor((resource.value - resource.min) / amount)
+    );
+
+    const maxByGains = this.gains.map(({ resource, amount }) =>
+      Math.floor((resource.max - resource.value) / amount)
+    );
+
+    return Math.min(...maxByCosts, ...maxByGains, this.amount);
+  }
+
+  /**
+   * Checks if the trade is partially or fully possible based on the given amount.
+   */
+  public isTradePossible(): boolean {
+    return this.getMaxPossibleAmount() > 0;
+  }
+
+  /**
+   * Executes the trade for the maximum feasible amount.
+   */
+  public executeTrade(): number {
+    const maxPossibleAmount = this.getMaxPossibleAmount();
+
+    if (maxPossibleAmount === 0) {
+      console.warn("Trade not possible due to constraints");
+      return 0;
+    }
+
+    // Deduct scaled costs
+    this.costs.forEach(({ resource, amount }) => {
+      resource.updateValueBy(-amount * maxPossibleAmount);
+    });
+
+    // Apply scaled gains
+    this.gains.forEach(({ resource, amount }) => {
+      resource.updateValueBy(amount * maxPossibleAmount);
+    });
+
+    return maxPossibleAmount;
+  }
+
+  /**
+   * Evaluates the trade outcome for the maximum feasible amount without applying it.
+   */
+  public evaluateTrade(): { [key: string]: { before: number; after: number } } {
+    const maxPossibleAmount = this.getMaxPossibleAmount();
+    const result: { [key: string]: { before: number; after: number } } = {};
+
+    // Evaluate scaled costs
+    this.costs.forEach(({ resource, amount }) => {
+      result[resource.key] = {
+        before: resource.value,
+        after: resource.respectConstraints(
+          resource.value - amount * maxPossibleAmount
+        ),
+      };
+    });
+
+    // Evaluate scaled gains
+    this.gains.forEach(({ resource, amount }) => {
+      result[resource.key] = result[resource.key] || {
+        before: resource.value,
+        after: resource.value,
+      };
+      result[resource.key].after = resource.respectConstraints(
+        result[resource.key].after + amount * maxPossibleAmount
+      );
+    });
+
+    return result;
   }
 }

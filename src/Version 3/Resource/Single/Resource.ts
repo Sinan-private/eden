@@ -77,7 +77,7 @@ export class Resource<K extends string, T extends string> {
   }
 
   public readonly updateValueBy = (value: number): Resource<K, T> => {
-    this.value = this.__respectConstraints(this.value + value)
+    this.value = this.respectConstraints(this.value + value)
     return this;
   }
 
@@ -91,16 +91,16 @@ export class Resource<K extends string, T extends string> {
   }
 
   public readonly setValueTo = (value: number): Resource<K, T> => {
-    this.value = this.__respectConstraints(value)
+    this.value = this.respectConstraints(value)
     return this
   };
 
-  public readonly delta = (update: UpdateProps<K, T>) => delta(
-    {...this},
-    update.value || 0
-  );
+  // public readonly delta = (update: UpdateProps<K, T>) => delta(
+  //   {...this},
+  //   update.value || 0
+  // );
 
-  private readonly __respectConstraints = (value: number): number =>
+  public readonly respectConstraints = (value: number): number =>
     value > this.max
       ? this.max
       : value < this.min
