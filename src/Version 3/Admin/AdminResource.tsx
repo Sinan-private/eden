@@ -3,11 +3,11 @@ import {ResourceKeys, ResourceTypes} from "../../Resource/specificTypes.ts";
 import {useMemo, useState} from "react";
 import {Chip, IconButton, Paper, Stack, Typography} from "@mui/material";
 import {themeColors} from "../../Resource/assets/colors.ts";
-import EditResource from "../../Resource/Admin/AdminPanel/EditResource";
 import Box from "@mui/material/Box";
 import DeleteOutlineIcon from "@mui/icons-material/DeleteOutline";
 import ModeEditOutlineIcon from "@mui/icons-material/ModeEditOutline";
 import {useAdmin} from "../../Resource/Admin/admin.context.ts";
+import {EditResource} from "./EditResource.tsx";
 
 export const AdminResource = ({resource}: { resource: Resource<ResourceKeys, ResourceTypes> }) => {
   const {
@@ -44,8 +44,7 @@ export const AdminResource = ({resource}: { resource: Resource<ResourceKeys, Res
     return (
       <Stack width={1000} position="relative">
         <Paper sx={{p: 1, mb: 2, width: 1000, backgroundColor: themeColors.bg}}>
-          edit
-          {/*<EditResource id={resource.id} resource={resource} onSubmit={onCloseEdit} onClose={onCloseEdit}/>*/}
+          <EditResource resource={resource} onSubmit={onCloseEdit} onClose={onCloseEdit}/>
         </Paper>
       </Stack>
     )

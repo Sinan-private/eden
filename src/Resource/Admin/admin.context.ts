@@ -14,6 +14,7 @@ const useAdminBase = () => {
     removeType,
   } = useApi();
   const originalResources = useGame().resources;
+  const [resourcesOriginal, setResourcesOriginal] = useState<ResourceStore<ResourceKeys, ResourceTypes>>()
   const [resources, setResources] = useState<ResourceStore<ResourceKeys, ResourceTypes>>()
   // const {...resources} = useResource<ResourceKeys, ResourceTypes>([])
   const [isFetching, setIsFetching] = useState(true);
@@ -21,12 +22,13 @@ const useAdminBase = () => {
   useComponentMount(async () => {
     const rawState = await fetchResources();
     setResources(new ResourceStore(rawState));
+    setResourcesOriginal(new ResourceStore(rawState));
     setIsFetching(false);
   })
 
   const write__initialResources = () => {
     updateResources(resources!.state).then(() => {
-
+      setResourcesOriginal(resources)
     })
   }
 

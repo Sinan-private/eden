@@ -1,5 +1,4 @@
 import {ResourceKeys, ResourceTypes} from "../../Resource/specificTypes.ts";
-import {ResourceState} from "../../Resource";
 import {useAdmin} from "../../Resource/Admin/admin.context.ts";
 import {Resource} from "../Resource/Single";
 import {Box, Typography} from "@mui/material";
@@ -7,9 +6,7 @@ import {AdminResource} from "./AdminResource.tsx";
 import {observer} from "mobx-react";
 
 export const AdminResources = () => {
-  const {allResources, groupByType} = useAdmin().resources;
-  const sortedResources = resourcesByType(allResources);
-  console.log(groupByType())
+  const {groupByType} = useAdmin().resources;
   const types = groupByType()
   return (
     <>
@@ -43,13 +40,3 @@ const ResourceType = observer(({type, resources}: ResourceTypeProps) => {
     </>
   )
 })
-
-
-const resourcesByType = (resources: Resource<ResourceKeys, ResourceTypes>[]): Record<ResourceTypes | 'empty', ResourceState<ResourceKeys, ResourceTypes>[]> => {
-  return resources.reduce((result, curr) => {
-    const type = curr.type || 'empty'
-    const value = result[type] || []
-    result[type] = value.concat(curr);
-    return result
-  }, {} as Record<ResourceTypes | 'empty', ResourceState<ResourceKeys, ResourceTypes>[]>);
-}
