@@ -31,10 +31,8 @@ const useAdminBase = () => {
   }
 
   const write__removeResource = (key: ResourceKeys) => {
-    const updatedState = resources?.removeResource(key);
-    if (updatedState) {
-      updateResources(updatedState)
-    }
+    resources?.removeResource(key);
+    updateResources(resources!.state)
   }
 
   const write__addType = (type: string | string[]) =>
@@ -61,7 +59,6 @@ const useAdminBase = () => {
     }
     return false
   }
-
 
 
   return {

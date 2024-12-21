@@ -1,7 +1,7 @@
 import {ChangeEvent, useState} from "react";
 import {Icon} from "../../../genericTypes.ts";
 import {useToggle} from "../../../hooks/useToggle.ts";
-import {ResourceKeys} from "../../../specificTypes.ts";
+import {ResourceKeys, ResourceTypes} from "../../../specificTypes.ts";
 import {useAdmin} from "../../admin.context.ts";
 import {EditResourceView} from "./EditResourceView.tsx";
 import {observer} from "mobx-react";
@@ -109,6 +109,11 @@ export const EditResourceController = observer((
     }
   }
 
+  const handleTypeChange = (type: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+    const _type = type.target.value as ResourceTypes
+    resource?.setTo({type: _type})
+  }
+
   if (!resource) {
     return null
   }
@@ -137,6 +142,7 @@ export const EditResourceController = observer((
       onSetMin={onSetMin}
       onSetMax={onSetMax}
       onBlurMax={onBlurMax}
+      handleTypeChange={handleTypeChange}
     />
   )
 })

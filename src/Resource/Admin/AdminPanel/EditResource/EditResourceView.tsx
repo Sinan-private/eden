@@ -70,7 +70,6 @@ export const EditResourceView = (
         value={label}
         onChange={onSetLabel}
       />
-      me - {keyAlreadyExists}
       <TextField
         type="text"
         label="Key"

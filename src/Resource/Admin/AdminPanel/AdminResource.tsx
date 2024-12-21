@@ -8,8 +8,9 @@ import {ResourceKeys, ResourceTypes} from "../../specificTypes.ts";
 import {useAdmin} from "../admin.context.ts";
 import {themeColors} from "../../assets/colors.ts";
 import EditResource from "./EditResource";
+import {observer} from "mobx-react";
 
-export const AdminResource = ({resource: _resource}: { resource: ResourceState<ResourceKeys, ResourceTypes> }) => {
+export const AdminResource = observer(({resource: _resource}: { resource: ResourceState<ResourceKeys, ResourceTypes> }) => {
   const {
     write__removeResource,
     canRemoveResource,
@@ -22,7 +23,7 @@ export const AdminResource = ({resource: _resource}: { resource: ResourceState<R
   const onCloseEdit = () => setEdit(false);
   const onDeleteResource = () => write__removeResource(resource.key);
 
-  const cost = useMemo(() => (
+  const cost = useMemo(() => !resource ? null : (
     <Stack direction="column" minWidth={80} spacing={1}>
       <Typography variant="caption" align="left">Cost</Typography>
       <Stack direction="row" minWidth={80} spacing={1}>
@@ -39,7 +40,7 @@ export const AdminResource = ({resource: _resource}: { resource: ResourceState<R
         ))}
       </Stack>
     </Stack>
-  ), [get, resource.cost]);
+  ), [get, resource]);
 
   if (edit) {
     return (
@@ -51,12 +52,14 @@ export const AdminResource = ({resource: _resource}: { resource: ResourceState<R
     )
   }
 
+  if (!resource) return null
+
   return (
     <Box position="relative">
       <IconButton
         onClick={onDeleteResource}
         size="small"
-        disabled={!canRemoveResource(resource.key)}
+        disabled={!canRemoveResource(resource?.key)}
         sx={{position: 'absolute', left: -40, top: '50%', transform: 'translateY(-50%)'}}
       >
         <DeleteOutlineIcon fontSize="inherit"/>
@@ -80,7 +83,7 @@ export const AdminResource = ({resource: _resource}: { resource: ResourceState<R
                 justifyContent: 'center',
                 alignItems: 'center',
               }}>
-                <img src={resource.icon} alt={resource.label} width={32} height={32}/>
+                <img src={resource?.icon} alt={resource?.label} width={32} height={32}/>
               </Box>
               <Stack width={80} alignItems="flex-end">
                 <Typography sx={{mb: -1}} variant="caption">{resource.label}</Typography>
@@ -108,4 +111,4 @@ export const AdminResource = ({resource: _resource}: { resource: ResourceState<R
       </Paper>
     </Box>
   )
-}
+})
