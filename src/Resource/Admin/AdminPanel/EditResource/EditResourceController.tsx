@@ -4,12 +4,22 @@ import {useToggle} from "../../../hooks/useToggle.ts";
 import {ResourceKeys} from "../../../specificTypes.ts";
 import {useAdmin} from "../../admin.context.ts";
 import {EditResourceView} from "./EditResourceView.tsx";
-import {EditResourceProps} from "./types.ts";
 import {observer} from "mobx-react";
+import {SxProps} from "@mui/material";
+
+// I want to use the ID instead of the key to avoid issues
+
+type EditResourceProps = {
+  id: string;
+  onSubmit?(): void;
+  onClose?(): void;
+  enableKeyEdit?: boolean;
+  sx?: SxProps;
+};
 
 export const EditResourceController = observer((
   {
-    resource,
+    id,
     enableKeyEdit,
     onClose,
     onSubmit = () => {
@@ -19,10 +29,13 @@ export const EditResourceController = observer((
     isDisabled,
     write__initialResources,
     resources: {
-      getByType
+      allResources,
+      getById
     }
   } = useAdmin();
   // const {getByType} = useAdmin().resources;
+  const resource = getById(id)
+  console.log(resource)
   const [openIconPicker, setOpenIconPicker] = useState(false);
   const [filterUsed, onToggleFilter] = useToggle(false);
   const [isKeyPristine, setIsKeyPristine] = useState(true);
@@ -40,7 +53,7 @@ export const EditResourceController = observer((
   //   ...resourceCloneProps
   // } = useResourceClone(resource);
 
-  const keyAlreadyExists = getByType().map(({key}) => key).includes(resource?.key || '');
+  const keyAlreadyExists = allResources.map(({key}) => key).includes(resource?.key || '');
   const handleOpenIconPicker = () => setOpenIconPicker(true);
   const handleCloseIconPicker = () => setOpenIconPicker(false);
   const onSelectIcon = (clickedIcon: Icon) => {
@@ -86,21 +99,24 @@ export const EditResourceController = observer((
   }
 
   const onSubmitChanges = () => {
-    console.log('me', !(keyAlreadyExists && enableKeyEdit))
     if (!(keyAlreadyExists && enableKeyEdit)) {
-      // updateResource();
       write__initialResources()
       onSubmit();
     }
   }
 
+  if (!resource) {
+    return null
+  }
   const {key, ...restResource} = resource!
   const saveDisabled = isDisabled(key) || (enableKeyEdit && keyAlreadyExists) || !resource!.key.length;
+
 
   return (
     <EditResourceView
       {...restResource}
       _key={key}
+      enableKeyEdit={enableKeyEdit}
       onClose={onClose}
       openIconPicker={openIconPicker}
       filterUsed={filterUsed}

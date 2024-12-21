@@ -7,6 +7,8 @@ import {ResourceKeys, ResourceTypes} from "../../specificTypes.ts";
 import {useAdmin} from "../admin.context.ts";
 import EditResource from "./EditResource";
 import {Resource} from "../../../Version 3/Resource/Single";
+import {useComponentMount} from "../../hooks/useComponentMount.ts";
+import {observer} from "mobx-react";
 
 export const HandleResources = () => {
   const {getByType} = useAdmin().resources;
@@ -52,20 +54,31 @@ const ResourceType = (
         <AdminResource key={key} resource={get(key)}/>
       ))}
       {!isAddMode
-      ? <button onClick={() => setIsAddMode(true)}>Add resource</button>
-      : (
-          <Box maxWidth={1000}>
-            <EditResource
-              enableKeyEdit
-              resource={resource[0]}
-              onSubmit={closeAddMode}
-              onClose={closeAddMode}
-            />
-          </Box>
-        )
+        ? <button onClick={() => setIsAddMode(true)}>Add resource</button>
+        : <AddResource closeAddMode={closeAddMode} />
       }
 
       <div style={{height: 60}}/>
     </Box>
   )
 }
+
+const AddResource = observer(({closeAddMode}: {closeAddMode: () => void}) => {
+  const {get, addResource, allResources} = useAdmin().resources;
+  useComponentMount(() => addResource({key: 'empty' as ResourceKeys}));
+  const resource = get('empty' as ResourceKeys);
+  if (!resource) return null;
+  console.log(resource, allResources.map(({key}) => key))
+
+  return (
+    <Box maxWidth={1000}>
+      <EditResource
+        enableKeyEdit
+        id={resource.id}
+        resource={resource}
+        onSubmit={closeAddMode}
+        onClose={closeAddMode}
+      />
+    </Box>
+  )
+})

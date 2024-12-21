@@ -16,6 +16,15 @@ export class ResourceStore<K extends string, T extends string> {
     return this.resources.get(key)!
   };
 
+  public getById = (id: string): Resource<K, T> | undefined => {
+    for (const resource of this.resources.values()) {
+      if (resource.id === id) {
+        return resource;
+      }
+    }
+    return undefined; // Return undefined if no resource matches the id
+  };
+
   public initializeResources(resources: ResourceUpdateProps<K, T>[]) {
     resources.forEach((resource) => {
       this.resources.set(resource.key, new Resource(resource));

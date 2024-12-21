@@ -45,7 +45,7 @@ export const AdminResource = ({resource: _resource}: { resource: ResourceState<R
     return (
       <Stack width={1000} position="relative">
         <Paper sx={{p: 1, mb: 2, width: 1000, backgroundColor: themeColors.bg}}>
-          <EditResource resource={resource} onSubmit={onCloseEdit} onClose={onCloseEdit}/>
+          <EditResource id={resource.id} resource={resource} onSubmit={onCloseEdit} onClose={onCloseEdit}/>
         </Paper>
       </Stack>
     )

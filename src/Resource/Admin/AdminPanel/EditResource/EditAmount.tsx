@@ -1,7 +1,10 @@
 import {ChangeEvent} from "react";
 import {Stack, TextField} from "@mui/material";
+import {ResourceKeys} from "../../../specificTypes.ts";
+import {useAdmin} from "../../admin.context.ts";
 
 export type EditAmountProps = {
+  _key: ResourceKeys;
   min: number;
   max: number;
   value: number;
@@ -11,48 +14,66 @@ export type EditAmountProps = {
   onBlurMax(): void;
 }
 
-export const EditAmount = (
-  {
+export const EditAmount = ({_key,}: { _key: ResourceKeys }) => {
+  const {get} = useAdmin().resources;
+  const resource = get(_key);
+  if (!resource) return null;
+
+  const {
     min,
     max,
     value,
-    onSetMin,
-    onSetMax,
-    onSetValue,
-    onBlurMax,
-  }: EditAmountProps
-) => (
-  <Stack direction="row" alignItems="center">
+    setTo,
+  } = resource;
+  const onBlurMax = () => {
+    const shouldBeInfinite = (max || 0) < 1
 
-    <TextField
-      type="number"
-      label="min"
-      value={min}
-      onChange={onSetMin}
-      size="small"
-      sx={{
-        right: -1,
-        '& .MuiOutlinedInput-root': {
-          borderRadius: '8px',
-          borderTopRightRadius: 0,
-          borderBottomRightRadius: 0,
-        },
-      }}
-    />
-    <TextField
-      type="number"
-      label="Initial"
-      value={value}
-      onChange={onSetValue}
-    />
-    <MaxInput
-      value={max}
-      onChange={onSetMax}
-      onBlur={onBlurMax}
+    if (shouldBeInfinite) {
+      setTo({max: Infinity})
+      // setMax(Infinity)
+    }
+  }
+  const onChange = (change: 'min' | 'max' | 'value') =>
+    (e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) =>
+      setTo({[change]: Number(e.target.value)})
 
-    />
-  </Stack>
-)
+  const onSetMin = onChange('min')
+  const onSetMax = onChange('max')
+  const onSetValue = onChange('value')
+
+  return (
+    <Stack direction="row" alignItems="center">
+
+      <TextField
+        type="number"
+        label="min"
+        value={min}
+        onChange={onSetMin}
+        size="small"
+        sx={{
+          right: -1,
+          '& .MuiOutlinedInput-root': {
+            borderRadius: '8px',
+            borderTopRightRadius: 0,
+            borderBottomRightRadius: 0,
+          },
+        }}
+      />
+      <TextField
+        type="number"
+        label="Initial"
+        value={value}
+        onChange={onSetValue}
+      />
+      <MaxInput
+        value={max}
+        onChange={onSetMax}
+        onBlur={onBlurMax}
+
+      />
+    </Stack>
+  )
+}
 
 type MaxInputProps = {
   value: number;

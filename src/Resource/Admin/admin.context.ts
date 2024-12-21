@@ -56,9 +56,10 @@ const useAdminBase = () => {
   }
 
   const isDisabled = (key: ResourceKeys) => {
-    console.log(resources!.get(key).state, originalResources.get(key).state)
-    console.log(areObjectsEqual(resources!.get(key).state, originalResources.get(key).state))
-    return areObjectsEqual(resources!.get(key).state, originalResources.get(key).state)
+    if (resources?.get(key) && originalResources.get(key)) {
+      return areObjectsEqual(resources!.get(key).state, originalResources.get(key).state)
+    }
+    return false
   }
 
 
