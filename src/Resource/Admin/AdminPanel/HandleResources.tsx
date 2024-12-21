@@ -64,11 +64,10 @@ const ResourceType = (
 }
 
 const AddResource = observer(({closeAddMode}: {closeAddMode: () => void}) => {
-  const {get, addResource, allResources} = useAdmin().resources;
+  const {get, addResource} = useAdmin().resources;
   useComponentMount(() => addResource({key: 'empty' as ResourceKeys}));
   const resource = get('empty' as ResourceKeys);
   if (!resource) return null;
-  console.log(resource, allResources.map(({key}) => key))
 
   return (
     <Box maxWidth={1000}>

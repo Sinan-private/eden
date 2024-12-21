@@ -7,11 +7,11 @@ import {resourceTypes} from "../../../generated/resourceTypes.ts";
 import {EditAmount} from "./EditAmount.tsx";
 import {EditResourceViewProps} from "./types.ts";
 import {EditCostType} from "./EditCostType.tsx";
-import {EditKey} from "./EditKey.tsx";
 
 export const EditResourceView = (
   {
     _key,
+    id,
     label,
     type,
     cost,
@@ -70,9 +70,17 @@ export const EditResourceView = (
         value={label}
         onChange={onSetLabel}
       />
-      <EditKey _key={_key} enableKeyEdit={enableKeyEdit} />
+      me - {keyAlreadyExists}
+      <TextField
+        type="text"
+        label="Key"
+        value={_key}
+        onChange={onSetKey}
+        disabled={!enableKeyEdit}
+        error={keyAlreadyExists}
+      />
 
-      <EditAmount _key={_key} />
+      <EditAmount id={id} />
       <FormControl fullWidth>
         <InputLabel id="demo-simple-select-label">Type</InputLabel>
         <Select

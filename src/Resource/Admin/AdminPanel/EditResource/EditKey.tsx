@@ -5,17 +5,17 @@ import {useAdmin} from "../../admin.context.ts";
 import {observer} from "mobx-react";
 
 type EditKeyProps = {
-  _key: ResourceKeys;
+  id: string;
   enableKeyEdit?: boolean;
 }
 
 export const EditKey = observer((
   {
-    _key,
+    id,
     enableKeyEdit,
   }: EditKeyProps) => {
-  const {get, allResources} = useAdmin().resources;
-  const resource = get(_key)
+  const {getById, allResources} = useAdmin().resources;
+  const resource = getById(id)!
   const onChange = (e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     resource.setTo({key: e.target.value as ResourceKeys})
   }
@@ -26,7 +26,7 @@ export const EditKey = observer((
     <TextField
       type="text"
       label="Key"
-      value={_key}
+      value={resource.key}
       onChange={onChange}
       disabled={!enableKeyEdit}
       error={enableKeyEdit && keyAlreadyExists}

@@ -53,7 +53,10 @@ export const EditResourceController = observer((
   //   ...resourceCloneProps
   // } = useResourceClone(resource);
 
-  const keyAlreadyExists = allResources.map(({key}) => key).includes(resource?.key || '');
+  const keyAlreadyExists = allResources
+    .filter(({id}) => id !== resource?.id)
+    .map(({key}) => key)
+    .includes(resource?.key as ResourceKeys);
   const handleOpenIconPicker = () => setOpenIconPicker(true);
   const handleCloseIconPicker = () => setOpenIconPicker(false);
   const onSelectIcon = (clickedIcon: Icon) => {
@@ -61,6 +64,7 @@ export const EditResourceController = observer((
     // setIconName(clickedIcon.name)
     handleCloseIconPicker()
   }
+  console.log('keyAlreadyExists', keyAlreadyExists)
 
   const onSetKey = (e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     resource?.setTo({key: e.target.value as ResourceKeys})

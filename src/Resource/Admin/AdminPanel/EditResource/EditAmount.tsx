@@ -1,10 +1,9 @@
 import {ChangeEvent} from "react";
 import {Stack, TextField} from "@mui/material";
-import {ResourceKeys} from "../../../specificTypes.ts";
 import {useAdmin} from "../../admin.context.ts";
 
 export type EditAmountProps = {
-  _key: ResourceKeys;
+  id: string;
   min: number;
   max: number;
   value: number;
@@ -14,9 +13,9 @@ export type EditAmountProps = {
   onBlurMax(): void;
 }
 
-export const EditAmount = ({_key,}: { _key: ResourceKeys }) => {
-  const {get} = useAdmin().resources;
-  const resource = get(_key);
+export const EditAmount = ({id,}: { id: string }) => {
+  const {getById} = useAdmin().resources;
+  const resource = getById(id);
   if (!resource) return null;
 
   const {

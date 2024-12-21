@@ -38,6 +38,7 @@ type ResourceCloneProps<K extends string, T extends string> = Pick<
 >
 
 export type EditResourceViewProps = {
+  id: string;
   _key: ResourceKeys;
   openIconPicker: boolean;
   filterUsed: boolean;
