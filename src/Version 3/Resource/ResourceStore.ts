@@ -5,6 +5,7 @@ import {ResourceCostUpdate} from "./Single/genericTypes.ts";
 
 export class ResourceStore<K extends string, T extends string> {
   public resources: Map<K, Resource<K, T>> = new Map();
+
   constructor(initialResources: ResourceUpdateProps<K, T>[]) {
     this.initializeResources(initialResources);
     makeAutoObservable(this);
@@ -25,9 +26,30 @@ export class ResourceStore<K extends string, T extends string> {
     this.resources.set(resource.key, new Resource(resource));
   }
 
-  public removeResource = (key: K)=> {
-    this.resources.delete(key);
+  public removeResource = (key: K) => {
+    if (!this.isResourceReferenced(key)) {
+      this.resources.delete(key);
+    }
   }
+
+  public isResourceReferenced = (key: K): boolean => {
+    const dependencyKeys: (keyof Resource<K, T>)[] = ["cost", "revealedAt"]; // Everything with a structure like cost
+
+    return this.allResources.some(resource => {
+      if (resource.key === key) return false; // Exclude self-reference
+
+      return dependencyKeys.some(depKey => {
+        const dependency = resource[depKey] as ResourceCostUpdate<K> | null;
+        if (!dependency) return false;
+
+        const isReferencedInGive = dependency.give.some(item => item.key === key);
+        const isReferencedInGain = dependency.gain.some(item => item.key === key);
+
+        return isReferencedInGive || isReferencedInGain;
+      });
+    });
+  };
+
 
   public getByType = (type?: T): Resource<K, T>[] => {
     if (!type?.length) {

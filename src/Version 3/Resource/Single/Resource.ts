@@ -139,24 +139,3 @@ const labelFromKey = (key: string) =>
     .toUpperCase() + key.slice(1)
     .split('_')
     .join(' ')
-
-
-const x = {
-  "key": "corn",
-  "value": 2,
-  "min": 0,
-  "max": null,
-  "label": "Corn",
-  "type": "base_resource",
-  "cost": null,
-  "revealedAt": {
-    "give": [
-      {
-        "key": "money",
-        "value": 2000
-      }
-    ],
-    "gain": []
-  },
-  "iconName": "wheat"
-}

@@ -4,6 +4,7 @@ import {useApi} from "../../context/useApi.ts";
 import {useComponentMount} from "../hooks/useComponentMount.ts";
 import {ResourceKeys, ResourceState, ResourceTypes} from "../specificTypes.ts";
 import {ResourceStore} from "../../Version 3/Resource/ResourceStore.ts";
+import {useGame} from "../../context/game.context.ts";
 
 const useAdminBase = () => {
   const {
@@ -12,25 +13,25 @@ const useAdminBase = () => {
     addType,
     removeType,
   } = useApi();
-  const [state, setState] = useState<ResourceStore<ResourceKeys, ResourceTypes>>()
+  const originalResources = useGame().resources;
+  const [resources, setResources] = useState<ResourceStore<ResourceKeys, ResourceTypes>>()
   // const {...resources} = useResource<ResourceKeys, ResourceTypes>([])
   const [isFetching, setIsFetching] = useState(true);
 
   useComponentMount(async () => {
     const rawState = await fetchResources();
-    setState(new ResourceStore(rawState));
+    setResources(new ResourceStore(rawState));
     setIsFetching(false);
   })
 
   const write__initialResources = () => {
-    console.log(state!.state)
-    updateResources(state!.state).then(() => {
+    updateResources(resources!.state).then(() => {
 
     })
   }
 
   const write__removeResource = (key: ResourceKeys) => {
-    const updatedState = state?.removeResource(key);
+    const updatedState = resources?.removeResource(key);
     if (updatedState) {
       updateResources(updatedState)
     }
@@ -40,7 +41,7 @@ const useAdminBase = () => {
     addType(([] as string[]).concat(type))
 
   const write__removeType = (type: ResourceTypes | ResourceTypes[]) => {
-    const usedTypes = state!.allResources.map(({type}) => type);
+    const usedTypes = resources!.allResources.map(({type}) => type);
     const typesToRemove = ([] as ResourceTypes[]).concat(type);
     const matches = typesToRemove.filter(value => usedTypes.includes(value!));
     if (matches.length) {
@@ -51,16 +52,19 @@ const useAdminBase = () => {
   }
 
   const canRemoveResource = (key: ResourceKeys) => {
-    return true
+    return !resources?.isResourceReferenced(key)
   }
 
-  const isDisabled = () => // areObjectsEqual(resources)
-    false
+  const isDisabled = (key: ResourceKeys) => {
+    console.log(resources!.get(key).state, originalResources.get(key).state)
+    console.log(areObjectsEqual(resources!.get(key).state, originalResources.get(key).state))
+    return areObjectsEqual(resources!.get(key).state, originalResources.get(key).state)
+  }
 
 
 
   return {
-    resources: state as ResourceStore<ResourceKeys, ResourceTypes>,
+    resources: resources as ResourceStore<ResourceKeys, ResourceTypes>,
     isFetching,
     isDisabled,
     canRemoveResource,

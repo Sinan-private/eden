@@ -94,9 +94,8 @@ export const EditResourceController = observer((
     }
   }
 
-  const saveDisabled = isDisabled || (enableKeyEdit && keyAlreadyExists) || !resource!.key.length;
-  // @ts-ignore
-  const {key, ...restResource} = resource
+  const {key, ...restResource} = resource!
+  const saveDisabled = isDisabled(key) || (enableKeyEdit && keyAlreadyExists) || !resource!.key.length;
 
   return (
     <EditResourceView
