@@ -94,7 +94,7 @@ export const EditResourceView = (
           ))}
         </Select>
       </FormControl>
-      <button onClick={onSubmitChanges} disabled={saveDisabled} >
+      <button onClick={onSubmitChanges} >
         Save
       </button>
     </Stack>

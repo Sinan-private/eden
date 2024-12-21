@@ -4,7 +4,6 @@ import {useApi} from "../../context/useApi.ts";
 import {useComponentMount} from "../hooks/useComponentMount.ts";
 import {ResourceKeys, ResourceState, ResourceTypes} from "../specificTypes.ts";
 import {ResourceStore} from "../../Version 3/Resource/ResourceStore.ts";
-import {useGame} from "../../context/game.context.ts";
 
 const useAdminBase = () => {
   const {
@@ -13,7 +12,6 @@ const useAdminBase = () => {
     addType,
     removeType,
   } = useApi();
-  const x = useGame().resources;
   const [state, setState] = useState<ResourceStore<ResourceKeys, ResourceTypes>>()
   // const {...resources} = useResource<ResourceKeys, ResourceTypes>([])
   const [isFetching, setIsFetching] = useState(true);
@@ -24,9 +22,9 @@ const useAdminBase = () => {
     setIsFetching(false);
   })
 
-  const write__initialResources = (newState?: ResourceState[]) => {
-    if (!newState) return;
-    updateResources(newState).then(() => {
+  const write__initialResources = () => {
+    console.log(state!.state)
+    updateResources(state!.state).then(() => {
 
     })
   }
@@ -58,6 +56,8 @@ const useAdminBase = () => {
 
   const isDisabled = () => // areObjectsEqual(resources)
     false
+
+
 
   return {
     resources: state as ResourceStore<ResourceKeys, ResourceTypes>,

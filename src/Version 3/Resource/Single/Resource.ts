@@ -5,7 +5,7 @@ import {
   ResourceCostUpdate,
 } from "./genericTypes.ts";
 import {beautifyNumber, mapMultiply} from "./helpers";
-import {makeAutoObservable} from "mobx";
+import {makeAutoObservable, toJS} from "mobx";
 import icons from "../../../Resource/assets/icons/icons.ts";
 import {id} from "./helpers/id.ts";
 
@@ -117,6 +117,20 @@ export class Resource<K extends string, T extends string> {
   get icon(): string {
     return icons.find(icon => icon.name === this.iconName)?.src || ''
   }
+
+  get state() {
+    return {
+      key: this.key,
+      value: this.value,
+      min: this.min,
+      max: this.max,
+      label: this.label,
+      type: this.type,
+      iconName: this.iconName,
+      cost: toJS(this.cost),
+      revealedAt: toJS(this.revealedAt),
+    }
+  }
 }
 
 const labelFromKey = (key: string) =>
@@ -125,3 +139,24 @@ const labelFromKey = (key: string) =>
     .toUpperCase() + key.slice(1)
     .split('_')
     .join(' ')
+
+
+const x = {
+  "key": "corn",
+  "value": 2,
+  "min": 0,
+  "max": null,
+  "label": "Corn",
+  "type": "base_resource",
+  "cost": null,
+  "revealedAt": {
+    "give": [
+      {
+        "key": "money",
+        "value": 2000
+      }
+    ],
+    "gain": []
+  },
+  "iconName": "wheat"
+}

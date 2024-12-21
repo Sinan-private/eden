@@ -74,6 +74,10 @@ export class ResourceStore<K extends string, T extends string> {
     return Array.from(this.resources.values());
   }
 
+  get state() {
+    return this.allResources.map(({state}) => state)
+  }
+
 }
 
 const groupedByType = <K extends string, T extends string>(resources: Resource<K, T>[]): Resource<K, T>[][] => Object.values(

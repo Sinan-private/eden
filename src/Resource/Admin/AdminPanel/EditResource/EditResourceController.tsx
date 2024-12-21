@@ -17,6 +17,7 @@ export const EditResourceController = observer((
   }: EditResourceProps) => {
   const {
     isDisabled,
+    write__initialResources,
     resources: {
       getByType
     }
@@ -85,8 +86,10 @@ export const EditResourceController = observer((
   }
 
   const onSubmitChanges = () => {
+    console.log('me', !(keyAlreadyExists && enableKeyEdit))
     if (!(keyAlreadyExists && enableKeyEdit)) {
-      updateResource();
+      // updateResource();
+      write__initialResources()
       onSubmit();
     }
   }
