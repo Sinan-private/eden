@@ -12,10 +12,10 @@ import EditResource from "./EditResource";
 export const AdminResource = ({resource: _resource}: { resource: ResourceState<ResourceKeys, ResourceTypes> }) => {
   const {
     write__removeResource,
-    resources: {
-    get,
       canRemoveResource,
-  }
+    resources: {
+      get,
+    }
   } = useAdmin();
   const resource = get(_resource.key)
   const [edit, setEdit] = useState(false);

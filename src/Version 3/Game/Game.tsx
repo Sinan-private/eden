@@ -79,6 +79,7 @@ type ButtonProps = {
 const Button = observer(({resource, increment = 1}: ButtonProps) => {
 
   const onButtonClick = () => {
+    console.log(resource.key, resource.id)
     resource.updateValueBy(increment)
   }
 

@@ -29,7 +29,10 @@ export class ResourceStore<K extends string, T extends string> {
     this.resources.delete(key);
   }
 
-  public getByType = (type: T): Resource<K, T>[] => {
+  public getByType = (type?: T): Resource<K, T>[] => {
+    if (!type?.length) {
+      return this.allResources
+    }
     return this.allResources
       .filter(resource => resource.type === type)
   }

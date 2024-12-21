@@ -1,13 +1,13 @@
 import {ChangeEvent, useState} from "react";
 import {Icon} from "../../../genericTypes.ts";
-import {useResourceClone} from "../../../index.ts";
 import {useToggle} from "../../../hooks/useToggle.ts";
 import {ResourceKeys} from "../../../specificTypes.ts";
 import {useAdmin} from "../../admin.context.ts";
 import {EditResourceView} from "./EditResourceView.tsx";
 import {EditResourceProps} from "./types.ts";
+import {observer} from "mobx-react";
 
-export const EditResourceController = (
+export const EditResourceController = observer((
   {
     resource,
     enableKeyEdit,
@@ -15,55 +15,72 @@ export const EditResourceController = (
     onSubmit = () => {
     },
   }: EditResourceProps) => {
-  const {getByType} = useAdmin().resources;
+  const {
+    isDisabled,
+    resources: {
+      getByType
+    }
+  } = useAdmin();
+  // const {getByType} = useAdmin().resources;
   const [openIconPicker, setOpenIconPicker] = useState(false);
   const [filterUsed, onToggleFilter] = useToggle(false);
   const [isKeyPristine, setIsKeyPristine] = useState(true);
 
-  const {
-    key,
-    isDisabled,
-    updateResource,
-    setKey,
-    setIconName,
-    setLabel,
-    setValue,
-    setMin,
-    setMax,
-    ...resourceCloneProps
-  } = useResourceClone(resource);
+  // const {
+  //   key,
+  //   isDisabled,
+  //   updateResource,
+  //   setKey,
+  //   setIconName,
+  //   setLabel,
+  //   setValue,
+  //   setMin,
+  //   setMax,
+  //   ...resourceCloneProps
+  // } = useResourceClone(resource);
 
-  const keyAlreadyExists = getByType().map(({key}) => key).includes(key);
+  const keyAlreadyExists = getByType().map(({key}) => key).includes(resource?.key || '');
   const handleOpenIconPicker = () => setOpenIconPicker(true);
   const handleCloseIconPicker = () => setOpenIconPicker(false);
   const onSelectIcon = (clickedIcon: Icon) => {
-    setIconName(clickedIcon.name)
+    resource?.setTo({...resource, iconName: clickedIcon.name})
+    // setIconName(clickedIcon.name)
     handleCloseIconPicker()
   }
 
   const onSetKey = (e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
-    setKey(e.target.value as ResourceKeys);
+    resource?.setTo({key: e.target.value as ResourceKeys})
+    // setKey(e.target.value as ResourceKeys);
     if (isKeyPristine) {
       setIsKeyPristine(false)
     }
   }
   const onSetLabel = (e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
-    setLabel(e.target.value)
+    resource?.setTo({label: e.target.value})
+
+    // setLabel(e.target.value)
     if (isKeyPristine) {
-      setKey(e.target.value.replace(/[^a-zA-Z0-9]+/g, '_').toLowerCase() as ResourceKeys)
+      const generatedKey = e.target.value.replace(/[^a-zA-Z0-9]+/g, '_').toLowerCase() as ResourceKeys
+      resource?.setTo({key: generatedKey})
     }
   }
-  const onSetValue = (e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => setValue(Number(e.target.value))
-  const onSetMin = (e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => setMin(Number(e.target.value))
+  const onSetValue = (e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+    console.log(resource?.key, resource?.id)
+    console.log(e.target.value)
+    resource?.setValueTo(Number(e.target.value))
+  }
+  const onSetMin = (e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => resource?.setValueTo(Number(e.target.value))
   const onSetMax = (e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     const max = Number(e.target.value);
-    setMax(isNaN(max) ? 0 : max)
+    resource?.setTo({max: isNaN(max) ? 0 : max})
+    // setMax(isNaN(max) ? 0 : max)
   }
   const onBlurMax = () => {
-    const shouldBeInfinite = resourceCloneProps.max < 1
+    const shouldBeInfinite = (resource?.max || 0) < 1
 
     if (shouldBeInfinite) {
-      setMax(Infinity)
+      resource?.setTo({max: Infinity})
+      // setMax(Infinity)
     }
   }
 
@@ -74,11 +91,13 @@ export const EditResourceController = (
     }
   }
 
-  const saveDisabled = isDisabled || (enableKeyEdit && keyAlreadyExists) || !key.length;
+  const saveDisabled = isDisabled || (enableKeyEdit && keyAlreadyExists) || !resource!.key.length;
+  // @ts-ignore
+  const {key, ...restResource} = resource
 
   return (
     <EditResourceView
-      {...resourceCloneProps}
+      {...restResource}
       _key={key}
       onClose={onClose}
       openIconPicker={openIconPicker}
@@ -98,4 +117,4 @@ export const EditResourceController = (
       onBlurMax={onBlurMax}
     />
   )
-}
+})

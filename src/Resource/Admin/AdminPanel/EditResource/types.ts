@@ -1,12 +1,13 @@
 import {SxProps} from "@mui/material";
-import {Icon, ResourceState, TradeChange} from "../../../genericTypes.ts";
+import {Icon, TradeChange} from "../../../genericTypes.ts";
 import {ResourceKeys, ResourceTypes} from "../../../specificTypes.ts";
 import {useResourceClone} from "../../../useResourceClone.ts";
 import {ChangeEvent} from "react";
 import {EditAmountProps} from "./EditAmount.tsx";
+import {Resource} from "../../../../Version 3/Resource/Single";
 
 export type EditResourceProps = {
-  resource?: Partial<ResourceState<ResourceKeys, ResourceTypes>>;
+  resource?: Resource<ResourceKeys, ResourceTypes>;
   onSubmit?(): void;
   onClose?(): void;
   enableKeyEdit?: boolean;

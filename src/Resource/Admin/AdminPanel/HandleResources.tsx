@@ -6,6 +6,7 @@ import {useState} from "react";
 import {ResourceKeys, ResourceTypes} from "../../specificTypes.ts";
 import {useAdmin} from "../admin.context.ts";
 import EditResource from "./EditResource";
+import {Resource} from "../../../Version 3/Resource/Single";
 
 export const HandleResources = () => {
   const {getByType} = useAdmin().resources;
@@ -32,7 +33,7 @@ export const HandleResources = () => {
 
 type ResourceTypeProps = {
   resourceKey: ResourceKeys;
-  resource: ResourceState<ResourceKeys, ResourceTypes>[];
+  resource: Resource<ResourceKeys, ResourceTypes>[];
 }
 
 const ResourceType = (
@@ -56,7 +57,7 @@ const ResourceType = (
           <Box maxWidth={1000}>
             <EditResource
               enableKeyEdit
-              resource={{type: resource[0].type}}
+              resource={resource[0]}
               onSubmit={closeAddMode}
               onClose={closeAddMode}
             />
