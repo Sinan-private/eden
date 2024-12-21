@@ -68,8 +68,8 @@ export class ResourceStore<K extends string, T extends string> {
       .filter(resource => resource.type === type)
   }
 
-  public groupByType = (): Resource<K, T>[][] => {
-    return groupedByType(this.allResources);
+  public groupByType = () => {
+    return groupedByType(this.allResources).map(resourceGroup => ({type: resourceGroup[0].type, resources: resourceGroup}));
   }
 
   public produce = (key: K, amount?: number) => {

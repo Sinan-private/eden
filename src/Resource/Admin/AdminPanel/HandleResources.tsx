@@ -6,7 +6,6 @@ import {useState} from "react";
 import {ResourceKeys, ResourceTypes} from "../../specificTypes.ts";
 import {useAdmin} from "../admin.context.ts";
 import EditResource from "./EditResource";
-import {Resource} from "../../../Version 3/Resource/Single";
 import {useComponentMount} from "../../hooks/useComponentMount.ts";
 import {observer} from "mobx-react";
 
@@ -25,7 +24,7 @@ export const HandleResources = () => {
       <div style={{display: "flex", justifyContent: "center", flexDirection: "row"}}>
         <div className="card">
           {Object.entries(_sortedResources).map(([key, resourcesByType]) => (
-            <ResourceType key={key} resourceKey={key as ResourceKeys} resource={resourcesByType}/>
+            <ResourceType key={key} resourceKey={key as ResourceKeys} resources={resourcesByType}/>
           ))}
         </div>
       </div>
@@ -35,13 +34,13 @@ export const HandleResources = () => {
 
 type ResourceTypeProps = {
   resourceKey: ResourceKeys;
-  resource: Resource<ResourceKeys, ResourceTypes>[];
+  resources: ResourceState<ResourceKeys, ResourceTypes>[];
 }
 
 const ResourceType = (
   {
     resourceKey,
-    resource,
+    resources,
   }: ResourceTypeProps
 ) => {
   const {get} = useAdmin().resources;
@@ -50,7 +49,7 @@ const ResourceType = (
   return (
     <Box>
       <Typography align="left" variant="h5">{resourceKey}</Typography>
-      {resource.map(({key}) => (
+      {resources.map(({key}) => (
         <AdminResource key={key} resource={get(key)}/>
       ))}
       {!isAddMode
@@ -74,7 +73,6 @@ const AddResource = observer(({closeAddMode}: {closeAddMode: () => void}) => {
       <EditResource
         enableKeyEdit
         id={resource.id}
-        resource={resource}
         onSubmit={closeAddMode}
         onClose={closeAddMode}
       />

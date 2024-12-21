@@ -1,5 +1,5 @@
 import {SxProps} from "@mui/material";
-import {Icon, TradeChange} from "../../../genericTypes.ts";
+import {Icon, ResourceCostUpdate, TradeChange} from "../../../genericTypes.ts";
 import {ResourceKeys, ResourceTypes} from "../../../specificTypes.ts";
 import {useResourceClone} from "../../../useResourceClone.ts";
 import {ChangeEvent} from "react";
@@ -53,4 +53,11 @@ export type EditResourceViewProps = {
   saveDisabled: boolean;
   onDeleteCost(): void;
   onDeleteRevealedAt(): void;
-} & EditAmountProps & ResourceCloneProps<ResourceKeys, ResourceTypes> & EditResourceProps;
+  onSetCost(cost: ResourceCostUpdate<ResourceKeys>): void;
+  onAddCost(cost: ResourceCostUpdate<ResourceKeys>): void;
+  onRemoveCost(changeKey: 'give' | 'gain' | '', resourceKey: ResourceKeys): void;
+  onSetRevealedAt(cost: ResourceCostUpdate<ResourceKeys>): void;
+  onAddRevealedAt(cost: ResourceCostUpdate<ResourceKeys>): void;
+  onRemoveRevealedAt: any;
+  handleTypeChange: any;
+} & EditAmountProps & EditResourceProps & Resource<ResourceKeys, ResourceTypes>;

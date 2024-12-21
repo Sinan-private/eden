@@ -1,6 +1,6 @@
 import './App.css'
 import {GameProvider} from "./context/game.context.ts";
-import AdminPanel from "./Resource/Admin/AdminPanel";
+import AdminPanel from "./Version 3/Admin";
 import {ThemeProvider} from "@mui/material";
 import {theme} from "../globalTheme.ts";
 import {AdminProvider} from "./Resource/Admin/admin.context.ts";

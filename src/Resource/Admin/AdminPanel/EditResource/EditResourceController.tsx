@@ -1,5 +1,5 @@
 import {ChangeEvent, useState} from "react";
-import {Icon} from "../../../genericTypes.ts";
+import {Icon, ResourceCostUpdate} from "../../../genericTypes.ts";
 import {useToggle} from "../../../hooks/useToggle.ts";
 import {ResourceKeys, ResourceTypes} from "../../../specificTypes.ts";
 import {useAdmin} from "../../admin.context.ts";
@@ -39,19 +39,6 @@ export const EditResourceController = observer((
   const [openIconPicker, setOpenIconPicker] = useState(false);
   const [filterUsed, onToggleFilter] = useToggle(false);
   const [isKeyPristine, setIsKeyPristine] = useState(true);
-
-  // const {
-  //   key,
-  //   isDisabled,
-  //   updateResource,
-  //   setKey,
-  //   setIconName,
-  //   setLabel,
-  //   setValue,
-  //   setMin,
-  //   setMax,
-  //   ...resourceCloneProps
-  // } = useResourceClone(resource);
 
   const keyAlreadyExists = allResources
     .filter(({id}) => id !== resource?.id)
@@ -109,8 +96,8 @@ export const EditResourceController = observer((
     }
   }
 
-  const handleTypeChange = (type: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
-    const _type = type.target.value as ResourceTypes
+  const handleTypeChange = (e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+    const _type = e.target.value as ResourceTypes
     resource?.setTo({type: _type})
   }
 
@@ -120,6 +107,20 @@ export const EditResourceController = observer((
   const {key, ...restResource} = resource!
   const saveDisabled = isDisabled(key) || (enableKeyEdit && keyAlreadyExists) || !resource!.key.length;
 
+  const onUpdateCost = (cost: ResourceCostUpdate<ResourceKeys>) => {
+
+  }
+
+  const onRemoveCost = (
+    changeKey: 'give' | 'gain' | '',
+    resourceKey: ResourceKeys
+  ) => {
+    // const newCost = _resource.removeCost(changeKey, resourceKey, cost)
+    // if (newCost) {
+    //   setCost(newCost)
+    //   callbacks.onRemoveCost(getResourceState({cost: newCost}));
+    // }
+  }
 
   return (
     <EditResourceView

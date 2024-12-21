@@ -23,9 +23,9 @@ export const Game = () => {
         water
       </div>
       <div style={{display: "flex", justifyContent: "center", flexDirection: "row"}}>
-        {resourceGroups.map(group => (
-          <div className="card" key={group[0].type}>
-            <ResourceGroup resources={group} />
+        {resourceGroups.map(({type, resources}) => (
+          <div className="card" key={type}>
+            <ResourceGroup resources={resources} />
           </div>
         ))}
       </div>
