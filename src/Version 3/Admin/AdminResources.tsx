@@ -64,7 +64,6 @@ const AddResource = observer(({closeAddMode}: {closeAddMode: () => void}) => {
       <EditResource
         enableKeyEdit
         resource={resource}
-        // id={resource.id}
         onSubmit={closeAddMode}
         onClose={closeAddMode}
       />
