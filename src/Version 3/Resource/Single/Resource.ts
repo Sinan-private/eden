@@ -2,12 +2,13 @@ import {
   ResourceBeautyType,
   ResourceUpdateProps,
   ResourceTypeRaw,
-  ResourceCostUpdate,
+  ResourceCostUpdate, TradeChange,
 } from "./genericTypes.ts";
 import {beautifyNumber, mapMultiply} from "./helpers";
 import {makeAutoObservable, toJS} from "mobx";
 import icons from "../../../Resource/assets/icons/icons.ts";
 import {id} from "./helpers/id.ts";
+import {ResourceKeys} from "../../../Resource/specificTypes.ts";
 
 type UpdateProps<K, T> = Partial<ResourceTypeRaw<K, T>>;
 
@@ -80,7 +81,7 @@ export class Resource<K extends string, T extends string> {
     return this;
   }
 
-  public readonly setTo = (update: UpdateProps<K, T> & {key?: K}): Resource<K, T> => {
+  public readonly setTo = (update: UpdateProps<K, T> & { key?: K }): Resource<K, T> => {
     // I want to be able to set every value here
     const {
       value = this.value,
@@ -100,6 +101,45 @@ export class Resource<K extends string, T extends string> {
       : value < this.min
         ? this.min
         : value
+
+  public updateCost = (changeKey: 'give' | 'gain', {key, value}: TradeChange<K>) => {
+    if (!this.cost) {
+      return null
+    }
+    const updatedCost = toJS(this.cost)[changeKey].map(resource => resource.key === key
+      ? ({...resource, value})
+      : resource
+    )
+    this.setTo({
+      cost: {
+        ...this.cost,
+        [changeKey]: updatedCost
+      }
+    })
+  }
+
+  public addCost = (changeKey: 'give' | 'gain', extraCost: TradeChange<K>) => {
+    const cost = this.cost || {give: [], gain: []};
+    this.setTo({
+      cost: {
+        ...cost,
+        [changeKey]: cost[changeKey].concat(extraCost)
+      }
+    })
+  }
+
+  public removeCost = (changeKey: 'give' | 'gain', resourceKey: ResourceKeys) => {
+    if (!this.cost) {
+      return null
+    }
+    const updatedCost = toJS(this.cost)[changeKey].filter(({key}) => key !== resourceKey)
+    this.setTo({
+      cost: {
+        ...this.cost,
+        [changeKey]: updatedCost
+      }
+    })
+  }
 
   get percentage() {
     return Math.floor(mapMultiply(this.value, this.max) * 100);

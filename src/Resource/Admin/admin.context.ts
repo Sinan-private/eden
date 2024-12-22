@@ -4,7 +4,6 @@ import {useApi} from "../../context/useApi.ts";
 import {useComponentMount} from "../hooks/useComponentMount.ts";
 import {ResourceKeys, ResourceState, ResourceTypes} from "../specificTypes.ts";
 import {ResourceStore} from "../../Version 3/Resource/ResourceStore.ts";
-import {useGame} from "../../context/game.context.ts";
 
 const useAdminBase = () => {
   const {
@@ -13,7 +12,6 @@ const useAdminBase = () => {
     addType,
     removeType,
   } = useApi();
-  const originalResources = useGame().resources;
   const [resourcesOriginal, setResourcesOriginal] = useState<ResourceStore<ResourceKeys, ResourceTypes>>()
   const [resources, setResources] = useState<ResourceStore<ResourceKeys, ResourceTypes>>()
   // const {...resources} = useResource<ResourceKeys, ResourceTypes>([])
@@ -28,7 +26,7 @@ const useAdminBase = () => {
 
   const write__initialResources = () => {
     updateResources(resources!.state).then(() => {
-      setResourcesOriginal(resources)
+      setResourcesOriginal(new ResourceStore(resources!.state))
     })
   }
 
@@ -56,8 +54,8 @@ const useAdminBase = () => {
   }
 
   const isDisabled = (key: ResourceKeys) => {
-    if (resources?.get(key) && originalResources.get(key)) {
-      return areObjectsEqual(resources!.get(key).state, originalResources.get(key).state)
+    if (resources?.get(key) && resourcesOriginal?.get(key)) {
+      return areObjectsEqual(resources!.get(key).state, resourcesOriginal!.get(key).state)
     }
     return false
   }

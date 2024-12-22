@@ -5,7 +5,6 @@ import Box from "@mui/material/Box";
 import {IconButton} from "@mui/material";
 import Close from "@mui/icons-material/Close";
 import TabNav from "../../Resource/Admin/AdminPanel/TabNav.tsx";
-import {HandleResources} from "../../Resource/Admin/AdminPanel/HandleResources.tsx";
 import {HandleTypes} from "../../Resource/Admin/AdminPanel/HandleTypes.tsx";
 import {Dependencies} from "../../Resource/Admin/AdminPanel/Dependencies.tsx";
 import {AdminResources} from "./AdminResources.tsx";

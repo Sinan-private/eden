@@ -1,12 +1,16 @@
 import {Box, FormControl, IconButton, InputLabel, MenuItem, Stack, TextField} from "@mui/material";
-import {Resource} from "../Resource/Single";
-import {ResourceKeys, ResourceTypes} from "../../Resource/specificTypes.ts";
 import Close from "@mui/icons-material/Close";
+import Select from "@mui/material/Select";
+import {observer} from "mobx-react";
+import {Resource} from "../Resource/Single";
 import {ChangeEvent, useState} from "react";
 import {useAdmin} from "../../Resource/Admin/admin.context.ts";
-import {observer} from "mobx-react";
-import Select from "@mui/material/Select";
-import {resourceTypes} from "../../Resource/generated/resourceTypes.ts";
+import {Icon} from "../Resource/Single/genericTypes.ts";
+import {IconPickerModal} from "./IconPicker/IconPickerModal.tsx";
+import {resourceTypes} from "../generated/resourceTypes.ts";
+import {useToggle} from "../hooks/useToggle.ts";
+import {ResourceKeys, ResourceTypes} from "../../Resource/specificTypes.ts";
+import {AdminCost} from "./AdminCost.tsx";
 
 type EditResourceProps = {
   resource: Resource<ResourceKeys, ResourceTypes>;
@@ -33,8 +37,16 @@ export const EditResource = observer(({resource, onClose, onSubmit, enableKeyEdi
       allResources
     }
   } = useAdmin()
+  const [openIconPicker, setOpenIconPicker] = useState(false);
+  const [filterUsed, onToggleFilter] = useToggle(false);
 
   const [isKeyPristine, setIsKeyPristine] = useState(true);
+  const handleOpenIconPicker = () => setOpenIconPicker(true);
+  const handleCloseIconPicker = () => setOpenIconPicker(false);
+  const onSelectIcon = (clickedIcon: Icon) => {
+    resource.setTo({iconName: clickedIcon.name})
+    handleCloseIconPicker()
+  }
   const onSetKey = (e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     resource.setTo({key: e.target.value as ResourceKeys})
     // setKey(e.target.value as ResourceKeys);
@@ -87,13 +99,20 @@ export const EditResource = observer(({resource, onClose, onSubmit, enableKeyEdi
             </IconButton>
           </Box>
         }
+        <IconPickerModal
+          openIconPicker={openIconPicker}
+          handleCloseIconPicker={handleCloseIconPicker}
+          filterUsed={filterUsed}
+          onToggleFilter={onToggleFilter}
+          onSelectIcon={onSelectIcon}
+        />
         <Stack direction="row" spacing={1} alignItems="center" minWidth={280}>
           <img
             src={icon}
             alt={label}
             width={32}
             height={32}
-            // onClick={handleOpenIconPicker}
+            onClick={handleOpenIconPicker}
           />
           <TextField
             type="text"
@@ -168,6 +187,7 @@ export const EditResource = observer(({resource, onClose, onSubmit, enableKeyEdi
           Save
         </button>
       </Box>
+      <AdminCost resource={resource} />
     </>
   )
 })
