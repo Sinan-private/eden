@@ -1,4 +1,4 @@
-import {useState} from "react";
+import {useState, ChangeEvent} from "react";
 import {IconButton, Stack, TextField, Typography} from "@mui/material";
 import DeleteOutlineIcon from "@mui/icons-material/DeleteOutline";
 import styled from "styled-components";
@@ -6,7 +6,6 @@ import Box from "@mui/material/Box";
 import Close from "@mui/icons-material/Close";
 import {TradeChange} from "../Resource/Single/genericTypes.ts";
 import {ResourceKeys, ResourceTypes} from "../../Resource/specificTypes.ts";
-import {OnSetCost} from "../../Resource/Admin/AdminPanel/EditResource";
 import {themeColors} from "../../Resource/assets/colors.ts";
 import {capitalizeFirstLetter} from "../../Resource/helpers/captializeFirstLetter.ts";
 import {AddCost} from "../../Resource/Admin/AdminPanel/EditResource/AddCost.tsx";
@@ -46,19 +45,19 @@ const CostChange = (
     cost
   } = resource
   const [showAddCost, setShowAddCost] = useState(false);
-  const _onSetCost = (change: TradeChange<ResourceKeys>) => {
-    const newCost = {}
-    // resource.setTo({cost:}
-  };
+  // const _onSetCost = (change: TradeChange<ResourceKeys>) => {
+  //   const newCost = {}
+  //   // resource.setTo({cost:}
+  // };
   const _onAddCost = (change: TradeChange<ResourceKeys>) => {
     setShowAddCost(false);
     console.log(changeKey, change)
     resource.addCost(changeKey, change)
     // onAddCost(changeKey, change);
   };
-  const onRemoveCost = (changeKey: 'give' | 'gain', resourceKey: ResourceKeys) => {
-    console.log(changeKey, resourceKey);
-  }
+  // const onRemoveCost = (changeKey: 'give' | 'gain', resourceKey: ResourceKeys) => {
+  //   console.log(changeKey, resourceKey);
+  // }
   const change = cost?.give ? cost[changeKey] : [];
 
   return (
@@ -116,7 +115,7 @@ type SingleCostProps = {
 const SingleCost = ({change, changeKey, resource}: SingleCostProps) => {
   const {get} = useAdmin().resources;
 
-  const onChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+  const onChange = (event: ChangeEvent<HTMLInputElement>) => {
     const value = Number(event.target.value);
     resource.updateCost(changeKey, {key: change.key, value})
   }

@@ -33,5 +33,6 @@ export const resourceKeys = [
   "copper_brick",
   "gold_ore",
   "gold_brick",
-  "level"
+  "level",
+  "test"
 ] as const;
