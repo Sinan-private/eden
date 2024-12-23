@@ -4,7 +4,7 @@ import AdminPanel from "./Resource/Admin";
 import {ThemeProvider} from "@mui/material";
 import {theme} from "../globalTheme.ts";
 import {AdminProvider} from "./Resource/Admin/admin.context.ts";
-import Game from "./Version 3/Game";
+import Game from "./GameUI";
 
 function App() {
 

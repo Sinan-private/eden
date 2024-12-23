@@ -10,6 +10,7 @@ import {themeColors} from "../assets/colors.ts";
 import {useAdmin} from "./admin.context.ts";
 import {Resource} from "../index.ts";
 import {AddCost} from "./AddCost.tsx";
+import {capitalizeFirstLetter} from "../helpers/capitalizeFirstLetter.ts";
 
 type AdminCostProps = {
   resource: Resource<ResourceKeys, ResourceTypes>;

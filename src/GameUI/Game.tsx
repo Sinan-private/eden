@@ -1,21 +1,21 @@
 import {observer} from "mobx-react";
 import styled from "styled-components";
-import {useGame} from "../../context/game.context.ts";
-import {TopBar} from "../../GameUI/TopBar.tsx";
-import {Resource} from "../../Resource";
-import {ResourceKeys, ResourceTypes} from "../../Resource/specificTypes.ts";
+import {useGame} from "../context/game.context.ts";
+import {TopBar} from "./TopBar.tsx";
+import {Resource} from "../Resource";
+import {ResourceKeys, ResourceTypes} from "../Resource/specificTypes.ts";
 
 
 export const Game = () => {
   const {groupByType, getByType, produce} = useGame().resources;
   const resourceGroups = groupByType();
-  const x = getByType('processed_resource');
+  const byType = getByType('processed_resource');
 
   return (
     <>
       <TopBar/>
           <div >
-            {x.map(resource => (
+            {byType.map(resource => (
                 <TradeButton key={resource.key} resource={resource} increment={1}/>
             ))}
           </div>
