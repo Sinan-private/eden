@@ -9,6 +9,7 @@ import {themeColors} from "../assets/colors.ts";
 import {useAdmin} from "./admin.context.ts";
 import {AddCost} from "./AddCost.tsx";
 import {capitalizeFirstLetter} from "../helpers/capitalizeFirstLetter.ts";
+import {observer} from "mobx-react";
 
 type AdminCostProps = {
   resource: ResourceClass;
@@ -28,7 +29,7 @@ type CostChangeProps = {
   resource: ResourceClass;
 }
 
-const CostChange = (
+const CostChange = observer((
   {
     resource,
     changeKey,
@@ -71,7 +72,7 @@ const CostChange = (
       }
     </Stack>
   )
-}
+})
 
 const StyledButton = styled('button')`
     background: transparent;
