@@ -2,7 +2,7 @@ import {ChangeEvent, useState} from "react";
 import {createContainer} from "unstated-next";
 import {useApi} from "../../context/useApi.ts";
 import {useComponentMount} from "../hooks/useComponentMount.ts";
-import {ResourceKeys, ResourceState, ResourceTypes} from "../Resource/specificTypes.ts";
+import {ResourceKeys, ResourceState, ResourceStoreClass, ResourceTypes} from "../Resource/specificTypes.ts";
 import {ResourceStore} from "../Resource/ResourceStore.ts";
 import {Icon} from "../Resource/genericTypes.ts";
 import {Resource} from "../Resource";
@@ -15,8 +15,8 @@ const useAdminBase = () => {
     addType,
     removeType,
   } = useApi();
-  const [resourcesOriginal, setResourcesOriginal] = useState<ResourceStore<ResourceKeys, ResourceTypes>>()
-  const [resources, setResources] = useState<ResourceStore<ResourceKeys, ResourceTypes>>()
+  const [resourcesOriginal, setResourcesOriginal] = useState<ResourceStoreClass>()
+  const [resources, setResources] = useState<ResourceStoreClass>()
   const [isFetching, setIsFetching] = useState(true);
 
 

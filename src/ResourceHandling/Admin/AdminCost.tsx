@@ -4,20 +4,14 @@ import DeleteOutlineIcon from "@mui/icons-material/DeleteOutline";
 import styled from "styled-components";
 import Box from "@mui/material/Box";
 import Close from "@mui/icons-material/Close";
-import {TradeChange} from "../Resource/genericTypes.ts";
-import {ResourceKeys, ResourceTypes} from "../Resource/specificTypes.ts";
+import {ResourceClass, TradeChange} from "../Resource/specificTypes.ts";
 import {themeColors} from "../assets/colors.ts";
 import {useAdmin} from "./admin.context.ts";
-import {Resource} from "../Resource";
 import {AddCost} from "./AddCost.tsx";
 import {capitalizeFirstLetter} from "../helpers/capitalizeFirstLetter.ts";
 
 type AdminCostProps = {
-  resource: Resource<ResourceKeys, ResourceTypes>;
-  // cost: ResourceCostUpdate<ResourceKeys> | null;
-  // onSetCost: OnSetCost;
-  // onRemoveCost(changeKey: 'give' | 'gain', resourceKey: ResourceKeys): void;
-  // onAddCost(changeKey: 'give' | 'gain' | '', change: TradeChange<ResourceKeys>): void
+  resource: ResourceClass;
 };
 
 export const AdminCost = ({resource}: AdminCostProps) => {
@@ -31,7 +25,7 @@ export const AdminCost = ({resource}: AdminCostProps) => {
 
 type CostChangeProps = {
   changeKey: 'give' | 'gain';
-  resource: Resource<ResourceKeys, ResourceTypes>;
+  resource: ResourceClass;
 }
 
 const CostChange = (
@@ -44,19 +38,10 @@ const CostChange = (
     cost
   } = resource
   const [showAddCost, setShowAddCost] = useState(false);
-  // const _onSetCost = (change: TradeChange<ResourceKeys>) => {
-  //   const newCost = {}
-  //   // resource.setTo({cost:}
-  // };
-  const _onAddCost = (change: TradeChange<ResourceKeys>) => {
+  const _onAddCost = (change: TradeChange) => {
     setShowAddCost(false);
-    console.log(changeKey, change)
     resource.addCost(changeKey, change)
-    // onAddCost(changeKey, change);
   };
-  // const onRemoveCost = (changeKey: 'give' | 'gain', resourceKey: ResourceKeys) => {
-  //   console.log(changeKey, resourceKey);
-  // }
   const change = cost?.give ? cost[changeKey] : [];
 
   return (
@@ -70,8 +55,6 @@ const CostChange = (
           resource={resource}
           changeKey={changeKey}
           change={singleChange}
-          // onSetCost={_onSetCost}
-          // onRemoveCost={() => onRemoveCost(changeKey, singleChange.key)}
         />
       ))}
       {
@@ -104,11 +87,9 @@ const StyledButton = styled('button')`
 `;
 
 type SingleCostProps = {
-  change: TradeChange<ResourceKeys>;
+  change: TradeChange;
   changeKey: 'give' | 'gain';
-  resource: Resource<ResourceKeys, ResourceTypes>;
-  // onSetCost(change: TradeChange<ResourceKeys>): void;
-  // onRemoveCost(): void;
+  resource: ResourceClass;
 }
 
 const SingleCost = ({change, changeKey, resource}: SingleCostProps) => {
