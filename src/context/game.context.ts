@@ -3,7 +3,7 @@ import {createContainer} from "unstated-next";
 import {useTick} from "./tick.ts";
 import {useApi} from "./useApi.ts";
 import {useComponentMount} from "../Resource/hooks/useComponentMount.ts";
-import {ResourceStore} from "../Version 3/Resource/ResourceStore.ts";
+import {ResourceStore} from "../Resource/ResourceStore.ts";
 import {ResourceKeys, ResourceTypes} from "../Resource/specificTypes.ts";
 import {usePrevious} from "../Resource/hooks/usePrevious.ts";
 import {resourceTurnUpdate} from "../gameRules/getResourceTurnUpdate.ts";

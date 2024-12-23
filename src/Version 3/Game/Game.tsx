@@ -2,7 +2,7 @@ import {observer} from "mobx-react";
 import styled from "styled-components";
 import {useGame} from "../../context/game.context.ts";
 import {TopBar} from "../../GameUI/TopBar.tsx";
-import {Resource} from "../Resource";
+import {Resource} from "../../Resource";
 import {ResourceKeys, ResourceTypes} from "../../Resource/specificTypes.ts";
 
 

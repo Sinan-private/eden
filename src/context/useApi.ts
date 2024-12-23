@@ -1,5 +1,5 @@
 import {ResourceKeys, ResourceTypes} from "../Resource/specificTypes.ts";
-import {ResourceState} from "../Version 3/Resource";
+import {ResourceState} from "../Resource";
 
 export const useApi = () => {
   const fetchResources = async () => {

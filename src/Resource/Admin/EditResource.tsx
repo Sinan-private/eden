@@ -1,7 +1,7 @@
 import {Box} from "@mui/material";
 import {observer} from "mobx-react";
-import {Resource} from "../Resource";
-import {ResourceKeys, ResourceTypes} from "../../Resource/specificTypes.ts";
+import {Resource} from "../index.ts";
+import {ResourceKeys, ResourceTypes} from "../specificTypes.ts";
 import {AdminCost} from "./AdminCost.tsx";
 import {AdminSave} from "./AdminSave.tsx";
 import {AdminType} from "./AdminType.tsx";

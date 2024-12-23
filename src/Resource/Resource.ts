@@ -6,9 +6,9 @@ import {
 } from "./genericTypes.ts";
 import {beautifyNumber, mapMultiply} from "./helpers";
 import {makeAutoObservable, toJS} from "mobx";
-import icons from "../../Resource/assets/icons/icons.ts";
+import icons from "./assets/icons/icons.ts";
 import {id} from "./helpers/id.ts";
-import {ResourceKeys} from "../../Resource/specificTypes.ts";
+import {ResourceKeys} from "./specificTypes.ts";
 
 type UpdateProps<K, T> = Partial<ResourceTypeRaw<K, T>>;
 

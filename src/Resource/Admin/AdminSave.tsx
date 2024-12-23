@@ -1,5 +1,5 @@
-import {Resource} from "../Resource";
-import {ResourceKeys, ResourceTypes} from "../../Resource/specificTypes.ts";
+import {Resource} from "../index.ts";
+import {ResourceKeys, ResourceTypes} from "../specificTypes.ts";
 import {useAdmin} from "./admin.context.ts";
 import {observer} from "mobx-react";
 

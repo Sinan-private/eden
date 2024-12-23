@@ -1,6 +1,6 @@
 
 import {ResourceKeys, ResourceTypes} from "../Resource/specificTypes.ts";
-import {ResourceState, ResourceUpdateProps} from "../Version 3/Resource";
+import {ResourceState, ResourceUpdateProps} from "../Resource";
 
 // import {EditResourceController} from "../gameRules/EditResourceController.ts";
 

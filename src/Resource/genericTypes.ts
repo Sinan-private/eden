@@ -27,7 +27,9 @@ export type ResourceUpdateProps<K, T> = {
   cost?: ResourceCostUpdate<K> | null;
   revealedAt?: ResourceCostUpdate<K> | null;
   iconName?: string;
-} & Partial<ResourceTypeRaw<K, T>>
+  min?: number | null;
+  max?: number | null;
+} & Partial<Omit<ResourceTypeRaw<K, T>, 'min' | 'max'>>
 
 export type ResourceState<K, T> = ResourceTypeRaw<K, T> & {key: K};
 
@@ -55,3 +57,9 @@ export type TurnUpdateFormat<K, T> = SimpleUpdateFormat<K, T> | TradeFormat<K, T
 export const isTradeFormat = <K, T>(change: TurnUpdateFormat<K, T>): change is TradeFormat<K, T> =>
   change.type === 'trade';
 export type Icon = { name: string, src: string };
+export type TradeResourceUpdateType<K, T> = {
+  valueChangeApproach: number;
+  minChangeApproach: number;
+  maxChangeApproach: number;
+} & ResourceUpdateProps<K, T>;
+export type TradeLimitingResource<K extends string> = { key: K, factor: number };

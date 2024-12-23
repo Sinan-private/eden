@@ -1,2 +1,2 @@
-export {beautifyNumber} from "./beautifyNumber";
-export {mapMultiply} from "./mapMultiply";
+export {beautifyNumber} from "./beautifyNumber.ts";
+export {mapMultiply} from "./mapMultiply.ts";

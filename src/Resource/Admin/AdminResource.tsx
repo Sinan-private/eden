@@ -1,8 +1,8 @@
-import {Resource} from "../Resource";
-import {ResourceKeys, ResourceTypes} from "../../Resource/specificTypes.ts";
+import {Resource} from "../index.ts";
+import {ResourceKeys, ResourceTypes} from "../specificTypes.ts";
 import {useMemo, useState} from "react";
 import {Chip, IconButton, Paper, Stack, Typography} from "@mui/material";
-import {themeColors} from "../../Resource/assets/colors.ts";
+import {themeColors} from "../assets/colors.ts";
 import Box from "@mui/material/Box";
 import DeleteOutlineIcon from "@mui/icons-material/DeleteOutline";
 import ModeEditOutlineIcon from "@mui/icons-material/ModeEditOutline";

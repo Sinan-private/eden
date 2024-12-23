@@ -1,11 +1,11 @@
-import {ResourceKeys, ResourceTypes} from "../../Resource/specificTypes.ts";
+import {ResourceKeys, ResourceTypes} from "../specificTypes.ts";
 import {useAdmin} from "./admin.context.ts";
-import {Resource} from "../Resource";
+import {Resource} from "../index.ts";
 import {Box, Typography} from "@mui/material";
 import {AdminResource} from "./AdminResource.tsx";
 import {observer} from "mobx-react";
 import {useState} from "react";
-import {useComponentMount} from "../../Resource/hooks/useComponentMount.ts";
+import {useComponentMount} from "../hooks/useComponentMount.ts";
 import {EditResource} from "./EditResource.tsx";
 
 export const AdminResources = () => {
