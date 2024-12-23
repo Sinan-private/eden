@@ -43,6 +43,7 @@ const useAdminBase = () => {
       }
     }
     const onSetLabel = (e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+      console.log(resource, e.target.value)
       resource.setTo({label: e.target.value})
       if (isKeyPristine && enableKeyEdit) {
         const generatedKey = e.target.value.replace(/[^a-zA-Z0-9]+/g, '_').toLowerCase() as ResourceKeys

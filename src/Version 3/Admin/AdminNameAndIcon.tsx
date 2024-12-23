@@ -2,12 +2,13 @@ import {Resource} from "../Resource/Single";
 import {ResourceKeys, ResourceTypes} from "../../Resource/specificTypes.ts";
 import {useAdmin} from "./admin.context.ts";
 import {Stack, TextField} from "@mui/material";
+import {observer} from "mobx-react";
 
 type AdminNameAndIconProps = {
   resource: Resource<ResourceKeys, ResourceTypes>;
   enableKeyEdit?: boolean
 }
-export const AdminNameAndIcon = ({resource, enableKeyEdit}: AdminNameAndIconProps) => {
+export const AdminNameAndIcon = observer(({resource, enableKeyEdit}: AdminNameAndIconProps) => {
   const {
     icon,
     label,
@@ -47,4 +48,4 @@ export const AdminNameAndIcon = ({resource, enableKeyEdit}: AdminNameAndIconProp
       />
     </Stack>
   )
-}
+})

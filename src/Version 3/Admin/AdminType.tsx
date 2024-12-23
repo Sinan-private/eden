@@ -4,12 +4,13 @@ import Select from "@mui/material/Select";
 import {resourceTypes} from "../generated/resourceTypes.ts";
 import {Resource} from "../Resource/Single";
 import {ResourceKeys, ResourceTypes} from "../../Resource/specificTypes.ts";
+import {observer} from "mobx-react";
 
 type AdminTypeProps = {
   resource: Resource<ResourceKeys, ResourceTypes>;
   enableKeyEdit?: boolean;
 }
-export const AdminType = ({resource, enableKeyEdit}: AdminTypeProps) => {
+export const AdminType = observer(({resource, enableKeyEdit}: AdminTypeProps) => {
 
   const {getActions} = useAdmin();
   const {onSetType} = getActions(resource.id, enableKeyEdit)
@@ -29,4 +30,4 @@ export const AdminType = ({resource, enableKeyEdit}: AdminTypeProps) => {
       </Select>
     </FormControl>
   )
-}
+})

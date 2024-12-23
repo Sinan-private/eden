@@ -2,12 +2,13 @@ import {useAdmin} from "./admin.context.ts";
 import {Stack, TextField} from "@mui/material";
 import {Resource} from "../Resource/Single";
 import {ResourceKeys, ResourceTypes} from "../../Resource/specificTypes.ts";
+import {observer} from "mobx-react";
 
 type AdminAmountsProps = {
   resource: Resource<ResourceKeys, ResourceTypes>;
   enableKeyEdit?: boolean;
 }
-export const AdminAmounts = ({resource, enableKeyEdit}: AdminAmountsProps) => {
+export const AdminAmounts = observer(({resource, enableKeyEdit}: AdminAmountsProps) => {
   const {
     min,
     max,
@@ -63,4 +64,4 @@ export const AdminAmounts = ({resource, enableKeyEdit}: AdminAmountsProps) => {
     </Stack>
 
   )
-}
+})
