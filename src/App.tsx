@@ -1,9 +1,8 @@
 import './App.css'
-import {GameProvider} from "./context/game.context.ts";
-import AdminPanel from "./ResourceHandling/Admin";
 import {ThemeProvider} from "@mui/material";
+import {GameProvider} from "./context/game.context.ts";
+import AdminPanel, {AdminProvider} from "./ResourceHandling/Admin";
 import {theme} from "../globalTheme.ts";
-import {AdminProvider} from "./ResourceHandling/Admin/admin.context.ts";
 import Game from "./GameUI";
 
 function App() {

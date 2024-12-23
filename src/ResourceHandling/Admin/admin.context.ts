@@ -1,12 +1,11 @@
 import {ChangeEvent, useState} from "react";
 import {createContainer} from "unstated-next";
 import {useApi} from "../../context/useApi.ts";
-import {useComponentMount} from "../hooks/useComponentMount.ts";
 import {ResourceKeys, ResourceState, ResourceStoreClass, ResourceTypes} from "../Resource/specificTypes.ts";
 import {ResourceStore} from "../Resource/ResourceStore.ts";
 import {Icon} from "../Resource/genericTypes.ts";
 import {Resource} from "../Resource";
-import {useToggle} from "../hooks/useToggle.ts";
+import {useToggle, useComponentMount} from "../hooks";
 
 const useAdminBase = () => {
   const {
@@ -18,6 +17,9 @@ const useAdminBase = () => {
   const [resourcesOriginal, setResourcesOriginal] = useState<ResourceStoreClass>()
   const [resources, setResources] = useState<ResourceStoreClass>()
   const [isFetching, setIsFetching] = useState(true);
+  const [showAdminPanel, setShowAdminPanel] = useState(false);
+  const onToggleAdminPanel = () => setShowAdminPanel(!showAdminPanel);
+  const onCloseAdminPanel = () => setShowAdminPanel(false);
 
 
   // New stuff here
@@ -101,6 +103,9 @@ const useAdminBase = () => {
     setIsFetching(false);
   })
 
+  const resetResources = () => {
+    setResources(new ResourceStore(resourcesOriginal!.state))
+  }
 
   const write__initialResources = () => {
     updateResources(resources!.state).then(() => {
@@ -154,6 +159,10 @@ const useAdminBase = () => {
     handleOpenIconPicker,
     handleCloseIconPicker,
     onToggleFilter,
+    showAdminPanel,
+    onToggleAdminPanel,
+    onCloseAdminPanel,
+    resetResources,
   }
 }
 

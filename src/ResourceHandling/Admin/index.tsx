@@ -1,13 +1,3 @@
-import {useGame} from "../../context/game.context.ts";
-import {AdminPanel} from "./AdminPanel.tsx";
-
-export default function Admin() {
-  const {isFetching, showAdminPanel} = useGame();
-  if (!showAdminPanel) {
-    return null;
-  }
-
-  return isFetching
-    ? <div>Loading</div>
-    : <AdminPanel/>
-}
+// eslint-disable-next-line react-refresh/only-export-components
+export {AdminProvider, useAdmin} from "./admin.context.ts";
+export {AdminContainer as default} from "./AdminContainer.tsx";

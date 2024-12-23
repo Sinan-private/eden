@@ -1,7 +1,8 @@
 import {useState, ChangeEvent} from "react";
+import {observer} from "mobx-react";
+import styled from "styled-components";
 import {IconButton, Stack, TextField, Typography} from "@mui/material";
 import DeleteOutlineIcon from "@mui/icons-material/DeleteOutline";
-import styled from "styled-components";
 import Box from "@mui/material/Box";
 import Close from "@mui/icons-material/Close";
 import {ResourceClass, TradeChange} from "../Resource/specificTypes.ts";
@@ -9,7 +10,6 @@ import {themeColors} from "../assets/colors.ts";
 import {useAdmin} from "./admin.context.ts";
 import {AddCost} from "./AddCost.tsx";
 import {capitalizeFirstLetter} from "../helpers/capitalizeFirstLetter.ts";
-import {observer} from "mobx-react";
 
 type AdminCostProps = {
   resource: ResourceClass;

@@ -1,4 +1,3 @@
-import {useGame} from "../../context/game.context.ts";
 import {useEffect, useState} from "react";
 import styled from "styled-components";
 import Box from "@mui/material/Box";
@@ -7,9 +6,10 @@ import Close from "@mui/icons-material/Close";
 import {AdminResources} from "./AdminResources.tsx";
 import TabNav from "./TabNav.tsx";
 import {HandleTypes} from "./HandleTypes.tsx";
+import {useAdmin} from "./admin.context.ts";
 
 export const AdminPanel = () => {
-  const {onCloseAdminPanel} = useGame();
+  const {onCloseAdminPanel} = useAdmin();
 
   const [, setLoading] = useState(true);
 

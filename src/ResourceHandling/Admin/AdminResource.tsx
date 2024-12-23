@@ -13,12 +13,20 @@ export const AdminResource = ({resource}: { resource: Resource<ResourceKeys, Res
   const {
     write__removeResource,
     canRemoveResource,
+    resetResources,
     resources: {
       get
     }
   } = useAdmin()
   const [edit, setEdit] = useState(false);
-  const onCloseEdit = () => setEdit(false);
+  const onCloseEdit = () => {
+    setEdit(false)
+  };
+
+  const onReset = () => {
+    resetResources()
+    onCloseEdit()
+  }
   const onDeleteResource = () => write__removeResource(resource.key);
 
   const cost = useMemo(() => !resource ? null : (
@@ -44,7 +52,7 @@ export const AdminResource = ({resource}: { resource: Resource<ResourceKeys, Res
     return (
       <Stack width={1000} position="relative">
         <Paper sx={{p: 1, mb: 2, width: 1000, backgroundColor: themeColors.bg}}>
-          <EditResource resource={resource} onSubmit={onCloseEdit} onClose={onCloseEdit}/>
+          <EditResource resource={resource} onSubmit={onCloseEdit} onClose={onReset}/>
         </Paper>
       </Stack>
     )

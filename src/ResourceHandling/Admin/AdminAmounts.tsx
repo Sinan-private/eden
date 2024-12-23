@@ -1,8 +1,8 @@
-import {useAdmin} from "./admin.context.ts";
+import {observer} from "mobx-react";
 import {Stack, TextField} from "@mui/material";
+import {useAdmin} from "./admin.context.ts";
 import {Resource} from "../Resource";
 import {ResourceKeys, ResourceTypes} from "../Resource/specificTypes.ts";
-import {observer} from "mobx-react";
 
 type AdminAmountsProps = {
   resource: Resource<ResourceKeys, ResourceTypes>;

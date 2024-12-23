@@ -2,21 +2,16 @@ import {useRef, useState, MutableRefObject, useEffect} from "react";
 import {createContainer} from "unstated-next";
 import {useTick} from "./tick.ts";
 import {useApi} from "./useApi.ts";
-import {useComponentMount} from "../ResourceHandling/hooks/useComponentMount.ts";
-import {ResourceStore} from "../ResourceHandling/Resource/ResourceStore.ts";
-import {ResourceKeys, ResourceTypes} from "../ResourceHandling/Resource/specificTypes.ts";
-import {usePrevious} from "../ResourceHandling/hooks/usePrevious.ts";
+import {useComponentMount, usePrevious} from "../ResourceHandling/hooks";
+import {ResourceStore, ResourceStoreClass} from "../ResourceHandling";
 import {resourceTurnUpdate} from "../gameRules/getResourceTurnUpdate.ts";
 
 
 const useGameBase = () => {
-  const resourceRef = useRef<ResourceStore<ResourceKeys, ResourceTypes> | null>(null) as MutableRefObject<ResourceStore<ResourceKeys, ResourceTypes> | null>;
-  const resources = resourceRef.current as ResourceStore<ResourceKeys, ResourceTypes>;
+  const resourceRef = useRef<ResourceStoreClass | null>(null) as MutableRefObject<ResourceStoreClass | null>;
+  const resources = resourceRef.current as ResourceStoreClass;
   const {fetchResources} = useApi();
   const [isFetching, setIsFetching] = useState(true);
-  const [showAdminPanel, setShowAdminPanel] = useState(false);
-  // The resource offers all info and update methods. The nextTurn is only needed here to handle turn updates only in here.
-  // const {nextTurn, setState, ...resources} = useResource<ResourceKeys, ResourceTypes>([]);
   const tick = useTick();
   const prevTick = usePrevious(tick.current);
   useComponentMount(async () => {
@@ -31,29 +26,12 @@ const useGameBase = () => {
       resourceTurnUpdate(resources)
     }
   }, [prevTick, resources, tick]);
-  // console.log(resourceRef.current)
 
-  const onOpenAdminPanel = () => setShowAdminPanel(true);
-  const onCloseAdminPanel = () => setShowAdminPanel(false);
-  const onToggleAdminPanel = () => setShowAdminPanel(!showAdminPanel);
-
-  // With every tick a new turn is triggered with all included production
-  // useEffect(() => {
-  //   const {isActive, current} = tick;
-  //   const isNextTurn = isActive && prevTick !== current;
-  //   if (isNextTurn) {
-  //     nextTurn(getResourceTurnUpdate)
-  //   }
-  // }, [tick, prevTick, nextTurn]);
 
   return {
     resources,
     isFetching,
     tick,
-    showAdminPanel,
-    onOpenAdminPanel,
-    onCloseAdminPanel,
-    onToggleAdminPanel,
   };
 }
 

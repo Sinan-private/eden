@@ -1,5 +1,4 @@
-import {ResourceKeys, ResourceTypes} from "../ResourceHandling/Resource/specificTypes.ts";
-import {ResourceState} from "../ResourceHandling/Resource";
+import {ResourceTypes, ResourceState} from "../ResourceHandling";
 
 export const useApi = () => {
   const fetchResources = async () => {
@@ -11,7 +10,7 @@ export const useApi = () => {
     }
   };
 
-  const updateResources = async (newResources?: ResourceState<ResourceKeys, ResourceTypes>[]) => {
+  const updateResources = async (newResources?: ResourceState[]) => {
     if (!newResources) return;
     try {
       const response = await fetch('/api/resources', {
@@ -60,22 +59,10 @@ export const useApi = () => {
     }
   }
 
-  // NOT Working!!!
-  // const fetchIcons = async () => {
-  //   try {
-  //     const response = await fetch('/api/icons');  // This will proxy to http://localhost:5001/resources
-  //     const data = await response.json();
-  //     return data
-  //   } catch (error) {
-  //     console.error('Error fetching resources:', error);
-  //   }
-  // };
-
   return {
     fetchResources,
     updateResources,
     addType,
     removeType,
-    // fetchIcons,
   }
 }

@@ -2,8 +2,8 @@ import {observer} from "mobx-react";
 import styled from "styled-components";
 import {useGame} from "../context/game.context.ts";
 import {TopBar} from "./TopBar.tsx";
-import {ResourceClass} from "../ResourceHandling/Resource/specificTypes.ts";
-
+import {ResourceClass} from "../ResourceHandling";
+import {useAdmin} from "../ResourceHandling/Admin";
 
 export const Game = () => {
   const {groupByType, getByType, produce} = useGame().resources;
@@ -33,32 +33,14 @@ export const Game = () => {
   )
 }
 
-const TradeButton = observer(({resource, increment = 1}: ButtonProps) => {
+const TradeButton = ({resource, increment = 1}: ButtonProps) => {
   const {produce} = useGame().resources;
   const onButtonClick = () => {
-    // console.log('me', resource.key)
-    // resource.updateValueBy(5)
     produce(resource.key, increment)
   }
-  // console.log(resource.id, resource.label)
 
-  return (
-    <button onClick={onButtonClick}>
-      <div style={{display: "flex", alignItems: "center", flexDirection: "column", marginRight: 16}}>
-        <img src={resource.icon} alt={resource.label} width={32} height={32}/>
-        <span style={{fontSize: '0.7rem'}}>{resource.label}</span>
-      </div>
-      <div style={{marginRight: 8}}>
-        {resource.value}
-      </div>
-      {resource.cost?.give.map(give => (
-        <div key={'give' + give.key} style={{marginLeft: 6}}>
-          <div style={{opacity: 0.4}}>{give.value}</div>
-        </div>
-      ))}
-    </button>
-  )
-})
+  return <ResourceButton resource={resource} onClick={onButtonClick} />
+}
 
 const ResourceGroup = ({resources}: { resources: ResourceClass[] }) => {
 
@@ -75,35 +57,33 @@ type ButtonProps = {
   resource: ResourceClass;
   increment?: number;
 }
-const Button = observer(({resource, increment = 1}: ButtonProps) => {
+const Button = ({resource, increment = 1}: ButtonProps) => {
 
-  const onButtonClick = () => {
-    console.log(resource.key, resource.id)
+  const onButtonClick = () =>
     resource.updateValueBy(increment)
-  }
 
-  return (
-    <button onClick={onButtonClick}>
-      <div style={{display: "flex", alignItems: "center", flexDirection: "column", marginRight: 16}}>
-        <img src={resource.icon} alt={resource.label} width={32} height={32}/>
-        <span style={{fontSize: '0.7rem'}}>{resource.label}</span>
+  return <ResourceButton resource={resource} onClick={onButtonClick} />
+}
+
+const ResourceButton = observer(({resource, onClick}: {resource: ResourceClass; onClick(): void}) => (
+  <button onClick={onClick}>
+    <div style={{display: "flex", alignItems: "center", flexDirection: "column", marginRight: 16}}>
+      <img src={resource.icon} alt={resource.label} width={32} height={32}/>
+      <span style={{fontSize: '0.7rem'}}>{resource.label}</span>
+    </div>
+    <div style={{marginRight: 8}}>
+      {resource.value}
+    </div>
+    {resource.cost?.give.map(give => (
+      <div key={'give' + give.key} style={{marginLeft: 6}}>
+        <div style={{opacity: 0.4}}>{give.value}</div>
       </div>
-      <div style={{marginRight: 8}}>
-        {resource.value}
-      </div>
-      {resource.cost?.give.map(give => (
-        <div key={'give' + give.key} style={{marginLeft: 6}}>
-          <div style={{opacity: 0.4}}>{give.value}</div>
-        </div>
-      ))}
-    </button>
-  )
-})
+    ))}
+  </button>
+))
 
 const GameControl = () => {
   const {
-    // writeInitialResources,
-    onToggleAdminPanel,
     tick: {
       current,
       isActive,
@@ -111,6 +91,7 @@ const GameControl = () => {
       stop,
     }
   } = useGame();
+  const {onToggleAdminPanel} = useAdmin()
   return (
     <StylesGameControl>
       <div>

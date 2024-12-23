@@ -1,8 +1,7 @@
 import {useCallback} from "react";
 import styled from "styled-components";
 import {useGame} from "../context/game.context.ts";
-
-import {ResourceKeys, ResourceTypes} from "../ResourceHandling/Resource/specificTypes.ts";
+import {ResourceKeys, ResourceTypes} from "../ResourceHandling";
 
 export const TopBar = () => {
   const {get, getByType} = useGame().resources;
@@ -44,8 +43,6 @@ const StyledTopBar = styled.div`
     background: #333333;
     gap: 16px;
     z-index: 1;
-    //border: 1px solid red;
-    //border-top: transparent;
 `
 const StyledTopBarResource = styled.div`
     display: flex;
