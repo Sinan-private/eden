@@ -1,6 +1,6 @@
 import {useAdmin} from "./admin.context.ts";
 import {Stack, TextField} from "@mui/material";
-import {Resource} from "../Resource/Single";
+import {Resource} from "../Resource";
 import {ResourceKeys, ResourceTypes} from "../../Resource/specificTypes.ts";
 import {observer} from "mobx-react";
 

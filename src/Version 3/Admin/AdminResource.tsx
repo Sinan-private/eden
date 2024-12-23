@@ -1,4 +1,4 @@
-import {Resource} from "../Resource/Single";
+import {Resource} from "../Resource";
 import {ResourceKeys, ResourceTypes} from "../../Resource/specificTypes.ts";
 import {useMemo, useState} from "react";
 import {Chip, IconButton, Paper, Stack, Typography} from "@mui/material";

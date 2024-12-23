@@ -4,9 +4,9 @@ import {useApi} from "../../context/useApi.ts";
 import {useComponentMount} from "../../Resource/hooks/useComponentMount.ts";
 import {ResourceKeys, ResourceState, ResourceTypes} from "../../Resource/specificTypes.ts";
 import {ResourceStore} from "../Resource/ResourceStore.ts";
-import {useToggle} from "../hooks/useToggle.ts";
-import {Icon} from "../Resource/Single/genericTypes.ts";
-import {Resource} from "../Resource/Single";
+import {Icon} from "../Resource/genericTypes.ts";
+import {Resource} from "../Resource";
+import {useToggle} from "../../Resource/hooks/useToggle.ts";
 
 const useAdminBase = () => {
   const {
@@ -43,7 +43,6 @@ const useAdminBase = () => {
       }
     }
     const onSetLabel = (e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
-      console.log(resource, e.target.value)
       resource.setTo({label: e.target.value})
       if (isKeyPristine && enableKeyEdit) {
         const generatedKey = e.target.value.replace(/[^a-zA-Z0-9]+/g, '_').toLowerCase() as ResourceKeys

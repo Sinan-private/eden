@@ -1,6 +1,6 @@
 import {ResourceKeys, ResourceTypes} from "../../Resource/specificTypes.ts";
 import {useAdmin} from "./admin.context.ts";
-import {Resource} from "../Resource/Single";
+import {Resource} from "../Resource";
 import {Box, Typography} from "@mui/material";
 import {AdminResource} from "./AdminResource.tsx";
 import {observer} from "mobx-react";

@@ -1,7 +1,7 @@
 import styled from "styled-components";
 import {TextField} from "@mui/material";
 import {ChangeEvent, useState} from "react";
-import {Icon} from "../../Resource/Single/genericTypes.ts";
+import {Icon} from "../../Resource/genericTypes.ts";
 import {useAdmin} from "../admin.context.ts";
 import {useIcons} from "./useIcons.ts";
 

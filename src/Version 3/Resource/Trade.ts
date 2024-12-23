@@ -1,4 +1,4 @@
-import {Resource} from "./Single";
+import {Resource} from "./index.ts";
 import {makeAutoObservable} from "mobx";
 
 export type ResourceTrade<K extends string, T extends string> = {

@@ -1,5 +1,5 @@
 import icons from "../../../Resource/assets/icons/icons.ts";
-import {Icon, ResourceState} from "../../Resource/Single/genericTypes.ts";
+import {Icon, ResourceState} from "../../Resource/genericTypes.ts";
 
 export const useIcons = <K extends string, T extends string>(state: ResourceState<K, T>[]) => {
   const __getUsedIcons = () => state.map(({iconName}) => iconName);

@@ -1,7 +1,7 @@
 import {makeAutoObservable} from 'mobx'
-import {Resource, ResourceUpdateProps} from "./Single";
+import {Resource, ResourceUpdateProps} from "./index.ts";
 import {ResourceTrade, Trade} from "./Trade.ts";
-import {ResourceCostUpdate} from "./Single/genericTypes.ts";
+import {ResourceCostUpdate} from "./genericTypes.ts";
 
 export class ResourceStore<K extends string, T extends string> {
   public resources: Map<K, Resource<K, T>> = new Map();

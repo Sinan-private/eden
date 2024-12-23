@@ -2,16 +2,18 @@ import {
   ResourceBeautyType,
   ResourceUpdateProps,
   ResourceTypeRaw,
-  ResourceCostUpdate,
+  ResourceCostUpdate, TradeChange,
 } from "./genericTypes.ts";
 import {beautifyNumber, mapMultiply} from "./helpers";
-import {makeAutoObservable} from "mobx";
-import icons from "../../../Resource/assets/icons/icons.ts";
-import {delta} from "./helpers";
+import {makeAutoObservable, toJS} from "mobx";
+import icons from "../../Resource/assets/icons/icons.ts";
+import {id} from "./helpers/id.ts";
+import {ResourceKeys} from "../../Resource/specificTypes.ts";
 
 type UpdateProps<K, T> = Partial<ResourceTypeRaw<K, T>>;
 
-export class ResourceBase<K extends string, T extends string> {
+export class Resource<K extends string, T extends string> {
+  public id: string;
   public key: K;
   public value: number;
   public min: number;
@@ -49,6 +51,7 @@ export class ResourceBase<K extends string, T extends string> {
       ...raw_resource
     };
 
+    this.id = id();
     this.key = key;
     this.value = value;
     this.min = typeof min === 'number' ? min : 0;
@@ -61,7 +64,7 @@ export class ResourceBase<K extends string, T extends string> {
     makeAutoObservable(this)
   }
 
-  public readonly updateBy = (update: UpdateProps<K, T>): ResourceBase<K, T> => {
+  public readonly updateBy = (update: UpdateProps<K, T>): Resource<K, T> => {
     // This is a little complex to update constraints first before updating the value
     // This respects that the new value might be different after e.g. the max value raised.
     const constraints = {
@@ -73,13 +76,12 @@ export class ResourceBase<K extends string, T extends string> {
     return Object.assign(this, constraints).setValueTo(newValue);
   }
 
-  public readonly updateValueBy = (value: number): ResourceBase<K, T> => {
-    console.log('my new value', value + this.value)
-    this.value = this.__respectConstraints(this.value + value)
+  public readonly updateValueBy = (value: number): Resource<K, T> => {
+    this.value = this.respectConstraints(this.value + value)
     return this;
   }
 
-  public readonly setTo = (update: UpdateProps<K, T>): ResourceBase<K, T> => {
+  public readonly setTo = (update: UpdateProps<K, T> & { key?: K }): Resource<K, T> => {
     // I want to be able to set every value here
     const {
       value = this.value,
@@ -88,23 +90,56 @@ export class ResourceBase<K extends string, T extends string> {
     return Object.assign(this, rest).setValueTo(value);
   }
 
-  public readonly setValueTo = (value: number): ResourceBase<K, T> => {
-    this.value = this.__respectConstraints(value)
-    console.log(this.key, value)
+  public readonly setValueTo = (value: number): Resource<K, T> => {
+    this.value = this.respectConstraints(value)
     return this
   };
 
-  public readonly delta = (update: UpdateProps<K, T>) => delta(
-    {...this},
-    update.value || 0
-  );
-
-  private readonly __respectConstraints = (value: number): number =>
+  public readonly respectConstraints = (value: number): number =>
     value > this.max
       ? this.max
       : value < this.min
         ? this.min
         : value
+
+  public updateCost = (changeKey: 'give' | 'gain', {key, value}: TradeChange<K>) => {
+    if (!this.cost) {
+      return null
+    }
+    const updatedCost = toJS(this.cost)[changeKey].map(resource => resource.key === key
+      ? ({...resource, value})
+      : resource
+    )
+    this.setTo({
+      cost: {
+        ...this.cost,
+        [changeKey]: updatedCost
+      }
+    })
+  }
+
+  public addCost = (changeKey: 'give' | 'gain', extraCost: TradeChange<K>) => {
+    const cost = this.cost || {give: [], gain: []};
+    this.setTo({
+      cost: {
+        ...cost,
+        [changeKey]: cost[changeKey].concat(extraCost)
+      }
+    })
+  }
+
+  public removeCost = (changeKey: 'give' | 'gain', resourceKey: ResourceKeys) => {
+    if (!this.cost) {
+      return null
+    }
+    const updatedCost = toJS(this.cost)[changeKey].filter(({key}) => key !== resourceKey)
+    this.setTo({
+      cost: {
+        ...this.cost,
+        [changeKey]: updatedCost
+      }
+    })
+  }
 
   get percentage() {
     return Math.floor(mapMultiply(this.value, this.max) * 100);
@@ -112,7 +147,6 @@ export class ResourceBase<K extends string, T extends string> {
 
   get beautify(): ResourceBeautyType {
     return {
-      // ...this.state,
       value: beautifyNumber(this.value),
       min: beautifyNumber(this.min),
       max: beautifyNumber(this.max),
@@ -122,6 +156,20 @@ export class ResourceBase<K extends string, T extends string> {
 
   get icon(): string {
     return icons.find(icon => icon.name === this.iconName)?.src || ''
+  }
+
+  get state() {
+    return {
+      key: this.key,
+      value: this.value,
+      min: this.min,
+      max: this.max,
+      label: this.label,
+      type: this.type,
+      iconName: this.iconName,
+      cost: toJS(this.cost),
+      revealedAt: toJS(this.revealedAt),
+    }
   }
 }
 

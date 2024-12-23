@@ -1,6 +1,6 @@
 import {Box} from "@mui/material";
 import {observer} from "mobx-react";
-import {Resource} from "../Resource/Single";
+import {Resource} from "../Resource";
 import {ResourceKeys, ResourceTypes} from "../../Resource/specificTypes.ts";
 import {AdminCost} from "./AdminCost.tsx";
 import {AdminSave} from "./AdminSave.tsx";
@@ -21,7 +21,7 @@ export const EditResource = observer(({resource, onClose, onSubmit, enableKeyEdi
     <>
       <Box position="relative" pt={4} display="flex" gap={4}>
         <AdminGenerics onClose={onClose} enableKeyEdit={enableKeyEdit} resourceId={resource.id} />
-        <AdminNameAndIcon resource={resource} />
+        <AdminNameAndIcon resource={resource} enableKeyEdit={enableKeyEdit} />
         <AdminAmounts resource={resource} enableKeyEdit={enableKeyEdit} />
         <AdminType resource={resource} enableKeyEdit={enableKeyEdit} />
         <AdminSave resource={resource} onSubmit={onSubmit} />
