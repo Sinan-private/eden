@@ -4,11 +4,11 @@ import DeleteOutlineIcon from "@mui/icons-material/DeleteOutline";
 import styled from "styled-components";
 import Box from "@mui/material/Box";
 import Close from "@mui/icons-material/Close";
-import {TradeChange} from "../genericTypes.ts";
-import {ResourceKeys, ResourceTypes} from "../specificTypes.ts";
+import {TradeChange} from "../Resource/genericTypes.ts";
+import {ResourceKeys, ResourceTypes} from "../Resource/specificTypes.ts";
 import {themeColors} from "../assets/colors.ts";
 import {useAdmin} from "./admin.context.ts";
-import {Resource} from "../index.ts";
+import {Resource} from "../Resource";
 import {AddCost} from "./AddCost.tsx";
 import {capitalizeFirstLetter} from "../helpers/capitalizeFirstLetter.ts";
 

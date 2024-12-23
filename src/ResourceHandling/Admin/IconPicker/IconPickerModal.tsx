@@ -2,7 +2,7 @@ import {IconPicker, IconPickerProps} from "./IconPicker.tsx";
 import {Switch, Typography} from "@mui/material";
 import Modal from "./Modal.tsx";
 import styled from "styled-components";
-import {Icon} from "../../genericTypes.ts";
+import {Icon} from "../../Resource/genericTypes.ts";
 
 type IconPickerModalProps = {
   openIconPicker: boolean;

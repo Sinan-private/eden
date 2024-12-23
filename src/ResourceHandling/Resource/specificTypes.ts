@@ -1,5 +1,5 @@
-import {resourceKeys} from "./generated/resourceKeys.ts";
-import {resourceTypes} from "./generated/resourceTypes.ts";
+import {resourceKeys} from "../generated/resourceKeys.ts";
+import {resourceTypes} from "../generated/resourceTypes.ts";
 import {
   ResourceState as GenericState,
   ResourceUpdateProps as GenericUpdateProps

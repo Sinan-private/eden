@@ -2,10 +2,10 @@ import {ChangeEvent, useState} from "react";
 import {createContainer} from "unstated-next";
 import {useApi} from "../../context/useApi.ts";
 import {useComponentMount} from "../hooks/useComponentMount.ts";
-import {ResourceKeys, ResourceState, ResourceTypes} from "../specificTypes.ts";
-import {ResourceStore} from "../ResourceStore.ts";
-import {Icon} from "../genericTypes.ts";
-import {Resource} from "../index.ts";
+import {ResourceKeys, ResourceState, ResourceTypes} from "../Resource/specificTypes.ts";
+import {ResourceStore} from "../Resource/ResourceStore.ts";
+import {Icon} from "../Resource/genericTypes.ts";
+import {Resource} from "../Resource";
 import {useToggle} from "../hooks/useToggle.ts";
 
 const useAdminBase = () => {

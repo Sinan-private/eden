@@ -1,5 +1,5 @@
-import {ResourceState, ResourceUpdateProps, TradeLimitingResource, TradeResourceUpdateType} from "../genericTypes.ts";
-import {Resource} from "../Resource.ts";
+import {ResourceState, ResourceUpdateProps, TradeLimitingResource, TradeResourceUpdateType} from "../Resource/genericTypes.ts";
+import {Resource} from "../Resource/Resource.ts";
 
 export const createChanges = <K extends string, T extends string>(
   mergedApproaches: TradeResourceUpdateType<K, T>[],

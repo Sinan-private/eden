@@ -1,9 +1,9 @@
 [
   {
     "key": "corn",
-    "value": 4,
+    "value": 5,
     "min": 0,
-    "max": 15,
+    "max": null,
     "label": "Corn",
     "type": "base_resource",
     "iconName": "wheat",

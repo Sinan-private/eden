@@ -1,5 +1,5 @@
-import {ResourceKeys, ResourceTypes} from "../Resource/specificTypes.ts";
-import {ResourceStore} from "../Resource/ResourceStore.ts";
+import {ResourceKeys, ResourceTypes} from "../ResourceHandling/Resource/specificTypes.ts";
+import {ResourceStore} from "../ResourceHandling/Resource/ResourceStore.ts";
 
 export const resourceTurnUpdate = (resources: ResourceStore<ResourceKeys, ResourceTypes>) => {
   resources.produce('water', resources.get('well').value);

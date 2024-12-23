@@ -2,8 +2,8 @@ import {observer} from "mobx-react";
 import styled from "styled-components";
 import {useGame} from "../context/game.context.ts";
 import {TopBar} from "./TopBar.tsx";
-import {Resource} from "../Resource";
-import {ResourceKeys, ResourceTypes} from "../Resource/specificTypes.ts";
+import {Resource} from "../ResourceHandling/Resource";
+import {ResourceKeys, ResourceTypes} from "../ResourceHandling/Resource/specificTypes.ts";
 
 
 export const Game = () => {

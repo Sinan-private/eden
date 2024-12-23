@@ -2,7 +2,7 @@ import {useCallback} from "react";
 import styled from "styled-components";
 import {useGame} from "../context/game.context.ts";
 
-import {ResourceKeys, ResourceTypes} from "../Resource/specificTypes.ts";
+import {ResourceKeys, ResourceTypes} from "../ResourceHandling/Resource/specificTypes.ts";
 
 export const TopBar = () => {
   const {get, getByType} = useGame().resources;
