@@ -4,7 +4,7 @@ import DeleteOutlineIcon from "@mui/icons-material/DeleteOutline";
 import {ResourceCostUpdate, TradeChange} from "../../genericTypes.ts";
 import {OnSetCost} from "./EditResource";
 import {ResourceKeys} from "../../specificTypes.ts";
-import {useAdmin} from "../admin.context.ts";
+import {useAdmin} from "../../../Version 3/Admin/admin.context.ts";
 import {capitalizeFirstLetter} from "../../helpers/captializeFirstLetter.ts";
 import {AddCost} from "./EditResource/AddCost.tsx";
 import {themeColors} from "../../assets/colors.ts";

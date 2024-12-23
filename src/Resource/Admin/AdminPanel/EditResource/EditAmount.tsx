@@ -1,6 +1,6 @@
 import {ChangeEvent} from "react";
 import {Stack, TextField} from "@mui/material";
-import {useAdmin} from "../../admin.context.ts";
+import {useAdmin} from "../../../../Version 3/Admin/admin.context.ts";
 
 export type EditAmountProps = {
   id: string;

@@ -1,7 +1,7 @@
 import {TextField} from "@mui/material";
 import {ResourceKeys} from "../../../specificTypes.ts";
 import {ChangeEvent} from "react";
-import {useAdmin} from "../../admin.context.ts";
+import {useAdmin} from "../../../../Version 3/Admin/admin.context.ts";
 import {observer} from "mobx-react";
 
 type EditKeyProps = {

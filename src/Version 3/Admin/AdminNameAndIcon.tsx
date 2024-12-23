@@ -1,6 +1,6 @@
 import {Resource} from "../Resource/Single";
 import {ResourceKeys, ResourceTypes} from "../../Resource/specificTypes.ts";
-import {useAdmin} from "../../Resource/Admin/admin.context.ts";
+import {useAdmin} from "./admin.context.ts";
 import {Stack, TextField} from "@mui/material";
 
 type AdminNameAndIconProps = {

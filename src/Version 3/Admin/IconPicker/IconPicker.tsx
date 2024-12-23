@@ -2,7 +2,7 @@ import styled from "styled-components";
 import {TextField} from "@mui/material";
 import {ChangeEvent, useState} from "react";
 import {Icon} from "../../Resource/Single/genericTypes.ts";
-import {useAdmin} from "../../../Resource/Admin/admin.context.ts";
+import {useAdmin} from "../admin.context.ts";
 import {useIcons} from "./useIcons.ts";
 
 export type IconPickerProps = {

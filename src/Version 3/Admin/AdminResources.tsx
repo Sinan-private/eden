@@ -1,5 +1,5 @@
 import {ResourceKeys, ResourceTypes} from "../../Resource/specificTypes.ts";
-import {useAdmin} from "../../Resource/Admin/admin.context.ts";
+import {useAdmin} from "./admin.context.ts";
 import {Resource} from "../Resource/Single";
 import {Box, Typography} from "@mui/material";
 import {AdminResource} from "./AdminResource.tsx";

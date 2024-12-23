@@ -5,7 +5,7 @@ import {Chip, IconButton, Paper, Stack, Typography} from "@mui/material";
 import ModeEditOutlineIcon from '@mui/icons-material/ModeEditOutline';
 import {ResourceState} from "../../index.ts";
 import {ResourceKeys, ResourceTypes} from "../../specificTypes.ts";
-import {useAdmin} from "../admin.context.ts";
+import {useAdmin} from "../../../Version 3/Admin/admin.context.ts";
 import {themeColors} from "../../assets/colors.ts";
 import EditResource from "./EditResource";
 import {observer} from "mobx-react";

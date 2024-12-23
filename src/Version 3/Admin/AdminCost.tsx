@@ -8,9 +8,9 @@ import {TradeChange} from "../Resource/Single/genericTypes.ts";
 import {ResourceKeys, ResourceTypes} from "../../Resource/specificTypes.ts";
 import {themeColors} from "../../Resource/assets/colors.ts";
 import {capitalizeFirstLetter} from "../../Resource/helpers/captializeFirstLetter.ts";
-import {AddCost} from "../../Resource/Admin/AdminPanel/EditResource/AddCost.tsx";
-import {useAdmin} from "../../Resource/Admin/admin.context.ts";
+import {useAdmin} from "./admin.context.ts";
 import {Resource} from "../Resource/Single";
+import {AddCost} from "./AddCost.tsx";
 
 
 type AdminCostProps = {

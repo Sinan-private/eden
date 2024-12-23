@@ -1,4 +1,4 @@
-import {useAdmin} from "../../Resource/Admin/admin.context.ts";
+import {useAdmin} from "./admin.context.ts";
 import {FormControl, InputLabel, MenuItem} from "@mui/material";
 import Select from "@mui/material/Select";
 import {resourceTypes} from "../generated/resourceTypes.ts";

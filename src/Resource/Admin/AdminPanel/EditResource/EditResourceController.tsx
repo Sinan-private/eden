@@ -2,7 +2,7 @@ import {ChangeEvent, useState} from "react";
 import {Icon, ResourceCostUpdate} from "../../../genericTypes.ts";
 import {useToggle} from "../../../hooks/useToggle.ts";
 import {ResourceKeys, ResourceTypes} from "../../../specificTypes.ts";
-import {useAdmin} from "../../admin.context.ts";
+import {useAdmin} from "../../../../Version 3/Admin/admin.context.ts";
 import {EditResourceView} from "./EditResourceView.tsx";
 import {observer} from "mobx-react";
 import {SxProps} from "@mui/material";

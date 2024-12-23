@@ -4,7 +4,7 @@ import {ResourceState} from "../../index.ts";
 import Box from "@mui/material/Box";
 import {useState} from "react";
 import {ResourceKeys, ResourceTypes} from "../../specificTypes.ts";
-import {useAdmin} from "../admin.context.ts";
+import {useAdmin} from "../../../Version 3/Admin/admin.context.ts";
 import EditResource from "./EditResource";
 import {useComponentMount} from "../../hooks/useComponentMount.ts";
 import {observer} from "mobx-react";

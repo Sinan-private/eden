@@ -3,7 +3,7 @@ import {ResourceCostUpdate, ResourceState, TradeChange} from "./genericTypes.ts"
 import {SelectChangeEvent} from "@mui/material/Select";
 import icons from "./assets/icons/icons.ts";
 import {Resource} from "./Resource.ts";
-import {useAdmin} from "./Admin/admin.context.ts";
+import {useAdmin} from "../Version 3/Admin/admin.context.ts";
 
 export type ResourceCloneConfig<K, T> = {
   onAddCost(resourceState: ResourceState<K, T>): void;

@@ -6,7 +6,7 @@ import {themeColors} from "../../Resource/assets/colors.ts";
 import Box from "@mui/material/Box";
 import DeleteOutlineIcon from "@mui/icons-material/DeleteOutline";
 import ModeEditOutlineIcon from "@mui/icons-material/ModeEditOutline";
-import {useAdmin} from "../../Resource/Admin/admin.context.ts";
+import {useAdmin} from "./admin.context.ts";
 import {EditResource} from "./EditResource.tsx";
 
 export const AdminResource = ({resource}: { resource: Resource<ResourceKeys, ResourceTypes> }) => {

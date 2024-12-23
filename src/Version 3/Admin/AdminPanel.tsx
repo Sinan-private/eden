@@ -4,10 +4,9 @@ import styled from "styled-components";
 import Box from "@mui/material/Box";
 import {IconButton} from "@mui/material";
 import Close from "@mui/icons-material/Close";
-import TabNav from "../../Resource/Admin/AdminPanel/TabNav.tsx";
-import {HandleTypes} from "../../Resource/Admin/AdminPanel/HandleTypes.tsx";
-import {Dependencies} from "../../Resource/Admin/AdminPanel/Dependencies.tsx";
 import {AdminResources} from "./AdminResources.tsx";
+import TabNav from "./TabNav.tsx";
+import {HandleTypes} from "./HandleTypes.tsx";
 
 export const AdminPanel = () => {
   const {onCloseAdminPanel} = useGame();
@@ -43,10 +42,6 @@ export const AdminPanel = () => {
             {
               label: 'Types',
               Component: HandleTypes,
-            },
-            {
-              label: 'Dependencies',
-              Component: Dependencies,
             },
           ]} />
         </Content>
