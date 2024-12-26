@@ -20,16 +20,5 @@
     "iconName": "empty",
     "cost": null,
     "revealedAt": null
-  },
-  {
-    "key": "liquid_mana_level_5",
-    "value": 1,
-    "min": 0,
-    "max": null,
-    "label": "Liquid mana level 5",
-    "type": "",
-    "iconName": "empty",
-    "cost": null,
-    "revealedAt": null
   }
 ]

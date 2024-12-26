@@ -8,7 +8,7 @@ import {useState} from "react";
 import {useComponentMount} from "../../hooks";
 import {EditResource} from "./EditResource.tsx";
 
-export const AdminResources = () => {
+export const AdminResources = observer(() => {
   const {groupByType} = useAdmin().resources;
   const types = groupByType()
   return (
@@ -19,12 +19,12 @@ export const AdminResources = () => {
           {types.map(({type, resources}) => (
             <ResourceType key={type} type={type} resources={resources}/>
           ))}
-        <ResourceType type={'' as ResourceTypes} resources={[]}/>
+          {!types.length && <ResourceType type={'' as ResourceTypes} resources={[]}/>}
         </div>
       </div>
     </>
   )
-}
+})
 
 type ResourceTypeProps = {
   type: ResourceTypes;
@@ -54,7 +54,10 @@ const ResourceType = observer(({type, resources}: ResourceTypeProps) => {
 
 const AddResource = observer(({closeAddMode}: {closeAddMode: () => void}) => {
   const {get, addResource} = useAdmin().resources;
-  useComponentMount(() => addResource({key: '' as ResourceKeys}));
+  useComponentMount(() => {
+    console.log('render')
+    addResource({key: '' as ResourceKeys})
+  });
   const resource = get('' as ResourceKeys);
   if (!resource) return null;
 

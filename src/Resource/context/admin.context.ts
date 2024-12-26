@@ -1,4 +1,4 @@
-import {ChangeEvent, useState} from "react";
+import {ChangeEvent, useCallback, useState} from "react";
 import {createContainer} from "unstated-next";
 import {useApi} from "../../context/useApi.ts";
 import {ResourceKeys, ResourceState, ResourceStoreClass, ResourceTypes} from "../ResourceHandler/specificTypes.ts";
@@ -28,7 +28,58 @@ const useAdminBase = () => {
   const handleOpenIconPicker = () => setOpenIconPicker(true);
   const handleCloseIconPicker = () => setOpenIconPicker(false);
 
-  const getActions = (resourceId: string, enableKeyEdit?: boolean) => {
+
+
+  useComponentMount(async () => {
+    const rawState = await fetchResources();
+    setResources(new ResourceStore(rawState));
+    setResourcesOriginal(new ResourceStore(rawState));
+    setIsFetching(false);
+  })
+
+  const resetResources = () => {
+    setResources(new ResourceStore(resourcesOriginal!.state))
+  }
+
+  const write__initialResources = () => {
+      console.log(resources?.state.length)
+    updateResources(resources!.state).then(() => {
+      console.log(resources?.state.length)
+      setResourcesOriginal(new ResourceStore(resources!.state))
+    })
+  }
+
+  const write__removeResource = (key: ResourceKeys) => {
+    resources?.removeResource(key);
+    updateResources(resources!.state)
+  }
+
+  const write__addType = (type: string | string[]) =>
+    addType(([] as string[]).concat(type))
+
+  const write__removeType = (type: ResourceTypes | ResourceTypes[]) => {
+    const usedTypes = resources!.allResources.map(({type}) => type);
+    const typesToRemove = ([] as ResourceTypes[]).concat(type);
+    const matches = typesToRemove.filter(value => usedTypes.includes(value!));
+    if (matches.length) {
+      console.error('These Types are being in used and can not be removed', matches)
+      return;
+    }
+    removeType(typesToRemove)
+  }
+
+  const canRemoveResource = (key: ResourceKeys) => {
+    return !resources?.isResourceReferenced(key)
+  }
+
+  const isDisabled = (key: ResourceKeys) => {
+    if (resources?.get(key) && resourcesOriginal?.get(key)) {
+      return areObjectsEqual(resources!.get(key).state, resourcesOriginal!.get(key).state)
+    }
+    return false
+  }
+
+  const getActions = useCallback((resourceId: string, enableKeyEdit?: boolean) => {
     const resource = resources!.getById(resourceId)!
 
     const onSelectIcon = (clickedIcon: Icon) => {
@@ -87,55 +138,7 @@ const useAdminBase = () => {
       saveDisabled,
       keyAlreadyExists,
     }
-  }
-
-  useComponentMount(async () => {
-    const rawState = await fetchResources();
-    setResources(new ResourceStore(rawState));
-    setResourcesOriginal(new ResourceStore(rawState));
-    setIsFetching(false);
-  })
-
-  const resetResources = () => {
-    setResources(new ResourceStore(resourcesOriginal!.state))
-  }
-
-  const write__initialResources = () => {
-    updateResources(resources!.state).then(() => {
-      setResourcesOriginal(new ResourceStore(resources!.state))
-    })
-  }
-
-  const write__removeResource = (key: ResourceKeys) => {
-    resources?.removeResource(key);
-    updateResources(resources!.state)
-  }
-
-  const write__addType = (type: string | string[]) =>
-    addType(([] as string[]).concat(type))
-
-  const write__removeType = (type: ResourceTypes | ResourceTypes[]) => {
-    const usedTypes = resources!.allResources.map(({type}) => type);
-    const typesToRemove = ([] as ResourceTypes[]).concat(type);
-    const matches = typesToRemove.filter(value => usedTypes.includes(value!));
-    if (matches.length) {
-      console.error('These Types are being in used and can not be removed', matches)
-      return;
-    }
-    removeType(typesToRemove)
-  }
-
-  const canRemoveResource = (key: ResourceKeys) => {
-    return !resources?.isResourceReferenced(key)
-  }
-
-  const isDisabled = (key: ResourceKeys) => {
-    if (resources?.get(key) && resourcesOriginal?.get(key)) {
-      return areObjectsEqual(resources!.get(key).state, resourcesOriginal!.get(key).state)
-    }
-    return false
-  }
-
+  }, [isDisabled, isKeyPristine, resources, write__initialResources])
 
   return {
     resources: resources as ResourceStore<ResourceKeys, ResourceTypes>,

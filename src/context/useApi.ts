@@ -12,6 +12,7 @@ export const useApi = () => {
 
   const updateResources = async (newResources?: ResourceState[]) => {
     if (!newResources) return;
+    console.log(newResources)
     try {
       const response = await fetch('/api/resources', {
         method: 'POST',
