@@ -7,7 +7,8 @@ import {useComponentMount, usePrevious} from "../hooks";
 import {ResourceStore} from "../ResourceHandler/ResourceStore.ts";
 import {resourceTurnUpdate} from "../../gameRules/getResourceTurnUpdate.ts";
 
-const useGameBase = () => {
+const useGameBase = (initialState: any) => {
+  console.log('initialState', initialState)
   const resourceRef = useRef<ResourceStoreClass | null>(null) as MutableRefObject<ResourceStoreClass | null>;
   const resources = resourceRef.current as ResourceStoreClass;
   // This is only needed to avoid a side refresh after every change

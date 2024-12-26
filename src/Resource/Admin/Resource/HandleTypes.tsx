@@ -1,6 +1,6 @@
 import {IconButton, Stack, Typography} from "@mui/material";
 import CancelIcon from '@mui/icons-material/Cancel';
-import {useAdmin} from "../admin.context.ts";
+import {useAdmin} from "../../context/admin.context.ts";
 import {ResourceTypes} from "../../ResourceHandler/specificTypes.ts";
 import {AddType} from "./AddType.tsx";
 import {resourceTypes} from "../../generated/resourceTypes.ts";

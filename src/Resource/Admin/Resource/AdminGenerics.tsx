@@ -1,4 +1,4 @@
-import {useAdmin} from "../admin.context.ts";
+import {useAdmin} from "../../context/admin.context.ts";
 import {Box, IconButton} from "@mui/material";
 import Close from "@mui/icons-material/Close";
 import {IconPickerModal} from "../IconPicker/IconPickerModal.tsx";

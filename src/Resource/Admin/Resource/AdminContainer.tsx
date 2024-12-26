@@ -1,4 +1,4 @@
-import {useAdmin} from "../admin.context.ts";
+import {useAdmin} from "../../context/admin.context.ts";
 import {AdminPanel} from "../AdminPanel.tsx";
 
 export const AdminContainer = () => {

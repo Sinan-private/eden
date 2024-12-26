@@ -1,33 +1,33 @@
 [
   {
-    "key": "gold",
-    "value": 1200,
-    "min": 0,
-    "max": null,
-    "label": "Gold",
-    "type": "base_resource",
-    "cost": null,
-    "icon": "brick_gold"
-  },
-  {
     "key": "corn",
-    "value": 100,
+    "value": 5,
     "min": 0,
     "max": null,
     "label": "Corn",
     "type": "base_resource",
+    "iconName": "wheat",
     "cost": null,
-    "icon": "wheat"
+    "revealedAt": {
+      "give": [
+        {
+          "key": "money",
+          "value": 2000
+        }
+      ],
+      "gain": []
+    }
   },
   {
     "key": "water",
-    "value": 30,
+    "value": 10,
     "min": 0,
     "max": null,
     "label": "Water",
     "type": "base_resource",
+    "iconName": "water",
     "cost": null,
-    "icon": "water"
+    "revealedAt": null
   },
   {
     "key": "coal",
@@ -36,8 +36,9 @@
     "max": null,
     "label": "Coal",
     "type": "base_resource",
+    "iconName": "coal",
     "cost": null,
-    "icon": "coal"
+    "revealedAt": null
   },
   {
     "key": "stone",
@@ -46,8 +47,9 @@
     "max": null,
     "label": "Stone",
     "type": "base_resource",
+    "iconName": "stone",
     "cost": null,
-    "icon": "stone"
+    "revealedAt": null
   },
   {
     "key": "wood",
@@ -56,8 +58,9 @@
     "max": null,
     "label": "Wood",
     "type": "base_resource",
+    "iconName": "wood",
     "cost": null,
-    "icon": "wood"
+    "revealedAt": null
   },
   {
     "key": "land",
@@ -66,11 +69,12 @@
     "max": 100,
     "label": "Land",
     "type": "build_resource",
+    "iconName": "land",
     "cost": {
       "give": [
         {
-          "key": "gold",
-          "value": 10
+          "key": "money",
+          "value": 1
         }
       ],
       "gain": [
@@ -80,7 +84,7 @@
         }
       ]
     },
-    "icon": "land"
+    "revealedAt": null
   },
   {
     "key": "windmill",
@@ -89,6 +93,7 @@
     "max": 50,
     "label": "Windmill",
     "type": "build_resource",
+    "iconName": "empty",
     "cost": {
       "give": [
         {
@@ -96,12 +101,12 @@
           "value": 1
         },
         {
-          "key": "gold",
-          "value": 20
-        },
-        {
           "key": "bricks",
           "value": 3
+        },
+        {
+          "key": "money",
+          "value": 20
         }
       ],
       "gain": [
@@ -111,7 +116,7 @@
         }
       ]
     },
-    "icon": "empty"
+    "revealedAt": null
   },
   {
     "key": "field",
@@ -120,6 +125,7 @@
     "max": 50,
     "label": "Field",
     "type": "build_resource",
+    "iconName": "empty",
     "cost": {
       "give": [
         {
@@ -127,7 +133,7 @@
           "value": 1
         },
         {
-          "key": "gold",
+          "key": "money",
           "value": 10
         }
       ],
@@ -138,7 +144,7 @@
         }
       ]
     },
-    "icon": "empty"
+    "revealedAt": null
   },
   {
     "key": "bakery",
@@ -147,6 +153,7 @@
     "max": 50,
     "label": "Bakery",
     "type": "build_resource",
+    "iconName": "empty",
     "cost": {
       "give": [
         {
@@ -154,7 +161,7 @@
           "value": 1
         },
         {
-          "key": "gold",
+          "key": "money",
           "value": 20
         },
         {
@@ -165,12 +172,11 @@
       "gain": [
         {
           "key": "bakery",
-          "value": 1,
-          "icon": "empty"
+          "value": 1
         }
       ]
     },
-    "icon": "empty"
+    "revealedAt": null
   },
   {
     "key": "well",
@@ -179,6 +185,7 @@
     "max": null,
     "label": "Well",
     "type": "build_resource",
+    "iconName": "empty",
     "cost": {
       "give": [
         {
@@ -186,7 +193,7 @@
           "value": 1
         },
         {
-          "key": "gold",
+          "key": "money",
           "value": 20
         },
         {
@@ -201,7 +208,7 @@
         }
       ]
     },
-    "icon": "empty"
+    "revealedAt": null
   },
   {
     "key": "forrester",
@@ -210,6 +217,7 @@
     "max": null,
     "label": "Forrester",
     "type": "build_resource",
+    "iconName": "empty",
     "cost": {
       "give": [
         {
@@ -217,7 +225,7 @@
           "value": 1
         },
         {
-          "key": "gold",
+          "key": "money",
           "value": 20
         },
         {
@@ -228,12 +236,11 @@
       "gain": [
         {
           "key": "forrester",
-          "value": 1,
-          "icon": "empty"
+          "value": 1
         }
       ]
     },
-    "icon": "empty"
+    "revealedAt": null
   },
   {
     "key": "wood_mill",
@@ -242,6 +249,7 @@
     "max": null,
     "label": "Wood mill",
     "type": "build_resource",
+    "iconName": "empty",
     "cost": {
       "give": [
         {
@@ -249,7 +257,7 @@
           "value": 1
         },
         {
-          "key": "gold",
+          "key": "money",
           "value": 20
         },
         {
@@ -259,12 +267,12 @@
       ],
       "gain": [
         {
-          "key": "windmill",
+          "key": "wood_mill",
           "value": 1
         }
       ]
     },
-    "icon": "empty"
+    "revealedAt": null
   },
   {
     "key": "pasture",
@@ -273,6 +281,7 @@
     "max": null,
     "label": "Pasture",
     "type": "build_resource",
+    "iconName": "empty",
     "cost": {
       "give": [
         {
@@ -280,7 +289,7 @@
           "value": 1
         },
         {
-          "key": "gold",
+          "key": "money",
           "value": 20
         },
         {
@@ -295,7 +304,7 @@
         }
       ]
     },
-    "icon": "empty"
+    "revealedAt": null
   },
   {
     "key": "meat",
@@ -304,6 +313,7 @@
     "max": null,
     "label": "Meat",
     "type": "processed_resource",
+    "iconName": "meat2",
     "cost": {
       "give": [
         {
@@ -322,7 +332,7 @@
         }
       ]
     },
-    "icon": "meat2"
+    "revealedAt": null
   },
   {
     "key": "milk",
@@ -331,6 +341,7 @@
     "max": null,
     "label": "Milk",
     "type": "processed_resource",
+    "iconName": "milk",
     "cost": {
       "give": [
         {
@@ -349,7 +360,7 @@
         }
       ]
     },
-    "icon": "milk"
+    "revealedAt": null
   },
   {
     "key": "wool",
@@ -358,10 +369,15 @@
     "max": null,
     "label": "Wool",
     "type": "processed_resource",
+    "iconName": "wool",
     "cost": {
       "give": [
         {
           "key": "corn",
+          "value": 5
+        },
+        {
+          "key": "water",
           "value": 5
         }
       ],
@@ -372,15 +388,16 @@
         }
       ]
     },
-    "icon": "wool"
+    "revealedAt": null
   },
   {
     "key": "flour",
-    "value": 1,
+    "value": 2,
     "min": 0,
     "max": null,
     "label": "Flour",
     "type": "processed_resource",
+    "iconName": "flour",
     "cost": {
       "give": [
         {
@@ -395,7 +412,7 @@
         }
       ]
     },
-    "icon": "flour"
+    "revealedAt": null
   },
   {
     "key": "bread",
@@ -404,6 +421,7 @@
     "max": null,
     "label": "Bread",
     "type": "processed_resource",
+    "iconName": "bread",
     "cost": {
       "give": [
         {
@@ -422,7 +440,7 @@
         }
       ]
     },
-    "icon": "bread"
+    "revealedAt": null
   },
   {
     "key": "bricks",
@@ -431,6 +449,7 @@
     "max": null,
     "label": "Bricks",
     "type": "processed_resource",
+    "iconName": "brick",
     "cost": {
       "give": [
         {
@@ -445,7 +464,7 @@
         }
       ]
     },
-    "icon": "brick"
+    "revealedAt": null
   },
   {
     "key": "planks",
@@ -454,6 +473,7 @@
     "max": null,
     "label": "Planks",
     "type": "processed_resource",
+    "iconName": "plank",
     "cost": {
       "give": [
         {
@@ -468,7 +488,7 @@
         }
       ]
     },
-    "icon": "plank"
+    "revealedAt": null
   },
   {
     "key": "citizen",
@@ -477,8 +497,9 @@
     "max": null,
     "label": "Citizen",
     "type": "citizen_resource",
+    "iconName": "clothes2",
     "cost": null,
-    "icon": "clothes2"
+    "revealedAt": null
   },
   {
     "key": "engineer",
@@ -487,8 +508,9 @@
     "max": null,
     "label": "Engineer",
     "type": "citizen_resource",
+    "iconName": "helmet",
     "cost": null,
-    "icon": "helmet"
+    "revealedAt": null
   },
   {
     "key": "scientist",
@@ -497,8 +519,9 @@
     "max": null,
     "label": "Scientist",
     "type": "citizen_resource",
+    "iconName": "book2",
     "cost": null,
-    "icon": "book2"
+    "revealedAt": null
   },
   {
     "key": "artist",
@@ -507,8 +530,9 @@
     "max": null,
     "label": "Artist",
     "type": "citizen_resource",
+    "iconName": "harp",
     "cost": null,
-    "icon": "harp"
+    "revealedAt": null
   },
   {
     "key": "magician",
@@ -517,8 +541,9 @@
     "max": null,
     "label": "Magician",
     "type": "citizen_resource",
+    "iconName": "clothes",
     "cost": null,
-    "icon": "clothes"
+    "revealedAt": null
   },
   {
     "key": "money",
@@ -527,7 +552,175 @@
     "max": null,
     "label": "Money",
     "type": "currency_resource",
+    "iconName": "money_gold",
     "cost": null,
-    "icon": "money"
+    "revealedAt": null
+  },
+  {
+    "key": "silver_ore",
+    "value": 0,
+    "min": 0,
+    "max": null,
+    "label": "Silver ore",
+    "type": "base_resource",
+    "iconName": "silver_ore",
+    "cost": null,
+    "revealedAt": null
+  },
+  {
+    "key": "iron_ore",
+    "value": 10,
+    "min": 0,
+    "max": null,
+    "label": "Iron ore",
+    "type": "base_resource",
+    "iconName": "iron_ore",
+    "cost": null,
+    "revealedAt": null
+  },
+  {
+    "key": "copper_ore",
+    "value": 0,
+    "min": 0,
+    "max": null,
+    "label": "Copper ore",
+    "type": "base_resource",
+    "iconName": "copper_ore",
+    "cost": null,
+    "revealedAt": null
+  },
+  {
+    "key": "silver_brick",
+    "value": 0,
+    "min": 0,
+    "max": null,
+    "label": "Silver Brick",
+    "type": "processed_resource",
+    "iconName": "silver_brick",
+    "cost": {
+      "give": [
+        {
+          "key": "silver_ore",
+          "value": 2
+        },
+        {
+          "key": "coal",
+          "value": 5
+        }
+      ],
+      "gain": [
+        {
+          "key": "silver_brick",
+          "value": 1
+        }
+      ]
+    },
+    "revealedAt": null
+  },
+  {
+    "key": "iron_brick",
+    "value": 0,
+    "min": 0,
+    "max": null,
+    "label": "Iron Brick",
+    "type": "processed_resource",
+    "iconName": "iron_brick",
+    "cost": {
+      "give": [
+        {
+          "key": "iron_ore",
+          "value": 2
+        },
+        {
+          "key": "coal",
+          "value": 5
+        }
+      ],
+      "gain": [
+        {
+          "key": "iron_brick",
+          "value": 1
+        }
+      ]
+    },
+    "revealedAt": null
+  },
+  {
+    "key": "copper_brick",
+    "value": 0,
+    "min": 0,
+    "max": null,
+    "label": "Copper Brick",
+    "type": "processed_resource",
+    "iconName": "copper_brick",
+    "cost": {
+      "give": [
+        {
+          "key": "copper_ore",
+          "value": 2
+        },
+        {
+          "key": "coal",
+          "value": 5
+        }
+      ],
+      "gain": [
+        {
+          "key": "copper_brick",
+          "value": 1
+        }
+      ]
+    },
+    "revealedAt": null
+  },
+  {
+    "key": "gold_ore",
+    "value": 0,
+    "min": 0,
+    "max": null,
+    "label": "Gold ore",
+    "type": "base_resource",
+    "iconName": "gold_ore",
+    "cost": null,
+    "revealedAt": null
+  },
+  {
+    "key": "gold_brick",
+    "value": 0,
+    "min": 0,
+    "max": null,
+    "label": "Gold Brick",
+    "type": "processed_resource",
+    "iconName": "gold_brick",
+    "cost": {
+      "give": [
+        {
+          "key": "gold_ore",
+          "value": 2
+        },
+        {
+          "key": "coal",
+          "value": 5
+        }
+      ],
+      "gain": [
+        {
+          "key": "gold_brick",
+          "value": 1
+        }
+      ]
+    },
+    "revealedAt": null
+  },
+  {
+    "key": "level",
+    "value": 1,
+    "min": 0,
+    "max": null,
+    "label": "Level",
+    "type": "level",
+    "iconName": "arrow_up",
+    "cost": null,
+    "revealedAt": null
   }
 ]

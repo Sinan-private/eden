@@ -6,7 +6,7 @@ import Close from "@mui/icons-material/Close";
 import {AdminResources} from "./Resource/AdminResources.tsx";
 import TabNav from "./TabNav.tsx";
 import {HandleTypes} from "./Resource/HandleTypes.tsx";
-import {useAdmin} from "./admin.context.ts";
+import {useAdmin} from "../context/admin.context.ts";
 
 export const AdminPanel = () => {
   const {onCloseAdminPanel} = useAdmin();

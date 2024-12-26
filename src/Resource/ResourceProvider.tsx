@@ -3,10 +3,15 @@ import {AdminProvider} from "./Admin";
 import {Child} from "./Child.tsx";
 import React from "react";
 
-export const ResourceProvider = ({children}: {children: React.ReactNode})=> {
+type ResourceProviderProps = {
+  children: React.ReactNode;
+  initialState?: any;
+}
+
+export const ResourceProvider = ({children, initialState}: ResourceProviderProps)=> {
 
   return (
-    <GameProvider>
+    <GameProvider initialState={initialState}>
       <AdminProvider>
         <Child>
           {children}

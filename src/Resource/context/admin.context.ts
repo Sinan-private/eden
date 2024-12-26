@@ -21,9 +21,6 @@ const useAdminBase = () => {
   const onToggleAdminPanel = () => setShowAdminPanel(!showAdminPanel);
   const onCloseAdminPanel = () => setShowAdminPanel(false);
 
-
-  // New stuff here
-
   const [openIconPicker, setOpenIconPicker] = useState(false);
   const [filterUsed, onToggleFilter] = useToggle(false);
 
@@ -91,10 +88,6 @@ const useAdminBase = () => {
       keyAlreadyExists,
     }
   }
-
-
-  // End new stuff
-
 
   useComponentMount(async () => {
     const rawState = await fetchResources();
