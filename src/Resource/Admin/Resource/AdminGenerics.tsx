@@ -1,7 +1,7 @@
-import {useAdmin} from "./admin.context.ts";
+import {useAdmin} from "../admin.context.ts";
 import {Box, IconButton} from "@mui/material";
 import Close from "@mui/icons-material/Close";
-import {IconPickerModal} from "./IconPicker/IconPickerModal.tsx";
+import {IconPickerModal} from "../IconPicker/IconPickerModal.tsx";
 
 type AdminGenericsProps = {
   onClose(): void;

@@ -1,8 +1,8 @@
 import {SyntheticEvent, useMemo, useState} from "react";
 import {Autocomplete, IconButton, Stack, SxProps, TextField} from "@mui/material";
 import CheckIcon from '@mui/icons-material/Check';
-import {ResourceKeys, TradeChange} from "../ResourceHandler/specificTypes.ts";
-import {useAdmin} from "./admin.context.ts";
+import {ResourceKeys, TradeChange} from "../../ResourceHandler/specificTypes.ts";
+import {useAdmin} from "../admin.context.ts";
 
 type ResourceForCostProps = {
   onAddCost(change: TradeChange): void;

@@ -2,7 +2,6 @@ import {observer} from "mobx-react";
 import styled from "styled-components";
 import {TopBar} from "./TopBar.tsx";
 import {ResourceClass} from "../Resource";
-import {useAdmin} from "../Resource/Admin";
 import {useGame} from "../Resource/context/game.context.ts";
 
 export const Game = () => {
@@ -91,14 +90,12 @@ const GameControl = () => {
       stop,
     }
   } = useGame();
-  const {onToggleAdminPanel} = useAdmin()
   return (
     <StylesGameControl>
       <div>
         <span>Turn {current}</span>
         <button onClick={isActive ? stop : start}>{isActive ? 'x' : '>'}</button>
       </div>
-      <button onClick={onToggleAdminPanel}>Admin</button>
     </StylesGameControl>
   )
 }

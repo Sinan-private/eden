@@ -1,12 +1,12 @@
-import {Resource} from "../ResourceHandler";
-import {ResourceKeys, ResourceTypes} from "../ResourceHandler/specificTypes.ts";
+import {Resource} from "../../ResourceHandler";
+import {ResourceKeys, ResourceTypes} from "../../ResourceHandler/specificTypes.ts";
 import {useMemo, useState} from "react";
 import {Chip, IconButton, Paper, Stack, Typography} from "@mui/material";
-import {themeColors} from "../assets/colors.ts";
+import {themeColors} from "../../assets/colors.ts";
 import Box from "@mui/material/Box";
 import DeleteOutlineIcon from "@mui/icons-material/DeleteOutline";
 import ModeEditOutlineIcon from "@mui/icons-material/ModeEditOutline";
-import {useAdmin} from "./admin.context.ts";
+import {useAdmin} from "../admin.context.ts";
 import {EditResource} from "./EditResource.tsx";
 
 export const AdminResource = ({resource}: { resource: Resource<ResourceKeys, ResourceTypes> }) => {

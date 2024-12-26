@@ -1,10 +1,10 @@
-import {useAdmin} from "./admin.context.ts";
+import {useAdmin} from "../admin.context.ts";
 import {FormControl, InputLabel, MenuItem} from "@mui/material";
 import Select from "@mui/material/Select";
-import {Resource} from "../ResourceHandler";
-import {ResourceKeys, ResourceTypes} from "../ResourceHandler/specificTypes.ts";
+import {Resource} from "../../ResourceHandler";
+import {ResourceKeys, ResourceTypes} from "../../ResourceHandler/specificTypes.ts";
 import {observer} from "mobx-react";
-import {resourceTypes} from "../generated/resourceTypes.ts";
+import {resourceTypes} from "../../generated/resourceTypes.ts";
 
 type AdminTypeProps = {
   resource: Resource<ResourceKeys, ResourceTypes>;

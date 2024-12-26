@@ -1,8 +1,8 @@
 import {ChangeEvent, useState} from "react";
 import {Stack, TextField} from "@mui/material";
-import {useAdmin} from "./admin.context.ts";
-import {ResourceTypes} from "../ResourceHandler/specificTypes.ts";
-import {resourceTypes} from "../generated/resourceTypes.ts";
+import {useAdmin} from "../admin.context.ts";
+import {ResourceTypes} from "../../ResourceHandler/specificTypes.ts";
+import {resourceTypes} from "../../generated/resourceTypes.ts";
 
 export const AddType = () => {
   const {write__addType} = useAdmin();

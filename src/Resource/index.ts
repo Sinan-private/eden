@@ -1,5 +1,6 @@
 export {ResourceStore} from "./ResourceHandler/ResourceStore.ts";
 export {ResourceProvider} from "./ResourceProvider.tsx";
+export {ResourceAdmin} from "./Admin/ResourceAdmin.tsx";
 
 export type {ResourceTypes} from "./ResourceHandler/specificTypes.ts";
 export type {ResourceKeys} from "./ResourceHandler/specificTypes.ts";

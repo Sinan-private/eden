@@ -5,11 +5,11 @@ import {IconButton, Stack, TextField, Typography} from "@mui/material";
 import DeleteOutlineIcon from "@mui/icons-material/DeleteOutline";
 import Box from "@mui/material/Box";
 import Close from "@mui/icons-material/Close";
-import {ResourceClass, TradeChange} from "../ResourceHandler/specificTypes.ts";
-import {themeColors} from "../assets/colors.ts";
-import {useAdmin} from "./admin.context.ts";
+import {ResourceClass, TradeChange} from "../../ResourceHandler/specificTypes.ts";
+import {themeColors} from "../../assets/colors.ts";
+import {useAdmin} from "../admin.context.ts";
 import {AddCost} from "./AddCost.tsx";
-import {capitalizeFirstLetter} from "../helpers/capitalizeFirstLetter.ts";
+import {capitalizeFirstLetter} from "../../helpers/capitalizeFirstLetter.ts";
 
 type AdminCostProps = {
   resource: ResourceClass;
