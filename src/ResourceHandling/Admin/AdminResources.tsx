@@ -5,7 +5,7 @@ import {Box, Typography} from "@mui/material";
 import {AdminResource} from "./AdminResource.tsx";
 import {observer} from "mobx-react";
 import {useState} from "react";
-import {useComponentMount} from "../hooks/useComponentMount.ts";
+import {useComponentMount} from "../hooks";
 import {EditResource} from "./EditResource.tsx";
 
 export const AdminResources = () => {
@@ -19,8 +19,8 @@ export const AdminResources = () => {
           {types.map(({type, resources}) => (
             <ResourceType key={type} type={type} resources={resources}/>
           ))}
+        <ResourceType type={'' as ResourceTypes} resources={[]}/>
         </div>
-
       </div>
     </>
   )

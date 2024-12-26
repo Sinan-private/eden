@@ -6,10 +6,10 @@ import {useComponentMount, usePrevious} from "../ResourceHandling/hooks";
 import {ResourceStore, ResourceStoreClass} from "../ResourceHandling";
 import {resourceTurnUpdate} from "../gameRules/getResourceTurnUpdate.ts";
 
-
 const useGameBase = () => {
   const resourceRef = useRef<ResourceStoreClass | null>(null) as MutableRefObject<ResourceStoreClass | null>;
   const resources = resourceRef.current as ResourceStoreClass;
+  // This is only needed to avoid a side refresh after every change
   const {fetchResources} = useApi();
   const [isFetching, setIsFetching] = useState(true);
   const tick = useTick();
