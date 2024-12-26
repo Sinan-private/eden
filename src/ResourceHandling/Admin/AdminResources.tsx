@@ -24,7 +24,6 @@ export const AdminResources = () => {
       </div>
     </>
   )
-
 }
 
 type ResourceTypeProps = {
