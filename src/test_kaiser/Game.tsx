@@ -1,9 +1,9 @@
 import {observer} from "mobx-react";
 import styled from "styled-components";
-import {useGame} from "../context/game.context.ts";
 import {TopBar} from "./TopBar.tsx";
 import {ResourceClass} from "../Resource";
 import {useAdmin} from "../Resource/Admin";
+import {useGame} from "../Resource/context/game.context.ts";
 
 export const Game = () => {
   const {groupByType, getByType, produce} = useGame().resources;

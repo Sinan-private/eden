@@ -1,4 +1,4 @@
-import {ResourceStoreClass} from "../ResourceHandling";
+import {ResourceStoreClass} from "../Resource";
 
 export const resourceTurnUpdate = (resources: ResourceStoreClass) => {
   resources.produce('water', resources.get('well').value);

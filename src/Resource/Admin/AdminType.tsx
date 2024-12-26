@@ -1,8 +1,8 @@
 import {useAdmin} from "./admin.context.ts";
 import {FormControl, InputLabel, MenuItem} from "@mui/material";
 import Select from "@mui/material/Select";
-import {Resource} from "../Resource";
-import {ResourceKeys, ResourceTypes} from "../Resource/specificTypes.ts";
+import {Resource} from "../ResourceHandler";
+import {ResourceKeys, ResourceTypes} from "../ResourceHandler/specificTypes.ts";
 import {observer} from "mobx-react";
 import {resourceTypes} from "../generated/resourceTypes.ts";
 

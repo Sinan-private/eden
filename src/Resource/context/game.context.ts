@@ -2,9 +2,10 @@ import {useRef, useState, MutableRefObject, useEffect} from "react";
 import {createContainer} from "unstated-next";
 import {useTick} from "./tick.ts";
 import {useApi} from "./useApi.ts";
-import {useComponentMount, usePrevious} from "../Resource/hooks";
-import {ResourceStore, ResourceStoreClass} from "../Resource";
-import {resourceTurnUpdate} from "../gameRules/getResourceTurnUpdate.ts";
+import {ResourceStoreClass} from "../ResourceHandler/specificTypes.ts";
+import {useComponentMount, usePrevious} from "../hooks";
+import {ResourceStore} from "../ResourceHandler/ResourceStore.ts";
+import {resourceTurnUpdate} from "../../gameRules/getResourceTurnUpdate.ts";
 
 const useGameBase = () => {
   const resourceRef = useRef<ResourceStoreClass | null>(null) as MutableRefObject<ResourceStoreClass | null>;

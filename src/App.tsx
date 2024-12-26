@@ -1,21 +1,17 @@
 import './App.css'
 import {ThemeProvider} from "@mui/material";
-import {GameProvider} from "./context/game.context.ts";
-import AdminPanel, {AdminProvider} from "./ResourceHandling/Admin";
 import {theme} from "../globalTheme.ts";
-import Game from "./GameUI";
+import {Game} from "./test_kaiser/Game.tsx";
+import {ResourceProvider} from "./Resource";
 
 function App() {
 
   return (
     <>
       <ThemeProvider theme={theme}>
-          <GameProvider>
-            <AdminProvider>
-              <Game/>
-              <AdminPanel/>
-            </AdminProvider>
-          </GameProvider>
+        <ResourceProvider>
+          <Game />
+        </ResourceProvider>
       </ThemeProvider>
     </>
   )
