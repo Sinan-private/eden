@@ -1,12 +1,11 @@
 import {observer} from "mobx-react";
 import styled from "styled-components";
 import {TopBar} from "./TopBar.tsx";
-import {ResourceClass, ResourceStoreClass} from "../Resource";
+import {ResourceClass} from "../Resource";
 import {useGame} from "../Resource/context/game.context.ts";
-import {useComponentMount} from "../Resource/hooks";
 
 export const Game = () => {
-  const {resources, subscribeTurUpdate} = useGame();
+  const {resources} = useGame();
   const {groupByType, getByType, produce} = resources;
   const resourceGroups = groupByType();
   const byType = getByType('processed_resource');
@@ -16,9 +15,6 @@ export const Game = () => {
     resources.produce('flour', resources.get('windmill').value);
     resources.produce('bread', resources.get('bakery').value);
   }
-  useComponentMount(() => {
-    subscribeTurUpdate(resourceTurnUpdate)
-  })
 
   return (
     <>

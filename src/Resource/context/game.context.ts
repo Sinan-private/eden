@@ -9,7 +9,6 @@ import {resourceTurnUpdate} from "../../gameRules/getResourceTurnUpdate.ts";
 
 const useGameBase = (initialState: any) => {
   // console.log('initialState', initialState)
-  const subscriptionRef = useRef([])
   const resourceRef = useRef<ResourceStoreClass | null>(null) as MutableRefObject<ResourceStoreClass | null>;
   const resources = resourceRef.current as ResourceStoreClass;
   // This is only needed to avoid a side refresh after every change
@@ -17,9 +16,7 @@ const useGameBase = (initialState: any) => {
   const [isFetching, setIsFetching] = useState(true);
   const tick = useTick();
   const prevTick = usePrevious(tick.current);
-  const subscribeTurUpdate = (subscription: () => {}) => {
-    subscriptionRef.current = subscriptionRef.current.concat(subscription);
-  }
+
   useComponentMount(async () => {
     const rawState = await fetchResources();
     resourceRef.current = new ResourceStore(rawState);
@@ -29,8 +26,7 @@ const useGameBase = (initialState: any) => {
   useEffect(() => {
     const nextTick = tick.isActive && tick.current && tick.current !== prevTick;
     if (nextTick) {
-      // resourceTurnUpdate(resources)
-      console.log(subscriptionRef.current)
+      resourceTurnUpdate(resources)
     }
   }, [prevTick, resources, tick]);
 
@@ -39,7 +35,6 @@ const useGameBase = (initialState: any) => {
     resources,
     isFetching,
     tick,
-    subscribeTurUpdate,
   };
 }
 

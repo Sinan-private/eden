@@ -1,7 +1,7 @@
 [
   {
     "key": "liquid_mana_level_1",
-    "value": 1,
+    "value": 100,
     "min": 0,
     "max": null,
     "label": "Liquid mana level 1",
@@ -12,7 +12,7 @@
   },
   {
     "key": "liquid_mana_level_2",
-    "value": 1,
+    "value": 100,
     "min": 0,
     "max": null,
     "label": "Liquid mana level 2",
@@ -23,7 +23,7 @@
   },
   {
     "key": "liquid_mana_level_3",
-    "value": 1,
+    "value": 100,
     "min": 0,
     "max": null,
     "label": "Liquid mana level 3",
@@ -34,7 +34,7 @@
   },
   {
     "key": "liquid_mana_level_4",
-    "value": 1,
+    "value": 100,
     "min": 0,
     "max": null,
     "label": "Liquid mana level 4",
@@ -45,7 +45,7 @@
   },
   {
     "key": "liquid_mana_level_5",
-    "value": 1,
+    "value": 100,
     "min": 0,
     "max": null,
     "label": "Liquid mana level 5",
