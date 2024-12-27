@@ -1,23 +1,166 @@
 [
   {
-    "key": "liquid_mana_level_2",
-    "value": 1,
-    "min": 0,
-    "max": null,
-    "label": "Liquid mana level 2",
-    "type": "liquid_mana",
-    "iconName": "empty",
-    "cost": null,
-    "revealedAt": null
-  },
-  {
     "key": "liquid_mana_level_1",
     "value": 1,
     "min": 0,
     "max": null,
     "label": "Liquid mana level 1",
     "type": "liquid_mana",
-    "iconName": "empty",
+    "iconName": "water",
+    "cost": null,
+    "revealedAt": null
+  },
+  {
+    "key": "liquid_mana_level_2",
+    "value": 1,
+    "min": 0,
+    "max": null,
+    "label": "Liquid mana level 2",
+    "type": "liquid_mana",
+    "iconName": "water",
+    "cost": null,
+    "revealedAt": null
+  },
+  {
+    "key": "liquid_mana_level_3",
+    "value": 1,
+    "min": 0,
+    "max": null,
+    "label": "Liquid mana level 3",
+    "type": "liquid_mana",
+    "iconName": "water",
+    "cost": null,
+    "revealedAt": null
+  },
+  {
+    "key": "liquid_mana_level_4",
+    "value": 1,
+    "min": 0,
+    "max": null,
+    "label": "Liquid mana level 4",
+    "type": "liquid_mana",
+    "iconName": "water",
+    "cost": null,
+    "revealedAt": null
+  },
+  {
+    "key": "liquid_mana_level_5",
+    "value": 1,
+    "min": 0,
+    "max": null,
+    "label": "Liquid mana level 5",
+    "type": "liquid_mana",
+    "iconName": "water",
+    "cost": null,
+    "revealedAt": null
+  },
+  {
+    "key": "dirty_mana_level_1",
+    "value": 1,
+    "min": 0,
+    "max": null,
+    "label": "Dirty mana level 1",
+    "type": "dirty_mana",
+    "iconName": "coal",
+    "cost": null,
+    "revealedAt": null
+  },
+  {
+    "key": "dirty_mana_level_2",
+    "value": 1,
+    "min": 0,
+    "max": null,
+    "label": "Dirty mana level 2",
+    "type": "dirty_mana",
+    "iconName": "coal",
+    "cost": null,
+    "revealedAt": null
+  },
+  {
+    "key": "dirty_mana_level_3",
+    "value": 1,
+    "min": 0,
+    "max": null,
+    "label": "Dirty mana level 3",
+    "type": "dirty_mana",
+    "iconName": "coal",
+    "cost": null,
+    "revealedAt": null
+  },
+  {
+    "key": "dirty_mana_level_4",
+    "value": 1,
+    "min": 0,
+    "max": null,
+    "label": "Dirty mana level 4",
+    "type": "dirty_mana",
+    "iconName": "coal",
+    "cost": null,
+    "revealedAt": null
+  },
+  {
+    "key": "dirty_mana_level_5",
+    "value": 1,
+    "min": 0,
+    "max": null,
+    "label": "Dirty mana level 5",
+    "type": "dirty_mana",
+    "iconName": "coal",
+    "cost": null,
+    "revealedAt": null
+  },
+  {
+    "key": "raw_mana_level_1",
+    "value": 1,
+    "min": 0,
+    "max": null,
+    "label": "Raw mana level 1",
+    "type": "raw_mana",
+    "iconName": "stone",
+    "cost": null,
+    "revealedAt": null
+  },
+  {
+    "key": "raw_mana_level_2",
+    "value": 1,
+    "min": 0,
+    "max": null,
+    "label": "Raw mana level 2",
+    "type": "raw_mana",
+    "iconName": "stone",
+    "cost": null,
+    "revealedAt": null
+  },
+  {
+    "key": "raw_mana_level_3",
+    "value": 1,
+    "min": 0,
+    "max": null,
+    "label": "Raw mana level 3",
+    "type": "raw_mana",
+    "iconName": "stone",
+    "cost": null,
+    "revealedAt": null
+  },
+  {
+    "key": "raw_mana_level_4",
+    "value": 1,
+    "min": 0,
+    "max": null,
+    "label": "Raw mana level 4",
+    "type": "raw_mana",
+    "iconName": "stone",
+    "cost": null,
+    "revealedAt": null
+  },
+  {
+    "key": "raw_mana_level_5",
+    "value": 1,
+    "min": 0,
+    "max": null,
+    "label": "Raw mana level 5",
+    "type": "raw_mana",
+    "iconName": "stone",
     "cost": null,
     "revealedAt": null
   }

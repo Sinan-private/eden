@@ -6,6 +6,7 @@ import {AdminResource} from "./AdminResource.tsx";
 import {observer} from "mobx-react";
 import {useState} from "react";
 import {EditResource} from "./EditResource.tsx";
+import {useComponentMount} from "../../hooks";
 
 export const AdminResources = observer(() => {
   const {groupByType} = useAdmin().resources;
@@ -16,9 +17,10 @@ export const AdminResources = observer(() => {
       <div style={{display: "flex", justifyContent: "center", flexDirection: "row"}}>
         <div className="card">
           {types.map(({type, resources}) => (
-            <ResourceType key={type} type={type} resources={resources}/>
+            <ResourceType key={type} type={type} resources={resources} label={"Add " + type}/>
           ))}
-          {!types.length && <ResourceType type={'' as ResourceTypes} resources={[]}/>}
+          <div style={{height: 20}} />
+         <ResourceType type={'' as ResourceTypes} resources={[]}/>
         </div>
       </div>
     </>
@@ -27,10 +29,11 @@ export const AdminResources = observer(() => {
 
 type ResourceTypeProps = {
   type: ResourceTypes;
-  resources: Resource<ResourceKeys, ResourceTypes>[]
+  resources: Resource<ResourceKeys, ResourceTypes>[];
+  label?: string;
 }
 
-const ResourceType = observer(({type, resources}: ResourceTypeProps) => {
+const ResourceType = observer(({type, resources, label = "Add resource"}: ResourceTypeProps) => {
   const [isAddMode, setIsAddMode] = useState(false);
   const onOpenAddMode = () => setIsAddMode(true);
   const onCloseAddMode = () => setIsAddMode(false);
@@ -44,15 +47,23 @@ const ResourceType = observer(({type, resources}: ResourceTypeProps) => {
         <AdminResource key={resource.key} resource={resource}/>
       ))}
       {!isAddMode
-        ? <button onClick={onOpenAddMode}>Add resource</button>
-        : <AddResource closeAddMode={onCloseAddMode} />
+        ? <button onClick={onOpenAddMode}>{label}</button>
+        : <AddResource closeAddMode={onCloseAddMode} type={type} />
       }
     </>
   )
 })
 
-const AddResource = observer(({closeAddMode}: {closeAddMode: () => void}) => {
+type AddResourceProps = {
+  type: ResourceTypes;
+  closeAddMode: () => void;
+}
+
+const AddResource = observer(({closeAddMode, type}: AddResourceProps) => {
   const {newResource, addEditableResource} = useAdmin().resources;
+  useComponentMount(() => {
+    newResource.setTo({type})
+  })
   const onSubmit = () => {
     closeAddMode()
     addEditableResource()
