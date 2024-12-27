@@ -17,10 +17,11 @@ type EditResourceProps = {
 }
 
 export const EditResource = observer(({resource, onClose, onSubmit, enableKeyEdit}: EditResourceProps) => {
+  console.log(resource)
   return (
     <>
       <Box position="relative" pt={4} display="flex" gap={4}>
-        <AdminGenerics onClose={onClose} enableKeyEdit={enableKeyEdit} resourceId={resource.id} />
+        <AdminGenerics onClose={onClose} enableKeyEdit={enableKeyEdit} resource={resource} />
         <AdminNameAndIcon resource={resource} enableKeyEdit={enableKeyEdit} />
         <AdminAmounts resource={resource} enableKeyEdit={enableKeyEdit} />
         <AdminType resource={resource} enableKeyEdit={enableKeyEdit} />

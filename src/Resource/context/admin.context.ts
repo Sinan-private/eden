@@ -6,7 +6,7 @@ import {ResourceStore} from "../ResourceHandler/ResourceStore.ts";
 import {Icon} from "../ResourceHandler/genericTypes.ts";
 import {Resource} from "../ResourceHandler";
 import {useToggle, useComponentMount} from "../hooks";
-import {toJS} from "mobx";
+import {SelectChangeEvent} from "@mui/material";
 
 const useAdminBase = () => {
   const {
@@ -29,8 +29,6 @@ const useAdminBase = () => {
   const handleOpenIconPicker = () => setOpenIconPicker(true);
   const handleCloseIconPicker = () => setOpenIconPicker(false);
 
-  console.log(toJS(resources?.allResources)?.map(({key, id}) => ({key, id})))
-
   useComponentMount(async () => {
     const rawState = await fetchResources();
     setResources(new ResourceStore(rawState));
@@ -43,9 +41,9 @@ const useAdminBase = () => {
   }
 
   const write__initialResources = useCallback(() => {
-      console.log(resources?.state.length)
+      // console.log(resources?.state.length)
     updateResources(resources!.state).then(() => {
-      console.log(resources?.state.length)
+      // console.log(resources?.state.length)
     })
       setResourcesOriginal(new ResourceStore(resources!.state))
   }, [resources, updateResources])
@@ -80,8 +78,7 @@ const useAdminBase = () => {
     return false
   }, [resources, resourcesOriginal])
 
-  const getActions = useCallback((resourceId: string, enableKeyEdit?: boolean) => {
-    const resource = resources!.getById(resourceId)!
+  const getActions = useCallback((resource: Resource<ResourceKeys, ResourceTypes>, enableKeyEdit?: boolean) => {
 
     const onSelectIcon = (clickedIcon: Icon) => {
       resource.setTo({iconName: clickedIcon.name})
@@ -114,7 +111,7 @@ const useAdminBase = () => {
         resource?.setTo({max: Infinity})
       }
     }
-    const onSetType = (e: any) => {
+    const onSetType = (e: SelectChangeEvent<ResourceTypes>) => {
       const _type = e.target.value as ResourceTypes
       resource?.setTo({type: _type})
     }
@@ -179,7 +176,8 @@ const areObjectsEqual = <K extends string>(obj1: ResourceState, obj2?: Partial<R
   const keys2 = Object.keys(obj2) as K[];
 
   for (const key of keys1) {
-    // @ts-ignore
+    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+    // @ts-expect-error
     if (!keys2.includes(key) || !areObjectsEqual(obj1[key], obj2[key])) {
       return false;
     }

@@ -2,13 +2,14 @@ import {useAdmin} from "../../context/admin.context.ts";
 import {Box, IconButton} from "@mui/material";
 import Close from "@mui/icons-material/Close";
 import {IconPickerModal} from "../IconPicker/IconPickerModal.tsx";
+import {ResourceClass} from "../../ResourceHandler/specificTypes.ts";
 
 type AdminGenericsProps = {
   onClose(): void;
-  resourceId: string;
+  resource: ResourceClass;
   enableKeyEdit?: boolean
 }
-export const AdminGenerics = ({onClose, resourceId, enableKeyEdit}: AdminGenericsProps) => {
+export const AdminGenerics = ({onClose, resource, enableKeyEdit}: AdminGenericsProps) => {
   const {
     openIconPicker,
     handleCloseIconPicker,
@@ -18,7 +19,7 @@ export const AdminGenerics = ({onClose, resourceId, enableKeyEdit}: AdminGeneric
   } = useAdmin()
   const {
     onSelectIcon,
-  } = getActions(resourceId, enableKeyEdit)
+  } = getActions(resource, enableKeyEdit)
   return (
     <>
       {!!onClose &&

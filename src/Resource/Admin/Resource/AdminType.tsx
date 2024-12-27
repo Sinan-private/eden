@@ -11,9 +11,8 @@ type AdminTypeProps = {
   enableKeyEdit?: boolean;
 }
 export const AdminType = observer(({resource, enableKeyEdit}: AdminTypeProps) => {
-
   const {getActions} = useAdmin();
-  const {onSetType} = getActions(resource.id, enableKeyEdit)
+  const {onSetType} = getActions(resource, enableKeyEdit)
   return (
     <FormControl fullWidth>
       <InputLabel id="demo-simple-select-label">Type</InputLabel>

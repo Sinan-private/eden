@@ -5,7 +5,6 @@ import {Box, Typography} from "@mui/material";
 import {AdminResource} from "./AdminResource.tsx";
 import {observer} from "mobx-react";
 import {useState} from "react";
-import {useComponentMount} from "../../hooks";
 import {EditResource} from "./EditResource.tsx";
 
 export const AdminResources = observer(() => {
@@ -53,23 +52,18 @@ const ResourceType = observer(({type, resources}: ResourceTypeProps) => {
 })
 
 const AddResource = observer(({closeAddMode}: {closeAddMode: () => void}) => {
-  const {get, addResource} = useAdmin().resources;
-  const xx = new Resource({key: '' as ResourceKeys})
-  useComponentMount(() => {
-    console.log('render')
-    // addResource({key: '' as ResourceKeys})
-  });
-  // const resource = get('' as ResourceKeys);
-  console.log(xx)
-  // if (!resource) return null;
-
+  const {newResource, addEditableResource} = useAdmin().resources;
+  const onSubmit = () => {
+    closeAddMode()
+    addEditableResource()
+  }
 
   return (
     <Box maxWidth={1000}>
       <EditResource
         enableKeyEdit
-        resource={xx}
-        onSubmit={closeAddMode}
+        resource={newResource}
+        onSubmit={onSubmit}
         onClose={closeAddMode}
       />
     </Box>

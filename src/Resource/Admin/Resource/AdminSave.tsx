@@ -9,7 +9,7 @@ type AdminSaveProps = {
 }
 export const AdminSave = observer(({resource, onSubmit}: AdminSaveProps) => {
   const {getActions} = useAdmin();
-  const {onSubmitChanges, saveDisabled} = getActions(resource.id);
+  const {onSubmitChanges, saveDisabled} = getActions(resource);
   const submitChanges = () => onSubmitChanges(onSubmit)
 
   return (

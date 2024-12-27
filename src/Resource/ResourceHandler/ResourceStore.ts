@@ -5,11 +5,13 @@ import {ResourceCostUpdate} from "./genericTypes.ts";
 
 export class ResourceStore<K extends string, T extends string> {
   public resources: Map<K, Resource<K, T>> = new Map();
+  // This is the one that gets edited when the user wants to add a new resource
+  public newResource: Resource<K, T>;
 
   constructor(initialResources: ResourceUpdateProps<K, T>[]) {
     this.initializeResources(initialResources);
+    this.newResource = new Resource({key: '' as K})
     makeAutoObservable(this);
-    // console.log(this.resources, initialResources)
   }
 
   public get = (key: K) => {
@@ -31,8 +33,12 @@ export class ResourceStore<K extends string, T extends string> {
     });
   }
 
+  public addEditableResource = () => {
+    this.resources.set(this.newResource.key, this.newResource);
+    this.newResource = new Resource({key: '' as K})
+  }
+
   public addResource = (resource: ResourceUpdateProps<K, T>) => {
-    console.log(resource, this.allResources.map(({key}) => key))
     this.resources.set(resource.key, new Resource(resource));
   }
 

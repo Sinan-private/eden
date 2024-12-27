@@ -20,7 +20,7 @@ export const AdminAmounts = observer(({resource, enableKeyEdit}: AdminAmountsPro
     onSetMax,
     onSetValue,
     onBlurMax,
-  } = getActions(resource.id, enableKeyEdit)
+  } = getActions(resource, enableKeyEdit)
   return (
     <Stack direction="row" alignItems="center">
       <TextField

@@ -22,7 +22,7 @@ export const AdminNameAndIcon = observer(({resource, enableKeyEdit}: AdminNameAn
     onSetLabel,
     onSetKey,
     keyAlreadyExists
-  } = getActions(resource.id, enableKeyEdit)
+  } = getActions(resource, enableKeyEdit)
   return (
     <Stack direction="row" spacing={1} alignItems="center" minWidth={280}>
       <img
