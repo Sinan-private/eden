@@ -1,4 +1,5 @@
 import {ResourceTypes, ResourceState} from "../Resource";
+import {useCallback} from "react";
 
 export const useApi = () => {
   const fetchResources = async () => {
@@ -10,9 +11,8 @@ export const useApi = () => {
     }
   };
 
-  const updateResources = async (newResources?: ResourceState[]) => {
+  const updateResources =  useCallback(async (newResources?: ResourceState[]) => {
     if (!newResources) return;
-    console.log(newResources)
     try {
       const response = await fetch('/api/resources', {
         method: 'POST',
@@ -26,7 +26,7 @@ export const useApi = () => {
     } catch (error) {
       console.error('Error updating resources:', error);
     }
-  };
+  }, [])
 
   const addType = async (type: string[]) => {
     try {

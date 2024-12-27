@@ -32,6 +32,7 @@ export class ResourceStore<K extends string, T extends string> {
   }
 
   public addResource = (resource: ResourceUpdateProps<K, T>) => {
+    console.log(resource, this.allResources.map(({key}) => key))
     this.resources.set(resource.key, new Resource(resource));
   }
 

@@ -54,18 +54,21 @@ const ResourceType = observer(({type, resources}: ResourceTypeProps) => {
 
 const AddResource = observer(({closeAddMode}: {closeAddMode: () => void}) => {
   const {get, addResource} = useAdmin().resources;
+  const xx = new Resource({key: '' as ResourceKeys})
   useComponentMount(() => {
     console.log('render')
-    addResource({key: '' as ResourceKeys})
+    // addResource({key: '' as ResourceKeys})
   });
-  const resource = get('' as ResourceKeys);
-  if (!resource) return null;
+  // const resource = get('' as ResourceKeys);
+  console.log(xx)
+  // if (!resource) return null;
+
 
   return (
     <Box maxWidth={1000}>
       <EditResource
         enableKeyEdit
-        resource={resource}
+        resource={xx}
         onSubmit={closeAddMode}
         onClose={closeAddMode}
       />

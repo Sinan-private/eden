@@ -1,4 +1,4 @@
-import {ResourceTypes, ResourceState} from "../Resource";
+import {ResourceTypes, ResourceState} from "../ResourceHandler/specificTypes.ts";
 
 export const useApi = () => {
   const fetchResources = async () => {

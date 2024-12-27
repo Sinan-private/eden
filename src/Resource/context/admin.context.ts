@@ -6,6 +6,7 @@ import {ResourceStore} from "../ResourceHandler/ResourceStore.ts";
 import {Icon} from "../ResourceHandler/genericTypes.ts";
 import {Resource} from "../ResourceHandler";
 import {useToggle, useComponentMount} from "../hooks";
+import {toJS} from "mobx";
 
 const useAdminBase = () => {
   const {
@@ -28,7 +29,7 @@ const useAdminBase = () => {
   const handleOpenIconPicker = () => setOpenIconPicker(true);
   const handleCloseIconPicker = () => setOpenIconPicker(false);
 
-
+  console.log(toJS(resources?.allResources)?.map(({key, id}) => ({key, id})))
 
   useComponentMount(async () => {
     const rawState = await fetchResources();
@@ -41,13 +42,13 @@ const useAdminBase = () => {
     setResources(new ResourceStore(resourcesOriginal!.state))
   }
 
-  const write__initialResources = () => {
+  const write__initialResources = useCallback(() => {
       console.log(resources?.state.length)
     updateResources(resources!.state).then(() => {
       console.log(resources?.state.length)
-      setResourcesOriginal(new ResourceStore(resources!.state))
     })
-  }
+      setResourcesOriginal(new ResourceStore(resources!.state))
+  }, [resources, updateResources])
 
   const write__removeResource = (key: ResourceKeys) => {
     resources?.removeResource(key);
@@ -72,12 +73,12 @@ const useAdminBase = () => {
     return !resources?.isResourceReferenced(key)
   }
 
-  const isDisabled = (key: ResourceKeys) => {
+  const isDisabled = useCallback((key: ResourceKeys) => {
     if (resources?.get(key) && resourcesOriginal?.get(key)) {
       return areObjectsEqual(resources!.get(key).state, resourcesOriginal!.get(key).state)
     }
     return false
-  }
+  }, [resources, resourcesOriginal])
 
   const getActions = useCallback((resourceId: string, enableKeyEdit?: boolean) => {
     const resource = resources!.getById(resourceId)!
@@ -87,6 +88,7 @@ const useAdminBase = () => {
       handleCloseIconPicker()
     }
     const onSetKey = (e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+      console.log(resource)
       resource.setTo({key: e.target.value as ResourceKeys})
       if (isKeyPristine) {
         setIsKeyPristine(false)
@@ -123,7 +125,7 @@ const useAdminBase = () => {
         onSubmit();
       }
     }
-    const saveDisabled = isDisabled(resource.key) || (enableKeyEdit && keyAlreadyExists) || !resource!.key.length;
+    const saveDisabled = isDisabled(resource?.key) || (enableKeyEdit && keyAlreadyExists) || !resource?.key.length;
 
     return {
       onSelectIcon,
