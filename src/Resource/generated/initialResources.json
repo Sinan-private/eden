@@ -62,7 +62,20 @@
     "label": "Dirty mana level 1",
     "type": "dirty_mana",
     "iconName": "coal",
-    "cost": null,
+    "cost": {
+      "give": [
+        {
+          "key": "liquid_mana_level_1",
+          "value": 1
+        }
+      ],
+      "gain": [
+        {
+          "key": "dirty_mana_level_1",
+          "value": 1
+        }
+      ]
+    },
     "revealedAt": null
   },
   {
@@ -73,7 +86,20 @@
     "label": "Dirty mana level 2",
     "type": "dirty_mana",
     "iconName": "coal",
-    "cost": null,
+    "cost": {
+      "give": [
+        {
+          "key": "liquid_mana_level_2",
+          "value": 1
+        }
+      ],
+      "gain": [
+        {
+          "key": "dirty_mana_level_2",
+          "value": 1
+        }
+      ]
+    },
     "revealedAt": null
   },
   {
@@ -84,7 +110,20 @@
     "label": "Dirty mana level 3",
     "type": "dirty_mana",
     "iconName": "coal",
-    "cost": null,
+    "cost": {
+      "give": [
+        {
+          "key": "liquid_mana_level_3",
+          "value": 1
+        }
+      ],
+      "gain": [
+        {
+          "key": "dirty_mana_level_3",
+          "value": 1
+        }
+      ]
+    },
     "revealedAt": null
   },
   {
@@ -95,7 +134,20 @@
     "label": "Dirty mana level 4",
     "type": "dirty_mana",
     "iconName": "coal",
-    "cost": null,
+    "cost": {
+      "give": [
+        {
+          "key": "liquid_mana_level_4",
+          "value": 1
+        }
+      ],
+      "gain": [
+        {
+          "key": "dirty_mana_level_4",
+          "value": 1
+        }
+      ]
+    },
     "revealedAt": null
   },
   {
@@ -106,7 +158,20 @@
     "label": "Dirty mana level 5",
     "type": "dirty_mana",
     "iconName": "coal",
-    "cost": null,
+    "cost": {
+      "give": [
+        {
+          "key": "liquid_mana_level_5",
+          "value": 1
+        }
+      ],
+      "gain": [
+        {
+          "key": "dirty_mana_level_5",
+          "value": 1
+        }
+      ]
+    },
     "revealedAt": null
   },
   {
@@ -117,7 +182,20 @@
     "label": "Raw mana level 1",
     "type": "raw_mana",
     "iconName": "stone",
-    "cost": null,
+    "cost": {
+      "give": [
+        {
+          "key": "dirty_mana_level_1",
+          "value": 1
+        }
+      ],
+      "gain": [
+        {
+          "key": "raw_mana_level_1",
+          "value": 1
+        }
+      ]
+    },
     "revealedAt": null
   },
   {
@@ -128,7 +206,20 @@
     "label": "Raw mana level 2",
     "type": "raw_mana",
     "iconName": "stone",
-    "cost": null,
+    "cost": {
+      "give": [
+        {
+          "key": "dirty_mana_level_2",
+          "value": 1
+        }
+      ],
+      "gain": [
+        {
+          "key": "raw_mana_level_2",
+          "value": 1
+        }
+      ]
+    },
     "revealedAt": null
   },
   {
@@ -139,7 +230,20 @@
     "label": "Raw mana level 3",
     "type": "raw_mana",
     "iconName": "stone",
-    "cost": null,
+    "cost": {
+      "give": [
+        {
+          "key": "dirty_mana_level_3",
+          "value": 1
+        }
+      ],
+      "gain": [
+        {
+          "key": "raw_mana_level_3",
+          "value": 1
+        }
+      ]
+    },
     "revealedAt": null
   },
   {
@@ -150,7 +254,20 @@
     "label": "Raw mana level 4",
     "type": "raw_mana",
     "iconName": "stone",
-    "cost": null,
+    "cost": {
+      "give": [
+        {
+          "key": "dirty_mana_level_4",
+          "value": 1
+        }
+      ],
+      "gain": [
+        {
+          "key": "raw_mana_level_4",
+          "value": 1
+        }
+      ]
+    },
     "revealedAt": null
   },
   {
@@ -161,7 +278,20 @@
     "label": "Raw mana level 5",
     "type": "raw_mana",
     "iconName": "stone",
-    "cost": null,
+    "cost": {
+      "give": [
+        {
+          "key": "dirty_mana_level_5",
+          "value": 1
+        }
+      ],
+      "gain": [
+        {
+          "key": "raw_mana_level_5",
+          "value": 1
+        }
+      ]
+    },
     "revealedAt": null
   }
 ]
