@@ -1,12 +1,12 @@
 import {ChangeEvent, useCallback, useState} from "react";
 import {createContainer} from "unstated-next";
-import {useApi} from "../../context/useApi.ts";
 import {ResourceKeys, ResourceState, ResourceStoreClass, ResourceTypes} from "../ResourceHandler/specificTypes.ts";
 import {ResourceStore} from "../ResourceHandler/ResourceStore.ts";
 import {Icon} from "../ResourceHandler/genericTypes.ts";
 import {Resource} from "../ResourceHandler";
 import {useToggle, useComponentMount} from "../hooks";
 import {SelectChangeEvent} from "@mui/material";
+import {useApi} from "./useApi.ts";
 
 const useAdminBase = () => {
   const {

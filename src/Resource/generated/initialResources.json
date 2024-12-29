@@ -1,7 +1,7 @@
 [
   {
     "key": "liquid_mana_level_1",
-    "value": 100,
+    "value": 102,
     "min": 0,
     "max": null,
     "label": "Liquid mana level 1",

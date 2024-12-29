@@ -1,7 +1,7 @@
 import {useCallback} from "react";
 import styled from "styled-components";
 import {ResourceKeys, ResourceTypes} from "../Resource";
-import {useResource} from "../Resource/context/resource.context.ts";
+import {useResource} from "../Resource";
 
 export const TopBar = () => {
   const {get, getByType} = useResource().resources;
