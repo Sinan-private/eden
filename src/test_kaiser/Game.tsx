@@ -1,18 +1,15 @@
 import {observer} from "mobx-react";
 import styled from "styled-components";
 import {TopBar} from "./TopBar.tsx";
-import {ResourceClass} from "../Resource";
-import {useGame} from "../Resource/context/game.context.ts";
-import {Subscription, useTickSubscription} from "../Resource/hooks/useTickSubscription.ts";
-import {useTick} from "../Resource/context/tick.context.ts";
+import {useResource, useTickSubscription, ResourceClass, TickSubscription} from "../Resource";
 
 export const Game = () => {
-  const {resources} = useGame();
+  const {resources} = useResource();
   const {groupByType, getByType} = resources;
 
   const resourceGroups = groupByType();
   const byType = getByType('liquid_mana');
-  const resourceTurnUpdate: Subscription = (tick) => {
+  const resourceTurnUpdate: TickSubscription = () => {
     resources.produce('dirty_mana_level_1', 2);
     resources.produce('raw_mana_level_1');
     resources.get('liquid_mana_level_2').updateValueBy(5);
@@ -23,7 +20,7 @@ export const Game = () => {
 
   useTickSubscription(resourceTurnUpdate);
 
-      const test = resources.get('liquid_mana_level_5').id
+      // const test = resources.get('liquid_mana_level_5').id
       // // const test = resources.allResources.map(({id}) => id)
       // console.log(test)
 
@@ -50,7 +47,7 @@ export const Game = () => {
 }
 
 const TradeButton = ({resource, increment = 1}: ButtonProps) => {
-  const {produce} = useGame().resources;
+  const {produce} = useResource().resources;
   const onButtonClick = () => {
     produce(resource.key, increment)
   }
@@ -104,7 +101,7 @@ const GameControl = () => {
       isActive,
       start,
       stop,
-  } = useTick();
+  } = useTickSubscription();
   return (
     <StylesGameControl>
       <div>

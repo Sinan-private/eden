@@ -1,4 +1,4 @@
-import {GameProvider} from "../context/game.context.ts";
+import {ResourceRawProvider} from "../context/resource.context.ts";
 import {AdminProvider} from "../Admin";
 import {Child} from "../Child.tsx";
 import React from "react";
@@ -15,7 +15,7 @@ export type ResourceProviderProps = {
 export const AdminResourceProvider = ({children, initialState}: ResourceProviderProps) => {
 
   return (
-    <GameProvider>
+    <ResourceRawProvider>
       <TickProvider>
         <AdminProvider>
           <Child>
@@ -24,6 +24,6 @@ export const AdminResourceProvider = ({children, initialState}: ResourceProvider
           </Child>
         </AdminProvider>
       </TickProvider>
-    </GameProvider>
+    </ResourceRawProvider>
   )
 }

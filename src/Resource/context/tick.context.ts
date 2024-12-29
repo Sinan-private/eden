@@ -9,7 +9,7 @@ const useTickBase = () => {
   const stop = () => setIsActive(false);
 
   useEffect(() => {
-    let id: any = null;
+    let id: ReturnType<typeof setInterval> | null = null;
     // let id: NodeJS.Timeout | null = null;
 
     if (isActive) {

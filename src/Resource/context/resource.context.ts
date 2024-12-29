@@ -5,7 +5,7 @@ import {ResourceStoreClass} from "../ResourceHandler/specificTypes.ts";
 import {useComponentMount} from "../hooks";
 import {ResourceStore} from "../ResourceHandler/ResourceStore.ts";
 
-const useGameBase = () => {
+const useResourceBase = () => {
   const resourceRef = useRef<ResourceStoreClass | null>(null) as MutableRefObject<ResourceStoreClass | null>;
   const resources = resourceRef.current as ResourceStoreClass;
   // This is only needed to avoid a side refresh after every change
@@ -24,6 +24,6 @@ const useGameBase = () => {
 }
 
 
-const useGameContainer = createContainer(useGameBase);
-export const useGame = useGameContainer.useContainer;
-export const GameProvider = useGameContainer.Provider;
+const useResourceContainer = createContainer(useResourceBase);
+export const useResource = useResourceContainer.useContainer;
+export const ResourceRawProvider = useResourceContainer.Provider;

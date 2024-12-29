@@ -1,8 +1,8 @@
 import React from "react";
-import {useGame} from "./context/game.context.ts";
+import {useResource} from "./context/resource.context.ts";
 
 export const Child  = ({children}: {children: React.ReactNode})=> {
-  const {isFetching} = useGame();
+  const {isFetching} = useResource();
 
   return isFetching ? null : children
 }
