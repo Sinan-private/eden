@@ -1,6 +1,6 @@
 import {useRef, useState, MutableRefObject, useEffect} from "react";
 import {createContainer} from "unstated-next";
-import {useTick} from "./tick.ts";
+import {useTick} from "./useTick.ts";
 import {useApi} from "./useApi.ts";
 import {useComponentMount, usePrevious} from "../Resource/hooks";
 import {ResourceStore, ResourceStoreClass} from "../Resource";
@@ -14,6 +14,10 @@ const useGameBase = () => {
   const [isFetching, setIsFetching] = useState(true);
   const tick = useTick();
   const prevTick = usePrevious(tick.current);
+
+  const subscribeToTick = (callback: (tick: number) => void) => {
+    return tick.subscribe(callback); // Directly use useTick's subscription mechanism
+  };
   useComponentMount(async () => {
     const rawState = await fetchResources();
     resourceRef.current = new ResourceStore(rawState);
@@ -32,6 +36,7 @@ const useGameBase = () => {
     resources,
     isFetching,
     tick,
+    subscribeToTick,
   };
 }
 

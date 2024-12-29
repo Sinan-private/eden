@@ -1,4 +1,3 @@
-export {ResourceStore} from "./ResourceHandler/ResourceStore.ts";
 export {ResourceProvider} from "./ResourceProvider.tsx";
 export {ResourceAdmin} from "./Admin/ResourceAdmin.tsx";
 

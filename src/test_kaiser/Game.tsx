@@ -3,18 +3,31 @@ import styled from "styled-components";
 import {TopBar} from "./TopBar.tsx";
 import {ResourceClass} from "../Resource";
 import {useGame} from "../Resource/context/game.context.ts";
+import {Subscription, useTickSubscription} from "../Resource/hooks/useTickSubscription.ts";
+import {useTick} from "../Resource/context/tick.context.ts";
 
 export const Game = () => {
   const {resources} = useGame();
-  const {groupByType, getByType, produce} = resources;
+  const {groupByType, getByType} = resources;
+
   const resourceGroups = groupByType();
-  const byType = getByType('processed_resource');
-  const resourceTurnUpdate = () => {
-    resources.produce('liquid_mana_level_1');
-    resources.produce('corn', resources.get('field').value);
-    resources.produce('flour', resources.get('windmill').value);
-    resources.produce('bread', resources.get('bakery').value);
+  const byType = getByType('liquid_mana');
+  const resourceTurnUpdate: Subscription = (tick) => {
+    resources.produce('dirty_mana_level_1', 2);
+    resources.produce('raw_mana_level_1');
+    resources.get('liquid_mana_level_2').updateValueBy(5);
+    // resources.produce('corn', resources.get('field').value);
+    // resources.produce('flour', resources.get('windmill').value);
+    // resources.produce('bread', resources.get('bakery').value);
   }
+
+  useTickSubscription(resourceTurnUpdate);
+
+      const test = resources.get('liquid_mana_level_5').id
+      // // const test = resources.allResources.map(({id}) => id)
+      // console.log(test)
+
+
 
   return (
     <>
@@ -24,9 +37,6 @@ export const Game = () => {
                 <TradeButton key={resource.key} resource={resource} increment={1}/>
             ))}
           </div>
-      <div onClick={() => produce('water', 10)}>
-        water
-      </div>
       <div style={{display: "flex", justifyContent: "center", flexDirection: "row"}}>
         {resourceGroups.map(({type, resources}) => (
           <div className="card" key={type}>
@@ -90,13 +100,11 @@ const ResourceButton = observer(({resource, onClick}: {resource: ResourceClass; 
 
 const GameControl = () => {
   const {
-    tick: {
       current,
       isActive,
       start,
       stop,
-    }
-  } = useGame();
+  } = useTick();
   return (
     <StylesGameControl>
       <div>

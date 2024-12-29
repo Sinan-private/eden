@@ -9,7 +9,7 @@ function App() {
   return (
     <>
       <ThemeProvider theme={theme}>
-        <ResourceProvider initialState={"test"}>
+        <ResourceProvider>
           <Game />
           <ResourceAdmin buttonPosition="bottom-right" />
         </ResourceProvider>
