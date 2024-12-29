@@ -108,7 +108,9 @@ export const AdminResource = ({resource}: { resource: Resource<ResourceKeys, Res
             {cost}
           </Stack>
           <Stack direction="row" alignItems="center" spacing={1}>
-            <Chip label={resource.type} size="small" variant="outlined"/>
+            {!!resource.type.length &&
+              <Chip label={resource.type} size="small" variant="outlined"/>
+            }
             <IconButton onClick={() => setEdit(true)} sx={{alignSelf: 'flex-end'}}>
               <ModeEditOutlineIcon/>
             </IconButton>
