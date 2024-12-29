@@ -6,7 +6,7 @@ import {Icon} from "../ResourceHandler/genericTypes.ts";
 import {Resource} from "../ResourceHandler";
 import {useToggle, useComponentMount} from "../hooks";
 import {SelectChangeEvent} from "@mui/material";
-import {useApi} from "./useApi.ts";
+import {useApi} from "../hooks/useApi.ts";
 
 const useAdminBase = () => {
   const {

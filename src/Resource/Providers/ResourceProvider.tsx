@@ -1,17 +1,17 @@
-import {ResourceRawProvider} from "../context/resource.context.ts";
-import {Child} from "../Child.tsx";
 import React from "react";
+import {ResourceRawProvider} from "../context/resource.context.ts";
 import {TickProvider} from "../context/tick.context.ts";
+import {Child} from "../Child.tsx";
 
 type ResourceProviderProps = {
   children: React.ReactNode;
-  initialState?: any;
+  // initialState?: any;
 }
 
-export const ResourceProvider = ({children, initialState}: ResourceProviderProps) => {
+export const ResourceProvider = ({children}: ResourceProviderProps) => {
 
   return (
-    <ResourceRawProvider initialState={initialState}>
+    <ResourceRawProvider>
       <TickProvider>
         <Child>
           {children}

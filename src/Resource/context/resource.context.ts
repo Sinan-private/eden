@@ -1,6 +1,6 @@
 import {useRef, useState, MutableRefObject} from "react";
 import {createContainer} from "unstated-next";
-import {useApi} from "./useApi.ts";
+import {useApi} from "../hooks/useApi.ts";
 import {ResourceStoreClass} from "../ResourceHandler/specificTypes.ts";
 import {useComponentMount} from "../hooks";
 import {ResourceStore} from "../ResourceHandler/ResourceStore.ts";

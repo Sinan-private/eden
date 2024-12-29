@@ -1,5 +1,5 @@
 import React from "react";
-import {useResource} from "./context/resource.context.ts";
+import {useResource} from "./index.ts";
 
 export const Child  = ({children}: {children: React.ReactNode})=> {
   const {isFetching} = useResource();
