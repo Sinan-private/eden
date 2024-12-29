@@ -2,7 +2,7 @@ import {AdminPanel} from "./AdminPanel.tsx";
 import {useAdmin} from "../context/admin.context.ts";
 import styled from "styled-components";
 
-type ResourceAdminProps = {
+export type ResourceAdminProps = {
   buttonPosition?: "top-left" | "top-right" | "bottom-right" | "bottom-left";
 }
 

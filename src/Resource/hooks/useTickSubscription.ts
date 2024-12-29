@@ -5,7 +5,8 @@ import {useEffect} from "react";
 export type Subscription = (tick: number) => void;
 
 export const useTickSubscription = (subscription: Subscription) => {
-  const {current, isActive} = useTick();
+  const tick = useTick();
+  const {current, isActive} = tick;
   const prevTick = usePrevious(current);
 
   useEffect(() => {
@@ -13,4 +14,6 @@ export const useTickSubscription = (subscription: Subscription) => {
       subscription(current)
     }
   }, [current, isActive, prevTick, subscription]);
+
+  return tick
 }
