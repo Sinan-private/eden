@@ -1,7 +1,7 @@
 import './App.css'
 import {ThemeProvider} from "@mui/material";
 import {theme} from "../globalTheme.ts";
-import {Game} from "./test_kaiser/Game.tsx";
+import {Game} from "./test_eden/Game.tsx";
 import {AdminResourceProvider} from "./Resource";
 
 function App() {

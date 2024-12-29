@@ -293,27 +293,5 @@
       ]
     },
     "revealedAt": null
-  },
-  {
-    "key": "behemoth_hight",
-    "value": 1,
-    "min": 0,
-    "max": null,
-    "label": "Behemoth hight",
-    "type": "",
-    "iconName": "arrow_up",
-    "cost": null,
-    "revealedAt": null
-  },
-  {
-    "key": "drill_depth",
-    "value": 0,
-    "min": 0,
-    "max": null,
-    "label": "Drill depth",
-    "type": "",
-    "iconName": "empty",
-    "cost": null,
-    "revealedAt": null
   }
 ]
