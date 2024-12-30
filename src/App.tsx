@@ -1,15 +1,15 @@
 import './App.css'
 import {ThemeProvider} from "@mui/material";
 import {theme} from "../globalTheme.ts";
-import {Game} from "./test_eden/Game.tsx";
 import {AdminResourceProvider} from "./Resource";
+import {Game} from "./test_eden/Game.tsx";
 
 function App() {
 
   return (
     <>
       <ThemeProvider theme={theme}>
-        <AdminResourceProvider initialState={{admin: {buttonPosition: "bottom-right"}}}>
+        <AdminResourceProvider initialState={{admin: {buttonPosition: "top-left"}}}>
           <Game/>
         </AdminResourceProvider>
       </ThemeProvider>

@@ -324,7 +324,7 @@
     "min": 0,
     "max": null,
     "label": "Behemoth climb height",
-    "type": "",
+    "type": "behemoth",
     "iconName": "arrow_up",
     "cost": null,
     "revealedAt": null
@@ -438,7 +438,7 @@
   },
   {
     "key": "behemoth_climb_speed",
-    "value": 1,
+    "value": 0,
     "min": 0,
     "max": null,
     "label": "Behemoth climb speed",
