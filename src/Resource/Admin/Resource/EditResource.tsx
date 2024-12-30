@@ -34,7 +34,7 @@ export const EditResource = observer(({resource, onClose, onSubmit, enableKeyEdi
     return () => {
       window.removeEventListener("keydown", handleKeyDown);
     };
-  }, [saveDisabled]);
+  }, [saveDisabled, submitChanges]);
   return (
     <>
       <Box position="relative" pt={4} display="flex" gap={4}>

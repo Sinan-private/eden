@@ -435,16 +435,5 @@
       ]
     },
     "revealedAt": null
-  },
-  {
-    "key": "",
-    "value": 1,
-    "min": 0,
-    "max": null,
-    "label": "",
-    "type": "",
-    "iconName": "empty",
-    "cost": null,
-    "revealedAt": null
   }
 ]

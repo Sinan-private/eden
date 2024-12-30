@@ -20,6 +20,5 @@ export const resourceKeys = [
   "clean_mana_level_2",
   "clean_mana_level_3",
   "clean_mana_level_4",
-  "clean_mana_level_5",
-  ""
+  "clean_mana_level_5"
 ] as const;

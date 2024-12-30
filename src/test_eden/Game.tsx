@@ -23,7 +23,6 @@ export const Game = () => {
   const [phase, setPhase] = useState<Phase>('')
 
   const resourceGroups = groupByType();
-  const byType = getByType('liquid_mana');
   const resourceTurnUpdate: TickSubscription = () => {
     switch (phase) {
       case 'climbing':
@@ -77,9 +76,6 @@ export const Game = () => {
             </button>
           ))}
         </Stack>
-        {/*{byType.map(resource => (*/}
-        {/*    <TradeButton key={resource.key} resource={resource} increment={1}/>*/}
-        {/*))}*/}
       </div>
       <div style={{display: "flex", justifyContent: "center", flexDirection: "row"}}>
         {resourceGroups.map(({type, resources}) => (

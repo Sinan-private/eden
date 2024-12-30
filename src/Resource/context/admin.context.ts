@@ -44,13 +44,11 @@ const useAdminBase = () => {
 
   const write__initialResources = useCallback(() => {
       // console.log(resources?.state.length)
-    console.log('---- coming from here  ----')
-    console.log(resources!, resources!.state)
-    console.log('----   ----')
-    updateResources(resources!.state).then(() => {
+    const state = resources!.state.filter(({key}) => key.length)
+    updateResources(state).then(() => {
       // console.log(resources?.state.length)
+      setResourcesOriginal(new ResourceStore(state, 'admin.context - original reference'))
     })
-      setResourcesOriginal(new ResourceStore(resources!.state, 'admin.context - original reference'))
   }, [resources, updateResources])
 
   const write__removeResource = (key: ResourceKeys) => {
