@@ -10,7 +10,7 @@ export const ResourceAdmin = ({buttonPosition = 'top-right'}: ResourceAdminProps
   const {showAdminPanel} = useAdmin()
 
   return (
-    <div style={{height: "100vh", width: "100vw", pointerEvents: "none"}}>
+    <div style={{position: 'absolute', top: 0, left: 0, height: "100vh", width: "100vw", pointerEvents: "none"}}>
       <div style={{pointerEvents: "initial"}}>
         {showAdminPanel && <AdminPanel/>}
         <ToggleButton buttonPosition={buttonPosition} />
