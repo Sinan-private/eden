@@ -1,12 +1,14 @@
 import {Button, Divider, Stack} from "@mui/material";
 import styled from "styled-components";
+import {useGame} from "./context/game.context.ts";
 
 export const GameControls = () => {
+  const {startClimbing} = useGame();
 
   return (
     <StyledGameControls>
       <Stack direction="row">
-        <Button>Climb</Button>
+        <Button onClick={startClimbing}>Climb</Button>
         <Divider orientation="vertical" flexItem />
         <Button>ma</Button>
       </Stack>

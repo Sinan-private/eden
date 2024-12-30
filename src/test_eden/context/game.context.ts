@@ -1,39 +1,43 @@
+import {useState} from "react";
 import {createContainer} from "unstated-next";
-import {useEffect, useState} from "react";
-import {MS_TO_TICK, TICK_AUTO_START} from "../../constants/config.ts";
+import {useResource, useTickSubscription} from "../../Resource";
+import {BehemothClass} from "../Behemoth/BehemothClass.ts";
 
-const useTickBase = () => {
-  const [isActive, setIsActive] = useState(TICK_AUTO_START);
-  const [current, setCurrent] = useState(0);
-  const start = () => setIsActive(true);
-  const stop = () => setIsActive(false);
-
-  useEffect(() => {
-    let id: ReturnType<typeof setInterval> | null = null;
-    // let id: NodeJS.Timeout | null = null;
-
-    if (isActive) {
-      id = setInterval(() => {
-        setCurrent((prev) => {
-          return prev + 1;
-        });
-      }, MS_TO_TICK);
+const useGameBase = () => {
+  const resources = useResource();
+  const behemoth = new BehemothClass(resources);
+  const [isBehemothClimbing, setIsBehemothClimbing] = useState(false);
+  const startClimbing = () => setIsBehemothClimbing(true);
+  const stopClimbing = () => setIsBehemothClimbing(false);
+  const turnUpdate = () => {
+    console.log('isBehemothClimbing', isBehemothClimbing)
+    if (isBehemothClimbing) {
+      const speed = resources.get('behemoth_climb_speed')
+    console.log('speed', speed)
+      speed.updateValueBy(0.2)
+      resources.get('behemoth_climb_height').updateValueBy(speed.value)
     }
-
-    return () => {
-      if (id) clearInterval(id);
-    };
-  }, [isActive]);
+  }
+  useTickSubscription(turnUpdate);
 
   return {
-    start,
-    stop,
-    isActive,
-    current,
+    resources,
+    // I need to consider that the Behemoth can be in between states. Player chose to stop, but it takes some time for the Behemoth to come to a stop
+    startClimbing,
+    stopClimbing,
   };
 }
 
+const useGameContainer = createContainer(useGameBase);
+export const useGame = useGameContainer.useContainer;
+export const GameProvider = useGameContainer.Provider;
 
-const useTickContainer = createContainer(useTickBase);
-export const useTick = useTickContainer.useContainer;
-export const TickProvider = useTickContainer.Provider;
+type BehemothStates = {
+  movementRequested: boolean;
+  readyToMove: boolean; // calculated
+  inMotion: boolean; // calculated
+}
+
+const behemothDefaultStates = {
+  movementRequested: false,
+}

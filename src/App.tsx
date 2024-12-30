@@ -3,6 +3,7 @@ import {ThemeProvider} from "@mui/material";
 import {theme} from "../globalTheme.ts";
 import {AdminResourceProvider} from "./Resource";
 import {Game} from "./test_eden/Game.tsx";
+import {GameProvider} from "./test_eden/context/game.context.ts";
 
 function App() {
 
@@ -10,7 +11,9 @@ function App() {
     <>
       <ThemeProvider theme={theme}>
         <AdminResourceProvider initialState={{admin: {buttonPosition: "top-left"}}}>
-          <Game/>
+          <GameProvider>
+            <Game/>
+          </GameProvider>
         </AdminResourceProvider>
       </ThemeProvider>
     </>

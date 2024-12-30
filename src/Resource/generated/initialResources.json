@@ -440,7 +440,7 @@
     "key": "behemoth_climb_speed",
     "value": 0,
     "min": 0,
-    "max": null,
+    "max": 10,
     "label": "Behemoth climb speed",
     "type": "behemoth",
     "iconName": "empty",

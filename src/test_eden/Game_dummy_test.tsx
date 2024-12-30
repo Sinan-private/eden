@@ -1,9 +1,9 @@
 import {observer} from "mobx-react";
-import styled from "styled-components";
 import {TopBar} from "./TopBar.tsx";
-import {useResource, useTickSubscription, ResourceClass, TickSubscription} from "../Resource";
+import {ResourceClass, TickSubscription, useResource, useTickSubscription} from "../Resource";
 import {useState} from "react";
 import {Stack} from "@mui/material";
+import {TickControl} from "./TickControl.tsx";
 
 const phases = [
   '',
@@ -18,15 +18,14 @@ const phases = [
 type Phase = typeof phases[number];
 
 export const Game_dummy_test = () => {
-  const {resources} = useResource();
-  const {groupByType, getByType} = resources;
+  const resources = useResource();
   const [phase, setPhase] = useState<Phase>('')
 
-  const resourceGroups = groupByType();
+  const resourceGroups = resources.groupByType();
   const resourceTurnUpdate: TickSubscription = () => {
     switch (phase) {
       case 'climbing':
-        resources.get('behemoth_hight').updateValueBy(10);
+        resources.get('behemoth_climb_height').updateValueBy(10);
         break;
       case 'drilling':
         resources.get('drill_depth').updateValueBy(10);
@@ -84,19 +83,19 @@ export const Game_dummy_test = () => {
           </div>
         ))}
       </div>
-      <GameControl/>
+      <TickControl/>
     </>
   )
 }
 
-const TradeButton = ({resource, increment = 1}: ButtonProps) => {
-  const {produce} = useResource().resources;
-  const onButtonClick = () => {
-    produce(resource.key, increment)
-  }
-
-  return <ResourceButton resource={resource} onClick={onButtonClick}/>
-}
+// const TradeButton = ({resource, increment = 1}: ButtonProps) => {
+//   const {produce} = useResource();
+//   const onButtonClick = () => {
+//     produce(resource.key, increment)
+//   }
+//
+//   return <ResourceButton resource={resource} onClick={onButtonClick}/>
+// }
 
 const ResourceGroup = ({resources}: { resources: ResourceClass[] }) => {
 
@@ -138,33 +137,3 @@ const ResourceButton = observer(({resource, onClick}: { resource: ResourceClass;
   </button>
 ))
 
-const GameControl = () => {
-  const {
-    current,
-    isActive,
-    start,
-    stop,
-  } = useTickSubscription();
-  return (
-    <StylesGameControl>
-      <div>
-        <span>Turn {current}</span>
-        <button onClick={isActive ? stop : start}>{isActive ? 'x' : '>'}</button>
-      </div>
-    </StylesGameControl>
-  )
-}
-
-const StylesGameControl = styled.div`
-    position: fixed;
-    display: flex;
-    min-height: 40px;
-    top: 20px;
-    right: 20px;
-
-    div {
-        display: flex;
-        align-items: center;
-        gap: 8px;
-    }
-`;
