@@ -7,5 +7,6 @@ export const resourceTypes = [
   "raw_mana",
   "liquid_mana",
   "dirty_mana",
-  "mana"
+  "mana",
+  "behemoth"
 ] as const;

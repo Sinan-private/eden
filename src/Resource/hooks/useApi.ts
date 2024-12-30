@@ -21,7 +21,6 @@ export const useApi = () => {
         body: JSON.stringify(newResources),
       });
       const result = await response.json();
-      console.log('is it me', newResources)
 
       console.log(result.message);  // Success message
     } catch (error) {

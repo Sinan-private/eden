@@ -319,11 +319,11 @@
     "revealedAt": null
   },
   {
-    "key": "behemoth_hight",
+    "key": "behemoth_climb_height",
     "value": 1,
     "min": 0,
     "max": null,
-    "label": "Behemoth hight",
+    "label": "Behemoth climb height",
     "type": "",
     "iconName": "arrow_up",
     "cost": null,
@@ -434,6 +434,17 @@
         }
       ]
     },
+    "revealedAt": null
+  },
+  {
+    "key": "behemoth_climb_speed",
+    "value": 1,
+    "min": 0,
+    "max": null,
+    "label": "Behemoth climb speed",
+    "type": "behemoth",
+    "iconName": "empty",
+    "cost": null,
     "revealedAt": null
   }
 ]
