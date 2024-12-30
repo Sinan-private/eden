@@ -35,7 +35,9 @@ export class ResourceStore<K extends string, T extends string> {
   }
 
   public addEditableResource = () => {
+    console.log(this.resources)
     this.resources.set(this.newResource.key, this.newResource);
+    console.log(this.resources)
     this.newResource = new Resource({key: '' as K})
   }
 

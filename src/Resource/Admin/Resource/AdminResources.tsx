@@ -65,8 +65,8 @@ const AddResource = observer(({closeAddMode, type}: AddResourceProps) => {
     newResource.setTo({type})
   })
   const onSubmit = () => {
-    closeAddMode()
     addEditableResource()
+    closeAddMode()
   }
 
   return (

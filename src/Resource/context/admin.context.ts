@@ -22,6 +22,8 @@ const useAdminBase = () => {
   const onToggleAdminPanel = () => setShowAdminPanel(!showAdminPanel);
   const onCloseAdminPanel = () => setShowAdminPanel(false);
 
+  // console.log(resources)
+
   const [openIconPicker, setOpenIconPicker] = useState(false);
   const [filterUsed, onToggleFilter] = useToggle(false);
 
@@ -117,6 +119,7 @@ const useAdminBase = () => {
     }
 
     const onSubmitChanges = (onSubmit: () => void) => {
+      console.log('submit')
       if (!(keyAlreadyExists && enableKeyEdit)) {
         write__initialResources()
         onSubmit();

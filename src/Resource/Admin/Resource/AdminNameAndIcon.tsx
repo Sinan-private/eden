@@ -37,6 +37,7 @@ export const AdminNameAndIcon = observer(({resource, enableKeyEdit}: AdminNameAn
         label="Name"
         value={label}
         onChange={onSetLabel}
+        autoFocus
       />
       <TextField
         type="text"
