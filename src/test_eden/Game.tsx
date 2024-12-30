@@ -2,10 +2,10 @@ import {Box} from "@mui/material";
 import styled from "styled-components";
 import KeyboardArrowUpIcon from '@mui/icons-material/KeyboardArrowUp';
 import KeyboardDoubleArrowUpIcon from '@mui/icons-material/KeyboardDoubleArrowUp';
-import {useResource} from "../Resource";
 import {GameControls} from "./GameControls.tsx";
 import {TickControl} from "./TickControl.tsx";
 import {observer} from "mobx-react";
+import {useGame} from "./context/game.context.ts";
 
 export const Game = () => {
   return (
@@ -22,7 +22,7 @@ export const Game = () => {
 }
 
 const TreeTrunk = observer(() => {
-  const {get} = useResource()
+  const {get} = useGame().resources
   const height = get('behemoth_climb_height').beautify.value
   return (
     <Trunk>
@@ -35,7 +35,7 @@ const TreeTrunk = observer(() => {
 })
 
 const Behemoth = () => {
-  const {get} = useResource();
+  const {get} = useGame().resources;
   const speed = get('behemoth_climb_speed').beautify.value;
   return (
     <StyledBehemoth>

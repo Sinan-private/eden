@@ -18,7 +18,7 @@ const useResourceBase = () => {
   })
 
   return {
-    ...resources,
+    resources,
     isFetching,
   };
 }

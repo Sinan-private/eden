@@ -1,20 +1,22 @@
 import {Button, Divider, Stack} from "@mui/material";
 import styled from "styled-components";
 import {useGame} from "./context/game.context.ts";
+import {observer} from "mobx-react";
 
-export const GameControls = () => {
-  const {startClimbing} = useGame();
+export const GameControls = observer(() => {
+  const {behemoth} = useGame();
+  const onToggleClimbing = behemoth.movementRequested ? behemoth.stopClimbing : behemoth.startClimbing
 
   return (
     <StyledGameControls>
       <Stack direction="row">
-        <Button onClick={startClimbing}>Climb</Button>
+        <Button onClick={onToggleClimbing}>{behemoth.movementRequested ? 'Stop climbing' : 'Start climbing'}</Button>
         <Divider orientation="vertical" flexItem />
-        <Button>ma</Button>
+        <Button disabled={behemoth.inMotion}>Do stuff</Button>
       </Stack>
     </StyledGameControls>
   )
-};
+})
 
 const StyledGameControls = styled.div`
     position: fixed;

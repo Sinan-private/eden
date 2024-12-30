@@ -1,9 +1,10 @@
 import {observer} from "mobx-react";
 import {TopBar} from "./TopBar.tsx";
-import {ResourceClass, TickSubscription, useResource, useTickSubscription} from "../Resource";
+import {ResourceClass, TickSubscription, useTickSubscription} from "../Resource";
 import {useState} from "react";
 import {Stack} from "@mui/material";
 import {TickControl} from "./TickControl.tsx";
+import {useGame} from "./context/game.context.ts";
 
 const phases = [
   '',
@@ -18,7 +19,7 @@ const phases = [
 type Phase = typeof phases[number];
 
 export const Game_dummy_test = () => {
-  const resources = useResource();
+  const resources = useGame().resources;
   const [phase, setPhase] = useState<Phase>('')
 
   const resourceGroups = resources.groupByType();
