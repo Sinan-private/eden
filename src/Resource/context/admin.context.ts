@@ -33,21 +33,24 @@ const useAdminBase = () => {
 
   useComponentMount(async () => {
     const rawState = await fetchResources();
-    setResources(new ResourceStore(rawState));
-    setResourcesOriginal(new ResourceStore(rawState));
+    setResources(new ResourceStore(rawState, 'admin.context'));
+    setResourcesOriginal(new ResourceStore(rawState, 'admin.context - original reference'));
     setIsFetching(false);
   })
 
   const resetResources = () => {
-    setResources(new ResourceStore(resourcesOriginal!.state))
+    setResources(new ResourceStore(resourcesOriginal!.state, 'admin.context'))
   }
 
   const write__initialResources = useCallback(() => {
       // console.log(resources?.state.length)
+    console.log('---- coming from here  ----')
+    console.log(resources!, resources!.state)
+    console.log('----   ----')
     updateResources(resources!.state).then(() => {
       // console.log(resources?.state.length)
     })
-      setResourcesOriginal(new ResourceStore(resources!.state))
+      setResourcesOriginal(new ResourceStore(resources!.state, 'admin.context - original reference'))
   }, [resources, updateResources])
 
   const write__removeResource = (key: ResourceKeys) => {
@@ -119,7 +122,6 @@ const useAdminBase = () => {
     }
 
     const onSubmitChanges = (onSubmit: () => void) => {
-      console.log('submit')
       if (!(keyAlreadyExists && enableKeyEdit)) {
         write__initialResources()
         onSubmit();

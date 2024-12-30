@@ -13,7 +13,7 @@ const useResourceBase = () => {
   const [isFetching, setIsFetching] = useState(true);
   useComponentMount(async () => {
     const rawState = await fetchResources();
-    resourceRef.current = new ResourceStore(rawState);
+    resourceRef.current = new ResourceStore(rawState, 'resource.context');
     setIsFetching(false);
   })
 

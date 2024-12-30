@@ -295,6 +295,30 @@
     "revealedAt": null
   },
   {
+    "key": "clean_mana_level_1",
+    "value": 1,
+    "min": 0,
+    "max": null,
+    "label": "Clean mana level 1",
+    "type": "mana",
+    "iconName": "mana_clean",
+    "cost": {
+      "give": [
+        {
+          "key": "raw_mana_level_1",
+          "value": 1
+        }
+      ],
+      "gain": [
+        {
+          "key": "clean_mana_level_1",
+          "value": 1
+        }
+      ]
+    },
+    "revealedAt": null
+  },
+  {
     "key": "behemoth_hight",
     "value": 1,
     "min": 0,
@@ -311,6 +335,113 @@
     "min": 0,
     "max": null,
     "label": "Drill depth",
+    "type": "",
+    "iconName": "empty",
+    "cost": null,
+    "revealedAt": null
+  },
+  {
+    "key": "clean_mana_level_2",
+    "value": 1,
+    "min": 0,
+    "max": null,
+    "label": "Clean mana level 2",
+    "type": "mana",
+    "iconName": "mana_clean",
+    "cost": {
+      "give": [
+        {
+          "key": "raw_mana_level_2",
+          "value": 1
+        }
+      ],
+      "gain": [
+        {
+          "key": "clean_mana_level_2",
+          "value": 1
+        }
+      ]
+    },
+    "revealedAt": null
+  },
+  {
+    "key": "clean_mana_level_3",
+    "value": 1,
+    "min": 0,
+    "max": null,
+    "label": "Clean mana level 3",
+    "type": "mana",
+    "iconName": "mana_clean",
+    "cost": {
+      "give": [
+        {
+          "key": "raw_mana_level_3",
+          "value": 1
+        }
+      ],
+      "gain": [
+        {
+          "key": "clean_mana_level_3",
+          "value": 1
+        }
+      ]
+    },
+    "revealedAt": null
+  },
+  {
+    "key": "clean_mana_level_4",
+    "value": 1,
+    "min": 0,
+    "max": null,
+    "label": "Clean mana level 4",
+    "type": "mana",
+    "iconName": "mana_clean",
+    "cost": {
+      "give": [
+        {
+          "key": "raw_mana_level_4",
+          "value": 1
+        }
+      ],
+      "gain": [
+        {
+          "key": "clean_mana_level_4",
+          "value": 1
+        }
+      ]
+    },
+    "revealedAt": null
+  },
+  {
+    "key": "clean_mana_level_5",
+    "value": 1,
+    "min": 0,
+    "max": null,
+    "label": "Clean mana level 5",
+    "type": "mana",
+    "iconName": "mana_clean",
+    "cost": {
+      "give": [
+        {
+          "key": "raw_mana_level_5",
+          "value": 1
+        }
+      ],
+      "gain": [
+        {
+          "key": "clean_mana_level_5",
+          "value": 1
+        }
+      ]
+    },
+    "revealedAt": null
+  },
+  {
+    "key": "",
+    "value": 1,
+    "min": 0,
+    "max": null,
+    "label": "",
     "type": "",
     "iconName": "empty",
     "cost": null,

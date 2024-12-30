@@ -18,23 +18,19 @@ type EditResourceProps = {
 }
 
 export const EditResource = observer(({resource, onClose, onSubmit, enableKeyEdit}: EditResourceProps) => {
-  // console.log(resource.state)
-  const {getActions} = useAdmin();
+  const {getActions, resources} = useAdmin();
   const {onSubmitChanges, saveDisabled} = getActions(resource);
-  const submitChanges = () => onSubmitChanges(onSubmit)
+  const submitChanges = () => {
+    resources.addEditableResource()
+    onSubmitChanges(onSubmit)
+  }
   useEffect(() => {
     const handleKeyDown = (event: KeyboardEvent) => {
-      console.log(event.key, saveDisabled)
       if (event.key === "Enter" && !saveDisabled) {
-        console.log("Enter key pressed globally!");
         submitChanges()
       }
     };
-
-    // Attach the event listener when the component mounts
     window.addEventListener("keydown", handleKeyDown);
-
-    // Cleanup the event listener when the component unmounts
     return () => {
       window.removeEventListener("keydown", handleKeyDown);
     };

@@ -53,6 +53,13 @@ export const Game = () => {
         resources.produce('raw_mana_level_4');
         resources.produce('raw_mana_level_5');
         break;
+      case 'mana_cleaning':
+        resources.produce('clean_mana_level_1');
+        resources.produce('clean_mana_level_2');
+        resources.produce('clean_mana_level_3');
+        resources.produce('clean_mana_level_4');
+        resources.produce('clean_mana_level_5');
+        break;
     }
     // resources.produce('raw_mana_level_1');
   }
@@ -65,7 +72,7 @@ export const Game = () => {
         <Stack direction="row" spacing={2} justifyContent="center">
 
           {phases.filter(Boolean).map(p => (
-            <button key={p} onClick={() => setPhase(p)}>
+            <button style={{background: phase !== p ? 'transparent' : ''}} key={p} onClick={() => setPhase(p)}>
               {p}
             </button>
           ))}

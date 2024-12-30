@@ -60,12 +60,11 @@ type AddResourceProps = {
 }
 
 const AddResource = observer(({closeAddMode, type}: AddResourceProps) => {
-  const {newResource, addEditableResource} = useAdmin().resources;
+  const {newResource} = useAdmin().resources;
   useComponentMount(() => {
     newResource.setTo({type})
   })
   const onSubmit = () => {
-    addEditableResource()
     closeAddMode()
   }
 
