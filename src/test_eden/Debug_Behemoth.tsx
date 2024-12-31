@@ -9,7 +9,7 @@ export const Debug_Behemoth = () => {
   const raw_mana = resources.getByType("raw_mana")
 
   return (
-    <Box>
+    <Box sx={{fontFamily: 'monospace', fontSize: '12px', color: '#79ae79'}}>
       <Box>Digging Depth{digging_depth}</Box>
       <Box>Flushing depth {flushing_depth}</Box>
       <Box>Drying delay {drying_delay}</Box>

@@ -24,5 +24,10 @@ export const resourceKeys = [
   "behemoth_climb_speed",
   "base_slave",
   "behemoth_flushing_depth",
-  "behemoth_drying_delay"
+  "behemoth_drying_delay",
+  "slave_health",
+  "slave_diggers",
+  "slave_blacksmiths",
+  "slave_hunters",
+  "slave_unassigned"
 ] as const;

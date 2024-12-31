@@ -1,12 +1,16 @@
 import {ResourceClass, ResourceStoreClass, ResourceTypes} from "../../Resource";
 import {makeAutoObservable} from "mobx";
-import {id} from "../../Resource/helpers/id.ts";
+
+const DRYING_SPEED = 50;
+const HARVEST_SPEED = 0.5;
+const CRAFTING_SPEED = 0.25;
+const MANA_FINDINGS = [1, 20, 300, 4000, 50000];
 
 export class BehemothClass {
-  id: string;
   public movement_requested: boolean;
   public digging_requested: boolean;
   public flushing_requested: boolean;
+  public crafting_requested: boolean;
   public climb_height: ResourceClass;
   public climb_speed: ResourceClass;
   private _digging_depth: ResourceClass;
@@ -15,7 +19,6 @@ export class BehemothClass {
   private _has_flushed: boolean;
 
   constructor(private _resourceStore: ResourceStoreClass) {
-    this.id = id();
     this.climb_height = _resourceStore.get('behemoth_climb_height')
     this.climb_speed = _resourceStore.get('behemoth_climb_speed')
     this._digging_depth = _resourceStore.get('behemoth_digging_depth')
@@ -24,8 +27,13 @@ export class BehemothClass {
     this.movement_requested = false;
     this.digging_requested = false;
     this.flushing_requested = false;
+    this.crafting_requested = true;
     this._has_flushed = false;
     makeAutoObservable(this)
+  }
+
+  public startCrafting = () => {
+    this.crafting_requested = true;
   }
 
   public startFlushing = () => {
@@ -40,21 +48,14 @@ export class BehemothClass {
 
   public startClimbing = () => {
     if (!this.digging_requested) {
-      const {get} = this._resourceStore
+      const {get, getByType} = this._resourceStore
       this._digging_depth.setValueTo(0)
       this.movement_requested = true;
       this._has_flushed = false;
+      get('behemoth_flushing_depth').setValueTo(0) // This needs to reset to a previous state
       get('behemoth_drying_delay').setValueTo(10) // This needs to reset to a previous state
-      get('liquid_mana_level_1').setValueTo(0)
-      get('liquid_mana_level_2').setValueTo(0)
-      get('liquid_mana_level_3').setValueTo(0)
-      get('liquid_mana_level_4').setValueTo(0)
-      get('liquid_mana_level_5').setValueTo(0)
-      get('dirty_mana_level_1').setValueTo(0)
-      get('dirty_mana_level_2').setValueTo(0)
-      get('dirty_mana_level_3').setValueTo(0)
-      get('dirty_mana_level_4').setValueTo(0)
-      get('dirty_mana_level_5').setValueTo(0)
+      getByType('liquid_mana').forEach(liquid_mana => liquid_mana.setValueTo(0))
+      getByType('dirty_mana').forEach(dirty_mana => dirty_mana.setValueTo(0))
     }
   }
   public stopClimbing = () => {
@@ -68,6 +69,8 @@ export class BehemothClass {
   public stopDigging = () => {
     this.digging_requested = false;
   }
+
+  // public turnUpdate = turnUpdate.bind(this);
 
   public turnUpdate = () => {
       const speed = this.climb_speed
@@ -88,11 +91,8 @@ export class BehemothClass {
     if (this.flushing_requested) {
       flushing_depth.updateValueBy(10)
       if (flushing_depth.value >= flushing_depth.max) {
-        get('liquid_mana_level_1').updateValueBy(this.digging_depth);
-        get('liquid_mana_level_2').updateValueBy(this.digging_depth / 20);
-        get('liquid_mana_level_3').updateValueBy(this.digging_depth / 300);
-        get('liquid_mana_level_4').updateValueBy(this.digging_depth / 4000);
-        get('liquid_mana_level_5').updateValueBy(this.digging_depth / 50000);
+        getByType('liquid_mana').forEach((liquid_mana, i) =>
+          liquid_mana.updateValueBy(this.digging_depth / MANA_FINDINGS[i]))
       }
     } else {
       flushing_depth.updateValueBy(-1)
@@ -102,22 +102,32 @@ export class BehemothClass {
     }
   //   As long as there is liquid mana it dries
     const isDrying = !!this.liquid_mana && !this._drying_delay.value
+    const slave_digger = get('slave_diggers').value
+    const slave_blacksmiths = get('slave_blacksmiths').value
     if (isDrying) {
       const dryingCoefficients = calculateDryingCoefficient(getByType('liquid_mana'))
-      produce('dirty_mana_level_1', 10 * dryingCoefficients[0])
-      produce('dirty_mana_level_2', 10 * dryingCoefficients[1])
-      produce('dirty_mana_level_3', 10 * dryingCoefficients[2])
-      produce('dirty_mana_level_4', 10 * dryingCoefficients[3])
-      produce('dirty_mana_level_5', 10 * dryingCoefficients[4])
+      produce('dirty_mana_level_1', DRYING_SPEED * dryingCoefficients[0])
+      produce('dirty_mana_level_2', DRYING_SPEED * dryingCoefficients[1])
+      produce('dirty_mana_level_3', DRYING_SPEED * dryingCoefficients[2])
+      produce('dirty_mana_level_4', DRYING_SPEED * dryingCoefficients[3])
+      produce('dirty_mana_level_5', DRYING_SPEED * dryingCoefficients[4])
     }
     if (this.canHarvest) {
       const dryingCoefficients = calculateDryingCoefficient(getByType('dirty_mana'))
-      const slaves = get('base_slave').value
-      produce('raw_mana_level_1', slaves * dryingCoefficients[0])
-      produce('raw_mana_level_2', slaves * dryingCoefficients[1])
-      produce('raw_mana_level_3', slaves * dryingCoefficients[2])
-      produce('raw_mana_level_4', slaves * dryingCoefficients[3])
-      produce('raw_mana_level_5', slaves * dryingCoefficients[4])
+      produce('raw_mana_level_1', slave_digger * HARVEST_SPEED * dryingCoefficients[0])
+      produce('raw_mana_level_2', slave_digger * HARVEST_SPEED * dryingCoefficients[1])
+      produce('raw_mana_level_3', slave_digger * HARVEST_SPEED * dryingCoefficients[2])
+      produce('raw_mana_level_4', slave_digger * HARVEST_SPEED * dryingCoefficients[3])
+      produce('raw_mana_level_5', slave_digger * HARVEST_SPEED * dryingCoefficients[4])
+    }
+    if (this.crafting_requested) {
+      const dryingCoefficients = calculateDryingCoefficient(getByType('raw_mana'))
+      produce('clean_mana_level_1', slave_blacksmiths * dryingCoefficients[0] * CRAFTING_SPEED)
+      produce('clean_mana_level_2', slave_blacksmiths * dryingCoefficients[1] * CRAFTING_SPEED)
+      produce('clean_mana_level_3', slave_blacksmiths * dryingCoefficients[2] * CRAFTING_SPEED)
+      produce('clean_mana_level_4', slave_blacksmiths * dryingCoefficients[3] * CRAFTING_SPEED)
+      produce('clean_mana_level_5', slave_blacksmiths * dryingCoefficients[4] * CRAFTING_SPEED)
+
     }
   }
 

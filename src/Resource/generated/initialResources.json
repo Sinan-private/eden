@@ -296,12 +296,12 @@
   },
   {
     "key": "clean_mana_level_1",
-    "value": 1,
+    "value": 50,
     "min": 0,
     "max": null,
     "label": "Clean mana level 1",
     "type": "mana",
-    "iconName": "mana_clean",
+    "iconName": "mana_clean_lvl1",
     "cost": {
       "give": [
         {
@@ -333,7 +333,7 @@
     "key": "behemoth_digging_depth",
     "value": 0,
     "min": 0,
-    "max": null,
+    "max": 100,
     "label": "Behemoth digging depth",
     "type": "behemoth",
     "iconName": "empty",
@@ -342,12 +342,12 @@
   },
   {
     "key": "clean_mana_level_2",
-    "value": 1,
+    "value": 5,
     "min": 0,
     "max": null,
     "label": "Clean mana level 2",
     "type": "mana",
-    "iconName": "mana_clean",
+    "iconName": "mana_clean_lvl2",
     "cost": {
       "give": [
         {
@@ -366,12 +366,12 @@
   },
   {
     "key": "clean_mana_level_3",
-    "value": 1,
+    "value": 0,
     "min": 0,
     "max": null,
     "label": "Clean mana level 3",
     "type": "mana",
-    "iconName": "mana_clean",
+    "iconName": "mana_clean_lvl3",
     "cost": {
       "give": [
         {
@@ -390,12 +390,12 @@
   },
   {
     "key": "clean_mana_level_4",
-    "value": 1,
+    "value": 0,
     "min": 0,
     "max": null,
     "label": "Clean mana level 4",
     "type": "mana",
-    "iconName": "mana_clean",
+    "iconName": "mana_clean_lvl4",
     "cost": {
       "give": [
         {
@@ -414,12 +414,12 @@
   },
   {
     "key": "clean_mana_level_5",
-    "value": 1,
+    "value": 0,
     "min": 0,
     "max": null,
     "label": "Clean mana level 5",
     "type": "mana",
-    "iconName": "mana_clean",
+    "iconName": "mana_clean_lvl5",
     "cost": {
       "give": [
         {
@@ -476,6 +476,61 @@
     "max": null,
     "label": "Behemoth drying delay",
     "type": "behemoth",
+    "iconName": "empty",
+    "cost": null,
+    "revealedAt": null
+  },
+  {
+    "key": "slave_health",
+    "value": 100,
+    "min": 0,
+    "max": 100,
+    "label": "Slave health",
+    "type": "slaves",
+    "iconName": "empty",
+    "cost": null,
+    "revealedAt": null
+  },
+  {
+    "key": "slave_diggers",
+    "value": 0,
+    "min": 0,
+    "max": null,
+    "label": "Slave diggers",
+    "type": "slaves",
+    "iconName": "empty",
+    "cost": null,
+    "revealedAt": null
+  },
+  {
+    "key": "slave_blacksmiths",
+    "value": 0,
+    "min": 0,
+    "max": null,
+    "label": "Slave Blacksmiths",
+    "type": "slaves",
+    "iconName": "empty",
+    "cost": null,
+    "revealedAt": null
+  },
+  {
+    "key": "slave_hunters",
+    "value": 3,
+    "min": 0,
+    "max": null,
+    "label": "Slave hunters",
+    "type": "slaves",
+    "iconName": "empty",
+    "cost": null,
+    "revealedAt": null
+  },
+  {
+    "key": "slave_unassigned",
+    "value": 5,
+    "min": 0,
+    "max": null,
+    "label": "Slave unassigned",
+    "type": "slaves",
     "iconName": "empty",
     "cost": null,
     "revealedAt": null
