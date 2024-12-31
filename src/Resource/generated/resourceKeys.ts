@@ -22,5 +22,7 @@ export const resourceKeys = [
   "clean_mana_level_4",
   "clean_mana_level_5",
   "behemoth_climb_speed",
-  "base_slave"
+  "base_slave",
+  "behemoth_flushing_depth",
+  "behemoth_drying_delay"
 ] as const;
