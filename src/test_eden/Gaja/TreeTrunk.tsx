@@ -1,22 +1,24 @@
 import {useMemo, useState} from "react";
 import {Box} from "@mui/material";
-import KeyboardArrowUpIcon from "@mui/icons-material/KeyboardArrowUp";
-import KeyboardDoubleArrowUpIcon from "@mui/icons-material/KeyboardDoubleArrowUp";
 import styled from "styled-components";
 import {observer} from "mobx-react";
 import {useGame} from "../context/game.context.ts";
 import image from '../../assets/images/seemless_trunk.png';
 import {useAnimationSubscription} from "../../Resource";
+import behemoth_image from '../../assets/images/behemoth.png';
+import behemoth_animated from '../../assets/images/behemoth_animated.gif';
+import mana_dirty from '../../Resource/assets/icons/mana_dirty.png';
 
 const SPOTS_DIVIDER = 25;
 const BACKGROUND_IMAGE_HEIGHT = 600;
+const BACKGROUND_IMAGE_WIDTH = 571;
 const CLIMBING_SPEED_COEFFICIENT = 0.1
 
 export const TreeTrunk = observer(() => {
   const {get} = useGame().resources
   const height = get('behemoth_climb_height').beautify.value
   const climbing_speed = get('behemoth_climb_speed').value
-  const [displacement, setDisplacement] = useState(-BACKGROUND_IMAGE_HEIGHT*2);
+  const [displacement, setDisplacement] = useState(-BACKGROUND_IMAGE_HEIGHT * 2);
 
   useAnimationSubscription(() => {
     if (climbing_speed) {
@@ -27,9 +29,11 @@ export const TreeTrunk = observer(() => {
 
   return (
     <Tree>
-      <Trunk>
-        <TrunkBackground $displacement={displacement} />
-      </Trunk>
+      <TrunkContainer>
+        <Trunk>
+          <TrunkBackground $displacement={displacement}/>
+        </Trunk>
+      </TrunkContainer>
       <Behemoth/>
       <Digging/>
       <Box position="absolute" bottom={100} left="50%">
@@ -60,8 +64,10 @@ const Digging = observer(() => {
             top: y,
             left: x,
             borderRadius: 20,
-            background: 'radial-gradient(circle, rgba(34,54,50,1) 0%, rgba(47,71,66,1) 100%)',
-          }}/>
+            // background: 'radial-gradient(circle, rgba(34,54,50,1) 0%, rgba(47,71,66,1) 100%)',
+          }}>
+            <img src={mana_dirty} alt="dirty mana found" width={32 * size / 3} style={{opacity: 0.7}} />
+          </Box>
         ))}
       </>
     )
@@ -82,14 +88,15 @@ const Digging = observer(() => {
         left: 0,
         top: '50%',
         transform: 'translateY(-50%)',
+        zIndex: 1,
       }}>
         {spots}
       </Box>
 
-        <Tunnel $digging_depth={digging_depth}>
+      <Tunnel $digging_depth={digging_depth}>
 
-        <Acid $flushing_depth={flushing_depth} />
-        </Tunnel>
+        <Acid $flushing_depth={flushing_depth}/>
+      </Tunnel>
 
     </Box>
   )
@@ -97,12 +104,14 @@ const Digging = observer(() => {
 
 const Behemoth = () => {
   const {get} = useGame().resources;
-  const speed = get('behemoth_climb_speed').beautify.value;
+  const speed = get('behemoth_climb_speed').value;
+  const src = speed ? behemoth_animated : behemoth_image;
   return (
     <StyledBehemoth>
-      <KeyboardArrowUpIcon/>
-      <KeyboardDoubleArrowUpIcon/>
-      {speed}
+      <img src={src} alt={src} style={{transform: 'rotate(-90deg)'}}/>
+      {/*<KeyboardArrowUpIcon/>*/}
+      {/*<KeyboardDoubleArrowUpIcon/>*/}
+      {/*{speed}*/}
     </StyledBehemoth>
   )
 }
@@ -126,30 +135,35 @@ const getRandomCoordinateList = (max: number) => {
 const randomCoordinates = getRandomCoordinateList(200);
 
 
-
 const Tree = styled(Box)`
     position: relative;
-    width: 40%;
+    width: ${BACKGROUND_IMAGE_WIDTH}px;
     height: 100vh;
 `
 
+const TrunkContainer = styled(Box)`
+    position: relative;
+    width: 100%;
+    height: 100%;
+    overflow-y: hidden;
+`
 const Trunk = styled(Box)`
     position: relative;
-    width: 571px;
+    width: 100%;
     height: 600px;
 `
 
-const TrunkBackground = styled.div.attrs<{$displacement: number}>(props => ({
+const TrunkBackground = styled.div.attrs<{ $displacement: number }>(props => ({
   style: {
     transform: `translateY(${props.$displacement}px)`
   },
 }))`position: relative;
     //top: -600px;
-    width: 571px;
-    height: 1800px;
+    width: ${BACKGROUND_IMAGE_WIDTH}px;
+    height: 3000px;
     background-image: url("${image}");`
 
-const Tunnel = styled.div.attrs<{$digging_depth: number}>(props => ({
+const Tunnel = styled.div.attrs<{ $digging_depth: number }>(props => ({
   style: {
     width: props.$digging_depth + '%',
   },
@@ -158,7 +172,7 @@ const Tunnel = styled.div.attrs<{$digging_depth: number}>(props => ({
     background-Color: #000000b3;
     transition: width 0.3s linear`
 
-const Acid = styled.div.attrs<{$flushing_depth: number}>(props => ({
+const Acid = styled.div.attrs<{ $flushing_depth: number }>(props => ({
   style: {
     height: props.$flushing_depth + '%'
   },

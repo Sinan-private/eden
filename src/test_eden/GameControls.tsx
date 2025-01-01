@@ -2,9 +2,11 @@ import {Button, Divider, Stack} from "@mui/material";
 import styled from "styled-components";
 import {useGame} from "./context/game.context.ts";
 import {observer} from "mobx-react";
+import {useTick} from "../Resource/context/tick.context.ts";
 
 export const GameControls = observer(() => {
   const {behemoth} = useGame();
+  const {isActive} = useTick();
   const onToggleClimbing = behemoth.movement_requested ? behemoth.stopClimbing : behemoth.startClimbing
   const onToggleDigging = behemoth.digging_requested ? behemoth.stopDigging : behemoth.startDigging
   const onToggleFlushing = behemoth.flushing_requested ? behemoth.stopFlushing : behemoth.startFlushing
@@ -12,14 +14,14 @@ export const GameControls = observer(() => {
   return (
     <StyledGameControls>
       <Stack direction="row">
-        <Button disabled={!behemoth.canClimb} onClick={onToggleClimbing}>
+        <Button disabled={!behemoth.canClimb} onClick={onToggleClimbing} color={isActive ? undefined : 'error'}>
           {behemoth.movement_requested ? 'Stop climbing' : 'Start climbing'}
         </Button>
         <Divider orientation="vertical" flexItem />
-        <Button disabled={!behemoth.canDig} onClick={onToggleDigging}>
+        <Button disabled={!behemoth.canDig} onClick={onToggleDigging} color={isActive ? undefined : 'error'}>
           {behemoth.digging_requested ? 'Stop digging' : 'Start digging'}
         </Button>
-        <Button disabled={!behemoth.canFlush} onClick={onToggleFlushing}>
+        <Button disabled={!behemoth.canFlush} onClick={onToggleFlushing} color={isActive ? undefined : 'error'}>
           {behemoth.flushing_requested ? 'Stop flushing' : 'Start flushing'}
         </Button>
       </Stack>

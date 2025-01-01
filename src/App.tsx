@@ -10,7 +10,7 @@ function App() {
   return (
     <>
       <ThemeProvider theme={theme}>
-        <AdminResourceProvider initialState={{admin: {buttonPosition: "top-left"}}}>
+        <AdminResourceProvider initialState={{admin: {buttonPosition: "bottom-right"}}}>
           <GameProvider>
             <Game/>
           </GameProvider>
