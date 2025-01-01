@@ -7,32 +7,35 @@ const slaveAssignments = [
 type SlaveAssignments = typeof slaveAssignments[number];
 
 export class SlaveClass {
+  private _slave_limit: ResourceClass;
   private _slave_unassigned: ResourceClass;
   private _slave_diggers: ResourceClass;
   private _slave_blacksmiths: ResourceClass;
   private _slave_health: ResourceClass;
-  // private _slave_hunters: ResourceClass;
 
   constructor(_resourceStore: ResourceStoreClass) {
+    this._slave_limit = _resourceStore.get('slave_limit')
     this._slave_unassigned = _resourceStore.get('slave_unassigned')
     this._slave_diggers = _resourceStore.get('slave_diggers')
     this._slave_blacksmiths = _resourceStore.get('slave_blacksmiths')
     this._slave_health = _resourceStore.get('slave_health')
-    // this._slave_hunters = _resourceStore.get('slave_hunters')
   }
 
   public addSlave = (amount = 1) => {
-    this._slave_unassigned.updateValueBy(amount)
+    console.log(this._slave_limit)
+    if (!this._slave_limit.is_max) {
+      this._slave_limit.updateValueBy(amount)
+      this._slave_unassigned.updateValueBy(amount)
+    }
   }
 
   public wasteSlave = (amount = 1) => {
     // Kill as many unassigned as needed. The rest is randomly taken from the professions
-    if (this.slave_unassigned) {
-      this._slave_unassigned.updateValueBy(-amount)
-    } else {
+    if (!this.slave_unassigned) {
       this.unassignRandom(amount)
-      this._slave_unassigned.updateValueBy(-amount)
     }
+      this._slave_unassigned.updateValueBy(-amount)
+      this._slave_limit.updateValueBy(-amount)
   }
 
   public unassignRandom = (amount = 1) => {
@@ -101,9 +104,13 @@ export class SlaveClass {
     return Number(this._slave_health.value)
   }
 
+  get is_max() {
+    return this.slave_count >= this._slave_limit.max
+  }
+
   public turnUpdate = () => {
     if (this.slave_health) {
-      this._slave_health.updateValueBy(-0.5)
+      this._slave_health.updateValueBy(-0.1)
     } else if (this.slave_count) {
       this._slave_health.setValueTo(100)
       this.wasteSlave(1)

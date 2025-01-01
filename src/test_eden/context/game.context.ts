@@ -7,12 +7,12 @@ import {DemonClass, GuardClass, DeceptionClass, SlaveHunterClass} from "../Facti
 
 const useGameBase = () => {
   const {resources} = useResource();
-  const behemoth = useMemo(() => new BehemothClass(resources), [resources]);
   const slaves = useMemo(() => new SlaveClass(resources), [resources]);
-  const factionDemon = useMemo(() => new DemonClass(resources), [resources])
-  const factionMindBender = useMemo(() => new DeceptionClass(resources), [resources])
-  const factionGuard = useMemo(() => new GuardClass(resources), [resources])
-  const factionSlaveHunters = useMemo(() => new SlaveHunterClass(resources), [resources])
+  const behemoth = useMemo(() => new BehemothClass(resources), [resources]);
+  const factionDemon = useMemo(() => new DemonClass(resources, slaves), [resources, slaves])
+  const factionMindBender = useMemo(() => new DeceptionClass(resources, slaves), [resources, slaves])
+  const factionGuard = useMemo(() => new GuardClass(resources, slaves), [resources, slaves])
+  const factionSlaveHunters = useMemo(() => new SlaveHunterClass(resources, slaves), [resources, slaves])
   useTickSubscription(behemoth.turnUpdate);
   useTickSubscription(slaves.turnUpdate);
   useTickSubscription(factionSlaveHunters.turnUpdate);

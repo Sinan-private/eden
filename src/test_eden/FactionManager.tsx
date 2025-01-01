@@ -6,19 +6,22 @@ export const FactionManager = () => {
 
   return (
     <Box sx={{display: 'flex', flexDirection: 'column', justifyContent: 'space-between', gap: 2}}>
-      {all.map(({image, visible, active, loyalty, influence, progress}) => (
+      {all.map(({image, visible, active, loyalty, influence, progress, setActive}) => (
         <Box key={image} sx={{display: visible ? 'block' : 'none'}}>
           <Box sx={{position: 'relative', width: 70, height: 70}}>
             <img
+              onClick={setActive}
               src={image}
               alt={image}
               style={{width: '100%', height: '100%', filter: active ? '' : 'saturate(0) brightness(0.2) contrast(0.8)'}}
             />
-            <VerticalProgress value={progress} />
+            {active &&
+              <VerticalProgress value={progress} />
+            }
           </Box>
-          <Stack>
-            <LinearProgress variant="determinate" value={loyalty} color="warning"/>
-            <LinearProgress variant="determinate" value={influence} color="error"/>
+          <Stack color="gray">
+            <LinearProgress variant="determinate" value={active ? loyalty : 0} color={active ? "warning" : "inherit"}/>
+            <LinearProgress variant="determinate" value={active ? influence : 0} color={active ? "error" : "inherit"}/>
           </Stack>
         </Box>
       ))}

@@ -22,13 +22,12 @@ export const resourceKeys = [
   "clean_mana_level_4",
   "clean_mana_level_5",
   "behemoth_climb_speed",
-  "base_slave",
+  "slave_limit",
   "behemoth_flushing_depth",
   "behemoth_drying_delay",
   "slave_health",
   "slave_diggers",
   "slave_blacksmiths",
-  "slave_hunters",
   "slave_unassigned",
   "slave_hunter_loyalty",
   "slave_hunter_influence",
@@ -41,5 +40,9 @@ export const resourceKeys = [
   "demon_progress",
   "guard_loyalty",
   "guard_influence",
-  "guard_progress"
+  "guard_progress",
+  "slave_hunter_level",
+  "deception_level",
+  "demon_level",
+  "guard_level"
 ] as const;

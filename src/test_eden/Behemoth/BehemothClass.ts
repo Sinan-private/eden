@@ -86,7 +86,7 @@ export class BehemothClass {
       height.updateValueBy(speed.value)
     }
     if (this.digging_requested) {
-      digging_depth.updateValueBy(this._resourceStore.get('base_slave').value)
+      digging_depth.updateValueBy(this._resourceStore.get('slave_diggers').value)
     }
     if (this.flushing_requested) {
       flushing_depth.updateValueBy(10)

@@ -76,6 +76,8 @@ export class Resource<K extends string, T extends string> {
     return Object.assign(this, constraints).setValueTo(newValue);
   }
 
+  public readonly setToMin = () => this.setValueTo(this.min)
+
   public readonly updateValueBy = (value: number): Resource<K, T> => {
     this.value = this.respectConstraints(this.value + value)
     return this;
@@ -170,6 +172,14 @@ export class Resource<K extends string, T extends string> {
       cost: toJS(this.cost),
       revealedAt: toJS(this.revealedAt),
     }
+  }
+
+  get is_max() {
+    return this.value >= this.max
+  }
+
+  get is_min() {
+    return this.value <= this.min
   }
 }
 
