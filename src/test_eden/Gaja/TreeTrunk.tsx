@@ -27,11 +27,11 @@ export const TreeTrunk = observer(() => {
 
   return (
     <Tree>
-      <Behemoth/>
-      <Digging/>
       <Trunk>
         <TrunkBackground $displacement={displacement} />
       </Trunk>
+      <Behemoth/>
+      <Digging/>
       <Box position="absolute" bottom={100} left="50%">
         {height}
       </Box>
@@ -73,6 +73,7 @@ const Digging = observer(() => {
       left: 0,
       top: '50%',
       width: '100%',
+      transform: 'translateY(-50%)',
     }}>
       <Box sx={{
         position: 'absolute',
@@ -81,25 +82,15 @@ const Digging = observer(() => {
         left: 0,
         top: '50%',
         transform: 'translateY(-50%)',
-        // border: '1px solid red',
       }}>
         {spots}
       </Box>
-      <Box sx={{
-        position: 'relative',
-        width: digging_depth + '%',
-        height: 10,
-        backgroundColor: 'white',
-      }}>
-        <Box sx={{
-          position: 'absolute',
-          left: 0,
-          bottom: 0,
-          backgroundColor: 'green',
-          width: '100%',
-          height: flushing_depth + '%',
-        }}/>
-      </Box>
+
+        <Tunnel $digging_depth={digging_depth}>
+
+        <Acid $flushing_depth={flushing_depth} />
+        </Tunnel>
+
     </Box>
   )
 })
@@ -157,6 +148,25 @@ const TrunkBackground = styled.div.attrs<{$displacement: number}>(props => ({
     width: 571px;
     height: 1800px;
     background-image: url("${image}");`
+
+const Tunnel = styled.div.attrs<{$digging_depth: number}>(props => ({
+  style: {
+    width: props.$digging_depth + '%',
+  },
+}))`position: relative;
+    height: 50px;
+    background-Color: #000000b3;
+    transition: width 0.3s linear`
+
+const Acid = styled.div.attrs<{$flushing_depth: number}>(props => ({
+  style: {
+    height: props.$flushing_depth + '%'
+  },
+}))`position: absolute;
+    left: 0;
+    bottom: 0;
+    background-color: green;
+    width: 100%;`
 
 
 const StyledBehemoth = styled('div')`

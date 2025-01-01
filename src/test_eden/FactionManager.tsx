@@ -1,5 +1,6 @@
 import {Box, LinearProgress, Stack} from "@mui/material";
 import {useGame} from "./context/game.context.ts";
+import styled from "styled-components";
 
 export const FactionManager = () => {
   const {all} = useGame().factions;
@@ -33,7 +34,20 @@ const VerticalProgress = ({value = 50}: {value?: number}) => {
   const absolute = {position: 'absolute', bottom: 0, right: 0}
   return (
     <Box id="custom progress" sx={{width: 4, height: '100%', background: '#ffffff21', ...absolute}}>
-      <Box sx={{width: '100%', height: value + '%', backgroundColor: 'white', ...absolute}} />
+      <VerticalBar $height={value} />
+      {/*<Box sx={{width: '100%', height: value + '%', backgroundColor: 'white', ...absolute}} />*/}
     </Box>
   )
 }
+
+const VerticalBar = styled.div.attrs<{ $height: number }>(props => ({
+  style: {
+    height: props.$height + '%'
+  }
+}))`
+    position: absolute;
+    bottom: 0;
+    right: 0;
+    width: 100%;
+    background-color: white;
+`
