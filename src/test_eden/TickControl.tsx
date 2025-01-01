@@ -1,17 +1,17 @@
-import {useTickSubscription} from "../Resource";
+import {useTurnSubscription} from "../Resource";
 import styled from "styled-components";
 
 export const TickControl = () => {
   const {
-    current,
     isActive,
     start,
     stop,
-  } = useTickSubscription();
+    currentTurn
+  } = useTurnSubscription();
   return (
     <StylesGameControl>
       <div>
-        <span>Turn {current}</span>
+        <span>Turn {currentTurn}</span>
         <button onClick={isActive ? stop : start}>{isActive ? 'x' : '>'}</button>
       </div>
     </StylesGameControl>

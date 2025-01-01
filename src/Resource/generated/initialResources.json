@@ -449,7 +449,7 @@
   },
   {
     "key": "slave_limit",
-    "value": 5,
+    "value": 8,
     "min": 0,
     "max": 10,
     "label": "Slave limit",
@@ -493,7 +493,7 @@
   },
   {
     "key": "slave_diggers",
-    "value": 0,
+    "value": 4,
     "min": 0,
     "max": null,
     "label": "Slave diggers",
@@ -504,7 +504,7 @@
   },
   {
     "key": "slave_blacksmiths",
-    "value": 0,
+    "value": 4,
     "min": 0,
     "max": null,
     "label": "Slave Blacksmiths",
@@ -515,7 +515,7 @@
   },
   {
     "key": "slave_unassigned",
-    "value": 5,
+    "value": 0,
     "min": 0,
     "max": null,
     "label": "Slave unassigned",

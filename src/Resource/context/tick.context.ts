@@ -1,12 +1,13 @@
 import {createContainer} from "unstated-next";
 import {useEffect, useState} from "react";
-import {MS_TO_TICK, TICK_AUTO_START} from "../../constants/config.ts";
+import {MS_TO_TICK, TICK_AUTO_START, TICKS_PER_SECOND} from "../../constants/config.ts";
 
 const useTickBase = () => {
   const [isActive, setIsActive] = useState(TICK_AUTO_START);
-  const [current, setCurrent] = useState(0);
+  const [currentTick, setCurrentTick] = useState(0);
   const start = () => setIsActive(true);
   const stop = () => setIsActive(false);
+  const currentTurn = Math.floor(currentTick / (1000 / MS_TO_TICK / TICKS_PER_SECOND));
 
   useEffect(() => {
     let id: ReturnType<typeof setInterval> | null = null;
@@ -14,7 +15,7 @@ const useTickBase = () => {
 
     if (isActive) {
       id = setInterval(() => {
-        setCurrent((prev) => {
+        setCurrentTick((prev) => {
           return prev + 1;
         });
       }, MS_TO_TICK);
@@ -29,7 +30,8 @@ const useTickBase = () => {
     start,
     stop,
     isActive,
-    current,
+    currentTick,
+    currentTurn,
   };
 }
 

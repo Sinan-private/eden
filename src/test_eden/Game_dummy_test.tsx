@@ -1,6 +1,6 @@
 import {observer} from "mobx-react";
 import {TopBar} from "./TopBar.tsx";
-import {ResourceClass, TickSubscription, useTickSubscription} from "../Resource";
+import {ResourceClass, TickSubscription, useTurnSubscription} from "../Resource";
 import {useState} from "react";
 import {Stack} from "@mui/material";
 import {TickControl} from "./TickControl.tsx";
@@ -63,7 +63,7 @@ export const Game_dummy_test = () => {
     // resources.produce('raw_mana_level_1');
   }
 
-  useTickSubscription(resourceTurnUpdate);
+  useTurnSubscription(resourceTurnUpdate);
   return (
     <>
       <TopBar/>

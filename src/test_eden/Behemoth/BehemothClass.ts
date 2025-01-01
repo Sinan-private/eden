@@ -1,9 +1,10 @@
 import {ResourceClass, ResourceStoreClass, ResourceTypes} from "../../Resource";
 import {makeAutoObservable} from "mobx";
 
-const DRYING_SPEED = 50;
-const HARVEST_SPEED = 0.5;
-const CRAFTING_SPEED = 0.25;
+const FLUSHING_SPEED = 0.25;
+const DRYING_SPEED = 2;
+const HARVEST_SPEED = 0.25;
+const CRAFTING_SPEED = 0.05;
 const MANA_FINDINGS = [1, 20, 300, 4000, 50000];
 
 export class BehemothClass {
@@ -92,7 +93,7 @@ export class BehemothClass {
       flushing_depth.updateValueBy(10)
       if (flushing_depth.value >= flushing_depth.max) {
         getByType('liquid_mana').forEach((liquid_mana, i) =>
-          liquid_mana.updateValueBy(this.digging_depth / MANA_FINDINGS[i]))
+          liquid_mana.updateValueBy(this.digging_depth * FLUSHING_SPEED / MANA_FINDINGS[i]))
       }
     } else {
       flushing_depth.updateValueBy(-1)

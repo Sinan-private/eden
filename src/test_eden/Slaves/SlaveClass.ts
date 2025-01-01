@@ -22,7 +22,6 @@ export class SlaveClass {
   }
 
   public addSlave = (amount = 1) => {
-    console.log(this._slave_limit)
     if (!this._slave_limit.is_max) {
       this._slave_limit.updateValueBy(amount)
       this._slave_unassigned.updateValueBy(amount)

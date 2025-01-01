@@ -1,6 +1,6 @@
 import {useMemo} from "react";
 import {createContainer} from "unstated-next";
-import {useResource, useTickSubscription} from "../../Resource";
+import {useResource, useTurnSubscription} from "../../Resource";
 import {BehemothClass} from "../Behemoth/BehemothClass.ts";
 import {SlaveClass} from "../Slaves/SlaveClass.ts";
 import {DemonClass, GuardClass, DeceptionClass, SlaveHunterClass} from "../Factions";
@@ -13,9 +13,9 @@ const useGameBase = () => {
   const factionMindBender = useMemo(() => new DeceptionClass(resources, slaves), [resources, slaves])
   const factionGuard = useMemo(() => new GuardClass(resources, slaves), [resources, slaves])
   const factionSlaveHunters = useMemo(() => new SlaveHunterClass(resources, slaves), [resources, slaves])
-  useTickSubscription(behemoth.turnUpdate);
-  useTickSubscription(slaves.turnUpdate);
-  useTickSubscription(factionSlaveHunters.turnUpdate);
+  useTurnSubscription(behemoth.turnUpdate);
+  useTurnSubscription(slaves.turnUpdate);
+  useTurnSubscription(factionSlaveHunters.turnUpdate);
 
   return {
     resources,

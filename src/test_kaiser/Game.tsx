@@ -1,7 +1,7 @@
 import {observer} from "mobx-react";
 import styled from "styled-components";
 import {TopBar} from "./TopBar.tsx";
-import {useResource, useTickSubscription, ResourceClass, TickSubscription} from "../Resource";
+import {useResource, useTurnSubscription, ResourceClass, TickSubscription} from "../Resource";
 
 export const Game = () => {
   const {resources} = useResource();
@@ -18,7 +18,7 @@ export const Game = () => {
     // resources.produce('bread', resources.get('bakery').value);
   }
 
-  useTickSubscription(resourceTurnUpdate);
+  useTurnSubscription(resourceTurnUpdate);
 
       // const test = resources.get('liquid_mana_level_5').id
       // // const test = resources.allResources.map(({id}) => id)
@@ -97,15 +97,15 @@ const ResourceButton = observer(({resource, onClick}: {resource: ResourceClass; 
 
 const GameControl = () => {
   const {
-      current,
+      currentTick,
       isActive,
       start,
       stop,
-  } = useTickSubscription();
+  } = useTurnSubscription();
   return (
     <StylesGameControl>
       <div>
-        <span>Turn {current}</span>
+        <span>Turn {currentTick}</span>
         <button onClick={isActive ? stop : start}>{isActive ? 'x' : '>'}</button>
       </div>
     </StylesGameControl>

@@ -1,3 +1,4 @@
-export const MS_TO_TICK = 250;
+export const MS_TO_TICK = 25;
+export const TICKS_PER_SECOND = 10;
 export const TICK_AUTO_START = true;
-export const DEBUG = false;
+export const DEBUG = true;
