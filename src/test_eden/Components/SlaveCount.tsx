@@ -1,5 +1,5 @@
 import {Box, CircularProgress, CircularProgressProps, Typography} from "@mui/material";
-import {useGame} from "./context/game.context.ts";
+import {useGame} from "../context/game.context.ts";
 
 export const SlaveCount = ({size = 40}: {size?: number}) => {
   const {slave_count, slave_health} = useGame().slaves

@@ -1,4 +1,4 @@
-import {useTurnSubscription} from "../Resource";
+import {useTurnSubscription} from "../../Resource";
 import styled from "styled-components";
 
 export const TickControl = () => {

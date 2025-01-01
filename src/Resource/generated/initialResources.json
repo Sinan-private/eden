@@ -320,7 +320,7 @@
   },
   {
     "key": "behemoth_climb_height",
-    "value": 1,
+    "value": 300,
     "min": 0,
     "max": null,
     "label": "Behemoth climb height",
@@ -696,6 +696,39 @@
     "max": 50,
     "label": "Guard level",
     "type": "faction_guard",
+    "iconName": "empty",
+    "cost": null,
+    "revealedAt": null
+  },
+  {
+    "key": "behemoth_acid",
+    "value": 500,
+    "min": 0,
+    "max": 1000,
+    "label": "Behemoth acid",
+    "type": "behemoth",
+    "iconName": "empty",
+    "cost": null,
+    "revealedAt": null
+  },
+  {
+    "key": "behemoth_hp",
+    "value": 500,
+    "min": 0,
+    "max": 500,
+    "label": "Behemoth hp",
+    "type": "behemoth",
+    "iconName": "empty",
+    "cost": null,
+    "revealedAt": null
+  },
+  {
+    "key": "upstream_height",
+    "value": 1,
+    "min": 0,
+    "max": null,
+    "label": "Upstream height",
+    "type": "",
     "iconName": "empty",
     "cost": null,
     "revealedAt": null

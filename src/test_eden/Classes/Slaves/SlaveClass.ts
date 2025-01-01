@@ -1,4 +1,4 @@
-import {ResourceClass, ResourceStoreClass} from "../../Resource";
+import {ResourceClass, ResourceStoreClass} from "../../../Resource";
 
 const slaveAssignments = [
   'digger',
@@ -105,6 +105,10 @@ export class SlaveClass {
 
   get is_max() {
     return this.slave_count >= this._slave_limit.max
+  }
+
+  get max() {
+    return Math.floor(this._slave_limit.max)
   }
 
   public turnUpdate = () => {

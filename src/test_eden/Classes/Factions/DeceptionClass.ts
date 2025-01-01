@@ -1,5 +1,5 @@
-import {ResourceStoreClass} from "../../Resource";
-import image from '../../assets/images/Faction4.png';
+import {ResourceStoreClass} from "../../../Resource";
+import image from '../../../assets/images/Faction4.png';
 import {FactionClass} from "./FactionClass.ts";
 import {SlaveClass} from "../Slaves/SlaveClass.ts";
 

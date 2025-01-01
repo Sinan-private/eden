@@ -1,10 +1,10 @@
 import {Button, Divider, Stack} from "@mui/material";
 import styled from "styled-components";
-import {useGame} from "./context/game.context.ts";
+import {useGame} from "../context/game.context.ts";
 import {observer} from "mobx-react";
-import {useTick} from "../Resource/context/tick.context.ts";
+import {useTick} from "../../Resource/context/tick.context.ts";
 
-export const GameControls = observer(() => {
+export const Debug_BehemothControls = observer(() => {
   const {behemoth} = useGame();
   const {isActive} = useTick();
   const onToggleClimbing = behemoth.movement_requested ? behemoth.stopClimbing : behemoth.startClimbing
@@ -36,4 +36,5 @@ const StyledGameControls = styled.div`
     transform: translateX(-50%);
     //border: 1px solid red;
     padding: 8px 12px;
+    z-index: 11000;
 `

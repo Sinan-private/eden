@@ -8,6 +8,7 @@ import {useAnimationSubscription} from "../../Resource";
 import behemoth_image from '../../assets/images/behemoth.png';
 import behemoth_animated from '../../assets/images/behemoth_animated.gif';
 import mana_dirty from '../../Resource/assets/icons/mana_dirty.png';
+import {useTick} from "../../Resource/context/tick.context.ts";
 
 const SPOTS_DIVIDER = 25;
 const BACKGROUND_IMAGE_HEIGHT = 600;
@@ -16,7 +17,6 @@ const CLIMBING_SPEED_COEFFICIENT = 0.1
 
 export const TreeTrunk = observer(() => {
   const {get} = useGame().resources
-  const height = get('behemoth_climb_height').beautify.value
   const climbing_speed = get('behemoth_climb_speed').value
   const [displacement, setDisplacement] = useState(-BACKGROUND_IMAGE_HEIGHT * 2);
 
@@ -36,9 +36,6 @@ export const TreeTrunk = observer(() => {
       </TrunkContainer>
       <Behemoth/>
       <Digging/>
-      <Box position="absolute" bottom={100} left="50%">
-        {height}
-      </Box>
     </Tree>
   )
 })
@@ -104,14 +101,12 @@ const Digging = observer(() => {
 
 const Behemoth = () => {
   const {get} = useGame().resources;
+  const {isActive} = useTick();
   const speed = get('behemoth_climb_speed').value;
-  const src = speed ? behemoth_animated : behemoth_image;
+  const src = speed && isActive ? behemoth_animated : behemoth_image;
   return (
     <StyledBehemoth>
       <img src={src} alt={src} style={{transform: 'rotate(-90deg)'}}/>
-      {/*<KeyboardArrowUpIcon/>*/}
-      {/*<KeyboardDoubleArrowUpIcon/>*/}
-      {/*{speed}*/}
     </StyledBehemoth>
   )
 }

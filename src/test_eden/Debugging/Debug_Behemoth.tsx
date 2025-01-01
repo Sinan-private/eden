@@ -1,4 +1,4 @@
-import {useGame} from "./context/game.context.ts";
+import {useGame} from "../context/game.context.ts";
 import {Box} from "@mui/material";
 
 export const Debug_Behemoth = () => {

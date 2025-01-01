@@ -1,4 +1,4 @@
-import {ResourceClass, ResourceStoreClass, ResourceTypes} from "../../Resource";
+import {ResourceClass, ResourceStoreClass, ResourceTypes} from "../../../Resource";
 import {makeAutoObservable} from "mobx";
 
 const FLUSHING_SPEED = 0.25;
@@ -14,12 +14,16 @@ export class BehemothClass {
   public crafting_requested: boolean;
   public climb_height: ResourceClass;
   public climb_speed: ResourceClass;
+  private _hp: ResourceClass;
+  private _acid: ResourceClass;
   private _digging_depth: ResourceClass;
   private _flushing_depth: ResourceClass;
   private _drying_delay: ResourceClass;
   private _has_flushed: boolean;
 
   constructor(private _resourceStore: ResourceStoreClass) {
+    this._hp = _resourceStore.get('behemoth_hp')
+    this._acid = _resourceStore.get('behemoth_acid')
     this.climb_height = _resourceStore.get('behemoth_climb_height')
     this.climb_speed = _resourceStore.get('behemoth_climb_speed')
     this._digging_depth = _resourceStore.get('behemoth_digging_depth')
@@ -180,6 +184,14 @@ export class BehemothClass {
 
   get drying_delay() {
     return Number(this._drying_delay.beautify.value)
+  }
+
+  get hp() {
+    return Math.floor(this._hp.value)
+  }
+
+  get acid() {
+    return Math.floor(this._acid.value)
   }
 
   private _getTypeSum = (type: ResourceTypes) => {

@@ -1,14 +1,18 @@
 import {useMemo} from "react";
 import {createContainer} from "unstated-next";
 import {useResource, useTurnSubscription} from "../../Resource";
-import {BehemothClass} from "../Behemoth/BehemothClass.ts";
-import {SlaveClass} from "../Slaves/SlaveClass.ts";
-import {DemonClass, GuardClass, DeceptionClass, SlaveHunterClass} from "../Factions";
+import {BehemothClass} from "../Classes/Behemoth/BehemothClass.ts";
+import {SlaveClass} from "../Classes/Slaves/SlaveClass.ts";
+import {DemonClass, GuardClass, DeceptionClass, SlaveHunterClass} from "../Classes/Factions";
+import {Mana} from "../Classes/Mana/Mana.ts";
+import {Upstream} from "../Classes/Upstream.ts";
 
 const useGameBase = () => {
   const {resources} = useResource();
   const slaves = useMemo(() => new SlaveClass(resources), [resources]);
   const behemoth = useMemo(() => new BehemothClass(resources), [resources]);
+  const mana = useMemo(() => new Mana(resources), [resources])
+  const upstream = useMemo(() => new Upstream(resources), [resources])
   const factionDemon = useMemo(() => new DemonClass(resources, slaves), [resources, slaves])
   const factionMindBender = useMemo(() => new DeceptionClass(resources, slaves), [resources, slaves])
   const factionGuard = useMemo(() => new GuardClass(resources, slaves), [resources, slaves])
@@ -16,11 +20,14 @@ const useGameBase = () => {
   useTurnSubscription(behemoth.turnUpdate);
   useTurnSubscription(slaves.turnUpdate);
   useTurnSubscription(factionSlaveHunters.turnUpdate);
+  useTurnSubscription(upstream.turnUpdate);
 
   return {
     resources,
     behemoth,
     slaves,
+    mana,
+    upstream,
     factions: {
       slaveHunters: factionSlaveHunters,
       demons: factionDemon,

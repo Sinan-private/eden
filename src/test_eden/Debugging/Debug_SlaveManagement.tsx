@@ -1,8 +1,8 @@
 import {observer} from "mobx-react";
-import {useGame} from "./context/game.context.ts";
+import {useGame} from "../context/game.context.ts";
 import {Button, Stack, Typography} from "@mui/material";
-import {SlaveCount} from "./SlaveCount.tsx";
-import {Debug} from "./Components/Debug.tsx";
+import {SlaveCount} from "../Components/SlaveCount.tsx";
+import {Debug} from "../Components/Debug.tsx";
 
 export const Debug_SlaveManagement = observer(() => {
   const {slaves} = useGame();

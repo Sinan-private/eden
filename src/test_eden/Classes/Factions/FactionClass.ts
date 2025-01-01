@@ -1,4 +1,4 @@
-import {ResourceClass, ResourceStoreClass} from "../../Resource";
+import {ResourceClass, ResourceStoreClass} from "../../../Resource";
 import {SlaveClass} from "../Slaves/SlaveClass.ts";
 
 export class FactionClass {
