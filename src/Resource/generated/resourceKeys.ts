@@ -29,5 +29,17 @@ export const resourceKeys = [
   "slave_diggers",
   "slave_blacksmiths",
   "slave_hunters",
-  "slave_unassigned"
+  "slave_unassigned",
+  "slave_hunter_loyalty",
+  "slave_hunter_influence",
+  "slave_hunter_progress",
+  "deception_loyalty",
+  "deception_influence",
+  "deception_progress",
+  "demon_loyalty",
+  "demon_influence",
+  "demon_progress",
+  "guard_loyalty",
+  "guard_influence",
+  "guard_progress"
 ] as const;

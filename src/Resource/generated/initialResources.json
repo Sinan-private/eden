@@ -534,5 +534,137 @@
     "iconName": "empty",
     "cost": null,
     "revealedAt": null
+  },
+  {
+    "key": "slave_hunter_loyalty",
+    "value": 50,
+    "min": 0,
+    "max": 100,
+    "label": "Slave hunter loyalty",
+    "type": "faction_slave_hunter",
+    "iconName": "empty",
+    "cost": null,
+    "revealedAt": null
+  },
+  {
+    "key": "slave_hunter_influence",
+    "value": 25,
+    "min": 0,
+    "max": 100,
+    "label": "Slave hunter influence",
+    "type": "faction_slave_hunter",
+    "iconName": "empty",
+    "cost": null,
+    "revealedAt": null
+  },
+  {
+    "key": "slave_hunter_progress",
+    "value": 0,
+    "min": 0,
+    "max": 100,
+    "label": "Slave hunter progress",
+    "type": "faction_slave_hunter",
+    "iconName": "empty",
+    "cost": null,
+    "revealedAt": null
+  },
+  {
+    "key": "deception_loyalty",
+    "value": 50,
+    "min": 0,
+    "max": 100,
+    "label": "Deception loyalty",
+    "type": "faction_deception",
+    "iconName": "empty",
+    "cost": null,
+    "revealedAt": null
+  },
+  {
+    "key": "deception_influence",
+    "value": 25,
+    "min": 0,
+    "max": 100,
+    "label": "Deception influence",
+    "type": "faction_deception",
+    "iconName": "empty",
+    "cost": null,
+    "revealedAt": null
+  },
+  {
+    "key": "deception_progress",
+    "value": 0,
+    "min": 0,
+    "max": 100,
+    "label": "Deception progress",
+    "type": "faction_deception",
+    "iconName": "empty",
+    "cost": null,
+    "revealedAt": null
+  },
+  {
+    "key": "demon_loyalty",
+    "value": 50,
+    "min": 0,
+    "max": 100,
+    "label": "Demon loyalty",
+    "type": "faction_demon",
+    "iconName": "empty",
+    "cost": null,
+    "revealedAt": null
+  },
+  {
+    "key": "demon_influence",
+    "value": 25,
+    "min": 0,
+    "max": 100,
+    "label": "Demon influence",
+    "type": "faction_demon",
+    "iconName": "empty",
+    "cost": null,
+    "revealedAt": null
+  },
+  {
+    "key": "demon_progress",
+    "value": 0,
+    "min": 0,
+    "max": 100,
+    "label": "Demon progress",
+    "type": "faction_demon",
+    "iconName": "empty",
+    "cost": null,
+    "revealedAt": null
+  },
+  {
+    "key": "guard_loyalty",
+    "value": 50,
+    "min": 0,
+    "max": 100,
+    "label": "Guard loyalty",
+    "type": "faction_guard",
+    "iconName": "empty",
+    "cost": null,
+    "revealedAt": null
+  },
+  {
+    "key": "guard_influence",
+    "value": 25,
+    "min": 0,
+    "max": 100,
+    "label": "Guard influence",
+    "type": "faction_guard",
+    "iconName": "empty",
+    "cost": null,
+    "revealedAt": null
+  },
+  {
+    "key": "guard_progress",
+    "value": 0,
+    "min": 0,
+    "max": 100,
+    "label": "Guard progress",
+    "type": "faction_guard",
+    "iconName": "empty",
+    "cost": null,
+    "revealedAt": null
   }
 ]

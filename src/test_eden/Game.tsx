@@ -1,4 +1,4 @@
-import {Box, Button, CircularProgress, CircularProgressProps, Divider, Paper, Stack, Typography} from "@mui/material";
+import {Box, Button, Divider, Paper, Stack, Typography} from "@mui/material";
 import styled from "styled-components";
 import KeyboardArrowUpIcon from '@mui/icons-material/KeyboardArrowUp';
 import KeyboardDoubleArrowUpIcon from '@mui/icons-material/KeyboardDoubleArrowUp';
@@ -10,6 +10,7 @@ import {Debug_Behemoth} from "./Debug_Behemoth.tsx";
 import {useMemo} from "react";
 import {Debug} from "./Components/Debug.tsx";
 import {SlaveCount} from "./SlaveCount.tsx";
+import {FactionManager} from "./FactionManager.tsx";
 
 const SPOTS_DIVIDER = 75;
 
@@ -29,8 +30,11 @@ export const Game = () => {
           <Debug_Behemoth/>
         </Box>
       </Debug>
-      <Box sx={{position: 'absolute', top: '50%', left: 10, transform: 'translateY(-50%)'}}>
+      <Box sx={{position: 'absolute', top: '50%', right: 10, transform: 'translateY(-50%)'}}>
         <SlaveManager/>
+      </Box>
+      <Box sx={{position: 'absolute', top: '50%', left: 10, transform: 'translateY(-50%)'}}>
+        <FactionManager/>
       </Box>
     </>
   )
@@ -87,7 +91,7 @@ const TopBar = () => {
           <Typography variant="caption">Raw</Typography>
           <Typography>{behemoth.raw_mana}</Typography>
         </Box>
-        {getByType('mana').map(({id, beautify, icon, value}, i) => (
+        {getByType('mana').map(({id, beautify, icon, value}) => (
           <Box key={id}>
             <img src={icon} alt={icon} style={value < 1 ? inactiveStyle : {}} />
             <Typography>{beautify.value}</Typography>
