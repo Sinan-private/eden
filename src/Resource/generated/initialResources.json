@@ -732,5 +732,16 @@
     "iconName": "empty",
     "cost": null,
     "revealedAt": null
+  },
+  {
+    "key": "slave_wasted",
+    "value": 0,
+    "min": 0,
+    "max": null,
+    "label": "Slave wasted",
+    "type": "slaves",
+    "iconName": "empty",
+    "cost": null,
+    "revealedAt": null
   }
 ]

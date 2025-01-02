@@ -13,9 +13,12 @@ import {useGame} from "./context/game.context.ts";
 
 
 export const Game = () => {
+  const game = useGame();
+  window.game = game;
+  console.log(game.isActive)
   return (
     <>
-      <Screen display="flex" flexDirection="row" justifyContent="space-between">
+      <Screen display="flex" flexDirection="row" justifyContent="space-between" $paused={!game.isActive}>
         <div style={{flex: '1 1 30%'}}></div>
         <div style={{flex: '1 1 30%'}}></div>
         <TreeTrunk/>
@@ -38,12 +41,15 @@ export const Game = () => {
   )
 }
 
-const Screen = styled(Box)`
+const Screen = styled(Box)<{$paused: boolean}>`
     width: 100vw;
     height: 100vh;
     //background: #151918;
     background-image: url("${background}");
     background-size: cover;
+    border: 2px solid;
+    border-color: ${props => props.$paused ? 'red' : 'transparent'};
+    transition: border-color 0.5s ease;
 `
 
 const Upstream = () => {

@@ -1,4 +1,4 @@
-import {Box, Divider, Paper, Stack, Tooltip, Typography} from "@mui/material";
+import {Box, Button, Divider, Paper, Stack, Tooltip, Typography} from "@mui/material";
 import {observer} from "mobx-react";
 import styled from "styled-components";
 import PlayArrowIcon from '@mui/icons-material/PlayArrow';
@@ -52,12 +52,23 @@ const Center = () => {
         <PlayButton/>
         <CenterUi style={{paddingLeft: 32}}>
           <UIStack tooltip={(<ManaPreview />)} Icon={(<AutoAwesomeIcon />)} value={manaAmount} />
-          <UIStack tooltip="Behemoth" Icon={(<BugReportIcon />)} value={behemothAmount} />
+          <UIStack tooltip={(<BehemothPreview />)} Icon={(<BugReportIcon />)} value={behemothAmount} />
         </CenterUi>
       </Box>
     </Box>
   )
 }
+
+const BehemothPreview = observer(() => {
+  const {manaToAcid} = useGame().behemoth;
+
+  return (
+    <Box p={2}>
+      Behemoth
+      <Button onClick={manaToAcid}>Mana to acid</Button>
+    </Box>
+  )
+})
 
 const ManaPreview = observer(() => {
   const {resources, mana} = useGame();
@@ -161,6 +172,6 @@ const PlayContainer = styled(Box)`
 
 const Side = styled.div`
     flex: 1 1 auto;
-    height: 20px;
+    height: 30px;
     //font-size: 12px;
 `;

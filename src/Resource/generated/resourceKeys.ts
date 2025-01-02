@@ -47,5 +47,6 @@ export const resourceKeys = [
   "guard_level",
   "behemoth_acid",
   "behemoth_hp",
-  "upstream_height"
+  "upstream_height",
+  "slave_wasted"
 ] as const;

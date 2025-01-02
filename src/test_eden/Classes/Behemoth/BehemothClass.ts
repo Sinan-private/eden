@@ -4,7 +4,7 @@ import {makeAutoObservable} from "mobx";
 const FLUSHING_SPEED = 0.25;
 const DRYING_SPEED = 2;
 const HARVEST_SPEED = 0.25;
-const CRAFTING_SPEED = 0.05;
+const CRAFTING_SPEED = 0.15;
 const MANA_FINDINGS = [1, 20, 300, 4000, 50000];
 
 export class BehemothClass {
@@ -74,6 +74,16 @@ export class BehemothClass {
   public stopDigging = () => {
     this.digging_requested = false;
   }
+  public manaToAcid = () => {
+    console.log('do')
+    const trade = this._resourceStore.trade([{key: 'clean_mana_level_1', value: 20}], [{key: 'behemoth_acid', value: 100}])
+    console.log(trade.isTradePossible())
+    if (trade.isTradePossible()) {
+      trade.executeTrade()
+    }
+    // this._resourceStore.get('clean_mana_level_1').updateValueBy(-20)
+    // this._acid.updateValueBy(100)
+  }
 
   // public turnUpdate = turnUpdate.bind(this);
 
@@ -93,8 +103,9 @@ export class BehemothClass {
     if (this.digging_requested) {
       digging_depth.updateValueBy(this._resourceStore.get('slave_diggers').value)
     }
-    if (this.flushing_requested) {
+    if (this.flushing_requested && this.acid) {
       flushing_depth.updateValueBy(10)
+      this._acid.updateValueBy(-10)
       if (flushing_depth.value >= flushing_depth.max) {
         getByType('liquid_mana').forEach((liquid_mana, i) =>
           liquid_mana.updateValueBy(this.digging_depth * FLUSHING_SPEED / MANA_FINDINGS[i]))

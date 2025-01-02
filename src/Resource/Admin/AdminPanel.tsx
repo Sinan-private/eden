@@ -57,7 +57,7 @@ const StyledContainer = styled.div`
     min-width: 60vw;
     background: linear-gradient(180deg, rgb(53, 57, 70) 0%, rgba(35, 42, 60, 1) 100%);
     box-shadow: 10px 0 74px 0 #22183887;
-    z-index: 1000;
+    z-index: 13000;
 `
 const Content = styled.div`
     height: 100vh;

@@ -17,12 +17,14 @@ const useGameBase = () => {
   const factionMindBender = useMemo(() => new DeceptionClass(resources, slaves), [resources, slaves])
   const factionGuard = useMemo(() => new GuardClass(resources, slaves), [resources, slaves])
   const factionSlaveHunters = useMemo(() => new SlaveHunterClass(resources, slaves), [resources, slaves])
+  const tick = useTurnSubscription();
   useTurnSubscription(behemoth.turnUpdate);
   useTurnSubscription(slaves.turnUpdate);
   useTurnSubscription(factionSlaveHunters.turnUpdate);
   useTurnSubscription(upstream.turnUpdate);
 
   return {
+    ...tick,
     resources,
     behemoth,
     slaves,

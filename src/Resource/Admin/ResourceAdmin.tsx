@@ -52,6 +52,7 @@ const StylesGameControl = styled.div`
     position: fixed;
     display: flex;
     min-height: 40px;
+    z-index: 12000;
 
     div {
         display: flex;
