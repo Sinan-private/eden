@@ -5,12 +5,12 @@ import {Debug_Behemoth} from "./Debugging/Debug_Behemoth.tsx";
 import {Debug} from "./Components/Debug.tsx";
 import {FactionManager} from "./FactionManager.tsx";
 import {TreeTrunk} from "./Gaja/TreeTrunk.tsx";
-import background from '../assets/images/hell_background.jpg'
 import {Debug_SlaveManagement} from "./Debugging/Debug_SlaveManagement.tsx";
 import {TopBar} from "./TopBar.tsx";
 import upstream_image from '../assets/images/upstream.gif';
 import {useGame} from "./context/game.context.ts";
-
+import {Background} from "./Background.tsx";
+import {blue} from "../constants/colors.ts";
 
 export const Game = () => {
   const game = useGame();
@@ -35,7 +35,8 @@ export const Game = () => {
       <Box sx={{position: 'absolute', top: '50%', left: 10, transform: 'translateY(-50%)'}}>
         <FactionManager/>
       </Box>
-      <Upstream/>
+      {/*<Upstream/>*/}
+      <Background />
     </>
   )
 }
@@ -43,32 +44,20 @@ export const Game = () => {
 const Screen = styled(Box)<{$paused: boolean}>`
     width: 100vw;
     height: 100vh;
-    //background: #151918;
-    background-image: url("${background}");
-    background-size: cover;
     border: 2px solid;
-    border-color: ${props => props.$paused ? 'red' : 'transparent'};
+    border-color: ${props => props.$paused ? blue : 'transparent'};
     transition: border-color 0.5s ease;
+    overflow: hidden;
 `
 
+  const IMAGE_HEIGHT = 400
 const Upstream = () => {
   const {upstream, behemoth} = useGame();
-  const IMAGE_HEIGHT = 400
   const position = IMAGE_HEIGHT - (behemoth.climb_height.value - upstream.height.value);
   return position < -300
     ? null
     : (
-      <Box sx={{
-        // border: '1px solid red',
-        pointerEvents: 'none',
-        width: '100%',
-        height: 600,
-        position: 'fixed',
-        // bottom: 0,
-        bottom: -400 + position,
-        left: 0,
-        zIndex: 1,
-      }}>
+      <UpstreamContainer $position={position}>
         <Box sx={{
           width: '100%',
           height: 200,
@@ -83,6 +72,19 @@ const Upstream = () => {
           height: 400,
           background: 'black'
         }}/>
-      </Box>
+      </UpstreamContainer>
     )
 }
+
+const UpstreamContainer = styled(Box).attrs<{$position: number}>((props) => ({
+  style: {
+    bottom: -400 + props.$position,
+  }
+}))`
+    pointer-events: none;
+    width: 100%;
+    height: 600px;
+    position: fixed;
+    left: 0;
+    z-index: 1;
+`

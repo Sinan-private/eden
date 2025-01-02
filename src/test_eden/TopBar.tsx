@@ -22,6 +22,7 @@ export const TopBar = () => {
       // border: '1px solid red',
       display: 'flex',
       gap: 2,
+      zIndex: 500,
     }}>
       <Side>
 
@@ -43,7 +44,7 @@ const Center = () => {
   const behemothHeight = `${behemoth.climb_height.beautify.value} (${upstream.height.beautify.value})`;
 
   return (
-    <Box sx={{flex: '1 1 500px', mt: 1.5}}>
+    <Box sx={{flex: '1 1 500px', mt: 1.5, position: 'relative', zIndex: 100}}>
       <Box sx={{display: 'flex', width: '100%', '*': {flex: '1 1 auto'}, position: 'relative'}}>
         <CenterUi>
           <UIStack tooltip="Slaves" Icon={(<LinkIcon sx={{transform: 'rotate(-90deg)'}} />)} value={slaveAmount} />

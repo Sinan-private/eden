@@ -1,14 +1,15 @@
-import {useMemo, useState} from "react";
+import {useEffect, useMemo, useState} from "react";
 import {Box} from "@mui/material";
 import styled from "styled-components";
 import {observer} from "mobx-react";
 import {useGame} from "../context/game.context.ts";
 import image from '../../assets/images/seemless_trunk.png';
-import {useAnimationSubscription} from "../../Resource";
+import {useAnimationSubscription, useTurnSubscription} from "../../Resource";
 import behemoth_image from '../../assets/images/behemoth.png';
 import behemoth_animated from '../../assets/images/behemoth_animated.gif';
 import mana_dirty from '../../Resource/assets/icons/mana_dirty.png';
 import {useTick} from "../../Resource/context/tick.context.ts";
+import branch_image from '../../assets/images/Branch3.png';
 
 const SPOTS_DIVIDER = 25;
 const BACKGROUND_IMAGE_HEIGHT = 600;
@@ -22,23 +23,63 @@ export const TreeTrunk = observer(() => {
 
   useAnimationSubscription(() => {
     if (climbing_speed) {
-      const newPosition = (displacement + climbing_speed * CLIMBING_SPEED_COEFFICIENT) % BACKGROUND_IMAGE_HEIGHT
+      const newPosition = (displacement + climbing_speed * CLIMBING_SPEED_COEFFICIENT)
       setDisplacement(newPosition - BACKGROUND_IMAGE_HEIGHT)
     }
   })
+
 
   return (
     <Tree>
       <TrunkContainer>
         <Trunk>
-          <TrunkBackground $displacement={displacement}/>
+          <TrunkBackground $displacement={displacement % BACKGROUND_IMAGE_HEIGHT}/>
         </Trunk>
       </TrunkContainer>
+      <Branches />
+          {/*<Branch src={branch_image} $displacement={0} />*/}
       <Behemoth/>
       <Digging/>
     </Tree>
   )
 })
+
+const Branches = () => {
+  // I want between 0 and 3 branches to exist at the same time
+  // 3 - 0%
+  // 2 - 25%
+  // 1 - 50%
+  // 0 - 75%
+  const [branches, setBranches] = useState([]);
+  const {climb_height, climb_speed} = useGame().behemoth;
+  useTurnSubscription(() => {
+  const chanceForBranch = 0.75 - branches.length * 0.25;
+  const createBranch = Math.random() < chanceForBranch;
+    console.log(chanceForBranch, branches)
+    if (createBranch) {
+      setBranches(branches.concat(1))
+    }
+  })
+  // return null
+  return (
+    <Branch src={branch_image} $displacement={0} />
+  )
+}
+
+const Branch = styled.img.attrs<{$displacement: number}>((props) => ({
+  style: {
+    transform: `translateY(${props.$displacement}px)`
+  }
+}))`
+    position: absolute;
+    top: 0;
+    right: 400px;
+    width: 800px;
+    height: 400px;
+    object-fit: contain;
+    filter: blur(6px);
+    z-index: -1;
+`
 
 
 const Digging = observer(() => {
@@ -134,6 +175,7 @@ const Tree = styled(Box)`
     position: relative;
     width: ${BACKGROUND_IMAGE_WIDTH}px;
     height: 100vh;
+    z-index: 1;
 `
 
 const TrunkContainer = styled(Box)`
@@ -141,6 +183,7 @@ const TrunkContainer = styled(Box)`
     width: 100%;
     height: 100%;
     overflow-y: hidden;
+    z-index: 1;
 `
 const Trunk = styled(Box)`
     position: relative;
@@ -153,7 +196,6 @@ const TrunkBackground = styled.div.attrs<{ $displacement: number }>(props => ({
     transform: `translateY(${props.$displacement}px)`
   },
 }))`position: relative;
-    //top: -600px;
     width: ${BACKGROUND_IMAGE_WIDTH}px;
     height: 3000px;
     background-image: url("${image}");`
