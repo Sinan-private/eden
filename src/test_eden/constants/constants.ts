@@ -1,0 +1,1 @@
+export const CLIMBING_SPEED_COEFFICIENT = 3.1

@@ -1,85 +1,50 @@
-import {useEffect, useMemo, useState} from "react";
+import {useMemo, useState} from "react";
 import {Box} from "@mui/material";
 import styled from "styled-components";
 import {observer} from "mobx-react";
 import {useGame} from "../context/game.context.ts";
 import image from '../../assets/images/seemless_trunk.png';
-import {useAnimationSubscription, useTurnSubscription} from "../../Resource";
+import {useAnimationSubscription} from "../../Resource";
 import behemoth_image from '../../assets/images/behemoth.png';
 import behemoth_animated from '../../assets/images/behemoth_animated.gif';
 import mana_dirty from '../../Resource/assets/icons/mana_dirty.png';
 import {useTick} from "../../Resource/context/tick.context.ts";
-import branch_image from '../../assets/images/Branch3.png';
+import {Branches} from "./Branches.tsx";
+import {CLIMBING_SPEED_COEFFICIENT} from "../constants/constants.ts";
+
 
 const SPOTS_DIVIDER = 25;
 const BACKGROUND_IMAGE_HEIGHT = 600;
 const BACKGROUND_IMAGE_WIDTH = 571;
-const CLIMBING_SPEED_COEFFICIENT = 0.1
 
 export const TreeTrunk = observer(() => {
   const {get} = useGame().resources
   const climbing_speed = get('behemoth_climb_speed').value
-  const [displacement, setDisplacement] = useState(-BACKGROUND_IMAGE_HEIGHT * 2);
-
+  const [displacement, setDisplacement] = useState(0);
   useAnimationSubscription(() => {
     if (climbing_speed) {
       const newPosition = (displacement + climbing_speed * CLIMBING_SPEED_COEFFICIENT)
-      setDisplacement(newPosition - BACKGROUND_IMAGE_HEIGHT)
+      setDisplacement(newPosition)
     }
   })
-
+  const trunkDisplacement = displacement - BACKGROUND_IMAGE_HEIGHT * 3
+  const prop = (trunkDisplacement % BACKGROUND_IMAGE_HEIGHT) - BACKGROUND_IMAGE_HEIGHT
 
   return (
     <Tree>
       <TrunkContainer>
         <Trunk>
-          <TrunkBackground $displacement={displacement % BACKGROUND_IMAGE_HEIGHT}/>
+          <TrunkBackground $displacement={prop}/>
         </Trunk>
       </TrunkContainer>
-      <Branches />
-          {/*<Branch src={branch_image} $displacement={0} />*/}
+      <Branches displacement={displacement}/>
+      {/*<Branch src={branch_image} $displacement={0} />*/}
       <Behemoth/>
       <Digging/>
     </Tree>
   )
 })
 
-const Branches = () => {
-  // I want between 0 and 3 branches to exist at the same time
-  // 3 - 0%
-  // 2 - 25%
-  // 1 - 50%
-  // 0 - 75%
-  const [branches, setBranches] = useState([]);
-  const {climb_height, climb_speed} = useGame().behemoth;
-  useTurnSubscription(() => {
-  const chanceForBranch = 0.75 - branches.length * 0.25;
-  const createBranch = Math.random() < chanceForBranch;
-    console.log(chanceForBranch, branches)
-    if (createBranch) {
-      setBranches(branches.concat(1))
-    }
-  })
-  // return null
-  return (
-    <Branch src={branch_image} $displacement={0} />
-  )
-}
-
-const Branch = styled.img.attrs<{$displacement: number}>((props) => ({
-  style: {
-    transform: `translateY(${props.$displacement}px)`
-  }
-}))`
-    position: absolute;
-    top: 0;
-    right: 400px;
-    width: 800px;
-    height: 400px;
-    object-fit: contain;
-    filter: blur(6px);
-    z-index: -1;
-`
 
 
 const Digging = observer(() => {
@@ -104,7 +69,7 @@ const Digging = observer(() => {
             borderRadius: 20,
             // background: 'radial-gradient(circle, rgba(34,54,50,1) 0%, rgba(47,71,66,1) 100%)',
           }}>
-            <img src={mana_dirty} alt="dirty mana found" width={32 * size / 3} style={{opacity: 0.7}} />
+            <img src={mana_dirty} alt="dirty mana found" width={32 * size / 3} style={{opacity: 0.7}}/>
           </Box>
         ))}
       </>

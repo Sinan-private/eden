@@ -1,4 +1,5 @@
 import {ResourceClass, ResourceStoreClass} from "../../../Resource";
+import {randomRange} from "./helpers/randomRange.ts";
 
 const slaveAssignments = [
   'digger',
@@ -123,12 +124,3 @@ export class SlaveClass {
 
 const limitAmount = (val: number, max: number) => val <= max ? val : max
 
-const randomRange = (from: number, to: number) => {
-  if (to < from) {
-    console.warn('to is lower then from here')
-    return to;
-  }
-  const delta = to - from;
-
-  return Math.floor(Math.random() * delta + from)
-};

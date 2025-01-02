@@ -16,12 +16,12 @@ export const Game = () => {
   const game = useGame();
   window.game = game;
   return (
-    <>
-      <Screen display="flex" flexDirection="row" justifyContent="space-between" $paused={!game.isActive}>
+    <Screen>
+      <Content display="flex" flexDirection="row" justifyContent="space-between" $paused={!game.isActive}>
         <div style={{flex: '1 1 30%'}}></div>
         <div style={{flex: '1 1 30%'}}></div>
         <TreeTrunk/>
-      </Screen>
+      </Content>
       <Debug_BehemothControls/>
       <TopBar/>
       <Debug>
@@ -37,11 +37,21 @@ export const Game = () => {
       </Box>
       {/*<Upstream/>*/}
       <Background />
-    </>
+    </Screen>
   )
 }
 
-const Screen = styled(Box)<{$paused: boolean}>`
+
+const Screen = styled('div')`
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    overflow: hidden;
+`
+
+const Content = styled(Box)<{$paused: boolean}>`
     width: 100vw;
     height: 100vh;
     border: 2px solid;

@@ -14,7 +14,7 @@ export const Background = () => {
 
   return (
     <>
-      <Screen style={{filter: `grayscale(${grayscale}%) brightness(${brightness}) hue-rotate(${hueRotation}deg) blur(${distort/5}px`}}/>
+      <Frame style={{filter: `grayscale(${grayscale}%) brightness(${brightness}) hue-rotate(${hueRotation}deg) blur(${distort/5}px`}}/>
       <Blood style={{transform: `translateY(${bloodPosition}%)`, opacity: 0.5 + distortionStrength}} />
     </>
   )
@@ -48,7 +48,7 @@ const Disortion = () => {
   )
 }
 
-const Screen = styled.div`
+const Frame = styled.div`
     position: fixed;
     top: 0;
     left: 0;
