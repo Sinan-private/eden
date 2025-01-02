@@ -36,5 +36,5 @@ const StyledGameControls = styled.div`
     transform: translateX(-50%);
     //border: 1px solid red;
     padding: 8px 12px;
-    z-index: 11000;
+    z-index: 100;
 `

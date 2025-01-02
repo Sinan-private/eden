@@ -144,6 +144,7 @@ const useAdminBase = () => {
 
   return {
     resources: resources as ResourceStore<ResourceKeys, ResourceTypes>,
+    resourcesOriginal: resourcesOriginal as ResourceStore<ResourceKeys, ResourceTypes>,
     isFetching,
     isDisabled,
     canRemoveResource,

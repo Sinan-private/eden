@@ -15,7 +15,6 @@ import {useGame} from "./context/game.context.ts";
 export const Game = () => {
   const game = useGame();
   window.game = game;
-  console.log(game.isActive)
   return (
     <>
       <Screen display="flex" flexDirection="row" justifyContent="space-between" $paused={!game.isActive}>

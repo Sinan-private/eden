@@ -167,7 +167,7 @@ const PlayContainer = styled(Box)`
     border-radius: 50%;
     border: 1px solid #6d8793;
     background-color: black;
-    z-index: 10000;
+    z-index: 1000;
 `
 
 const Side = styled.div`
