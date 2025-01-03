@@ -40,7 +40,7 @@ const Center = () => {
   const {slave_count, max} = slaves;
   const slaveAmount = `${slave_count} / ${max}`;
   const manaAmount = `${mana.mana_count} (${mana.getTypeSum('raw_mana')})`;
-  const behemothAmount = `${behemoth.hp} (${behemoth.acid})`;
+  const behemothAmount = `${behemoth.hp.beautify.value} (${behemoth.acid.beautify.value})`;
   const behemothHeight = `${behemoth.climb_height.beautify.value} (${upstream.height.beautify.value})`;
 
   return (

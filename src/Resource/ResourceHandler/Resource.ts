@@ -163,9 +163,9 @@ export class Resource<K extends string, T extends string> {
   get state() {
     return {
       key: this.key,
-      value: this.value,
-      min: this.min,
-      max: this.max,
+      value: Math.floor(this.value),
+      min: Math.floor(this.min),
+      max: Math.floor(this.max),
       label: this.label,
       type: this.type,
       iconName: this.iconName,

@@ -97,9 +97,9 @@ const Digging = observer(() => {
         {spots}
       </Box>
 
-      <Tunnel $digging_depth={digging_depth}>
+      <Tunnel $digging_depth={digging_depth.state.value}>
 
-        <Acid $flushing_depth={flushing_depth}/>
+        <Acid $flushing_depth={flushing_depth.state.value}/>
       </Tunnel>
 
     </Box>

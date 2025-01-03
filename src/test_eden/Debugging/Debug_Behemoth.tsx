@@ -10,8 +10,8 @@ export const Debug_Behemoth = () => {
 
   return (
     <Box sx={{fontFamily: 'monospace', fontSize: '12px', color: '#79ae79'}}>
-      <Box>Digging Depth{digging_depth}</Box>
-      <Box>Flushing depth {flushing_depth}</Box>
+      <Box>Digging Depth{digging_depth.beautify.value}</Box>
+      <Box>Flushing depth {flushing_depth.beautify.value}</Box>
       <Box>Drying delay {drying_delay}</Box>
       <Box display="flex" gap={2}>
 

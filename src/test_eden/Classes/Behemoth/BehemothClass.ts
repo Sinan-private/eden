@@ -11,30 +11,25 @@ const MANA_FINDINGS = [1, 20, 300, 4000, 50000];
 export class BehemothClass {
   public movement_requested: boolean = AUTO_CLIMB;
   public digging_requested: boolean = false;
-  public flushing_requested: boolean;
-  public crafting_requested: boolean;
+  public flushing_requested: boolean = false;
+  public crafting_requested: boolean = true;
+  private _has_flushed: boolean = false;
   public climb_height: ResourceClass;
   public climb_speed: ResourceClass;
-  private _hp: ResourceClass;
-  private _acid: ResourceClass;
-  private _digging_depth: ResourceClass;
-  private _flushing_depth: ResourceClass;
+  public hp: ResourceClass;
+  public acid: ResourceClass;
+  public digging_depth: ResourceClass;
+  public flushing_depth: ResourceClass;
   private _drying_delay: ResourceClass;
-  private _has_flushed: boolean;
 
   constructor(private _resourceStore: ResourceStoreClass) {
-    this._hp = _resourceStore.get('behemoth_hp')
-    this._acid = _resourceStore.get('behemoth_acid')
+    this.hp = _resourceStore.get('behemoth_hp')
+    this.acid = _resourceStore.get('behemoth_acid')
     this.climb_height = _resourceStore.get('behemoth_climb_height')
     this.climb_speed = _resourceStore.get('behemoth_climb_speed')
-    this._digging_depth = _resourceStore.get('behemoth_digging_depth')
-    this._flushing_depth = _resourceStore.get('behemoth_flushing_depth')
+    this.digging_depth = _resourceStore.get('behemoth_digging_depth')
+    this.flushing_depth = _resourceStore.get('behemoth_flushing_depth')
     this._drying_delay = _resourceStore.get('behemoth_drying_delay')
-    // this.movement_requested = false;
-    // this.digging_requested = false;
-    this.flushing_requested = false;
-    this.crafting_requested = true;
-    this._has_flushed = false;
     makeAutoObservable(this)
   }
 
@@ -55,7 +50,7 @@ export class BehemothClass {
   public startClimbing = () => {
     if (!this.digging_requested) {
       const {get, getByType} = this._resourceStore
-      this._digging_depth.setValueTo(0)
+      this.digging_depth.setValueTo(0)
       this.movement_requested = true;
       this._has_flushed = false;
       get('behemoth_flushing_depth').setValueTo(0) // This needs to reset to a previous state
@@ -91,8 +86,8 @@ export class BehemothClass {
   public turnUpdate = () => {
       const speed = this.climb_speed
       const height = this.climb_height
-      const digging_depth = this._digging_depth
-      const flushing_depth = this._flushing_depth
+      const digging_depth = this.digging_depth
+      const flushing_depth = this.flushing_depth
       const {get, produce, getByType} = this._resourceStore
     if (this.movement_requested) {
       speed.updateValueBy(0.2)
@@ -105,12 +100,12 @@ export class BehemothClass {
       console.log('dig')
       digging_depth.updateValueBy(this._resourceStore.get('slave_diggers').value)
     }
-    if (this.flushing_requested && this.acid) {
+    if (this.flushing_requested && this.acid.value >= 1) {
       flushing_depth.updateValueBy(10)
-      this._acid.updateValueBy(-10)
+      this.acid.updateValueBy(-10)
       if (flushing_depth.value >= flushing_depth.max) {
         getByType('liquid_mana').forEach((liquid_mana, i) =>
-          liquid_mana.updateValueBy(this.digging_depth * FLUSHING_SPEED / MANA_FINDINGS[i]))
+          liquid_mana.updateValueBy(this.digging_depth.value * FLUSHING_SPEED / MANA_FINDINGS[i]))
       }
     } else {
       flushing_depth.updateValueBy(-1)
@@ -161,14 +156,6 @@ export class BehemothClass {
     return !!this.climb_speed.value || this.movement_requested;
   }
 
-  get digging_depth() {
-    return Number(this._digging_depth.beautify.value)
-  }
-
-  get flushing_depth() {
-    return Number(this._flushing_depth.beautify.value)
-  }
-
   get canFlush() {
     return !this.inMotion && !this.digging_requested && !!this.digging_depth
   }
@@ -197,14 +184,6 @@ export class BehemothClass {
 
   get drying_delay() {
     return Number(this._drying_delay.beautify.value)
-  }
-
-  get hp() {
-    return Math.floor(this._hp.value)
-  }
-
-  get acid() {
-    return Math.floor(this._acid.value)
   }
 
   private _getTypeSum = (type: ResourceTypes) => {
