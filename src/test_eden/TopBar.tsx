@@ -4,12 +4,13 @@ import styled from "styled-components";
 import PlayArrowIcon from '@mui/icons-material/PlayArrow';
 import {useGame} from "./context/game.context.ts";
 import PauseIcon from '@mui/icons-material/Pause';
-import {useTurnSubscription} from "../Resource";
+import {ResourceClass, useTurnSubscription} from "../Resource";
 import LinkIcon from '@mui/icons-material/Link';
 import HeightIcon from '@mui/icons-material/Height';
 import AutoAwesomeIcon from '@mui/icons-material/AutoAwesome';
 import {useMemo} from "react";
 import BugReportIcon from '@mui/icons-material/BugReport';
+import {grey_blue} from "../constants/colors.ts";
 
 export const TopBar = () => {
   return (
@@ -25,11 +26,9 @@ export const TopBar = () => {
       zIndex: 500,
     }}>
       <Side>
-
       </Side>
       <Center/>
       <Side>
-
       </Side>
     </Box>
   )
@@ -47,7 +46,7 @@ const Center = () => {
     <Box sx={{flex: '1 1 500px', mt: 1.5, position: 'relative', zIndex: 100}}>
       <Box sx={{display: 'flex', width: '100%', '*': {flex: '1 1 auto'}, position: 'relative'}}>
         <CenterUi>
-          <UIStack tooltip="Slaves" Icon={(<LinkIcon sx={{transform: 'rotate(-90deg)'}} />)} value={slaveAmount} />
+          <UIStack tooltip={(<SlavePreview />)} Icon={(<LinkIcon sx={{transform: 'rotate(-90deg)'}} />)} value={slaveAmount} />
           <UIStack tooltip="Height" Icon={(<HeightIcon />)} value={behemothHeight} />
         </CenterUi>
         <PlayButton/>
@@ -71,37 +70,35 @@ const BehemothPreview = observer(() => {
   )
 })
 
-// const SlavePreview = observer(() => {
-//   const {resources, slaves} = useGame();
-//   const slaveView = useMemo(() => {
-//     const list = [
-//       // slaves.slave_count,
-//       slaves.slave_unassigned,
-//       slaves.slave_diggers,
-//       slaves.slave_blacksmiths,
-//     ]
-//     return (
-//       <Box p={2}>
-//         <Typography variant="h5">Slaves</Typography>
-//         {list.map(({id, beautify, icon}, i) => (
-//           <Box key={id} sx={{width: 240, display: 'flex', mb: 1, alignItems: "center"}}>
-//             <img src={icon} alt={icon} />
-//             <Typography sx={{mr: 2}} variant="caption">Level {i + 1}</Typography>
-//             <Typography>{beautify.value}</Typography>
-//           </Box>
-//         ))}
-//         <Divider sx={{my: 2}} />
-//         <Typography>Raw mana {raw_mana}</Typography>
-//       </Box>
-//     )
-//   }, [raw_mana, resources])
-//
-//   return (
-//     <Box>
-//       {slaveView}
-//     </Box>
-//   )
-// })
+const SlavePreview = observer(() => {
+  const {slaves} = useGame();
+  const slaveView = useMemo(() => {
+    const list: [ResourceClass, string][] = [
+      [slaves.slave_unassigned, 'Unassigned'],
+      [slaves.slave_diggers, 'Diggers'],
+      [slaves.slave_blacksmiths, 'Blacksmiths'],
+    ]
+    return (
+      <Box p={2}>
+        <Typography variant="h5">Slaves</Typography>
+        {list.map(([{id, beautify}, label]) => (
+          <Box key={id} sx={{width: 240, display: 'flex', mb: 1, alignItems: "center"}}>
+            <Typography sx={{mr: 2}} variant="caption">{label}</Typography>
+            <Typography>{beautify.value}</Typography>
+          </Box>
+        ))}
+        <Divider sx={{my: 2}} />
+        <Typography>Total slaves {slaves.slave_count}</Typography>
+      </Box>
+    )
+  }, [slaves.slave_blacksmiths, slaves.slave_count, slaves.slave_diggers, slaves.slave_unassigned])
+
+  return (
+    <Box>
+      {slaveView}
+    </Box>
+  )
+})
 
 
 
@@ -183,7 +180,7 @@ const CenterUi = styled(Paper)`
     display: flex;
     align-items: center;
     width: 300px;
-    border: 1px solid #6d8793;
+    border: 1px solid ${grey_blue};
     font-size: 14px;
     gap: 24px;
 `;
@@ -200,7 +197,8 @@ const PlayContainer = styled(Box)`
     width: 40px;
     height: 40px;
     border-radius: 50%;
-    border: 1px solid #6d8793;
+    border: 1px solid ${grey_blue};
+    //border: 1px solid #6d8793;
     background-color: black;
     z-index: 1000;
 `

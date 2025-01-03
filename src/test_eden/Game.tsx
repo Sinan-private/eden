@@ -1,16 +1,17 @@
-import {Box} from "@mui/material";
+import {Box, Typography} from "@mui/material";
 import styled from "styled-components";
 import {Debug_BehemothControls} from "./Debugging/Debug_BehemothControls.tsx";
-import {Debug_Behemoth} from "./Debugging/Debug_Behemoth.tsx";
-import {Debug} from "./Components/Debug.tsx";
 import {FactionManager} from "./FactionManager.tsx";
 import {TreeTrunk} from "./Gaja/TreeTrunk.tsx";
-import {Debug_SlaveManagement} from "./Debugging/Debug_SlaveManagement.tsx";
 import {TopBar} from "./TopBar.tsx";
 import upstream_image from '../assets/images/upstream.gif';
 import {useGame} from "./context/game.context.ts";
 import {Background} from "./Background.tsx";
 import {blue} from "../constants/colors.ts";
+import {observer} from "mobx-react";
+import {DebuggingComponents} from "./Components/DebuggingComponents.tsx";
+
+const IMAGE_HEIGHT = 400
 
 export const Game = () => {
   const game = useGame();
@@ -23,24 +24,149 @@ export const Game = () => {
       </Content>
       <Debug_BehemothControls/>
       <TopBar/>
-      <Debug>
-        <Box sx={{position: 'absolute', bottom: 50, left: 10}}>
-          <Debug_Behemoth/>
-        </Box>
-      </Debug>
-      <Box sx={{position: 'absolute', top: '50%', right: 10, transform: 'translateY(-50%)', zIndex: 1}}>
-        <Debug_SlaveManagement/>
-      </Box>
+      <DebuggingComponents />
       <Box sx={{position: 'absolute', top: '50%', left: 10, transform: 'translateY(-50%)'}}>
         <FactionManager/>
       </Box>
+      <Box sx={{position: 'absolute', top: '50%', right: 160, transform: 'translateY(-50%)', zIndex: 1}}>
+        <SlaveManager />
+      </Box>
       <Upstream/>
-      <Background />
+      <Background/>
     </Screen>
   )
 }
 
+const SlaveManager = observer(() => {
+  const SIZE = 280
+  const {slaves, factions} = useGame();
+  const slaveHunterImage = factions.slaveHunters.image;
+  const demonsImage = factions.demons.image;
+  const guardsImage = factions.guards.image;
+  const mindBendersImage = factions.mindBenders.image;
+  const {slave_unassigned, slave_blacksmiths, slave_diggers} = slaves;
+  return (
+    <Box position="relative" sx={{width: SIZE, height: SIZE}}>
+      <SlaveTop>
+        <FullSizedImage src={demonsImage} $disabled />
+      </SlaveTop>
+      <SlaveLeft>
+        <FullSizedImage src={guardsImage} $disabled />
+      </SlaveLeft>
+      <SlaveRight>
+        <FullSizedImage src={slaveHunterImage} />
+        {/*<Typography>123</Typography>*/}
+      </SlaveRight>
+      <SlaveBottom>
+        <FullSizedImage src={mindBendersImage} />
+      </SlaveBottom>
+      <SlaveCenter>
+        <Typography fontSize="2rem" lineHeight="2.7rem">{slave_unassigned.beautify.value}</Typography>
+        <Typography fontSize={10} px={2}>Unassigned slaves</Typography>
+      </SlaveCenter>
+      <Shadow size={SIZE} x={3} y={3} color="#3f675e" blur={0} opacity={0.15} />
+    </Box>
+  )
+})
 
+const FullSizedImage = styled.img<{$disabled?: boolean}>`
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    filter: ${props => props.$disabled ? 'saturate(0.2) blur(0px) brightness(2.2) contrast(0.4)' : 'none'}
+    // filter: saturate(${props => props.$disabled ? 0.05 : 0.8});
+`;
+
+type ShadowProps = {
+  size: number;
+  x: number;
+  y: number;
+  color?: string;
+  opacity?: number;
+  blur?: number;
+}
+
+// Todo offer this as part of the Beveled component
+
+const Shadow = (
+  {
+    size,
+    x,
+    y,
+    color = "black",
+    opacity = 0.3,
+    blur = 2,
+  }: ShadowProps) => (
+  <Box position="absolute" sx={{
+    width: size,
+    height: size,
+    top: y,
+    left: x,
+    opacity,
+    filter: `blur(${blur}px)`,
+    zIndex: -1,
+  }}>
+    <SlaveTop $disabled $backgroundColor={color} />
+    <SlaveLeft $disabled $backgroundColor={color} />
+    <SlaveRight $disabled $backgroundColor={color} />
+    <SlaveBottom $disabled $backgroundColor={color} />
+    <SlaveCenter $disabled $backgroundColor={color} />
+  </Box>
+)
+
+const SlaveAssignmentBase = styled.div<{$disabled?: boolean, $backgroundColor?: string}>`
+    position: absolute;
+    width: 31%;
+    height: 31%;
+    cursor: ${props => props.$disabled ? 'initial' : 'pointer'};
+    Top: auto;
+    bottom: auto;
+    right: auto;
+    left: auto;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    background-color: ${props => props.$backgroundColor || '#151918'};
+    transition: background-color 1.8s ease;
+    z-index: 2000;
+    
+`;
+
+const SlaveTop = styled(SlaveAssignmentBase)`
+    top: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    clip-path: polygon(0% 0, 100% 0, 100% 15%, 100% 85%, 85% 100%, 15% 100%, 0 85%, 0 15%);
+`;
+const SlaveLeft = styled(SlaveAssignmentBase)`
+    top: 50%;
+    left: 0;
+    transform: translateY(-50%);
+    clip-path: polygon(0% 0, 85% 0, 100% 15%, 100% 85%, 85% 100%, 15% 100%, 0 100%);
+`;
+
+const SlaveRight = styled(SlaveAssignmentBase)`
+    top: 50%;
+    right: 0;
+    transform: translateY(-50%);
+    clip-path: polygon(15% 0%, 100% 0, 100% 15%, 100% 85%, 100% 100%, 15% 100%, 0 85%, 0% 15%);
+`;
+
+const SlaveBottom = styled(SlaveAssignmentBase)`
+    bottom: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    clip-path: polygon(15% 0, 85% 0, 100% 15%, 100% 85%, 100% 100%, 0% 100%, 0 85%, 0 15%);
+`;
+
+const SlaveCenter = styled(SlaveAssignmentBase)`
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    clip-path: polygon(15% 0, 85% 0, 100% 15%, 100% 85%, 85% 100%, 15% 100%, 0 85%, 0 15%);
+`
 
 const Screen = styled('div')`
     position: fixed;
@@ -51,16 +177,17 @@ const Screen = styled('div')`
     overflow: hidden;
 `
 
-const Content = styled(Box)<{$paused: boolean}>`
+const Content = styled(Box)<{ $paused: boolean }>`
     width: 100vw;
     height: 100vh;
-    border: 2px solid;
+    border: 2px solid transparent;
     border-color: ${props => props.$paused ? blue : 'transparent'};
     transition: border-color 0.5s ease;
     overflow: hidden;
 `
 
-  const IMAGE_HEIGHT = 400
+
+
 const Upstream = () => {
   const {upstream, behemoth} = useGame();
   const position = IMAGE_HEIGHT - (behemoth.climb_height.value - upstream.height.value);
@@ -76,7 +203,7 @@ const Upstream = () => {
           zIndex: 1,
           backgroundImage: `url(${upstream_image})`,
           backgroundPosition: '0 280px',
-        }} />
+        }}/>
         <Box sx={{
           width: '100%',
           height: 400,
@@ -86,7 +213,7 @@ const Upstream = () => {
     )
 }
 
-const UpstreamContainer = styled(Box).attrs<{$position: number}>((props) => ({
+const UpstreamContainer = styled(Box).attrs<{ $position: number }>((props) => ({
   style: {
     bottom: -400 + props.$position,
   }
@@ -98,3 +225,12 @@ const UpstreamContainer = styled(Box).attrs<{$position: number}>((props) => ({
     left: 0;
     z-index: 1;
 `
+
+
+// const HoverConditionally = styled(Box)<{ $disabled: boolean }>`
+//     ${({ $disabled }) => !$disabled && `
+//     &:hover {
+//       background: #202927;
+//     }
+//   `}
+// `
