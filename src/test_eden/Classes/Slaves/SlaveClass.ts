@@ -1,5 +1,5 @@
 import {ResourceClass, ResourceStoreClass} from "../../../Resource";
-import {randomRange} from "./helpers/randomRange.ts";
+import {randomRange} from "../../helpers/randomRange.ts";
 
 const slaveAssignments = [
   'digger',

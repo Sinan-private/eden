@@ -13,30 +13,19 @@ import {ResourceKeys} from "./specificTypes.ts";
 type UpdateProps<K, T> = Partial<ResourceTypeRaw<K, T>>;
 
 export class Resource<K extends string, T extends string> {
-  public id: string;
+  public id: string = id();
   public key: K;
-  public value: number;
-  public min: number;
-  public max: number;
+  public value: number = 1;
+  public min: number = 0;
+  public max: number = Infinity;
   public label: string;
   public type: T;
   public cost: ResourceCostUpdate<K> | null;
   public revealedAt: ResourceCostUpdate<K> | null;
-  public iconName: string;
+  public iconName: string = 'empty';
 
-  constructor(raw_resource: ResourceUpdateProps<K, T>) {
-    const defaultResource = {
-      key: '' as K,
-      value: 1,
-      min: 0,
-      max: Infinity,
-      label: '',
-      type: '' as T,
-      cost: null,
-      revealedAt: null,
-      iconName: 'empty',
-    }
-    const {
+  constructor(
+    {
       min,
       max,
       value,
@@ -46,14 +35,10 @@ export class Resource<K extends string, T extends string> {
       cost,
       revealedAt,
       iconName,
-    } = {
-      ...defaultResource,
-      ...raw_resource
-    };
+    }: ResourceUpdateProps<K, T>) {
 
-    this.id = id();
     this.key = key;
-    this.value = value;
+    this.value = typeof value === 'number' ? value : 1;
     this.min = typeof min === 'number' ? min : 0;
     this.max = typeof max === 'number' ? max : Infinity;
     this.label = label ? label : key ? labelFromKey(key) : '';
