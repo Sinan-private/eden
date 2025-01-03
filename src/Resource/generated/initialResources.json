@@ -746,9 +746,9 @@
   },
   {
     "key": "behemoth_stamina",
-    "value": 2,
+    "value": 100,
     "min": 0,
-    "max": 2000,
+    "max": 150,
     "label": "Behemoth Stamina",
     "type": "behemoth",
     "iconName": "empty",

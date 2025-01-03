@@ -35,24 +35,33 @@ export const TopBar = () => {
 }
 
 const Center = () => {
-  const {slaves, behemoth, mana, upstream} = useGame();
+  const {slaves, behemoth, mana} = useGame();
   const {slave_count, max} = slaves;
   const slaveAmount = `${slave_count} / ${max}`;
   const manaAmount = `${mana.mana_count} (${mana.getTypeSum('raw_mana')})`;
-  const behemothAmount = `${behemoth.hp.beautify.value} (${behemoth.acid.beautify.value})`;
-  const behemothHeight = `${behemoth.climb_height.beautify.value} (${upstream.height.beautify.value})`;
+  // const behemothAmount = `${behemoth.hp.beautify.value} (${behemoth.acid.beautify.value})`;
+  // const behemothHeight = `${behemoth.climb_height.beautify.value} (${upstream.height.beautify.value})`;
+  const behemothHeight = `${behemoth.climb_height.beautify.value}`;
 
   return (
     <Box sx={{flex: '1 1 500px', mt: 1.5, position: 'relative', zIndex: 100}}>
       <Box sx={{display: 'flex', width: '100%', '*': {flex: '1 1 auto'}, position: 'relative'}}>
         <CenterUi>
           <UIStack tooltip={(<SlavePreview />)} Icon={(<LinkIcon sx={{transform: 'rotate(-90deg)'}} />)} value={slaveAmount} />
+          <UIStack tooltip={(<ManaPreview />)} Icon={(<AutoAwesomeIcon />)} value={manaAmount} />
           <UIStack tooltip="Height" Icon={(<HeightIcon />)} value={behemothHeight} />
         </CenterUi>
         <PlayButton/>
         <CenterUi style={{paddingLeft: 32}}>
-          <UIStack tooltip={(<ManaPreview />)} Icon={(<AutoAwesomeIcon />)} value={manaAmount} />
-          <UIStack tooltip={(<BehemothPreview />)} Icon={(<BugReportIcon />)} value={behemothAmount} />
+          <UIStack tooltip={(<BehemothPreview />)} Icon={(<BugReportIcon />)}>
+            <Typography>HP</Typography>
+            <Typography>{behemoth.hp.beautify.value}</Typography>
+            <Typography>Stamina</Typography>
+            <Typography>{behemoth.stamina.beautify.value}</Typography>
+            <Typography>Acid</Typography>
+            <Typography>{behemoth.acid.beautify.value}</Typography>
+
+          </UIStack>
         </CenterUi>
       </Box>
     </Box>
@@ -133,10 +142,11 @@ const ManaPreview = observer(() => {
 type UIStackProps = {
   tooltip: React.ReactNode | string;
   Icon: React.ReactNode;
-  value: string | number;
+  value?: string | number;
+  children?: React.ReactNode;
 }
 
-const UIStack = ({tooltip, Icon, value}: UIStackProps) => (
+const UIStack = ({tooltip, Icon, value, children}: UIStackProps) => (
   <Tooltip title={tooltip}>
     <Stack direction="row" gap={1} sx={{
       alignItems: 'center',
@@ -147,7 +157,12 @@ const UIStack = ({tooltip, Icon, value}: UIStackProps) => (
       },
     }}>
       <CenterContent>{Icon}</CenterContent>
-      <Typography align="left" fontSize="inherit" noWrap>{value}</Typography>
+      {value ?
+          <Typography align="left" fontSize="inherit" noWrap>{value}</Typography>
+        : children
+          ? (<>{children}</>)
+          : null
+      }
     </Stack>
   </Tooltip>
 )
