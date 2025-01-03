@@ -1,5 +1,5 @@
-import {ResourceClass, ResourceStoreClass, ResourceTypes} from "../../../Resource";
 import {makeAutoObservable} from "mobx";
+import {ResourceClass, ResourceStoreClass, ResourceTypes} from "../../../Resource";
 import {AUTO_CLIMB} from "../../constants/constants.ts";
 
 const FLUSHING_SPEED = 0.25;
@@ -71,10 +71,9 @@ export class BehemothClass {
     this.digging_requested = false;
   }
   public manaToAcid = () => {
-    const trade = this._resourceStore.trade([{key: 'clean_mana_level_1', value: 1}], [{key: 'behemoth_acid', value: 5}], 20)
-    if (trade.isTradePossible()) {
-      trade.executeTrade()
-    }
+    this._resourceStore
+      .trade([{key: 'clean_mana_level_1', value: 1}], [{key: 'behemoth_acid', value: 5}], 20)
+      .tradeIfPossible()
   }
 
   get decelerating() {

@@ -71,6 +71,40 @@ const BehemothPreview = observer(() => {
   )
 })
 
+// const SlavePreview = observer(() => {
+//   const {resources, slaves} = useGame();
+//   const slaveView = useMemo(() => {
+//     const list = [
+//       // slaves.slave_count,
+//       slaves.slave_unassigned,
+//       slaves.slave_diggers,
+//       slaves.slave_blacksmiths,
+//     ]
+//     return (
+//       <Box p={2}>
+//         <Typography variant="h5">Slaves</Typography>
+//         {list.map(({id, beautify, icon}, i) => (
+//           <Box key={id} sx={{width: 240, display: 'flex', mb: 1, alignItems: "center"}}>
+//             <img src={icon} alt={icon} />
+//             <Typography sx={{mr: 2}} variant="caption">Level {i + 1}</Typography>
+//             <Typography>{beautify.value}</Typography>
+//           </Box>
+//         ))}
+//         <Divider sx={{my: 2}} />
+//         <Typography>Raw mana {raw_mana}</Typography>
+//       </Box>
+//     )
+//   }, [raw_mana, resources])
+//
+//   return (
+//     <Box>
+//       {slaveView}
+//     </Box>
+//   )
+// })
+
+
+
 const ManaPreview = observer(() => {
   const {resources, mana} = useGame();
     const raw_mana = mana.getTypeSum('raw_mana')

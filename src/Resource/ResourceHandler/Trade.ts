@@ -67,6 +67,12 @@ export class Trade<K extends string, T extends string> {
     return maxPossibleAmount;
   }
 
+  public tradeIfPossible = () => {
+    if (this.isTradePossible()) {
+      this.executeTrade()
+    }
+  }
+
   /**
    * Evaluates the trade outcome for the maximum feasible amount without applying it.
    */

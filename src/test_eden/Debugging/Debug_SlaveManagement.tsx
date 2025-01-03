@@ -15,16 +15,16 @@ export const Debug_SlaveManagement = observer(() => {
         <Button onClick={() => slaves.addSlave()}>+</Button>
       </Stack>
       <Stack direction="row" alignItems="center">
-        <Typography align="center" sx={{width: '100%'}}>Unassigned {slaves.slave_unassigned}</Typography>
+        <Typography align="center" sx={{width: '100%'}}>Unassigned {slaves.slave_unassigned.beautify.value}</Typography>
       </Stack>
       <Stack direction="row" alignItems="center">
         <Button onClick={() => slaves.unassignSlaves('digger', 1)}>-</Button>
-        <Typography>Diggers {slaves.slave_diggers}</Typography>
+        <Typography>Diggers {slaves.slave_diggers.beautify.value}</Typography>
         <Button onClick={() => slaves.assignSlaves('digger', 1)}>+</Button>
       </Stack>
       <Stack direction="row" alignItems="center">
         <Button onClick={() => slaves.unassignSlaves('blacksmith', 1)}>-</Button>
-        <Typography>Blacksmiths {slaves.slave_blacksmiths}</Typography>
+        <Typography>Blacksmiths {slaves.slave_blacksmiths.beautify.value}</Typography>
         <Button onClick={() => slaves.assignSlaves('blacksmith', 1)}>+</Button>
       </Stack>
       <Button onClick={() => slaves.wasteSlave()} color="error">Waste slave</Button>

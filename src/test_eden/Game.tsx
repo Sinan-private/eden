@@ -28,7 +28,7 @@ export const Game = () => {
           <Debug_Behemoth/>
         </Box>
       </Debug>
-      <Box sx={{position: 'absolute', top: '50%', right: 10, transform: 'translateY(-50%)'}}>
+      <Box sx={{position: 'absolute', top: '50%', right: 10, transform: 'translateY(-50%)', zIndex: 1}}>
         <Debug_SlaveManagement/>
       </Box>
       <Box sx={{position: 'absolute', top: '50%', left: 10, transform: 'translateY(-50%)'}}>
@@ -39,6 +39,7 @@ export const Game = () => {
     </Screen>
   )
 }
+
 
 
 const Screen = styled('div')`
