@@ -14,7 +14,6 @@ import {blue} from "../constants/colors.ts";
 
 export const Game = () => {
   const game = useGame();
-  window.game = game;
   return (
     <Screen>
       <Content display="flex" flexDirection="row" justifyContent="space-between" $paused={!game.isActive}>
@@ -35,7 +34,7 @@ export const Game = () => {
       <Box sx={{position: 'absolute', top: '50%', left: 10, transform: 'translateY(-50%)'}}>
         <FactionManager/>
       </Box>
-      {/*<Upstream/>*/}
+      <Upstream/>
       <Background />
     </Screen>
   )

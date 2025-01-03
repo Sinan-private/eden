@@ -1,5 +1,6 @@
 import {ResourceClass, ResourceStoreClass, ResourceTypes} from "../../../Resource";
 import {makeAutoObservable} from "mobx";
+import {AUTO_CLIMB} from "../../constants/constants.ts";
 
 const FLUSHING_SPEED = 0.25;
 const DRYING_SPEED = 2;
@@ -8,8 +9,8 @@ const CRAFTING_SPEED = 0.15;
 const MANA_FINDINGS = [1, 20, 300, 4000, 50000];
 
 export class BehemothClass {
-  public movement_requested: boolean;
-  public digging_requested: boolean;
+  public movement_requested: boolean = AUTO_CLIMB;
+  public digging_requested: boolean = false;
   public flushing_requested: boolean;
   public crafting_requested: boolean;
   public climb_height: ResourceClass;
@@ -29,8 +30,8 @@ export class BehemothClass {
     this._digging_depth = _resourceStore.get('behemoth_digging_depth')
     this._flushing_depth = _resourceStore.get('behemoth_flushing_depth')
     this._drying_delay = _resourceStore.get('behemoth_drying_delay')
-    this.movement_requested = false;
-    this.digging_requested = false;
+    // this.movement_requested = false;
+    // this.digging_requested = false;
     this.flushing_requested = false;
     this.crafting_requested = true;
     this._has_flushed = false;
@@ -101,6 +102,7 @@ export class BehemothClass {
       height.updateValueBy(speed.value)
     }
     if (this.digging_requested) {
+      console.log('dig')
       digging_depth.updateValueBy(this._resourceStore.get('slave_diggers').value)
     }
     if (this.flushing_requested && this.acid) {

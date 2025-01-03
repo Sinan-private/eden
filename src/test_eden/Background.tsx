@@ -7,14 +7,16 @@ export const Background = () => {
   const {danger} = useGame().upstream
   const distort = danger;
   const distortionStrength = distort / 100;
-  const hueRotation = distort * 1.85;
+  const hueRotation = distort * 1.95;
   const grayscale = distort >= 50 ? distort - 50 : 0;
   const brightness = 1-distortionStrength/3
   const bloodPosition = 200 - distort * 2
+  const saturate = 1 + distortionStrength / 2
 
   return (
     <>
-      <Frame style={{filter: `grayscale(${grayscale}%) brightness(${brightness}) hue-rotate(${hueRotation}deg) blur(${distort/5}px`}}/>
+      <Frame style={{filter: `brightness(${brightness}) hue-rotate(${hueRotation}deg) blur(${distort/5}px)`}}/>
+      {/*<Frame style={{filter: `grayscale(0%) brightness(0.6) hue-rotate(195deg) blur(0px) saturate(1.5)`}}/>*/}
       <Blood style={{transform: `translateY(${bloodPosition}%)`, opacity: 0.5 + distortionStrength}} />
     </>
   )
@@ -61,6 +63,7 @@ const Frame = styled.div`
 
 const Blood = styled.div`
     position: absolute;
+    pointer-events: none;
     bottom: 0;
     left: 0;
     width: 100%;
@@ -68,5 +71,5 @@ const Blood = styled.div`
     background-color: red;
     mix-blend-mode: color;
     filter: blur(110px);
-    z-index: -1;
+    z-index: 1;
 `

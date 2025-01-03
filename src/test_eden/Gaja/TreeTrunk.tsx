@@ -58,7 +58,7 @@ const Digging = observer(() => {
       return [key, x, y, size]
     })
     return (
-      <>
+      <Box sx={{position: 'relative', zIndex: 10000}}>
         {spotList.map(([i, x, y, size]) => (
           <Box key={i} sx={{
             position: 'absolute',
@@ -72,7 +72,7 @@ const Digging = observer(() => {
             <img src={mana_dirty} alt="dirty mana found" width={32 * size / 3} style={{opacity: 0.7}}/>
           </Box>
         ))}
-      </>
+      </Box>
     )
   }, [dirty_mana])
 
@@ -83,6 +83,7 @@ const Digging = observer(() => {
       top: '50%',
       width: '100%',
       transform: 'translateY(-50%)',
+      zIndex: 1,
     }}>
       <Box sx={{
         position: 'absolute',
@@ -197,5 +198,5 @@ const StyledBehemoth = styled('div')`
     width: 40px;
     height: 100px;
     background: #66756f;
-    z-index: 1;
+    z-index: 10;
 `
