@@ -10,7 +10,6 @@ import {Background} from "./Background.tsx";
 import {blue} from "../constants/colors.ts";
 import {observer} from "mobx-react";
 import {DebuggingComponents} from "./Components/DebuggingComponents.tsx";
-import {FactionClass} from "./Classes/Factions/FactionClass.ts";
 import chains from '../assets/images/chains.png'
 
 const IMAGE_HEIGHT = 400
@@ -42,11 +41,11 @@ export const Game = () => {
 const SlaveManager = observer(() => {
   const SIZE = 280
   const {slaves, factions} = useGame();
-  const slaveHunterImage = factions.slaveHunters.image;
-  const demonsImage = factions.demons.image;
-  const guardsImage = factions.guards.image;
-  const mindBendersImage = factions.mindBenders.image;
-  const {slave_unassigned, slave_blacksmiths, slave_diggers} = slaves;
+  const slaveHunterImage = factions.factionMarid.image;
+  const demonsImage = factions.factionIfrit.image;
+  const guardsImage = factions.factionGhoul.image;
+  const mindBendersImage = factions.factionArwa.image;
+  const {slave_unassigned} = slaves;
   return (
     <Box position="relative" sx={{width: SIZE, height: SIZE}}>
       <SlaveTop>
@@ -75,10 +74,10 @@ const SlaveManager = observer(() => {
   )
 })
 
-type FactionButtonProps = {
-  disabled: boolean;
-  faction: FactionClass
-}
+// type FactionButtonProps = {
+//   disabled: boolean;
+//   faction: FactionClass
+// }
 
 
 const FullSizedImage = styled.img<{ $disabled?: boolean }>`

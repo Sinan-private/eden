@@ -1,6 +1,5 @@
 import {ResourceClass, ResourceStoreClass} from "../../../Resource";
 import {randomRange} from "../../helpers/randomRange.ts";
-import {Resource} from "../../../Resource/ResourceHandler";
 
 // const slaveAssignments = [
 //   'digger',
@@ -9,11 +8,27 @@ import {Resource} from "../../../Resource/ResourceHandler";
 // type SlaveAssignments = typeof slaveAssignments[number];
 type SlaveAssignments = 'digger' | 'blacksmith'
 
+const SLAVES_INITIALLY_AVAILABLE = 20;
+const SLAVES_INITIALLY_UNASSIGNED = 1;
+const SLAVES_INITIALLY_MARID = 4;
+const SLAVES_INITIALLY_ARWA = 4;
+
+// !!!!---------------------------IMPORTANT---------------------------!!!!
+// I overwrite all entries from the admin panel here. I just use the admin stuff so that the keys are known everywhere
+//  So for ease of use Bound is the general limit. the amount is available in eden. The max is the possible contracts
+// Roaming, enslaved, wasted, in_rebirth others should have only a value. And there sum should not exceed the value of bound
+
+
 // The concept
 // Slaves can exist in different stages
-// - bound -> this is the absolute maximum. It is defined by the amount of people that made a contract with the devil. All combined states can never exceed this limit
+// - bound -> this is the absolute maximum. It is defined by the amount of people that made a contract with the devil.
+//    All combined states can never exceed this limit. Therefore it is special.
+//    Its value is the overall max its max is the max of contracts the player can have
 // - roaming -> these can be caught by the slave hunters
 // - enslaved -> this can be either unassigned or assigned to any faction
+//    enslaved is the maximum of all assigned slaves
+//    So I misuse my state. I set the max to be the amount of enslaved
+//    and the amount is the actually available amount
 // - wasted -> Their done for, no good to serve. They can either be burned for stamina or acid, or consumed for hp.
 // - in_rebirth -> Slaves spend some time in rebirth before jumping back to the roaming state (this can just be a single state that gains more with more slaves in rebirth)
 
@@ -22,25 +37,58 @@ type SlaveAssignments = 'digger' | 'blacksmith'
 // enslaved 50
 // wasted 10
 // in_rebirth 20
+type FactionKeys = 'Ifrid' | 'Marid' | 'Arwa' | 'Ghoul'
 
 export class SlaveClass {
-  public slaves_bound: ResourceClass = new Resource({key: 'slaves_bound'})
+  public slaves_bound: ResourceClass;
+  public slaves_roaming: ResourceClass;
+  public slaves_enslaved: ResourceClass;
+  public slaves_wasted: ResourceClass;
+  public slaves_in_rebirth: ResourceClass;
   public slave_limit: ResourceClass;
   public slave_unassigned: ResourceClass;
   public slave_diggers: ResourceClass;
   public slave_blacksmiths: ResourceClass;
   public slave_health: ResourceClass;
+  private is_init: boolean = true;
 
   constructor(_resourceStore: ResourceStoreClass) {
+    this.slaves_bound = _resourceStore.get('slaves_bound')
+    this.slaves_roaming = _resourceStore.get('slaves_roaming')
+    this.slaves_enslaved = _resourceStore.get('slaves_enslaved')
+    this.slaves_wasted = _resourceStore.get('slaves_wasted')
+    this.slaves_in_rebirth = _resourceStore.get('slaves_in_rebirth')
+
+
+
     this.slave_limit = _resourceStore.get('slave_limit')
     this.slave_unassigned = _resourceStore.get('slave_unassigned')
     this.slave_diggers = _resourceStore.get('slave_diggers')
     this.slave_blacksmiths = _resourceStore.get('slave_blacksmiths')
     this.slave_health = _resourceStore.get('slave_health')
+    if (this.is_init) {
+
+    this._resetValues()
+    }
+  }
+
+  private _resetValues = () => {
+    if (this.is_init) {
+      this.is_init = false;
+      const {slaves_enslaved} = this
+
+      console.log(slaves_enslaved.value, slaves_enslaved.max)
+      slaves_enslaved.setTo({value: this.unassigned_slaves, max: slaves_enslaved.value})
+      console.log(slaves_enslaved.value, slaves_enslaved.max)
+    }
+  }
+
+  get unassigned_slaves() {
+    return 2
   }
 
 
-  public test = () => {
+  public giveToFaction = (faction: FactionKeys, amount = 1) => {
   //   this.
   }
 

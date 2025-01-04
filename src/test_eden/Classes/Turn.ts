@@ -26,8 +26,8 @@ export class Turn {
   constructor(private _game: ReturnType<typeof useGame>) {
   }
 
-  public slaveHunterTurnUpdate = () => {
-    const {crafting_requested} = this._game.factions.slaveHunters;
+  public maridTurnUpdate = () => {
+    const {crafting_requested} = this._game.factions.factionMarid;
     const {get, produce, getByType} = this._game.resources
 
     if (crafting_requested) {

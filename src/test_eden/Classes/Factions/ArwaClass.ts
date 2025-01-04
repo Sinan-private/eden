@@ -4,7 +4,7 @@ import {FactionClass} from "./FactionClass.ts";
 import {SlaveClass} from "../Slaves/SlaveClass.ts";
 
 
-export class DeceptionClass extends FactionClass {
+export class ArwaClass extends FactionClass {
   constructor(_resourceStore: ResourceStoreClass, _slaves: SlaveClass) {
     const {get} = _resourceStore;
     super(_resourceStore, _slaves)

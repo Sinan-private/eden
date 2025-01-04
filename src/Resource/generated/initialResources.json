@@ -754,5 +754,60 @@
     "iconName": "empty",
     "cost": null,
     "revealedAt": null
+  },
+  {
+    "key": "slaves_bound",
+    "value": 20,
+    "min": 0,
+    "max": 30,
+    "label": "Bound",
+    "type": "slaves",
+    "iconName": "empty",
+    "cost": null,
+    "revealedAt": null
+  },
+  {
+    "key": "slaves_roaming",
+    "value": 4,
+    "min": 0,
+    "max": null,
+    "label": "Roaming",
+    "type": "slaves",
+    "iconName": "empty",
+    "cost": null,
+    "revealedAt": null
+  },
+  {
+    "key": "slaves_enslaved",
+    "value": 9,
+    "min": 0,
+    "max": null,
+    "label": "Enslaved",
+    "type": "slaves",
+    "iconName": "empty",
+    "cost": null,
+    "revealedAt": null
+  },
+  {
+    "key": "slaves_wasted",
+    "value": 1,
+    "min": 0,
+    "max": null,
+    "label": "Wasted",
+    "type": "slaves",
+    "iconName": "empty",
+    "cost": null,
+    "revealedAt": null
+  },
+  {
+    "key": "slaves_in_rebirth",
+    "value": 1,
+    "min": 0,
+    "max": null,
+    "label": "Rebirth",
+    "type": "slaves",
+    "iconName": "empty",
+    "cost": null,
+    "revealedAt": null
   }
 ]
