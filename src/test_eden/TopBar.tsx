@@ -35,13 +35,13 @@ export const TopBar = () => {
 }
 
 const Center = () => {
-  const {slaves, behemoth, mana} = useGame();
+  const {slaves, behemoth, mana, upstream} = useGame();
   const {slave_count, max} = slaves;
   const slaveAmount = `${slave_count} / ${max}`;
   const manaAmount = `${mana.mana_count} (${mana.getTypeSum('raw_mana')})`;
   // const behemothAmount = `${behemoth.hp.beautify.value} (${behemoth.acid.beautify.value})`;
-  // const behemothHeight = `${behemoth.climb_height.beautify.value} (${upstream.height.beautify.value})`;
-  const behemothHeight = `${behemoth.climb_height.beautify.value}`;
+  const behemothHeight = `${behemoth.climb_height.beautify.value} (${upstream.height.beautify.value})`;
+  // const behemothHeight = `${behemoth.climb_height.beautify.value}`;
 
   return (
     <Box sx={{flex: '1 1 500px', mt: 1.5, position: 'relative', zIndex: 100}}>

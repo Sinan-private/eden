@@ -200,6 +200,7 @@ export class BehemothClass {
       produce('raw_mana_level_4', slave_digger * HARVEST_SPEED * dryingCoefficients[3])
       produce('raw_mana_level_5', slave_digger * HARVEST_SPEED * dryingCoefficients[4])
     }
+    // This should live either in Mana or in factions
     if (this.crafting_requested) {
       const dryingCoefficients = calculateDryingCoefficient(getByType('raw_mana'))
       produce('clean_mana_level_1', slave_blacksmiths * dryingCoefficients[0] * CRAFTING_SPEED)

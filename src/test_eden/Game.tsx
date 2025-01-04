@@ -10,27 +10,29 @@ import {Background} from "./Background.tsx";
 import {blue} from "../constants/colors.ts";
 import {observer} from "mobx-react";
 import {DebuggingComponents} from "./Components/DebuggingComponents.tsx";
+import {FactionClass} from "./Classes/Factions/FactionClass.ts";
+import chains from '../assets/images/chains.png'
 
 const IMAGE_HEIGHT = 400
 
 export const Game = () => {
-  const game = useGame();
+  const {isActive} = useGame();
   return (
     <Screen>
-      <Content display="flex" flexDirection="row" justifyContent="space-between" $paused={!game.isActive}>
+      <Content display="flex" flexDirection="row" justifyContent="space-between" $paused={!isActive}>
         <div style={{flex: '1 1 30%'}}></div>
         <div style={{flex: '1 1 30%'}}></div>
         <TreeTrunk/>
       </Content>
       <Debug_BehemothControls/>
       <TopBar/>
-      <DebuggingComponents />
+      <DebuggingComponents/>
       <Box sx={{position: 'absolute', top: '50%', left: 10, transform: 'translateY(-50%)'}}>
         <FactionManager/>
       </Box>
-      <Box sx={{position: 'absolute', top: '50%', right: 160, transform: 'translateY(-50%)', zIndex: 1}}>
-        <SlaveManager />
-      </Box>
+        <Box sx={{position: 'absolute', bottom: 50, right: 50, zIndex: 1}}>
+          <SlaveManager/>
+        </Box>
       <Upstream/>
       <Background/>
     </Screen>
@@ -48,33 +50,46 @@ const SlaveManager = observer(() => {
   return (
     <Box position="relative" sx={{width: SIZE, height: SIZE}}>
       <SlaveTop>
-        <FullSizedImage src={demonsImage} $disabled />
+        <FullSizedImage src={demonsImage} $disabled/>
       </SlaveTop>
       <SlaveLeft>
-        <FullSizedImage src={guardsImage} $disabled />
+        <FullSizedImage src={guardsImage} $disabled/>
       </SlaveLeft>
-      <SlaveRight>
-        <FullSizedImage src={slaveHunterImage} />
-        {/*<Typography>123</Typography>*/}
+      <SlaveRight onClick={() => slaves.assignSlaves('blacksmith')}>
+        <FullSizedImage src={slaveHunterImage}/>
+        <Typography>{slaves.slave_blacksmiths.beautify.value}</Typography>
+
+        {/*<FactionButton faction={factions.slaveHunters}/>*/}
       </SlaveRight>
-      <SlaveBottom>
-        <FullSizedImage src={mindBendersImage} />
+      <SlaveBottom onClick={() => slaves.assignSlaves('digger')}>
+        <FullSizedImage src={mindBendersImage}/>
+        <Typography>{slaves.slave_diggers.beautify.value}</Typography>
       </SlaveBottom>
       <SlaveCenter>
+        <FullSizedImage src={chains} />
         <Typography fontSize="2rem" lineHeight="2.7rem">{slave_unassigned.beautify.value}</Typography>
-        <Typography fontSize={10} px={2}>Unassigned slaves</Typography>
+        {/*<Typography fontSize={10} px={2}>Unassigned slaves</Typography>*/}
       </SlaveCenter>
-      <Shadow size={SIZE} x={3} y={3} color="#3f675e" blur={0} opacity={0.15} />
+      <Shadow size={SIZE} x={3} y={3} color="#3f675e" blur={0} opacity={0.15}/>
     </Box>
   )
 })
 
-const FullSizedImage = styled.img<{$disabled?: boolean}>`
+type FactionButtonProps = {
+  disabled: boolean;
+  faction: FactionClass
+}
+
+
+const FullSizedImage = styled.img<{ $disabled?: boolean }>`
+    position: absolute;
+    top: 0;
+    left: 0;
     width: 100%;
     height: 100%;
     object-fit: cover;
-    filter: ${props => props.$disabled ? 'saturate(0.2) blur(0px) brightness(2.2) contrast(0.4)' : 'none'}
-    // filter: saturate(${props => props.$disabled ? 0.05 : 0.8});
+    filter: ${props => props.$disabled ? 'saturate(0.2) blur(0px) brightness(2.2) contrast(0.4)' : 'none'};
+    z-index: -1;
 `;
 
 type ShadowProps = {
@@ -106,15 +121,15 @@ const Shadow = (
     filter: `blur(${blur}px)`,
     zIndex: -1,
   }}>
-    <SlaveTop $disabled $backgroundColor={color} />
-    <SlaveLeft $disabled $backgroundColor={color} />
-    <SlaveRight $disabled $backgroundColor={color} />
-    <SlaveBottom $disabled $backgroundColor={color} />
-    <SlaveCenter $disabled $backgroundColor={color} />
+    <SlaveTop $disabled $backgroundColor={color}/>
+    <SlaveLeft $disabled $backgroundColor={color}/>
+    <SlaveRight $disabled $backgroundColor={color}/>
+    <SlaveBottom $disabled $backgroundColor={color}/>
+    <SlaveCenter $disabled $backgroundColor={color}/>
   </Box>
 )
 
-const SlaveAssignmentBase = styled.div<{$disabled?: boolean, $backgroundColor?: string}>`
+const SlaveAssignmentBase = styled.div<{ $disabled?: boolean, $backgroundColor?: string }>`
     position: absolute;
     width: 31%;
     height: 31%;
@@ -124,40 +139,42 @@ const SlaveAssignmentBase = styled.div<{$disabled?: boolean, $backgroundColor?: 
     right: auto;
     left: auto;
     display: flex;
-    justify-content: center;
+    justify-content: flex-end;
     align-items: center;
     flex-direction: column;
     background-color: ${props => props.$backgroundColor || '#151918'};
     transition: background-color 1.8s ease;
-    z-index: 2000;
+    clip-path: polygon(15% 0, 85% 0, 100% 15%, 100% 85%, 85% 100%, 15% 100%, 0 85%, 0 15%);
     
+    z-index: 2000;
+
 `;
 
 const SlaveTop = styled(SlaveAssignmentBase)`
     top: 0;
     left: 50%;
     transform: translateX(-50%);
-    clip-path: polygon(0% 0, 100% 0, 100% 15%, 100% 85%, 85% 100%, 15% 100%, 0 85%, 0 15%);
+    //clip-path: polygon(0% 0, 100% 0, 100% 15%, 100% 85%, 85% 100%, 15% 100%, 0 85%, 0 15%);
 `;
 const SlaveLeft = styled(SlaveAssignmentBase)`
     top: 50%;
     left: 0;
     transform: translateY(-50%);
-    clip-path: polygon(0% 0, 85% 0, 100% 15%, 100% 85%, 85% 100%, 15% 100%, 0 100%);
+    //clip-path: polygon(0% 0, 85% 0, 100% 15%, 100% 85%, 85% 100%, 15% 100%, 0 100%);
 `;
 
 const SlaveRight = styled(SlaveAssignmentBase)`
     top: 50%;
     right: 0;
     transform: translateY(-50%);
-    clip-path: polygon(15% 0%, 100% 0, 100% 15%, 100% 85%, 100% 100%, 15% 100%, 0 85%, 0% 15%);
+    //clip-path: polygon(15% 0%, 100% 0, 100% 15%, 100% 85%, 100% 100%, 15% 100%, 0 85%, 0% 15%);
 `;
 
 const SlaveBottom = styled(SlaveAssignmentBase)`
     bottom: 0;
     left: 50%;
     transform: translateX(-50%);
-    clip-path: polygon(15% 0, 85% 0, 100% 15%, 100% 85%, 100% 100%, 0% 100%, 0 85%, 0 15%);
+    //clip-path: polygon(15% 0, 85% 0, 100% 15%, 100% 85%, 100% 100%, 0% 100%, 0 85%, 0 15%);
 `;
 
 const SlaveCenter = styled(SlaveAssignmentBase)`
@@ -185,7 +202,6 @@ const Content = styled(Box)<{ $paused: boolean }>`
     transition: border-color 0.5s ease;
     overflow: hidden;
 `
-
 
 
 const Upstream = () => {

@@ -10,8 +10,8 @@ import {Upstream} from "../Classes/Upstream.ts";
 const useGameBase = () => {
   const {resources} = useResource();
   const slaves = useMemo(() => new SlaveClass(resources), [resources]);
-  const behemoth = useMemo(() => new BehemothClass(resources), [resources]);
   const mana = useMemo(() => new Mana(resources), [resources])
+  const behemoth = useMemo(() => new BehemothClass(resources), [resources]);
   const upstream = useMemo(() => new Upstream(resources), [resources])
   const factionDemon = useMemo(() => new DemonClass(resources, slaves), [resources, slaves])
   const factionMindBender = useMemo(() => new DeceptionClass(resources, slaves), [resources, slaves])
