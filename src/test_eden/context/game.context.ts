@@ -6,6 +6,7 @@ import {SlaveClass} from "../Classes/Slaves/SlaveClass.ts";
 import {DemonClass, GuardClass, DeceptionClass, SlaveHunterClass} from "../Classes/Factions";
 import {Mana} from "../Classes/Mana/Mana.ts";
 import {Upstream} from "../Classes/Upstream.ts";
+import {Turn} from "../Classes/Turn.ts";
 
 const useGameBase = () => {
   const {resources} = useResource();
@@ -18,12 +19,11 @@ const useGameBase = () => {
   const factionGuard = useMemo(() => new GuardClass(resources, slaves), [resources, slaves])
   const factionSlaveHunters = useMemo(() => new SlaveHunterClass(resources, slaves), [resources, slaves])
   const tick = useTurnSubscription();
-  useTurnSubscription(behemoth.turnUpdate);
+  // useTurnSubscription(behemoth.turnUpdate);
   useTurnSubscription(slaves.turnUpdate);
-  useTurnSubscription(factionSlaveHunters.turnUpdate);
   useTurnSubscription(upstream.turnUpdate);
 
-  return {
+  const game = {
     ...tick,
     resources,
     behemoth,
@@ -38,6 +38,12 @@ const useGameBase = () => {
       all: [factionDemon, factionSlaveHunters, factionGuard, factionMindBender]
     }
   };
+  const turn = useMemo(() => new Turn(game), [game]);
+  useTurnSubscription(turn.behemothTurnUpdate);
+  useTurnSubscription(turn.slaveHunterTurnUpdate);
+
+
+  return game
 }
 
 const useGameContainer = createContainer(useGameBase);

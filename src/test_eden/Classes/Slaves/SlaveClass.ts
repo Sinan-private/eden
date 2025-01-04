@@ -1,5 +1,6 @@
 import {ResourceClass, ResourceStoreClass} from "../../../Resource";
 import {randomRange} from "../../helpers/randomRange.ts";
+import {Resource} from "../../../Resource/ResourceHandler";
 
 // const slaveAssignments = [
 //   'digger',
@@ -8,7 +9,22 @@ import {randomRange} from "../../helpers/randomRange.ts";
 // type SlaveAssignments = typeof slaveAssignments[number];
 type SlaveAssignments = 'digger' | 'blacksmith'
 
+// The concept
+// Slaves can exist in different stages
+// - bound -> this is the absolute maximum. It is defined by the amount of people that made a contract with the devil. All combined states can never exceed this limit
+// - roaming -> these can be caught by the slave hunters
+// - enslaved -> this can be either unassigned or assigned to any faction
+// - wasted -> Their done for, no good to serve. They can either be burned for stamina or acid, or consumed for hp.
+// - in_rebirth -> Slaves spend some time in rebirth before jumping back to the roaming state (this can just be a single state that gains more with more slaves in rebirth)
+
+// bound 100
+// roaming 20
+// enslaved 50
+// wasted 10
+// in_rebirth 20
+
 export class SlaveClass {
+  public slaves_bound: ResourceClass = new Resource({key: 'slaves_bound'})
   public slave_limit: ResourceClass;
   public slave_unassigned: ResourceClass;
   public slave_diggers: ResourceClass;
@@ -21,6 +37,11 @@ export class SlaveClass {
     this.slave_diggers = _resourceStore.get('slave_diggers')
     this.slave_blacksmiths = _resourceStore.get('slave_blacksmiths')
     this.slave_health = _resourceStore.get('slave_health')
+  }
+
+
+  public test = () => {
+  //   this.
   }
 
   public addSlave = (amount = 1) => {

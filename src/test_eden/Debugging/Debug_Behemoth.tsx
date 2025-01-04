@@ -14,7 +14,7 @@ export const Debug_Behemoth = () => {
       <Box sx={{fontFamily: 'monospace', fontSize: '12px', color: '#79ae79'}}>
         <Box>Digging Depth{digging_depth.beautify.value}</Box>
         <Box>Flushing depth {flushing_depth.beautify.value}</Box>
-        <Box>Drying delay {drying_delay}</Box>
+        <Box>Drying delay {drying_delay.beautify.value}</Box>
         <Box display="flex" gap={2}>
 
           <Box>{liquid_mana.map(({beautify, id, label}) => (

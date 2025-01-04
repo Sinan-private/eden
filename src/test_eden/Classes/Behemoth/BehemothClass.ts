@@ -2,17 +2,6 @@ import {makeAutoObservable} from "mobx";
 import {ResourceClass, ResourceStoreClass, ResourceTypes} from "../../../Resource";
 import {AUTO_CLIMB} from "../../constants/constants.ts";
 
-const FLUSHING_SPEED = 0.25;
-const DRYING_SPEED = 2;
-const HARVEST_SPEED = 0.25;
-const CRAFTING_SPEED = 0.15;
-const MANA_FINDINGS = [1, 20, 300, 4000, 50000];
-const STAMINA_DRAIN = 1.5
-const STAMINA_REGEN = 0.3
-// const STAMINA_DRAIN = 200
-// const STAMINA_REGEN = 1
-const STAMINA_REGEN_ON_FLUSHING = 0.05
-
 export class BehemothClass {
   public movement_requested: boolean = AUTO_CLIMB;
   public digging_requested: boolean = false;
@@ -26,7 +15,7 @@ export class BehemothClass {
   public digging_depth: ResourceClass;
   public flushing_depth: ResourceClass;
   public stamina: ResourceClass;
-  private _drying_delay: ResourceClass;
+  public drying_delay: ResourceClass;
 
   constructor(private _resourceStore: ResourceStoreClass) {
     this.hp = _resourceStore.get('behemoth_hp')
@@ -36,7 +25,7 @@ export class BehemothClass {
     this.digging_depth = _resourceStore.get('behemoth_digging_depth')
     this.flushing_depth = _resourceStore.get('behemoth_flushing_depth')
     this.stamina = _resourceStore.get('behemoth_stamina')
-    this._drying_delay = _resourceStore.get('behemoth_drying_delay')
+    this.drying_delay = _resourceStore.get('behemoth_drying_delay')
     makeAutoObservable(this)
   }
 
@@ -91,24 +80,36 @@ export class BehemothClass {
     return this.movement_requested && this.climb_speed.value < this.climb_speed.max;
   }
 
-  get in_motion() {
+  get is_moving() {
     return !!this.climb_speed.value || this.movement_requested;
   }
 
-  get can_flush() {
-    return !this.in_motion && !this.digging_requested && !!this.digging_depth
+  get should_move() {
+    return this.movement_requested && !this.should_stop_moving
   }
 
-  get can_dig() {
-    return !this.in_motion && !this._has_flushed && !this.is_flushing
+  get should_stop_moving() {
+    return this.stamina.value < 1 || !this.movement_requested;
   }
 
-  get can_start_climbing() {
+  get can_start_moving() {
     return !this.digging_requested && !this.flushing_requested && this.stamina.value >= 30
   }
 
+  get should_dig() {
+    return this.digging_requested
+  }
+
+  get can_flush() {
+    return !this.is_moving && !this.digging_requested && !!this.digging_depth
+  }
+
+  get can_dig() {
+    return !this.is_moving && !this._has_flushed && !this.should_flush
+  }
+
   get can_harvest() {
-    return !this.in_motion && !!this.dirty_mana  && !this.is_flushing
+    return !this.is_moving && !!this.dirty_mana  && !this.should_flush
   }
 
   get liquid_mana() {
@@ -121,101 +122,21 @@ export class BehemothClass {
     return this._getTypeSum('raw_mana')
   }
 
-  get drying_delay() {
-    return Number(this._drying_delay.beautify.value)
-  }
-
-  get is_flushing() {
+  get should_flush() {
     return this.flushing_requested && this.acid.value >= 1
   }
-  get is_still() {
-    return !this.in_motion && !this.is_flushing
+  get is_flushing_mana() {
+    return this.flushing_depth.value >= this.flushing_depth.max
   }
 
-  // get can_move() {
-  //   return this.movement_requested && this.stamina.value > 30
-  // }
+  get is_still() {
+    return !this.is_moving && !this.should_flush
+  }
 
   private _getTypeSum = (type: ResourceTypes) => {
     const resources = this._resourceStore.getByType(type)
     const sum = resources.reduce((sum, {value}) => (sum + Math.floor(value)), 0)
     return Number(Math.floor(sum).toFixed())
   }
-  public turnUpdate = () => {
-    const speed = this.climb_speed
-    const height = this.climb_height
-    const digging_depth = this.digging_depth
-    const flushing_depth = this.flushing_depth
-    const {get, produce, getByType} = this._resourceStore
-    // Currently Behemoth can run about 3500 meters before stamina is drained
-    if (this.is_still) {
-      this.stamina.updateValueBy(STAMINA_REGEN)
-    }
-    if (this.stamina.value < 1) {
-      this.stopClimbing()
-    }
-    if (this.movement_requested) {
-      speed.updateValueBy(0.2)
-      height.updateValueBy(speed.value)
-      const stamina_drain = speed.value / 100 * 3 * STAMINA_DRAIN
-      this.stamina.updateValueBy(-stamina_drain)
-    } else {
-      speed.updateValueBy(-1)
-      height.updateValueBy(speed.value)
-    }
-    if (this.digging_requested) {
-      digging_depth.updateValueBy(this._resourceStore.get('slave_diggers').value)
-    }
-    if (this.is_flushing) {
-      this.stamina.updateValueBy(STAMINA_REGEN_ON_FLUSHING)
-      flushing_depth.updateValueBy(10)
-      this.acid.updateValueBy(-10)
-      if (flushing_depth.value >= flushing_depth.max) {
-        getByType('liquid_mana').forEach((liquid_mana, i) =>
-          liquid_mana.updateValueBy(this.digging_depth.value * FLUSHING_SPEED / MANA_FINDINGS[i]))
-      }
-    } else {
-      flushing_depth.updateValueBy(-1)
-    }
-    if (this.liquid_mana) {
-      get('behemoth_drying_delay').updateValueBy(-1)
-    }
-    //   As long as there is liquid mana it dries
-    const isDrying = !!this.liquid_mana && !this._drying_delay.value
-    const slave_digger = get('slave_diggers').value
-    const slave_blacksmiths = get('slave_blacksmiths').value
-    if (isDrying) {
-      const dryingCoefficients = calculateDryingCoefficient(getByType('liquid_mana'))
-      produce('dirty_mana_level_1', DRYING_SPEED * dryingCoefficients[0])
-      produce('dirty_mana_level_2', DRYING_SPEED * dryingCoefficients[1])
-      produce('dirty_mana_level_3', DRYING_SPEED * dryingCoefficients[2])
-      produce('dirty_mana_level_4', DRYING_SPEED * dryingCoefficients[3])
-      produce('dirty_mana_level_5', DRYING_SPEED * dryingCoefficients[4])
-    }
-    if (this.can_harvest) {
-      const dryingCoefficients = calculateDryingCoefficient(getByType('dirty_mana'))
-      produce('raw_mana_level_1', slave_digger * HARVEST_SPEED * dryingCoefficients[0])
-      produce('raw_mana_level_2', slave_digger * HARVEST_SPEED * dryingCoefficients[1])
-      produce('raw_mana_level_3', slave_digger * HARVEST_SPEED * dryingCoefficients[2])
-      produce('raw_mana_level_4', slave_digger * HARVEST_SPEED * dryingCoefficients[3])
-      produce('raw_mana_level_5', slave_digger * HARVEST_SPEED * dryingCoefficients[4])
-    }
-    // This should live either in Mana or in factions
-    if (this.crafting_requested) {
-      const dryingCoefficients = calculateDryingCoefficient(getByType('raw_mana'))
-      produce('clean_mana_level_1', slave_blacksmiths * dryingCoefficients[0] * CRAFTING_SPEED)
-      produce('clean_mana_level_2', slave_blacksmiths * dryingCoefficients[1] * CRAFTING_SPEED)
-      produce('clean_mana_level_3', slave_blacksmiths * dryingCoefficients[2] * CRAFTING_SPEED)
-      produce('clean_mana_level_4', slave_blacksmiths * dryingCoefficients[3] * CRAFTING_SPEED)
-      produce('clean_mana_level_5', slave_blacksmiths * dryingCoefficients[4] * CRAFTING_SPEED)
 
-    }
-  }
-
-}
-
-function calculateDryingCoefficient(liquidMana: ResourceClass[]): number[] {
-  const liquidValues = liquidMana.map(({value}) => value).sort((a, b) => a + b);
-  const sum = liquidValues.reduce((a, b) => a + b)
-  return liquidValues.map((value) => value / sum)
 }

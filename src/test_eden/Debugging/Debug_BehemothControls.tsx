@@ -21,7 +21,7 @@ export const Debug_BehemothControls = observer(() => {
   return (
     <StyledGameControls>
       <Stack direction="row">
-        <Button disabled={!behemoth.movement_requested && !behemoth.can_start_climbing} onClick={onToggleClimbing} color={isActive ? undefined : 'error'}>
+        <Button disabled={!behemoth.movement_requested && !behemoth.can_start_moving} onClick={onToggleClimbing} color={isActive ? undefined : 'error'}>
           {behemoth.movement_requested ? 'Stop climbing' : 'Start climbing'}
         </Button>
         <Divider orientation="vertical" flexItem />
