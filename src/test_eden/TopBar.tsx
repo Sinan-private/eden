@@ -1,15 +1,15 @@
+import {useMemo} from "react";
 import {Box, Button, Divider, Paper, Stack, Tooltip, Typography} from "@mui/material";
 import {observer} from "mobx-react";
 import styled from "styled-components";
 import PlayArrowIcon from '@mui/icons-material/PlayArrow';
-import {useGame} from "./context/game.context.ts";
 import PauseIcon from '@mui/icons-material/Pause';
-import {ResourceClass, useTurnSubscription} from "../Resource";
 import LinkIcon from '@mui/icons-material/Link';
 import HeightIcon from '@mui/icons-material/Height';
 import AutoAwesomeIcon from '@mui/icons-material/AutoAwesome';
-import {useMemo} from "react";
 import BugReportIcon from '@mui/icons-material/BugReport';
+import {useGame} from "./context/game.context.ts";
+import {useTurnSubscription} from "../Resource";
 import {grey_blue} from "../constants/colors.ts";
 
 export const TopBar = () => {
@@ -36,8 +36,8 @@ export const TopBar = () => {
 
 const Center = () => {
   const {slaves, behemoth, mana, upstream} = useGame();
-  const {slave_count, max} = slaves;
-  const slaveAmount = `${slave_count} / ${max}`;
+  const {slaves_enslaved, unassigned_slaves} = slaves;
+  const slaveAmount = `${unassigned_slaves} / ${slaves_enslaved.beautify.value}`;
   const manaAmount = `${mana.mana_count} (${mana.getTypeSum('raw_mana')})`;
   // const behemothAmount = `${behemoth.hp.beautify.value} (${behemoth.acid.beautify.value})`;
   const behemothHeight = `${behemoth.climb_height.beautify.value} (${upstream.height.beautify.value})`;
@@ -82,25 +82,25 @@ const BehemothPreview = observer(() => {
 const SlavePreview = observer(() => {
   const {slaves} = useGame();
   const slaveView = useMemo(() => {
-    const list: [ResourceClass, string][] = [
-      [slaves.slave_unassigned, 'Unassigned'],
-      [slaves.slave_diggers, 'Diggers'],
-      [slaves.slave_blacksmiths, 'Blacksmiths'],
+    const list: [number, string][] = [
+      [slaves.unassigned_slaves, 'Unassigned'],
+      [slaves.arwa, 'Diggers'],
+      [slaves.marid, 'Blacksmiths'],
     ]
     return (
       <Box p={2}>
         <Typography variant="h5">Slaves</Typography>
-        {list.map(([{id, beautify}, label]) => (
-          <Box key={id} sx={{width: 240, display: 'flex', mb: 1, alignItems: "center"}}>
+        {list.map(([value, label]) => (
+          <Box key={label} sx={{width: 240, display: 'flex', mb: 1, alignItems: "center"}}>
             <Typography sx={{mr: 2}} variant="caption">{label}</Typography>
-            <Typography>{beautify.value}</Typography>
+            <Typography>{value}</Typography>
           </Box>
         ))}
         <Divider sx={{my: 2}} />
-        <Typography>Total slaves {slaves.slave_count}</Typography>
+        <Typography>Total slaves {slaves.slaves_enslaved.beautify.value}</Typography>
       </Box>
     )
-  }, [slaves.slave_blacksmiths, slaves.slave_count, slaves.slave_diggers, slaves.slave_unassigned])
+  }, [slaves.arwa, slaves.marid, slaves.slaves_enslaved.beautify.value, slaves.unassigned_slaves])
 
   return (
     <Box>

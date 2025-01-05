@@ -1,13 +1,13 @@
 import {makeAutoObservable} from "mobx";
 import {ResourceClass, ResourceStoreClass, ResourceTypes} from "../../../Resource";
-import {AUTO_CLIMB, DRYING_SPEED, STAMINA_REGEN, STAMINA_REGEN_ON_FLUSHING} from "../../constants/constants.ts";
-import {calculateManaConversionCoefficients, flushMana, staminaDrain} from "../../constants/gameRules.ts";
+import {AUTO_CLIMB, STAMINA_REGEN, STAMINA_REGEN_ON_FLUSHING} from "../../constants/constants.ts";
+import {staminaDrain} from "../../constants/gameRules.ts";
+import {Game} from "../../context/game.context.ts";
 
 export class BehemothClass {
   public movement_requested: boolean = AUTO_CLIMB;
   public digging_requested: boolean = false;
   public flushing_requested: boolean = false;
-  public crafting_requested: boolean = true;
   private _has_flushed: boolean = false;
   public climb_height: ResourceClass;
   public climb_speed: ResourceClass;
@@ -30,19 +30,14 @@ export class BehemothClass {
     makeAutoObservable(this)
   }
 
-  public startCrafting = () => {
-    this.crafting_requested = true;
-  }
-
   public startFlushing = () => {
     if (this.can_flush) {
       this.flushing_requested = true;
       this._has_flushed = true;
     }
   }
-  public stopFlushing = () => {
+  public stopFlushing = () =>
     this.flushing_requested = false;
-  }
 
   public startClimbing = () => {
     if (!this.digging_requested) {
@@ -56,33 +51,32 @@ export class BehemothClass {
       getByType('dirty_mana').forEach(dirty_mana => dirty_mana.setValueTo(0))
     }
   }
-  public stopClimbing = () => {
+  public stopClimbing = () =>
     this.movement_requested = false;
-  }
+
   public startDigging = () => {
     if (this.can_dig) {
       this.digging_requested = true;
     }
   }
-  public stopDigging = () => {
+  public stopDigging = () =>
     this.digging_requested = false;
-  }
-  public manaToAcid = () => {
+
+  public manaToAcid = () =>
     this._resourceStore
       .trade([{key: 'clean_mana_level_1', value: 1}], [{key: 'behemoth_acid', value: 5}], 20)
       .tradeIfPossible()
-  }
 
   get decelerating() {
     return !this.movement_requested && !!this.climb_speed.value;
   }
 
   get accelerating() {
-    return this.movement_requested && this.climb_speed.value < this.climb_speed.max;
+    return this.should_move && this.climb_speed.value < this.climb_speed.max;
   }
 
   get is_moving() {
-    return !!this.climb_speed.value || this.movement_requested;
+    return !!this.climb_speed.value // || this.movement_requested;
   }
 
   get should_move() {
@@ -106,11 +100,11 @@ export class BehemothClass {
   }
 
   get can_dig() {
-    return !this.is_moving && !this._has_flushed && !this.should_flush
+    return !this.is_moving && !this._has_flushed && !this.is_flushing
   }
 
   get can_harvest() {
-    return !this.is_moving && !!this.dirty_mana_sum  && !this.should_flush
+    return !this.is_moving && !!this.dirty_mana_sum  && !this.is_flushing
   }
 
   get liquid_mana_sum() {
@@ -123,15 +117,19 @@ export class BehemothClass {
     return this._getTypeSum('raw_mana')
   }
 
-  get should_flush() {
+  get is_flushing() {
     return this.flushing_requested && this.acid.value >= 1
   }
   get is_flushing_mana() {
-    return this.should_flush && this.flushing_depth.value >= this.flushing_depth.max
+    return this.is_flushing && this.flushing_depth.value >= this.flushing_depth.max
   }
 
   get stopped_flushing_mana() {
-    return !this.should_flush && !!this.flushing_depth.value
+    return !this.is_flushing && !!this.flushing_depth.value
+  }
+
+  get is_mana_starting_to_dry() {
+    return !!this.liquid_mana_sum
   }
 
   get is_mana_drying() {
@@ -139,7 +137,7 @@ export class BehemothClass {
   }
 
   get is_still() {
-    return !this.is_moving && !this.should_flush
+    return !this.is_moving && !this.is_flushing
   }
 
   private _getTypeSum = (type: ResourceTypes) => {
@@ -148,15 +146,18 @@ export class BehemothClass {
     return Number(Math.floor(sum).toFixed())
   }
 
-  public turnUpdate = () => {
+  public turnUpdate = (game: Game) => {
     const {
-      should_flush,
+      is_flushing,
       stopped_flushing_mana,
-      should_move,
+      is_moving,
       should_dig,
       is_still,
       is_flushing_mana,
+      is_mana_starting_to_dry,
       is_mana_drying,
+      accelerating,
+      decelerating,
       should_stop_moving,
       climb_speed,
       climb_height,
@@ -164,21 +165,21 @@ export class BehemothClass {
       flushing_depth,
       stamina,
       acid,
-      liquid_mana_sum,
       stopClimbing,
     } = this
-    const {get, produce, getByType} = this._resourceStore
-    const speed = climb_speed
-    const height = climb_height
-    if (should_move) {
-      speed.updateValueBy(0.2)
-      height.updateValueBy(speed.value)
-      stamina.updateValueBy(-staminaDrain(speed.value))
+    const {get} = this._resourceStore
+    if (accelerating) {
+      climb_speed.updateValueBy(0.2)
+    }
+    if (is_moving) {
+      climb_height.updateValueBy(climb_speed.value)
+      stamina.updateValueBy(-staminaDrain(climb_speed.value))
     }
     if (should_stop_moving) {
       stopClimbing()
-      speed.updateValueBy(-1)
-      height.updateValueBy(speed.value)
+    }
+    if (decelerating) {
+      climb_speed.updateValueBy(-1)
     }
     if (is_still) {
       stamina.updateValueBy(STAMINA_REGEN)
@@ -186,28 +187,22 @@ export class BehemothClass {
     if (should_dig) {
       digging_depth.updateValueBy(get('slave_diggers').value)
     }
-    if (should_flush) {
+    if (is_flushing) {
       stamina.updateValueBy(STAMINA_REGEN_ON_FLUSHING)
       flushing_depth.updateValueBy(10)
       acid.updateValueBy(-10)
     }
     if (is_flushing_mana) {
-      getByType('liquid_mana').forEach((mana, i) =>
-          flushMana(mana, digging_depth.value, i))
+      game.mana.produceLiquidMana()
     }
     if (stopped_flushing_mana) {
       flushing_depth.updateValueBy(-1)
     }
-    if (liquid_mana_sum) {
+    if (is_mana_starting_to_dry) {
       get('behemoth_drying_delay').updateValueBy(-1)
     }
     if (is_mana_drying) {
-      const dryingCoefficients = calculateManaConversionCoefficients(getByType('liquid_mana'))
-      produce('dirty_mana_level_1', DRYING_SPEED * dryingCoefficients[0])
-      produce('dirty_mana_level_2', DRYING_SPEED * dryingCoefficients[1])
-      produce('dirty_mana_level_3', DRYING_SPEED * dryingCoefficients[2])
-      produce('dirty_mana_level_4', DRYING_SPEED * dryingCoefficients[3])
-      produce('dirty_mana_level_5', DRYING_SPEED * dryingCoefficients[4])
+      game.mana.produceDirtyMana()
     }
   }
 }

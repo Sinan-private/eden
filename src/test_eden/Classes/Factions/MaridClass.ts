@@ -22,6 +22,12 @@ export class MaridClass extends FactionClass {
     this._level = get('slave_hunter_level');
   }
 
+  get has_slave_caught() {
+    const progress_done = this._resourceStore.get('slave_hunter_progress').is_max
+    const can_enslave = this._slaves.can_enslave;
+    return progress_done && can_enslave;
+  }
+
   public turnUpdate = (game: Game) => {
     const {crafting_requested} = game.factions.factionMarid;
     const {get, produce, getByType} = game.resources
@@ -37,9 +43,10 @@ export class MaridClass extends FactionClass {
     }
     const progress = get('slave_hunter_progress')
     progress.updateValueBy(SLAVE_CREATION)
-    if (progress.is_max && !game.slaves.is_max) {
+    if (this.has_slave_caught) {
       progress.setToMin()
-      game.slaves.addSlave(1)
+      game.slaves.enslave(1)
+      // game.slaves.addSlave(1)
     }
   }
 }

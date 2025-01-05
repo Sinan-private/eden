@@ -30,7 +30,7 @@ export const Game = () => {
         <FactionManager/>
       </Box>
         <Box sx={{position: 'absolute', bottom: 50, right: 500, zIndex: 1}}>
-          <SlaveManager/>
+          {/*<SlaveManager/>*/}
         </Box>
       <Upstream/>
       <Background/>
@@ -45,7 +45,7 @@ const SlaveManager = observer(() => {
   const demonsImage = factions.factionIfrit.image;
   const guardsImage = factions.factionGhoul.image;
   const mindBendersImage = factions.factionArwa.image;
-  const {unassigned_slaves, giveToFaction, owned_by_arwa, owned_by_marid} = slaves;
+  const {unassigned_slaves, giveToFaction, arwa, marid} = slaves;
   return (
     <Box position="relative" sx={{width: SIZE, height: SIZE}}>
       <SlaveTop>
@@ -56,13 +56,13 @@ const SlaveManager = observer(() => {
       </SlaveLeft>
       <SlaveRight onClick={() => giveToFaction('marid')}>
         <FullSizedImage src={slaveHunterImage}/>
-        <Typography>{owned_by_marid}</Typography>
+        <Typography>{marid}</Typography>
 
         {/*<FactionButton faction={factions.slaveHunters}/>*/}
       </SlaveRight>
       <SlaveBottom onClick={() => giveToFaction('arwa')}>
         <FullSizedImage src={mindBendersImage}/>
-        <Typography>{owned_by_arwa}</Typography>
+        <Typography>{arwa}</Typography>
       </SlaveBottom>
       <SlaveCenter>
         <FullSizedImage src={chains} />

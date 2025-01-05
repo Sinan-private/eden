@@ -1,8 +1,8 @@
 import {ResourceClass, ResourceStoreClass} from "../../../Resource";
 import {SLAVES_INITIALLY_ARWA, SLAVES_INITIALLY_MARID} from "../../constants/constants.ts";
-import {randomRange} from "../../helpers/randomRange.ts";
 
 type FactionKeys = 'ifrit' | 'marid' | 'arwa' | 'ghoul'
+// type FactionKeys = Pick<keyof SlaveClass, 'ifrit' | 'marid' | 'arwa' | 'ghoul'>
 
 
 export class SlaveClass {
@@ -11,10 +11,10 @@ export class SlaveClass {
   public slaves_enslaved: ResourceClass;
   public slaves_wasted: ResourceClass;
   public slaves_in_rebirth: ResourceClass;
-  public owned_by_ifrid: number = 0;
-  public owned_by_marid: number = SLAVES_INITIALLY_MARID;
-  public owned_by_arwa: number = SLAVES_INITIALLY_ARWA;
-  public owned_by_ghoul: number = 0;
+  public ifrit: number = 0;
+  public marid: number = SLAVES_INITIALLY_MARID;
+  public arwa: number = SLAVES_INITIALLY_ARWA;
+  public ghoul: number = 0;
   public slave_health: ResourceClass;
 
   constructor(_resourceStore: ResourceStoreClass) {
@@ -26,9 +26,9 @@ export class SlaveClass {
     this.slave_health = _resourceStore.get('slave_health')
   }
 
-  public bindSlave = (amount = 1) => {
-
-  }
+  // public bindSlave = (amount = 1) => {
+  //
+  // }
 
   public revive = (amount = 1) => {
     // Nope, here I need to calculate how many are actually available
@@ -45,28 +45,16 @@ export class SlaveClass {
 
   public giveToFaction = (faction: FactionKeys, amount = 1) => {
     const maxPossible = amount <= this.unassigned_slaves ? amount : this.unassigned_slaves;
-    // this.getOwnedByFaction(faction) += amount;
-    switch (faction) {
-      case 'ifrit':
-        return this.owned_by_ifrid += maxPossible;
-      case 'marid':
-        return this.owned_by_marid += maxPossible;
-      case 'arwa':
-        return this.owned_by_arwa += maxPossible;
-      case 'ghoul':
-        return this.owned_by_ghoul += maxPossible;
-      default:
-        throw new Error(`Unknown faction ${faction}`);
-    }
+    this[faction] += maxPossible
   }
 
   public takeFromFaction = (faction: FactionKeys, amount = 1) => {
-
+    const maxPossible = amount <= this[faction] ? amount : this[faction];
+    this[faction] -= maxPossible
   }
 
-  public canTakeFromFaction = (faction: FactionKeys, amount = 1)  => {
-
-  }
+  public canTakeFromFaction = (faction: FactionKeys, amount = 1)  =>
+    this[faction] >= amount;
 
   public waste = () => {
 
@@ -75,27 +63,31 @@ export class SlaveClass {
   public getOwnedByFaction = (faction: FactionKeys) => {
     switch (faction) {
       case 'ifrit':
-        return this.owned_by_ifrid;
+        return this.ifrit;
       case 'marid':
-        return this.owned_by_marid;
+        return this.marid;
       case 'arwa':
-        return this.owned_by_arwa;
+        return this.arwa;
       case 'ghoul':
-        return this.owned_by_ghoul;
+        return this.ghoul;
       default:
         throw new Error(`Unknown faction ${faction}`);
     }
   }
 
   get assigned_slaves() {
-    return this.owned_by_ifrid
-      + this.owned_by_marid
-      + this.owned_by_arwa
-      + this.owned_by_ghoul
+    return this.ifrit
+      + this.marid
+      + this.arwa
+      + this.ghoul
   }
 
   get unassigned_slaves() {
     return this.slaves_enslaved.value - this.assigned_slaves
+  }
+
+  get can_enslave() {
+    return !!this.slaves_roaming.value
   }
 
 
