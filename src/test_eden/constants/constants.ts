@@ -2,9 +2,13 @@
 export const AUTO_CLIMB = false
 
 
-export const CLIMBING_SPEED_COEFFICIENT = 0.1
+// Slaves
+export const SLAVES_INITIALLY_MARID = 4;
+export const SLAVES_INITIALLY_ARWA = 4;
+
 
 // Coefficients
+export const CLIMBING_SPEED_COEFFICIENT = 0.1
 export const FLUSHING_SPEED = 0.25;
 export const DRYING_SPEED = 2;
 export const HARVEST_SPEED = 0.25;

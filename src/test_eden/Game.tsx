@@ -29,7 +29,7 @@ export const Game = () => {
       <Box sx={{position: 'absolute', top: '50%', left: 10, transform: 'translateY(-50%)'}}>
         <FactionManager/>
       </Box>
-        <Box sx={{position: 'absolute', bottom: 50, right: 50, zIndex: 1}}>
+        <Box sx={{position: 'absolute', bottom: 50, right: 500, zIndex: 1}}>
           <SlaveManager/>
         </Box>
       <Upstream/>
@@ -45,7 +45,7 @@ const SlaveManager = observer(() => {
   const demonsImage = factions.factionIfrit.image;
   const guardsImage = factions.factionGhoul.image;
   const mindBendersImage = factions.factionArwa.image;
-  const {slave_unassigned} = slaves;
+  const {unassigned_slaves, giveToFaction, owned_by_arwa, owned_by_marid} = slaves;
   return (
     <Box position="relative" sx={{width: SIZE, height: SIZE}}>
       <SlaveTop>
@@ -54,19 +54,19 @@ const SlaveManager = observer(() => {
       <SlaveLeft>
         <FullSizedImage src={guardsImage} $disabled/>
       </SlaveLeft>
-      <SlaveRight onClick={() => slaves.assignSlaves('blacksmith')}>
+      <SlaveRight onClick={() => giveToFaction('marid')}>
         <FullSizedImage src={slaveHunterImage}/>
-        <Typography>{slaves.slave_blacksmiths.beautify.value}</Typography>
+        <Typography>{owned_by_marid}</Typography>
 
         {/*<FactionButton faction={factions.slaveHunters}/>*/}
       </SlaveRight>
-      <SlaveBottom onClick={() => slaves.assignSlaves('digger')}>
+      <SlaveBottom onClick={() => giveToFaction('arwa')}>
         <FullSizedImage src={mindBendersImage}/>
-        <Typography>{slaves.slave_diggers.beautify.value}</Typography>
+        <Typography>{owned_by_arwa}</Typography>
       </SlaveBottom>
       <SlaveCenter>
         <FullSizedImage src={chains} />
-        <Typography fontSize="2rem" lineHeight="2.7rem">{slave_unassigned.beautify.value}</Typography>
+        <Typography fontSize="2rem" lineHeight="2.7rem">{unassigned_slaves}</Typography>
         {/*<Typography fontSize={10} px={2}>Unassigned slaves</Typography>*/}
       </SlaveCenter>
       <Shadow size={SIZE} x={3} y={3} color="#3f675e" blur={0} opacity={0.15}/>
