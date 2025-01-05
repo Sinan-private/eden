@@ -9,8 +9,8 @@ import {makeAutoObservable} from "mobx";
 // type SlaveAssignments = typeof slaveAssignments[number];
 type SlaveAssignments = 'digger' | 'blacksmith'
 
-const SLAVES_INITIALLY_AVAILABLE = 20;
-const SLAVES_INITIALLY_UNASSIGNED = 1;
+// const SLAVES_INITIALLY_AVAILABLE = 20;
+// const SLAVES_INITIALLY_UNASSIGNED = 1;
 const SLAVES_INITIALLY_MARID = 4;
 const SLAVES_INITIALLY_ARWA = 4;
 
@@ -38,7 +38,7 @@ const SLAVES_INITIALLY_ARWA = 4;
 // enslaved 50
 // wasted 10
 // in_rebirth 20
-type FactionKeys = 'Ifrid' | 'Marid' | 'Arwa' | 'Ghoul'
+// type FactionKeys = 'Ifrid' | 'Marid' | 'Arwa' | 'Ghoul'
 
 export class SlaveClass {
   public slaves_bound: ResourceClass;
@@ -94,9 +94,9 @@ export class SlaveClass {
   }
 
 
-  public giveToFaction = (faction: FactionKeys, amount = 1) => {
-  //   this.
-  }
+  // public giveToFaction = (faction: FactionKeys, amount = 1) => {
+  // //   this.
+  // }
 
   public addSlave = (amount = 1) => {
     if (!this.slave_limit.is_max) {

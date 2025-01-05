@@ -65,7 +65,6 @@ export class Turn {
 
   public behemothTurnUpdate = () => {
     const {
-      can_harvest,
       is_still,
       should_flush,
       climb_speed,
@@ -118,7 +117,6 @@ export class Turn {
     }
     //   As long as there is liquid mana it dries
     const isDrying = !!liquid_mana && !drying_delay.value
-    const slave_digger = get('slave_diggers').value
     if (isDrying) {
       const dryingCoefficients = calculateManaConversionCoefficients(getByType('liquid_mana'))
       produce('dirty_mana_level_1', DRYING_SPEED * dryingCoefficients[0])
