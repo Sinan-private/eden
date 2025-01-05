@@ -1,17 +1,15 @@
-import {ResourceStoreClass} from "../../../Resource";
 import image from '../../../assets/images/Faction2.png';
 import {FactionClass} from "./FactionClass.ts";
-import {SlaveClass} from "../Slaves/SlaveClass.ts";
-import {Game} from "../../context/game.context.ts";
+import {Game, GameClasses} from "../../context/game.context.ts";
 import {SLAVE_CREATION} from "../../constants/constants.ts";
 
 // aka the slave hunters and craftsmen
 export class MaridClass extends FactionClass {
   public crafting_requested: boolean = true;
   public hunting_requested: boolean = true;
-  constructor(_resourceStore: ResourceStoreClass, _slaves: SlaveClass) {
-    super(_resourceStore, _slaves)
-    const {get} = _resourceStore;
+  constructor(gameClasses: GameClasses) {
+    super(gameClasses)
+    const {get} = this._resourceStore;
 
     this.image = image;
     this.active = true;

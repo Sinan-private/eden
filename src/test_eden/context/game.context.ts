@@ -15,14 +15,21 @@ const useGameBase = () => {
   const slaves = useMemo(() => new SlaveClass(resources), [resources]);
   const mana = useMemo(() => new ManaClass(resources), [resources])
   const behemoth = useMemo(() => new BehemothClass(resources), [resources]);
-  const upstream = useMemo(() => new UpstreamClass(resources), [resources])
-  const factionIfrit = useMemo(() => new IfritClass(resources, slaves), [resources, slaves])
-  const factionArwa = useMemo(() => new ArwaClass(resources, slaves), [resources, slaves])
-  const factionGhoul = useMemo(() => new GhoulClass(resources, slaves), [resources, slaves])
-  const factionMarid = useMemo(() => new MaridClass(resources, slaves), [resources, slaves])
+  const upstream = useMemo(() => new UpstreamClass(resources), [resources]);
+  const gameClasses: GameClasses = useMemo(() => ({
+    resources,
+    slaves,
+    mana,
+    behemoth,
+    upstream,
+  }), [behemoth, mana, resources, slaves, upstream])
+  const factionIfrit = useMemo(() => new IfritClass(gameClasses), [gameClasses])
+  const factionArwa = useMemo(() => new ArwaClass(gameClasses), [gameClasses])
+  const factionGhoul = useMemo(() => new GhoulClass(gameClasses), [gameClasses])
+  const factionMarid = useMemo(() => new MaridClass(gameClasses), [gameClasses])
   const tick = useTick();
 
-  const game = {
+  const game: Game = {
     ...tick,
     resources,
     behemoth,
@@ -34,7 +41,7 @@ const useGameBase = () => {
       factionIfrit,
       factionGhoul,
       factionArwa,
-      all: [factionIfrit, factionMarid, factionGhoul, factionArwa]
+      // all: [factionIfrit, factionMarid, factionGhoul, factionArwa]
     }
   };
   useTurnSubscription(slaves.turnUpdate);
@@ -51,7 +58,7 @@ const useGameContainer = createContainer(useGameBase);
 export const useGame = useGameContainer.useContainer;
 export const GameProvider = useGameContainer.Provider;
 
-type GameClasses = {
+export type GameClasses = {
   resources: Resources;
   behemoth: BehemothClass;
   slaves: SlaveClass;
@@ -67,9 +74,5 @@ type FactionClasses = {
 }
 
 export type Game = {
-  resources: Resources;
-  behemoth: BehemothClass;
-  slaves: SlaveClass;
-  upstream: UpstreamClass;
-  mana: ManaClass;
-} & FactionClasses & Tick;
+  factions: FactionClasses;
+} & GameClasses & Tick;

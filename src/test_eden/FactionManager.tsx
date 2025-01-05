@@ -3,7 +3,8 @@ import {useGame} from "./context/game.context.ts";
 import styled from "styled-components";
 
 export const FactionManager = () => {
-  const {all} = useGame().factions;
+  const factions = useGame().factions;
+  const all = Object.values(factions);
 
   return (
     <Box sx={{display: 'flex', flexDirection: 'column', justifyContent: 'space-between', gap: 2}}>

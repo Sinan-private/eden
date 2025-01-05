@@ -1,15 +1,13 @@
-import {ResourceStoreClass} from "../../../Resource";
 import image from '../../../assets/images/Faction4.png';
 import {FactionClass} from "./FactionClass.ts";
-import {SlaveClass} from "../Slaves/SlaveClass.ts";
-import {Game} from "../../context/game.context.ts";
+import {Game, GameClasses} from "../../context/game.context.ts";
 
 
 export class ArwaClass extends FactionClass {
   public collecting_requested: boolean = false;
-  constructor(_resourceStore: ResourceStoreClass, _slaves: SlaveClass) {
-    const {get} = _resourceStore;
-    super(_resourceStore, _slaves)
+  constructor(gameClasses: GameClasses) {
+    super(gameClasses)
+    const {get} = this._resourceStore;
     this.image = image;
     this.visible = true;
     this.loyalty = get('deception_loyalty');

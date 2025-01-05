@@ -29,8 +29,8 @@ export const Game = () => {
       <Box sx={{position: 'absolute', top: '50%', left: 10, transform: 'translateY(-50%)'}}>
         <FactionManager/>
       </Box>
-        <Box sx={{position: 'absolute', bottom: 50, right: 500, zIndex: 1}}>
-          {/*<SlaveManager/>*/}
+        <Box sx={{position: 'absolute', bottom: 50, right: 50, zIndex: 1}}>
+          <SlaveManager/>
         </Box>
       <Upstream/>
       <Background/>
