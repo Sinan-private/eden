@@ -1,6 +1,7 @@
 import {makeAutoObservable} from "mobx";
 import {ResourceClass, ResourceStoreClass, ResourceTypes} from "../../../Resource";
-import {AUTO_CLIMB} from "../../constants/constants.ts";
+import {AUTO_CLIMB, DRYING_SPEED, STAMINA_REGEN, STAMINA_REGEN_ON_FLUSHING} from "../../constants/constants.ts";
+import {calculateManaConversionCoefficients, flushMana, staminaDrain} from "../../constants/gameRules.ts";
 
 export class BehemothClass {
   public movement_requested: boolean = AUTO_CLIMB;
@@ -109,16 +110,16 @@ export class BehemothClass {
   }
 
   get can_harvest() {
-    return !this.is_moving && !!this.dirty_mana  && !this.should_flush
+    return !this.is_moving && !!this.dirty_mana_sum  && !this.should_flush
   }
 
-  get liquid_mana() {
+  get liquid_mana_sum() {
     return this._getTypeSum('liquid_mana')
   }
-  get dirty_mana() {
+  get dirty_mana_sum() {
     return this._getTypeSum('dirty_mana')
   }
-  get raw_mana() {
+  get raw_mana_sum() {
     return this._getTypeSum('raw_mana')
   }
 
@@ -126,7 +127,15 @@ export class BehemothClass {
     return this.flushing_requested && this.acid.value >= 1
   }
   get is_flushing_mana() {
-    return this.flushing_depth.value >= this.flushing_depth.max
+    return this.should_flush && this.flushing_depth.value >= this.flushing_depth.max
+  }
+
+  get stopped_flushing_mana() {
+    return !this.should_flush && !!this.flushing_depth.value
+  }
+
+  get is_mana_drying() {
+    return !!this.liquid_mana_sum && !this.drying_delay.value
   }
 
   get is_still() {
@@ -139,4 +148,66 @@ export class BehemothClass {
     return Number(Math.floor(sum).toFixed())
   }
 
+  public turnUpdate = () => {
+    const {
+      should_flush,
+      stopped_flushing_mana,
+      should_move,
+      should_dig,
+      is_still,
+      is_flushing_mana,
+      is_mana_drying,
+      should_stop_moving,
+      climb_speed,
+      climb_height,
+      digging_depth,
+      flushing_depth,
+      stamina,
+      acid,
+      liquid_mana_sum,
+      stopClimbing,
+    } = this
+    const {get, produce, getByType} = this._resourceStore
+    const speed = climb_speed
+    const height = climb_height
+    if (should_move) {
+      speed.updateValueBy(0.2)
+      height.updateValueBy(speed.value)
+      stamina.updateValueBy(-staminaDrain(speed.value))
+    }
+    if (should_stop_moving) {
+      stopClimbing()
+      speed.updateValueBy(-1)
+      height.updateValueBy(speed.value)
+    }
+    if (is_still) {
+      stamina.updateValueBy(STAMINA_REGEN)
+    }
+    if (should_dig) {
+      digging_depth.updateValueBy(get('slave_diggers').value)
+    }
+    if (should_flush) {
+      stamina.updateValueBy(STAMINA_REGEN_ON_FLUSHING)
+      flushing_depth.updateValueBy(10)
+      acid.updateValueBy(-10)
+    }
+    if (is_flushing_mana) {
+      getByType('liquid_mana').forEach((mana, i) =>
+          flushMana(mana, digging_depth.value, i))
+    }
+    if (stopped_flushing_mana) {
+      flushing_depth.updateValueBy(-1)
+    }
+    if (liquid_mana_sum) {
+      get('behemoth_drying_delay').updateValueBy(-1)
+    }
+    if (is_mana_drying) {
+      const dryingCoefficients = calculateManaConversionCoefficients(getByType('liquid_mana'))
+      produce('dirty_mana_level_1', DRYING_SPEED * dryingCoefficients[0])
+      produce('dirty_mana_level_2', DRYING_SPEED * dryingCoefficients[1])
+      produce('dirty_mana_level_3', DRYING_SPEED * dryingCoefficients[2])
+      produce('dirty_mana_level_4', DRYING_SPEED * dryingCoefficients[3])
+      produce('dirty_mana_level_5', DRYING_SPEED * dryingCoefficients[4])
+    }
+  }
 }

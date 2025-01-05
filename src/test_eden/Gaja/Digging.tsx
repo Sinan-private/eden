@@ -9,9 +9,9 @@ const SPOTS_DIVIDER = 25;
 
 export const Digging = observer(() => {
   const {behemoth} = useGame()
-  const {digging_depth, flushing_depth, dirty_mana} = behemoth
+  const {digging_depth, flushing_depth, dirty_mana_sum} = behemoth
   const spots = useMemo(() => {
-    const amount = Math.floor(dirty_mana / SPOTS_DIVIDER);
+    const amount = Math.floor(dirty_mana_sum / SPOTS_DIVIDER);
     const spotList = Array.from(Array(amount).keys()).map(key => {
       const index = key % 100;
       const [x, y, size] = randomCoordinates[index];
@@ -34,7 +34,7 @@ export const Digging = observer(() => {
         ))}
       </Box>
     )
-  }, [dirty_mana])
+  }, [dirty_mana_sum])
 
   return (
     <Box sx={{

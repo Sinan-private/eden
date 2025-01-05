@@ -1,6 +1,6 @@
 import {ResourceClass, ResourceStoreClass} from "../../Resource";
 
-export class Upstream {
+export class UpstreamClass {
   private _height: ResourceClass;
   constructor(private _resourceStore: ResourceStoreClass) {
     this._height = _resourceStore.get('upstream_height')

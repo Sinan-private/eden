@@ -93,11 +93,15 @@ export class SlaveClass {
 
   }
 
+  get can_enslave() {
+    return !!this.slaves_roaming.value
+  }
 
   // public giveToFaction = (faction: FactionKeys, amount = 1) => {
   // //   this.
   // }
 
+  // This needs to be replaced by adding to a faction
   public addSlave = (amount = 1) => {
     if (!this.slave_limit.is_max) {
       this.slave_limit.updateValueBy(amount)

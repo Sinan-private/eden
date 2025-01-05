@@ -5,6 +5,8 @@ import {ResourceStoreClass} from "../ResourceHandler/specificTypes.ts";
 import {useComponentMount} from "../hooks";
 import {ResourceStore} from "../ResourceHandler/ResourceStore.ts";
 
+export type Resources = ReturnType<typeof useResourceBase>['resources']
+
 const useResourceBase = () => {
   const resourceRef = useRef<ResourceStoreClass | null>(null) as MutableRefObject<ResourceStoreClass | null>;
   const resources = resourceRef.current as ResourceStoreClass;

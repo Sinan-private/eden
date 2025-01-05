@@ -2,6 +2,8 @@ import {createContainer} from "unstated-next";
 import {useEffect, useState} from "react";
 import {MS_TO_TICK, TICK_AUTO_START, TICKS_PER_SECOND} from "../../constants/config.ts";
 
+export type Tick = ReturnType<typeof useTickBase>
+
 const useTickBase = () => {
   const [isActive, setIsActive] = useState(TICK_AUTO_START);
   const [currentTick, setCurrentTick] = useState(0);

@@ -1,6 +1,6 @@
 import {ResourceStoreClass, ResourceTypes} from "../../../Resource";
 
-export class Mana {
+export class ManaClass {
   constructor(private _resourceStore: ResourceStoreClass) {
   }
   public getTypeSum = (type: ResourceTypes) => {

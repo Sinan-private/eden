@@ -2,6 +2,9 @@ import {ResourceStoreClass} from "../../../Resource";
 import image from '../../../assets/images/Faction2.png';
 import {FactionClass} from "./FactionClass.ts";
 import {SlaveClass} from "../Slaves/SlaveClass.ts";
+import {Game} from "../../context/game.context.ts";
+import {calculateManaConversionCoefficients} from "../../constants/gameRules.ts";
+import {CRAFTING_SPEED, SLAVE_CREATION} from "../../constants/constants.ts";
 
 // aka the slave hunters and craftsmen
 export class MaridClass extends FactionClass {
@@ -17,5 +20,26 @@ export class MaridClass extends FactionClass {
     this._influence = get('slave_hunter_influence');
     this._progress = get('slave_hunter_progress');
     this._level = get('slave_hunter_level');
+  }
+
+  public turnUpdate = (game: Game) => {
+    const {crafting_requested} = game.factions.factionMarid;
+    const {get, produce, getByType} = game.resources
+
+    if (crafting_requested) {
+      const manaConversionCoefficients = calculateManaConversionCoefficients(getByType('raw_mana'))
+      const slave_blacksmiths = get('slave_blacksmiths').value
+      produce('clean_mana_level_1', slave_blacksmiths * manaConversionCoefficients[0] * CRAFTING_SPEED)
+      produce('clean_mana_level_2', slave_blacksmiths * manaConversionCoefficients[1] * CRAFTING_SPEED)
+      produce('clean_mana_level_3', slave_blacksmiths * manaConversionCoefficients[2] * CRAFTING_SPEED)
+      produce('clean_mana_level_4', slave_blacksmiths * manaConversionCoefficients[3] * CRAFTING_SPEED)
+      produce('clean_mana_level_5', slave_blacksmiths * manaConversionCoefficients[4] * CRAFTING_SPEED)
+    }
+    const progress = get('slave_hunter_progress')
+    progress.updateValueBy(SLAVE_CREATION)
+    if (progress.is_max && !game.slaves.is_max) {
+      progress.setToMin()
+      game.slaves.addSlave(1)
+    }
   }
 }

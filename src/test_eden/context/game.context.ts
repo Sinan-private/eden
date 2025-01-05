@@ -4,24 +4,23 @@ import {useResource, useTurnSubscription} from "../../Resource";
 import {BehemothClass} from "../Classes/Behemoth/BehemothClass.ts";
 import {SlaveClass} from "../Classes/Slaves/SlaveClass.ts";
 import {IfritClass, GhoulClass, ArwaClass, MaridClass} from "../Classes/Factions";
-import {Mana} from "../Classes/Mana/Mana.ts";
-import {Upstream} from "../Classes/Upstream.ts";
-import {Turn} from "../Classes/Turn.ts";
+import {ManaClass} from "../Classes/Mana/ManaClass.ts";
+import {UpstreamClass} from "../Classes/UpstreamClass.ts";
+import {Tick, useTick} from "../../Resource/context/tick.context.ts";
+import {Resources} from "../../Resource/context/resource.context.ts";
+
 
 const useGameBase = () => {
   const {resources} = useResource();
   const slaves = useMemo(() => new SlaveClass(resources), [resources]);
-  const mana = useMemo(() => new Mana(resources), [resources])
+  const mana = useMemo(() => new ManaClass(resources), [resources])
   const behemoth = useMemo(() => new BehemothClass(resources), [resources]);
-  const upstream = useMemo(() => new Upstream(resources), [resources])
+  const upstream = useMemo(() => new UpstreamClass(resources), [resources])
   const factionIfrit = useMemo(() => new IfritClass(resources, slaves), [resources, slaves])
   const factionArwa = useMemo(() => new ArwaClass(resources, slaves), [resources, slaves])
   const factionGhoul = useMemo(() => new GhoulClass(resources, slaves), [resources, slaves])
   const factionMarid = useMemo(() => new MaridClass(resources, slaves), [resources, slaves])
-  const tick = useTurnSubscription();
-  // useTurnSubscription(behemoth.turnUpdate);
-  useTurnSubscription(slaves.turnUpdate);
-  useTurnSubscription(upstream.turnUpdate);
+  const tick = useTick();
 
   const game = {
     ...tick,
@@ -38,10 +37,11 @@ const useGameBase = () => {
       all: [factionIfrit, factionMarid, factionGhoul, factionArwa]
     }
   };
-  const turn = useMemo(() => new Turn(game), [game]);
-  useTurnSubscription(turn.behemothTurnUpdate);
-  useTurnSubscription(turn.maridTurnUpdate);
-  useTurnSubscription(turn.arwaTurnUpdate);
+  useTurnSubscription(slaves.turnUpdate);
+  useTurnSubscription(upstream.turnUpdate);
+  useTurnSubscription(() => behemoth.turnUpdate());
+  useTurnSubscription(() => factionMarid.turnUpdate(game));
+  useTurnSubscription(() => factionArwa.turnUpdate(game));
 
 
   return game
@@ -50,3 +50,17 @@ const useGameBase = () => {
 const useGameContainer = createContainer(useGameBase);
 export const useGame = useGameContainer.useContainer;
 export const GameProvider = useGameContainer.Provider;
+
+export type Game = {
+  resources: Resources;
+  behemoth: BehemothClass;
+  slaves: SlaveClass;
+  upstream: UpstreamClass;
+  mana: ManaClass;
+  factions: {
+    factionIfrit: IfritClass;
+    factionMarid: MaridClass;
+    factionArwa: ArwaClass;
+    factionGhoul: GhoulClass;
+  }
+} & Tick;
