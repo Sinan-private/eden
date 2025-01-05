@@ -29,17 +29,17 @@ export class MaridClass extends FactionClass {
   }
 
   public turnUpdate = (game: Game) => {
-    const {crafting_requested} = game.factions.factionMarid;
     const {get, produce, getByType} = game.resources
 
-    if (crafting_requested) {
-      const manaConversionCoefficients = calculateManaConversionCoefficients(getByType('raw_mana'))
-      const slave_blacksmiths = get('slave_blacksmiths').value
-      produce('clean_mana_level_1', slave_blacksmiths * manaConversionCoefficients[0] * CRAFTING_SPEED)
-      produce('clean_mana_level_2', slave_blacksmiths * manaConversionCoefficients[1] * CRAFTING_SPEED)
-      produce('clean_mana_level_3', slave_blacksmiths * manaConversionCoefficients[2] * CRAFTING_SPEED)
-      produce('clean_mana_level_4', slave_blacksmiths * manaConversionCoefficients[3] * CRAFTING_SPEED)
-      produce('clean_mana_level_5', slave_blacksmiths * manaConversionCoefficients[4] * CRAFTING_SPEED)
+    if (this.crafting_requested) {
+      game.mana.produceCleanMana(game.slaves.marid)
+      // const manaConversionCoefficients = calculateManaConversionCoefficients(getByType('raw_mana'))
+      // const slave_blacksmiths = this._slaves.marid
+      // produce('clean_mana_level_1', slave_blacksmiths * manaConversionCoefficients[0] * CRAFTING_SPEED)
+      // produce('clean_mana_level_2', slave_blacksmiths * manaConversionCoefficients[1] * CRAFTING_SPEED)
+      // produce('clean_mana_level_3', slave_blacksmiths * manaConversionCoefficients[2] * CRAFTING_SPEED)
+      // produce('clean_mana_level_4', slave_blacksmiths * manaConversionCoefficients[3] * CRAFTING_SPEED)
+      // produce('clean_mana_level_5', slave_blacksmiths * manaConversionCoefficients[4] * CRAFTING_SPEED)
     }
     const progress = get('slave_hunter_progress')
     progress.updateValueBy(SLAVE_CREATION)

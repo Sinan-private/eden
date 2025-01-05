@@ -185,7 +185,7 @@ export class BehemothClass {
       stamina.updateValueBy(STAMINA_REGEN)
     }
     if (should_dig) {
-      digging_depth.updateValueBy(get('slave_diggers').value)
+      digging_depth.updateValueBy(game.slaves.arwa / 2)
     }
     if (is_flushing) {
       stamina.updateValueBy(STAMINA_REGEN_ON_FLUSHING)

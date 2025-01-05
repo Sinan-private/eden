@@ -448,17 +448,6 @@
     "revealedAt": null
   },
   {
-    "key": "slave_limit",
-    "value": 9,
-    "min": 0,
-    "max": 20,
-    "label": "Slave limit",
-    "type": "slaves",
-    "iconName": "empty",
-    "cost": null,
-    "revealedAt": null
-  },
-  {
     "key": "behemoth_flushing_depth",
     "value": 0,
     "min": 0,
@@ -486,39 +475,6 @@
     "min": 0,
     "max": 100,
     "label": "Slave health",
-    "type": "slaves",
-    "iconName": "empty",
-    "cost": null,
-    "revealedAt": null
-  },
-  {
-    "key": "slave_diggers",
-    "value": 4,
-    "min": 0,
-    "max": null,
-    "label": "Slave diggers",
-    "type": "slaves",
-    "iconName": "empty",
-    "cost": null,
-    "revealedAt": null
-  },
-  {
-    "key": "slave_blacksmiths",
-    "value": 4,
-    "min": 0,
-    "max": null,
-    "label": "Slave Blacksmiths",
-    "type": "slaves",
-    "iconName": "empty",
-    "cost": null,
-    "revealedAt": null
-  },
-  {
-    "key": "slave_unassigned",
-    "value": 1,
-    "min": 0,
-    "max": null,
-    "label": "Slave unassigned",
     "type": "slaves",
     "iconName": "empty",
     "cost": null,
@@ -729,17 +685,6 @@
     "max": null,
     "label": "Upstream height",
     "type": "",
-    "iconName": "empty",
-    "cost": null,
-    "revealedAt": null
-  },
-  {
-    "key": "slave_wasted",
-    "value": 0,
-    "min": 0,
-    "max": null,
-    "label": "Slave wasted",
-    "type": "slaves",
     "iconName": "empty",
     "cost": null,
     "revealedAt": null

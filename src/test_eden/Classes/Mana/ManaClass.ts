@@ -44,13 +44,13 @@ export class ManaClass {
   }
 
   public produceCleanMana = (slaves: number) => {
-    // const manaConversionCoefficients = calculateManaConversionCoefficients(getByType('raw_mana'))
-    // const slave_blacksmiths = get('slave_blacksmiths').value
-    // produce('clean_mana_level_1', slave_blacksmiths * manaConversionCoefficients[0] * CRAFTING_SPEED)
-    // produce('clean_mana_level_2', slave_blacksmiths * manaConversionCoefficients[1] * CRAFTING_SPEED)
-    // produce('clean_mana_level_3', slave_blacksmiths * manaConversionCoefficients[2] * CRAFTING_SPEED)
-    // produce('clean_mana_level_4', slave_blacksmiths * manaConversionCoefficients[3] * CRAFTING_SPEED)
-    // produce('clean_mana_level_5', slave_blacksmiths * manaConversionCoefficients[4] * CRAFTING_SPEED)
+    const {produce, getByType} = this._resourceStore
+    const manaConversionCoefficients = calculateManaConversionCoefficients(getByType('raw_mana'))
+    produce('clean_mana_level_1', slaves * manaConversionCoefficients[0] * CRAFTING_SPEED)
+    produce('clean_mana_level_2', slaves * manaConversionCoefficients[1] * CRAFTING_SPEED)
+    produce('clean_mana_level_3', slaves * manaConversionCoefficients[2] * CRAFTING_SPEED)
+    produce('clean_mana_level_4', slaves * manaConversionCoefficients[3] * CRAFTING_SPEED)
+    produce('clean_mana_level_5', slaves * manaConversionCoefficients[4] * CRAFTING_SPEED)
   }
 
   get mana_count() {
