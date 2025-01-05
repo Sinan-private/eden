@@ -9,7 +9,7 @@ export class MaridClass extends FactionClass {
   public hunting_requested: boolean = true;
   constructor(gameClasses: GameClasses) {
     super(gameClasses)
-    const {get} = this._resourceStore;
+    const {get} = this.resources;
 
     this.image = image;
     this.active = true;
@@ -25,8 +25,8 @@ export class MaridClass extends FactionClass {
   }
 
   get has_slave_caught() {
-    const progress_done = this._resourceStore.get('slave_hunter_progress').is_max
-    const can_enslave = this._slaves.can_enslave;
+    const progress_done = this.resources.get('slave_hunter_progress').is_max
+    const can_enslave = this.slaves.can_enslave;
     return progress_done && can_enslave;
   }
 

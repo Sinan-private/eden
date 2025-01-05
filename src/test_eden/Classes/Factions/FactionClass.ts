@@ -1,6 +1,9 @@
 import {ResourceClass, ResourceStoreClass} from "../../../Resource";
 import {GameClasses} from "../../context/game.context.ts";
 import {SlaveClass} from "../Slaves/SlaveClass.ts";
+import {BehemothClass} from "../Behemoth/BehemothClass.ts";
+import {ManaClass} from "../Mana/ManaClass.ts";
+import {UpstreamClass} from "../UpstreamClass.ts";
 
 export class FactionClass {
   public image: string;
@@ -10,11 +13,17 @@ export class FactionClass {
   public influence!: ResourceClass;
   public progress!: ResourceClass;
   public level!: ResourceClass;
-  public _resourceStore: ResourceStoreClass;
-  public _slaves: SlaveClass;
+  public resources: ResourceStoreClass;
+  public slaves: SlaveClass;
+  public mana: ManaClass;
+  public behemoth: BehemothClass;
+  public upstream: UpstreamClass;
   constructor(gameClasses: GameClasses) {
-    this._resourceStore = gameClasses.resources
-    this._slaves = gameClasses.slaves
+    this.resources = gameClasses.resources
+    this.slaves = gameClasses.slaves
+    this.mana = gameClasses.mana
+    this.behemoth = gameClasses.behemoth
+    this.upstream = gameClasses.upstream
     this.image = '';
     this.active = false;
     this.visible = true;

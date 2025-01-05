@@ -6,7 +6,7 @@ import {GameClasses} from "../../context/game.context.ts";
 export class IfritClass extends FactionClass {
   constructor(gameClasses: GameClasses) {
     super(gameClasses)
-    const {get} = this._resourceStore;
+    const {get} = this.resources;
     this.image = image;
     this.loyalty = get('demon_loyalty');
     this.influence = get('demon_influence');

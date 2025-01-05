@@ -35,12 +35,12 @@ export class ManaClass {
 
   public produceRawMana = (slaves: number) => {
     const {produce, getByType} = this._resourceStore
-    const dryingCoefficients = calculateManaConversionCoefficients(getByType('liquid_mana'))
-    produce('raw_mana_level_1', slaves * HARVEST_SPEED * dryingCoefficients[0])
-    produce('raw_mana_level_2', slaves * HARVEST_SPEED * dryingCoefficients[1])
-    produce('raw_mana_level_3', slaves * HARVEST_SPEED * dryingCoefficients[2])
-    produce('raw_mana_level_4', slaves * HARVEST_SPEED * dryingCoefficients[3])
-    produce('raw_mana_level_5', slaves * HARVEST_SPEED * dryingCoefficients[4])
+    const collectingCoefficients = calculateManaConversionCoefficients(getByType('liquid_mana'))
+    produce('raw_mana_level_1', slaves * HARVEST_SPEED * collectingCoefficients[0])
+    produce('raw_mana_level_2', slaves * HARVEST_SPEED * collectingCoefficients[1])
+    produce('raw_mana_level_3', slaves * HARVEST_SPEED * collectingCoefficients[2])
+    produce('raw_mana_level_4', slaves * HARVEST_SPEED * collectingCoefficients[3])
+    produce('raw_mana_level_5', slaves * HARVEST_SPEED * collectingCoefficients[4])
   }
 
   public produceCleanMana = (slaves: number) => {

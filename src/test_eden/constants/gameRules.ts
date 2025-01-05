@@ -1,6 +1,8 @@
 import {ResourceClass} from "../../Resource";
 import {STAMINA_DRAIN} from "./constants.ts";
 
+// Instead of fix values I want to take the randomResultFromChances
+
 export function calculateManaConversionCoefficients(manaType: ResourceClass[]): number[] {
   const typeValues = manaType.map(({value}) => value).sort((a, b) => a + b);
   const sum = typeValues.reduce((a, b) => a + b)
