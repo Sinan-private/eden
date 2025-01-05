@@ -41,6 +41,7 @@ const useGameBase = () => {
   const turn = useMemo(() => new Turn(game), [game]);
   useTurnSubscription(turn.behemothTurnUpdate);
   useTurnSubscription(turn.maridTurnUpdate);
+  useTurnSubscription(turn.arwaTurnUpdate);
 
 
   return game

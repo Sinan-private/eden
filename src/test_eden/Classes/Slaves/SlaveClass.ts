@@ -1,5 +1,6 @@
 import {ResourceClass, ResourceStoreClass} from "../../../Resource";
 import {randomRange} from "../../helpers/randomRange.ts";
+import {makeAutoObservable} from "mobx";
 
 // const slaveAssignments = [
 //   'digger',
@@ -45,12 +46,16 @@ export class SlaveClass {
   public slaves_enslaved: ResourceClass;
   public slaves_wasted: ResourceClass;
   public slaves_in_rebirth: ResourceClass;
+  public owned_by_ifrid: number = 0;
+  public owned_by_marid: number = SLAVES_INITIALLY_MARID;
+  public owned_by_arwa: number = SLAVES_INITIALLY_ARWA;
+  public owned_by_ghoul: number = 0;
+
   public slave_limit: ResourceClass;
   public slave_unassigned: ResourceClass;
   public slave_diggers: ResourceClass;
   public slave_blacksmiths: ResourceClass;
   public slave_health: ResourceClass;
-  private is_init: boolean = true;
 
   constructor(_resourceStore: ResourceStoreClass) {
     this.slaves_bound = _resourceStore.get('slaves_bound')
@@ -66,25 +71,26 @@ export class SlaveClass {
     this.slave_diggers = _resourceStore.get('slave_diggers')
     this.slave_blacksmiths = _resourceStore.get('slave_blacksmiths')
     this.slave_health = _resourceStore.get('slave_health')
-    if (this.is_init) {
+    console.log('init')
 
-    this._resetValues()
-    }
+    makeAutoObservable(this)
   }
 
-  private _resetValues = () => {
-    if (this.is_init) {
-      this.is_init = false;
-      const {slaves_enslaved} = this
-
-      console.log(slaves_enslaved.value, slaves_enslaved.max)
-      slaves_enslaved.setTo({value: this.unassigned_slaves, max: slaves_enslaved.value})
-      console.log(slaves_enslaved.value, slaves_enslaved.max)
-    }
-  }
 
   get unassigned_slaves() {
-    return 2
+    return this.slaves_enslaved.value - this.assigned_slavesX
+  }
+
+  get assigned_slavesX() {
+    return this.owned_by_ifrid
+      + this.owned_by_marid
+      + this.owned_by_arwa
+      + this.owned_by_ghoul
+  }
+
+  // This will be necessary to handle any trade with slaves involved since they have their own state logic
+  public trade = () => {
+
   }
 
 
@@ -96,6 +102,7 @@ export class SlaveClass {
     if (!this.slave_limit.is_max) {
       this.slave_limit.updateValueBy(amount)
       this.slave_unassigned.updateValueBy(amount)
+      this.slaves_enslaved.updateValueBy(amount)
     }
   }
 
@@ -126,10 +133,18 @@ export class SlaveClass {
       case 'digger':
         this.slave_diggers.updateValueBy(_amount)
         this.slave_unassigned.updateValueBy(-_amount)
+          //   Todo That's too simple so far. This needs to account for the limit. But don't find a nice way currently
+        if (this.unassigned_slaves) {
+          // const a = this._resourceStore.trade()
+          this.owned_by_arwa = this.owned_by_arwa + amount
+        }
         break;
       case 'blacksmith':
         this.slave_blacksmiths.updateValueBy(_amount)
         this.slave_unassigned.updateValueBy(-_amount)
+        if (this.unassigned_slaves) {
+          this.owned_by_marid = this.owned_by_marid + amount
+        }
         break;
       default:
     }
