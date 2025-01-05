@@ -51,16 +51,25 @@ const useGameContainer = createContainer(useGameBase);
 export const useGame = useGameContainer.useContainer;
 export const GameProvider = useGameContainer.Provider;
 
+type GameClasses = {
+  resources: Resources;
+  behemoth: BehemothClass;
+  slaves: SlaveClass;
+  upstream: UpstreamClass;
+  mana: ManaClass;
+};
+
+type FactionClasses = {
+  factionIfrit: IfritClass;
+  factionMarid: MaridClass;
+  factionArwa: ArwaClass;
+  factionGhoul: GhoulClass;
+}
+
 export type Game = {
   resources: Resources;
   behemoth: BehemothClass;
   slaves: SlaveClass;
   upstream: UpstreamClass;
   mana: ManaClass;
-  factions: {
-    factionIfrit: IfritClass;
-    factionMarid: MaridClass;
-    factionArwa: ArwaClass;
-    factionGhoul: GhoulClass;
-  }
-} & Tick;
+} & FactionClasses & Tick;

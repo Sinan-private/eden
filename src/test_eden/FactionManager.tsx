@@ -17,12 +17,12 @@ export const FactionManager = () => {
               style={{width: '100%', height: '100%', filter: active ? '' : 'saturate(0) brightness(0.2) contrast(0.8)'}}
             />
             {active &&
-              <VerticalProgress value={progress} />
+              <VerticalProgress value={progress.value} />
             }
           </Box>
           <Stack color="gray">
-            <LinearProgress variant="determinate" value={active ? loyalty : 0} color={active ? "warning" : "inherit"}/>
-            <LinearProgress variant="determinate" value={active ? influence : 0} color={active ? "error" : "inherit"}/>
+            <LinearProgress variant="determinate" value={active ? loyalty.value : 0} color={active ? "warning" : "inherit"}/>
+            <LinearProgress variant="determinate" value={active ? influence.value : 0} color={active ? "error" : "inherit"}/>
           </Stack>
         </Box>
       ))}

@@ -6,16 +6,21 @@ import {Game} from "../../context/game.context.ts";
 
 
 export class ArwaClass extends FactionClass {
+  public collecting_requested: boolean = false;
   constructor(_resourceStore: ResourceStoreClass, _slaves: SlaveClass) {
     const {get} = _resourceStore;
     super(_resourceStore, _slaves)
     this.image = image;
     this.visible = true;
-    this._loyalty = get('deception_loyalty');
-    this._influence = get('deception_influence');
-    this._progress = get('deception_progress');
-    this._level = get('deception_level');
+    this.loyalty = get('deception_loyalty');
+    this.influence = get('deception_influence');
+    this.progress = get('deception_progress');
+    this.level = get('deception_level');
   }
+
+  // get is_collecting() {
+  //   return this.collecting_requested && game.behemoth.is_flushing_mana
+  // }
 
   public turnUpdate = (game: Game) => {
     const {behemoth, slaves} = game

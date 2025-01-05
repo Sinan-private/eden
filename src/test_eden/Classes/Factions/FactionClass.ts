@@ -5,10 +5,10 @@ export class FactionClass {
   public image: string;
   public active: boolean;
   public visible: boolean;
-  protected _loyalty!: ResourceClass;
-  protected _influence!: ResourceClass;
-  protected _progress!: ResourceClass;
-  protected _level!: ResourceClass;
+  public loyalty!: ResourceClass;
+  public influence!: ResourceClass;
+  public progress!: ResourceClass;
+  public level!: ResourceClass;
   constructor(
     public _resourceStore: ResourceStoreClass,
     public _slaves: SlaveClass,
@@ -21,16 +21,4 @@ export class FactionClass {
   public setActive = () => this.active = true;
   public setVisible = () => this.visible = true;
 
-  get loyalty() {
-    return Number(this._loyalty.value.toFixed())
-  }
-  get influence() {
-    return Number(this._influence.value.toFixed())
-  }
-  get progress() {
-    return Number(this._progress.value.toFixed())
-  }
-  get level() {
-    return Number(this._level.value.toFixed())
-  }
 }

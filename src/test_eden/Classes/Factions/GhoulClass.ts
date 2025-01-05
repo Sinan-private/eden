@@ -10,9 +10,9 @@ export class GhoulClass extends FactionClass {
     super(_resourceStore, _slaves)
     this.image = image;
     this.visible = true;
-    this._loyalty = get('guard_loyalty');
-    this._influence = get('guard_influence');
-    this._progress = get('guard_progress');
-    this._level = get('guard_level');
+    this.loyalty = get('guard_loyalty');
+    this.influence = get('guard_influence');
+    this.progress = get('guard_progress');
+    this.level = get('guard_level');
   }
 }
