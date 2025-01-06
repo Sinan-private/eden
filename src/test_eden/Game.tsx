@@ -16,8 +16,7 @@ const IMAGE_HEIGHT = 400
 
 
 export const Game = () => {
-  const {isActive, mana} = useGame();
-  console.log(mana.getRandomMana())
+  const {isActive} = useGame();
   return (
     <Screen>
       <Content display="flex" flexDirection="row" justifyContent="space-between" $paused={!isActive}>

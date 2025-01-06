@@ -9,7 +9,7 @@ export const SLAVES_INITIALLY_ARWA = 4;
 
 // Coefficients
 export const CLIMBING_SPEED_COEFFICIENT = 0.1
-export const FLUSHING_SPEED = 0.25;
+export const FLUSHING_SPEED = 0.1;
 export const DRYING_SPEED = 2;
 export const HARVEST_SPEED = 0.25;
 export const CRAFTING_SPEED = 0.15;

@@ -1,43 +1,29 @@
 import {ResourceStoreClass, ResourceTypes} from "../../../Resource";
 import {calculateManaConversionCoefficients} from "../../constants/gameRules.ts";
-import {CRAFTING_SPEED, DRYING_SPEED, FLUSHING_SPEED, HARVEST_SPEED, MANA_FINDINGS} from "../../constants/constants.ts";
-import {randomResultFromChances} from "../../helpers/randomResultFromChances.ts";
+import {CRAFTING_SPEED, DRYING_SPEED, FLUSHING_SPEED, HARVEST_SPEED} from "../../constants/constants.ts";
+
 
 export class ManaClass {
-  private _finding_chance_level_1: number = 50000
-  private _finding_chance_level_2: number = 4000
-  private _finding_chance_level_3: number = 300
-  private _finding_chance_level_4: number = 20
-  private _finding_chance_level_5: number = 1
+  private _finding_chance_level_1: number = 1
+  private _finding_chance_level_2: number = 0.2
+  private _finding_chance_level_3: number = 0.03
+  private _finding_chance_level_4: number = 0.004
+  private _finding_chance_level_5: number = 0.0005
   constructor(private _resourceStore: ResourceStoreClass) {
   }
 
-  // Wait. I have mana of each level. Only the initial liquid mana is done randomly
-  // Afterwards I want to get a chance to convert higher mana a little more often
-  public getRandomMana = () => {
-    const list = [
-      {
-        chance: this._finding_chance_level_1,
-        key: '_finding_chance_level_1'
-      },
-      {
-        chance: this._finding_chance_level_2,
-        key: '_finding_chance_level_2'
-      },
-      {
-        chance: this._finding_chance_level_3,
-        key: '_finding_chance_level_3'
-      },
-      {
-        chance: this._finding_chance_level_4,
-        key: '_finding_chance_level_4'
-      },
-      {
-        chance: this._finding_chance_level_5,
-        key: '_finding_chance_level_5'
-      }
-    ]
-    return randomResultFromChances(list);
+  // Todo I want to use this for every time mana is randomly generated. For now only flushing
+  private getRandomMultiplier = (chance: number) => {
+    // The lower the amount the higher the range of possible results can be
+    const random = Math.random() * (1 / chance)
+    // I want the multipler to be 1 if it is within the finding chance and 0 if not. So randomness should be possible
+    // for each single request
+    return random <= 1 ? 1 : 0 as number
+  }
+  private getRandomAmount = (chance: number, amount: number) => {
+    return Array.from(Array(Math.round(amount)).keys())
+      .map(() => this.getRandomMultiplier(chance))
+      .reduce((a, b) => a + b, 0);
   }
 
   public getTypeSum = (type: ResourceTypes) => {
@@ -50,17 +36,23 @@ export class ManaClass {
   public produceLiquidMana = () => {
     const {get} = this._resourceStore
     const digging_depth = this._resourceStore.get("behemoth_digging_depth").value;
-    console.log(MANA_FINDINGS)
-    get('liquid_mana_level_1').updateValueBy(digging_depth * FLUSHING_SPEED / MANA_FINDINGS[0])
-    get('liquid_mana_level_2').updateValueBy(digging_depth * FLUSHING_SPEED / MANA_FINDINGS[1])
-    get('liquid_mana_level_3').updateValueBy(digging_depth * FLUSHING_SPEED / MANA_FINDINGS[2])
-    get('liquid_mana_level_4').updateValueBy(digging_depth * FLUSHING_SPEED / MANA_FINDINGS[3])
-    get('liquid_mana_level_5').updateValueBy(digging_depth * FLUSHING_SPEED / MANA_FINDINGS[4])
+    const power = digging_depth * FLUSHING_SPEED
+    console.log(power)
+    // const randomMana = this._createLiquidFindings(power);
+    // randomMana.forEach(([key, value]) => {
+    //   get(key).updateValueBy(value)
+    // })
+    get('liquid_mana_level_1').updateValueBy(this.getRandomAmount(this._finding_chance_level_1, power))
+    get('liquid_mana_level_2').updateValueBy(this.getRandomAmount(this._finding_chance_level_2, power))
+    get('liquid_mana_level_3').updateValueBy(this.getRandomAmount(this._finding_chance_level_3, power))
+    get('liquid_mana_level_4').updateValueBy(this.getRandomAmount(this._finding_chance_level_4, power))
+    get('liquid_mana_level_5').updateValueBy(this.getRandomAmount(this._finding_chance_level_5, power))
   }
 
   // This comes from liquid mana. It doesn't need any interaction. Just time to dry
   public produceDirtyMana = () => {
     const {produce, getByType} = this._resourceStore
+
     const dryingCoefficients = calculateManaConversionCoefficients(getByType('liquid_mana'))
     produce('dirty_mana_level_1', DRYING_SPEED * dryingCoefficients[0])
     produce('dirty_mana_level_2', DRYING_SPEED * dryingCoefficients[1])

@@ -19,7 +19,7 @@ export class ArwaClass extends FactionClass {
   get is_collecting() {
     return this.collecting_requested
       && !this.behemoth.is_flushing_mana
-      && !!this.mana.getTypeSum('liquid_mana')
+      && !!this.mana.getTypeSum('dirty_mana')
   }
 
   public turnUpdate = (game: Game) => {
