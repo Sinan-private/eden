@@ -13,20 +13,38 @@ export const Debug_SlaveManagement = observer(() => {
         <Debug_ResourceGroup>
 
           <Debug_Resource resource={slaves.slaves_bound} beautifyValues={true} incrementBy={1} decrementBy={1}/>
-          <Debug_CustomResource
-            label="Rebirth"
-            onIncrement={slaves.addSlaveToRebirth}
-            onDecrement={slaves.revive}
-            beautifyValues={true}
-            value={slaves.slaves_in_rebirth}
-          />
-          <Debug_Resource resource={slaves.slaves_roaming} beautifyValues={true} incrementBy={1} decrementBy={1}/>
-          <Debug_Resource resource={slaves.slaves_enslaved} beautifyValues={true} incrementBy={1} decrementBy={1}/>
-          <Debug_Resource resource={slaves.slaves_wasted} beautifyValues={true} incrementBy={1} decrementBy={1}/>
-          <Debug_Resource resource={slaves.slaves_consumed} beautifyValues={true} incrementBy={1} decrementBy={1}/>
-          <Debug_Resource resource={slaves.slave_health} beautifyValues={true} incrementBy={20} decrementBy={20}/>
+          <Stack direction="row" justifyContent="space-between">
+
+            <Debug_CustomResource
+              label="Rebirth"
+              onIncrement={slaves.addSlaveToRebirth}
+              onDecrement={slaves.revive}
+              beautifyValues={true}
+              value={slaves.slaves_in_rebirth}
+            />
+            <Button onClick={slaves.resurrect} sx={{width: 100}}>Resurrect</Button>
+          </Stack>
+          <Stack direction="row" justifyContent="space-between">
+            <Debug_Resource resource={slaves.slaves_roaming} beautifyValues={true} incrementBy={1} decrementBy={1}/>
+            <Button onClick={slaves.revive} sx={{width: 100}}>Revive</Button>
+          </Stack>
+          <Stack direction="row" justifyContent="space-between">
+            <Debug_Resource resource={slaves.slaves_enslaved} beautifyValues={true} incrementBy={1} decrementBy={1}/>
+            <Button onClick={slaves.enslave} sx={{width: 100}}>Enslave</Button>
+          </Stack>
+          <Stack direction="row" justifyContent="space-between">
+            <Debug_Resource resource={slaves.slaves_wasted} beautifyValues={true} incrementBy={1} decrementBy={1}/>
+            <Button onClick={slaves.waste} sx={{width: 100}}>Waste</Button>
+          </Stack>
+          <Stack direction="row" justifyContent="space-between">
+            <Debug_Resource resource={slaves.slaves_consumed} beautifyValues={true} incrementBy={1} decrementBy={1}/>
+            <Button onClick={slaves.consume} sx={{width: 100}}>Consume</Button>
+          </Stack>
         </Debug_ResourceGroup>
+
         <Debug_ResourceGroup>
+          <Debug_Resource resource={slaves.slave_health} beautifyValues={true} incrementBy={20} decrementBy={20}/>
+
           <Debug_CustomResource
             label="Unassigned"
             beautifyValues={true}
@@ -60,36 +78,8 @@ export const Debug_SlaveManagement = observer(() => {
             beautifyValues={true}
             value={slaves.ghoul}
           />
-          <Button onClick={slaves.waste}>waste</Button>
-          <Button onClick={slaves.consume}>Consume</Button>
         </Debug_ResourceGroup>
-        {/*<Debug_CustomResource*/}
-        {/*  label="Slaves"*/}
-        {/*  onIncrement={slaves.enslave}*/}
-        {/*  onDecrement={slaves.waste}*/}
-        {/*  beautifyValues={true}*/}
-        {/*  value={slaves.unassigned_slaves}*/}
-        {/*/>*/}
-        {/*<Typography variant="h5" mb={2}>Slaves</Typography>*/}
-        {/*<Stack direction="row" alignItems="center">*/}
-        {/*  <Button onClick={() => slaves.waste()} size="small">-</Button>*/}
-        {/*  <SlaveCount/>*/}
-        {/*  <Button onClick={() => slaves.enslave()}>+</Button>*/}
-        {/*</Stack>*/}
-        {/*<Stack direction="row" alignItems="center">*/}
-        {/*  <Typography align="center" sx={{width: '100%'}}>Unassigned {slaves.unassigned_slaves}</Typography>*/}
-        {/*</Stack>*/}
-        {/*<Stack direction="row" alignItems="center">*/}
-        {/*  <Button onClick={() => slaves.takeFromFaction('arwa', 1)}>-</Button>*/}
-        {/*  <Typography>Diggers {slaves.arwa}</Typography>*/}
-        {/*  <Button onClick={() => slaves.giveToFaction('arwa', 1)}>+</Button>*/}
-        {/*</Stack>*/}
-        {/*<Stack direction="row" alignItems="center">*/}
-        {/*  <Button onClick={() => slaves.takeFromFaction('marid', 1)}>-</Button>*/}
-        {/*  <Typography>Blacksmiths {slaves.marid}</Typography>*/}
-        {/*  <Button onClick={() => slaves.giveToFaction('marid', 1)}>+</Button>*/}
-        {/*</Stack>*/}
-        {/*<Button onClick={() => slaves.waste()} color="error">Waste slave</Button>*/}
+
       </Box>
     </Debug>
   )

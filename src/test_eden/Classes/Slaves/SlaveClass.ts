@@ -63,22 +63,31 @@ export class SlaveClass {
   }
   public addSlaveToRebirth = (amount = 1) => {
     const maxPossible = amount <= this.max_slaves_in_rebirth ? amount : this.max_slaves_in_rebirth;
-    console.log('addSlaveToRebirth', amount)
     this._slaves_in_rebirth.updateValueBy(maxPossible);
   }
-
-  public revive = (amount = 1) => {
-    console.log('revive')
-    // Nope, here I need to calculate how many are actually available
-    const maxPossible = amount <= this._slaves_in_rebirth.value ? amount : this._slaves_in_rebirth.value;
-    this._slaves_in_rebirth.updateValueBy(-maxPossible);
-    this.slaves_roaming.updateValueBy(maxPossible)
+  public removeSlaveFromRebirth = (amount = 1) => {
+    this._slaves_in_rebirth.updateValueBy(-amount);
   }
 
-  public enslave = (amount = 1) => {
-    const maxPossible = amount <= this.slaves_roaming.value ? amount : this.slaves_roaming.value;
-    this.slaves_roaming.updateValueBy(-maxPossible)
-    this.slaves_enslaved.updateValueBy(maxPossible)
+  public resurrect = () => {
+    this._resourceStore
+      .trade([{key: 'slaves_consumed'}], [{key: 'slaves_in_rebirth'}])
+      .tradeIfPossible()
+  }
+
+  public revive = () => {
+    this._resourceStore
+      .trade([{key: 'slaves_in_rebirth'}], [{key: 'slaves_roaming'}])
+      .tradeIfPossible()
+  }
+
+  public enslave = () => {
+    // const maxPossible = amount <= this.slaves_roaming.value ? amount : this.slaves_roaming.value;
+    // this.slaves_roaming.updateValueBy(-maxPossible)
+    // this.slaves_enslaved.updateValueBy(maxPossible)
+    this._resourceStore
+      .trade([{key: 'slaves_roaming'}], [{key: 'slaves_enslaved'}])
+      .tradeIfPossible()
   }
 
   public addToFaction = (faction: FactionKeys, amount = 1) => {
@@ -107,6 +116,7 @@ export class SlaveClass {
       .trade([{key: 'slaves_wasted'}], [{key: 'slaves_consumed'}])
       .tradeIfPossible()
   }
+  // public revive
 
   public getOwnedByFaction = (faction: FactionKeys) => {
     switch (faction) {

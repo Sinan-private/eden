@@ -768,7 +768,7 @@
   },
   {
     "key": "slaves_consumed",
-    "value": 0,
+    "value": 2,
     "min": 0,
     "max": null,
     "label": "Consumed",
