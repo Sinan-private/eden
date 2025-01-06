@@ -30,9 +30,9 @@ export const Game = () => {
       <Box sx={{position: 'absolute', top: '50%', left: 10, transform: 'translateY(-50%)'}}>
         <FactionManager/>
       </Box>
-        <Box sx={{position: 'absolute', bottom: 50, right: 50, zIndex: 1}}>
-          <SlaveManager/>
-        </Box>
+      <Box sx={{position: 'absolute', bottom: 50, right: 50, zIndex: 1}}>
+        {/*<SlaveManager/>*/}
+      </Box>
       <Upstream/>
       <Background/>
     </Screen>
@@ -46,27 +46,27 @@ const SlaveManager = observer(() => {
   const demonsImage = factions.factionIfrit.image;
   const guardsImage = factions.factionGhoul.image;
   const mindBendersImage = factions.factionArwa.image;
-  const {unassigned_slaves, giveToFaction, arwa, marid} = slaves;
+  const {unassigned_slaves, addToFaction, arwa, marid} = slaves;
   return (
     <Box position="relative" sx={{width: SIZE, height: SIZE}}>
       <SlaveTop>
-        <FullSizedImage src={demonsImage} $disabled/>
+        <FullSizedImage src={demonsImage} $disabled $inactive/>
       </SlaveTop>
       <SlaveLeft>
-        <FullSizedImage src={guardsImage} $disabled/>
+        <FullSizedImage src={guardsImage} $disabled $inactive/>
       </SlaveLeft>
-      <SlaveRight onClick={() => giveToFaction('marid')}>
-        <FullSizedImage src={slaveHunterImage}/>
+      <SlaveRight onClick={() => addToFaction('marid')}>
+        <FullSizedImage src={slaveHunterImage} $disabled={!slaves.unassigned_slaves}/>
         <Typography>{marid}</Typography>
 
         {/*<FactionButton faction={factions.slaveHunters}/>*/}
       </SlaveRight>
-      <SlaveBottom onClick={() => giveToFaction('arwa')}>
-        <FullSizedImage src={mindBendersImage}/>
+      <SlaveBottom onClick={() => addToFaction('arwa')}>
+        <FullSizedImage src={mindBendersImage} $disabled={!slaves.unassigned_slaves}/>
         <Typography>{arwa}</Typography>
       </SlaveBottom>
       <SlaveCenter>
-        <FullSizedImage src={chains} />
+        <FullSizedImage src={chains}/>
         <Typography fontSize="2rem" lineHeight="2.7rem">{unassigned_slaves}</Typography>
         {/*<Typography fontSize={10} px={2}>Unassigned slaves</Typography>*/}
       </SlaveCenter>
@@ -81,14 +81,20 @@ const SlaveManager = observer(() => {
 // }
 
 
-const FullSizedImage = styled.img<{ $disabled?: boolean }>`
+const FullSizedImage = styled.img<{ $disabled?: boolean; $inactive?: boolean }>`
     position: absolute;
     top: 0;
     left: 0;
     width: 100%;
     height: 100%;
     object-fit: cover;
-    filter: ${props => props.$disabled ? 'saturate(0.2) blur(0px) brightness(2.2) contrast(0.4)' : 'none'};
+    opacity: ${props => props.$inactive ? 0.2 : 1};
+    filter: ${props => props.$inactive
+            ? 'saturate(0.2) blur(0px) brightness(0.6) contrast(1.4)'
+            : props.$disabled
+                    ? 'saturate(0.5) blur(0.5px) brightness(0.6) contrast(0.6)'
+                    : 'none'};
+    transition: all 1.2s ease;
     z-index: -1;
 `;
 
@@ -145,7 +151,7 @@ const SlaveAssignmentBase = styled.div<{ $disabled?: boolean, $backgroundColor?:
     background-color: ${props => props.$backgroundColor || '#151918'};
     transition: background-color 1.8s ease;
     clip-path: polygon(15% 0, 85% 0, 100% 15%, 100% 85%, 85% 100%, 15% 100%, 0 85%, 0 15%);
-    
+
     z-index: 2000;
 
 `;

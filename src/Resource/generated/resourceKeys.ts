@@ -49,5 +49,7 @@ export const resourceKeys = [
   "slaves_roaming",
   "slaves_enslaved",
   "slaves_wasted",
-  "slaves_in_rebirth"
+  "slaves_in_rebirth",
+  "slaves_limit",
+  "slaves_consumed"
 ] as const;

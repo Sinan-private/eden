@@ -1,39 +1,77 @@
 import {ResourceClass, ResourceStoreClass} from "../../../Resource";
 import {SLAVES_INITIALLY_ARWA, SLAVES_INITIALLY_MARID} from "../../constants/constants.ts";
+import {randomResultFromChances} from "../../helpers/randomResultFromChances.ts";
 
 type FactionKeys = 'ifrit' | 'marid' | 'arwa' | 'ghoul'
 // type FactionKeys = Pick<keyof SlaveClass, 'ifrit' | 'marid' | 'arwa' | 'ghoul'>
 
+// The slave
+// - limit -> This is the total maximum of slaves that the player can have at a time
+// - bound -> This is the total maximum of slaves that the player repeatedly receives back.
+// Slaves exist in different states
+// - in_rebirth -> After dying on Earth or in eden a slave enters the state of rebirth for some time before going back to eden
+//    enslaved + in_rebirth can never exceed bound. This is a nice way to only return the slaves that are owned
+//    and reducing extra slaves over time
+// - roaming -> The slave is back in Eden, but needs yet to be caught by the slave hunters
+// - enslaved -> Ah the state we want. The slave can be given to a faction to serve
+// - wasted -> That one is done for. Now use for this slave other than burning it for fuel or consuming it with Behemoth
+// - consumed -> It takes some timme to burn and produce fuel. That's that time.
+// This is also the order that a slave goes through those states. A new one starting in bound, a wasted one starting in_rebirth
+// There should still be an option to add foreign_slaves to the sum. Those can be used like any other but
+// they will be destroyed after their wasted state
 
 export class SlaveClass {
+  public limit: ResourceClass;
   public slaves_bound: ResourceClass;
+  private _slaves_in_rebirth: ResourceClass;
   public slaves_roaming: ResourceClass;
   public slaves_enslaved: ResourceClass;
   public slaves_wasted: ResourceClass;
-  public slaves_in_rebirth: ResourceClass;
+  public slaves_consumed: ResourceClass;
   public ifrit: number = 0;
   public marid: number = SLAVES_INITIALLY_MARID;
   public arwa: number = SLAVES_INITIALLY_ARWA;
   public ghoul: number = 0;
   public slave_health: ResourceClass;
 
-  constructor(_resourceStore: ResourceStoreClass) {
+  constructor(private _resourceStore: ResourceStoreClass) {
+    this.limit = _resourceStore.get('slaves_limit')
     this.slaves_bound = _resourceStore.get('slaves_bound')
+    this._slaves_in_rebirth =  _resourceStore.get('slaves_in_rebirth')
     this.slaves_roaming = _resourceStore.get('slaves_roaming')
     this.slaves_enslaved = _resourceStore.get('slaves_enslaved')
     this.slaves_wasted = _resourceStore.get('slaves_wasted')
-    this.slaves_in_rebirth = _resourceStore.get('slaves_in_rebirth')
+    this.slaves_consumed = _resourceStore.get('slaves_consumed')
     this.slave_health = _resourceStore.get('slave_health')
   }
 
   // public bindSlave = (amount = 1) => {
   //
   // }
+  get slaves_in_rebirth() {
+    return this._slaves_in_rebirth.value
+  }
+  get slaves_in_eden() {
+    return this._slaves_in_rebirth.value
+      + this.slaves_roaming.value
+      + this.slaves_enslaved.value
+      + this.slaves_wasted.value
+      + this.slaves_consumed.value
+  }
+  get max_slaves_in_rebirth() {
+    return this.slaves_bound.value - this.slaves_in_eden
+  }
+  public addSlaveToRebirth = (amount = 1) => {
+    const maxPossible = amount <= this.max_slaves_in_rebirth ? amount : this.max_slaves_in_rebirth;
+    console.log('addSlaveToRebirth', amount)
+    this._slaves_in_rebirth.updateValueBy(maxPossible);
+  }
 
   public revive = (amount = 1) => {
+    console.log('revive')
     // Nope, here I need to calculate how many are actually available
-    const maxPossible = amount <= this.slaves_in_rebirth.value ? amount : this.slaves_in_rebirth.value;
-    this.slaves_in_rebirth.updateValueBy(-maxPossible)
+    const maxPossible = amount <= this._slaves_in_rebirth.value ? amount : this._slaves_in_rebirth.value;
+    this._slaves_in_rebirth.updateValueBy(-maxPossible);
     this.slaves_roaming.updateValueBy(maxPossible)
   }
 
@@ -43,21 +81,31 @@ export class SlaveClass {
     this.slaves_enslaved.updateValueBy(maxPossible)
   }
 
-  public giveToFaction = (faction: FactionKeys, amount = 1) => {
+  public addToFaction = (faction: FactionKeys, amount = 1) => {
     const maxPossible = amount <= this.unassigned_slaves ? amount : this.unassigned_slaves;
     this[faction] += maxPossible
   }
 
-  public takeFromFaction = (faction: FactionKeys, amount = 1) => {
+  public removeFromFaction = (faction: FactionKeys, amount = 1) => {
     const maxPossible = amount <= this[faction] ? amount : this[faction];
     this[faction] -= maxPossible
   }
 
-  public canTakeFromFaction = (faction: FactionKeys, amount = 1)  =>
+  public canTakeFromFaction = (faction: FactionKeys, amount = 1) =>
     this[faction] >= amount;
 
   public waste = () => {
-
+    if (!this.unassigned_slaves) {
+      this.unassignRandom()
+    }
+    this._resourceStore
+      .trade([{key: 'slaves_enslaved'}], [{key: 'slaves_wasted'}])
+      .tradeIfPossible()
+  }
+  public consume = () => {
+    this._resourceStore
+      .trade([{key: 'slaves_wasted'}], [{key: 'slaves_consumed'}])
+      .tradeIfPossible()
   }
 
   public getOwnedByFaction = (faction: FactionKeys) => {
@@ -90,18 +138,30 @@ export class SlaveClass {
     return !!this.slaves_roaming.value
   }
 
-
-  // public unassignRandom = (amount = 1) => {
-  //   const digger = Array.from(Array(this.slave_diggers.state.value)).map(() => 'digger')
-  //   const blacksmith = Array.from(Array(this.slave_blacksmiths.state.value)).map(() => 'blacksmith')
-  //   const working_slaves = digger.concat(blacksmith)
-  //   const _amount = limitAmount(amount, working_slaves.length)
-  //   for (let i = 0; i < _amount; i++) {
-  //     const index = randomRange(0, working_slaves.length -1)
-  //     const from = working_slaves[index] as SlaveAssignments;
-  //     this.unassignSlaves(from)
-  //   }
-  // }
+  public unassignRandom = () => {
+    const chances: { chance: number; key: FactionKeys }[] = [
+      {
+        key: 'ifrit',
+        chance: this.ifrit,
+      },
+      {
+        key: 'marid',
+        chance: this.marid,
+      },
+      {
+        key: 'arwa',
+        chance: this.arwa,
+      },
+      {
+        key: 'ghoul',
+        chance: this.ghoul,
+      },
+    ]
+    const randomKey = randomResultFromChances(chances).key;
+    if (this[randomKey] > 0) {
+      this[randomKey]--
+    }
+  }
 
   public turnUpdate = () => {
     if (this.slave_health.value) {
