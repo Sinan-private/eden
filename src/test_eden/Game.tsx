@@ -9,7 +9,7 @@ import {useGame} from "./context/game.context.ts";
 import {Background} from "./Background.tsx";
 import {blue} from "../constants/colors.ts";
 import {observer} from "mobx-react";
-import {DebuggingComponents} from "./Components/DebuggingComponents.tsx";
+import {DebuggingComponents} from "./Debugging/DebuggingComponents.tsx";
 import chains from '../assets/images/chains.png'
 
 const IMAGE_HEIGHT = 400
@@ -20,21 +20,21 @@ export const Game = () => {
   return (
     <Screen>
       <Content display="flex" flexDirection="row" justifyContent="space-between" $paused={!isActive}>
-        <div style={{flex: '1 1 30%'}}></div>
-        <div style={{flex: '1 1 30%'}}></div>
+        <div style={{flex: '1 1 30%', pointerEvents: 'none'}}></div>
+        <div style={{flex: '1 1 30%', pointerEvents: 'none'}}></div>
         <TreeTrunk/>
       </Content>
       <Debug_BehemothControls/>
       <TopBar/>
-      <DebuggingComponents/>
       <Box sx={{position: 'absolute', top: '50%', left: 10, transform: 'translateY(-50%)'}}>
         <FactionManager/>
       </Box>
       <Box sx={{position: 'absolute', bottom: 50, right: 50, zIndex: 1}}>
-        {/*<SlaveManager/>*/}
+        <SlaveManager/>
       </Box>
       <Upstream/>
       <Background/>
+      <DebuggingComponents/>
     </Screen>
   )
 }

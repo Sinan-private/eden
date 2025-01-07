@@ -3,7 +3,7 @@ import {DEBUG} from "../../constants/config.ts";
 
 export const Debug = ({children}: { children: React.ReactNode }) => {
   return !DEBUG ? null : (
-    <div style={{position: 'relative', zIndex: 5000}}>
+    <div style={{zIndex: 5000, pointerEvents: 'initial'}}>
     {children}
     </div>
   )

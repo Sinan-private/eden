@@ -4,10 +4,9 @@ import {Debug} from "../Components/Debug.tsx";
 import {useState} from "react";
 import {Debug_Resource, Debug_ResourceGroup} from "./Debug_Resource.tsx";
 
-export const Debug_Behemoth = () => {
+export const Debug_Behemoth = ({beautifyValues}: {beautifyValues: boolean}) => {
   const {behemoth, resources} = useGame()
   const {digging_depth, flushing_depth, drying_delay, climb_height, climb_speed} = behemoth
-  const [beautifyValues, setBeautifyValues] = useState(true)
   const liquid_mana = resources.getByType("liquid_mana")
   const dirty_mana = resources.getByType("dirty_mana")
   const raw_mana = resources.getByType("raw_mana")
@@ -15,10 +14,7 @@ export const Debug_Behemoth = () => {
   return (
     <Debug>
       <Box sx={{fontFamily: 'monospace', fontSize: '12px', color: '#79ae79'}}>
-        <Stack direction="row" alignItems="center">
-          <Typography>Beautify values</Typography>
-          <Switch onChange={() => setBeautifyValues(!beautifyValues)} checked={beautifyValues}/>
-        </Stack>
+
         <Box display="flex" gap={2}>
           <Debug_ResourceGroup>
             <Debug_Resource resource={climb_speed} beautifyValues={beautifyValues}/>

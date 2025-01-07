@@ -1,6 +1,7 @@
 import {ResourceClass, ResourceStoreClass} from "../../../Resource";
 import {SLAVES_INITIALLY_ARWA, SLAVES_INITIALLY_MARID} from "../../constants/constants.ts";
 import {randomResultFromChances} from "../../helpers/randomResultFromChances.ts";
+import {makeAutoObservable} from "mobx";
 
 type FactionKeys = 'ifrit' | 'marid' | 'arwa' | 'ghoul'
 // type FactionKeys = Pick<keyof SlaveClass, 'ifrit' | 'marid' | 'arwa' | 'ghoul'>
@@ -43,6 +44,7 @@ export class SlaveClass {
     this.slaves_wasted = _resourceStore.get('slaves_wasted')
     this.slaves_consumed = _resourceStore.get('slaves_consumed')
     this.slave_health = _resourceStore.get('slave_health')
+    makeAutoObservable(this)
   }
 
   // public bindSlave = (amount = 1) => {
@@ -177,9 +179,9 @@ export class SlaveClass {
     if (this.slave_health.value) {
       this.slave_health.updateValueBy(-0.1)
     }
-    // else if (this.slave_count) {
-    //   this.slave_health.setValueTo(100)
-    //   this.wasteSlave(1)
-    // }
+    else {
+      this.slave_health.setValueTo(100)
+      this.waste()
+    }
   }
 }

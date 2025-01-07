@@ -23,6 +23,7 @@ export const TopBar = () => {
       // border: '1px solid red',
       display: 'flex',
       gap: 2,
+      pointerEvents: 'none',
       zIndex: 500,
     }}>
       <Side>
@@ -44,7 +45,7 @@ const Center = () => {
   // const behemothHeight = `${behemoth.climb_height.beautify.value}`;
 
   return (
-    <Box sx={{flex: '1 1 500px', mt: 1.5, position: 'relative', zIndex: 100}}>
+    <Box sx={{flex: '1 1 500px', mt: 1.5, position: 'relative', pointerEvents: 'initial', zIndex: 100}}>
       <Box sx={{display: 'flex', width: '100%', '*': {flex: '1 1 auto'}, position: 'relative'}}>
         <CenterUi>
           <UIStack tooltip={(<SlavePreview />)} Icon={(<LinkIcon sx={{transform: 'rotate(-90deg)'}} />)} value={slaveAmount} />
@@ -219,7 +220,10 @@ const PlayContainer = styled(Box)`
 `
 
 const Side = styled.div`
+    position: relative;
     flex: 1 1 auto;
     height: 30px;
+    pointer-events: none;
+    z-index: -1;
     //font-size: 12px;
 `;
