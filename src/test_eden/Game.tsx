@@ -19,10 +19,19 @@ export const Game = () => {
   const {isActive} = useGame();
   return (
     <Screen>
-      <Content display="flex" flexDirection="row" justifyContent="space-between" $paused={!isActive}>
+      <Content
+        display="flex"
+        flexDirection="row"
+        justifyContent="space-between"
+        $paused={!isActive}
+        sx={{pointerEvents: 'none'}}
+      >
         <div style={{flex: '1 1 30%', pointerEvents: 'none'}}></div>
         <div style={{flex: '1 1 30%', pointerEvents: 'none'}}></div>
+        <div>
+
         <TreeTrunk/>
+        </div>
       </Content>
       <Debug_BehemothControls/>
       <TopBar/>

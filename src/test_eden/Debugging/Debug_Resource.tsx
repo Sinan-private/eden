@@ -28,17 +28,21 @@ export const Debug_Resource = observer((
         value,
         updateValueBy
       }
-  }: Debug_ResourceProps) => (
-  <Box display="flex" gap={2} justifyContent="space-between"
-       sx={{fontFamily: 'monospace', fontSize: '12px', color: '#79ae79'}}>
-    <Button onClick={() => updateValueBy(-decrementBy)} sx={{minWidth: 30}}>-</Button>
-    <div>
-      <Typography fontSize={10}>{label}</Typography>
-      <Typography>{beautifyValues ? beautify.value : value.toFixed(4)}</Typography>
-    </div>
-    <Button onClick={() => updateValueBy(incrementBy)} sx={{minWidth: 30}}>+</Button>
-  </Box>
-))
+  }: Debug_ResourceProps) => {
+  const onIncrement = () => updateValueBy(incrementBy)
+  const onDecrement = () => updateValueBy(-decrementBy)
+  return (
+    <Box display="flex" gap={2} justifyContent="space-between"
+         sx={{fontFamily: 'monospace', fontSize: '12px', color: '#79ae79'}}>
+      <Button onClick={onDecrement} sx={{minWidth: 30, color: 'white'}}>-</Button>
+      <div>
+        <Typography fontSize={10}>{label}</Typography>
+        <Typography>{beautifyValues ? beautify.value : value.toFixed(4)}</Typography>
+      </div>
+      <Button onClick={onIncrement} sx={{minWidth: 30, color: 'white'}}>+</Button>
+    </Box>
+  )
+})
 
 type Debug_CustomResourceProps = {
   label: string;
