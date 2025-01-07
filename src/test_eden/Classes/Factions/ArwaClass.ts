@@ -1,10 +1,11 @@
 import image from '../../../assets/images/Faction4.png';
 import {FactionClass} from "./FactionClass.ts";
 import {Game, GameClasses} from "../../context/game.context.ts";
+import {AUTO_COLLECT_MANA} from "../../constants/constants.ts";
 
 
 export class ArwaClass extends FactionClass {
-  public collecting_requested: boolean = true;
+  public collecting_requested: boolean = AUTO_COLLECT_MANA;
   constructor(gameClasses: GameClasses) {
     super(gameClasses)
     const {get} = this.resources;

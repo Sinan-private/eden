@@ -1,12 +1,12 @@
 import image from '../../../assets/images/Faction2.png';
 import {FactionClass} from "./FactionClass.ts";
 import {Game, GameClasses} from "../../context/game.context.ts";
-import {SLAVE_CREATION} from "../../constants/constants.ts";
+import {AUTO_CRAFT, AUTO_SLAVE_HUNT, SLAVE_CREATION} from "../../constants/constants.ts";
 
 // aka the slave hunters and craftsmen
 export class MaridClass extends FactionClass {
-  public crafting_requested: boolean = true;
-  public hunting_requested: boolean = true;
+  public crafting_requested: boolean = AUTO_CRAFT;
+  public hunting_requested: boolean = AUTO_SLAVE_HUNT;
   constructor(gameClasses: GameClasses) {
     super(gameClasses)
     const {get} = this.resources;
@@ -41,7 +41,7 @@ export class MaridClass extends FactionClass {
     }
     if (this.has_slave_caught) {
       this.progress.setToMin()
-      game.slaves.enslave(1)
+      game.slaves.enslave()
     }
   }
 }

@@ -1,18 +1,18 @@
 import {ResourceStoreClass, ResourceTypes} from "../../../Resource";
-import {calculateManaConversionCoefficients} from "../../constants/gameRules.ts";
 import {CRAFTING_SPEED, DRYING_SPEED, FLUSHING_SPEED, HARVEST_SPEED} from "../../constants/constants.ts";
+import {randomResourceRaise} from "../../helpers/randomChances.ts";
 
 
 export class ManaClass {
   private _finding_chance_level_1: number = 1
-  private _finding_chance_level_2: number = 0.2
-  private _finding_chance_level_3: number = 0.03
-  private _finding_chance_level_4: number = 0.004
-  private _finding_chance_level_5: number = 0.0005
+  private _finding_chance_level_2: number = 0.02
+  private _finding_chance_level_3: number = 0.0003
+  private _finding_chance_level_4: number = 0.000004
+  private _finding_chance_level_5: number = 0.00000005
   constructor(private _resourceStore: ResourceStoreClass) {
   }
 
-  // Todo I want to use this for every time mana is randomly generated. For now only flushing
+  // I want to use this for every time mana is randomly generated. For now only flushing
   private getRandomMultiplier = (chance: number) => {
     // The lower the amount the higher the range of possible results can be
     const random = Math.random() * (1 / chance)
@@ -21,7 +21,7 @@ export class ManaClass {
     return random <= 1 ? 1 : 0 as number
   }
   private getRandomAmount = (chance: number, amount: number) => {
-    return Array.from(Array(Math.round(amount)).keys())
+    return Array.from(Array(Math.round(amount)))
       .map(() => this.getRandomMultiplier(chance))
       .reduce((a, b) => a + b, 0);
   }
@@ -36,49 +36,47 @@ export class ManaClass {
   public produceLiquidMana = () => {
     const {get} = this._resourceStore
     const digging_depth = this._resourceStore.get("behemoth_digging_depth").value;
-    const power = digging_depth * FLUSHING_SPEED
-    console.log(power)
-    // const randomMana = this._createLiquidFindings(power);
-    // randomMana.forEach(([key, value]) => {
-    //   get(key).updateValueBy(value)
-    // })
-    get('liquid_mana_level_1').updateValueBy(this.getRandomAmount(this._finding_chance_level_1, power))
-    get('liquid_mana_level_2').updateValueBy(this.getRandomAmount(this._finding_chance_level_2, power))
-    get('liquid_mana_level_3').updateValueBy(this.getRandomAmount(this._finding_chance_level_3, power))
-    get('liquid_mana_level_4').updateValueBy(this.getRandomAmount(this._finding_chance_level_4, power))
-    get('liquid_mana_level_5').updateValueBy(this.getRandomAmount(this._finding_chance_level_5, power))
+    const power = (digging_depth / 10) * FLUSHING_SPEED
+    const getRaise = (chance: number) =>
+      this.getRandomAmount(chance, power)
+    get('liquid_mana_level_1').updateValueBy(getRaise(this._finding_chance_level_1))
+    get('liquid_mana_level_2').updateValueBy(getRaise(this._finding_chance_level_2))
+    get('liquid_mana_level_3').updateValueBy(getRaise(this._finding_chance_level_3))
+    get('liquid_mana_level_4').updateValueBy(getRaise(this._finding_chance_level_4))
+    get('liquid_mana_level_5').updateValueBy(getRaise(this._finding_chance_level_5))
   }
 
   // This comes from liquid mana. It doesn't need any interaction. Just time to dry
   public produceDirtyMana = () => {
     const {produce, getByType} = this._resourceStore
-
-    const dryingCoefficients = calculateManaConversionCoefficients(getByType('liquid_mana'))
-    produce('dirty_mana_level_1', DRYING_SPEED * dryingCoefficients[0])
-    produce('dirty_mana_level_2', DRYING_SPEED * dryingCoefficients[1])
-    produce('dirty_mana_level_3', DRYING_SPEED * dryingCoefficients[2])
-    produce('dirty_mana_level_4', DRYING_SPEED * dryingCoefficients[3])
-    produce('dirty_mana_level_5', DRYING_SPEED * dryingCoefficients[4])
+    const raise = randomResourceRaise(getByType('liquid_mana'), DRYING_SPEED)
+    produce('dirty_mana_level_1', raise.level_1)
+    produce('dirty_mana_level_2', raise.level_2)
+    produce('dirty_mana_level_3', raise.level_3)
+    produce('dirty_mana_level_4', raise.level_4)
+    produce('dirty_mana_level_5', raise.level_5)
   }
 
   public produceRawMana = (slaves: number) => {
     const {produce, getByType} = this._resourceStore
-    const collectingCoefficients = calculateManaConversionCoefficients(getByType('liquid_mana'))
-    produce('raw_mana_level_1', slaves * HARVEST_SPEED * collectingCoefficients[0])
-    produce('raw_mana_level_2', slaves * HARVEST_SPEED * collectingCoefficients[1])
-    produce('raw_mana_level_3', slaves * HARVEST_SPEED * collectingCoefficients[2])
-    produce('raw_mana_level_4', slaves * HARVEST_SPEED * collectingCoefficients[3])
-    produce('raw_mana_level_5', slaves * HARVEST_SPEED * collectingCoefficients[4])
+    const power = (slaves / 2) * HARVEST_SPEED
+    const raise = randomResourceRaise(getByType('dirty_mana'), power)
+    produce('raw_mana_level_1', raise.level_1)
+    produce('raw_mana_level_2', raise.level_2)
+    produce('raw_mana_level_3', raise.level_3)
+    produce('raw_mana_level_4', raise.level_4)
+    produce('raw_mana_level_5', raise.level_5)
   }
 
   public produceCleanMana = (slaves: number) => {
     const {produce, getByType} = this._resourceStore
-    const manaConversionCoefficients = calculateManaConversionCoefficients(getByType('raw_mana'))
-    produce('clean_mana_level_1', slaves * manaConversionCoefficients[0] * CRAFTING_SPEED)
-    produce('clean_mana_level_2', slaves * manaConversionCoefficients[1] * CRAFTING_SPEED)
-    produce('clean_mana_level_3', slaves * manaConversionCoefficients[2] * CRAFTING_SPEED)
-    produce('clean_mana_level_4', slaves * manaConversionCoefficients[3] * CRAFTING_SPEED)
-    produce('clean_mana_level_5', slaves * manaConversionCoefficients[4] * CRAFTING_SPEED)
+    const power = CRAFTING_SPEED * (slaves / 3)
+    const raise = randomResourceRaise(getByType('raw_mana'), power)
+    produce('clean_mana_level_1', raise.level_1)
+    produce('clean_mana_level_2', raise.level_2)
+    produce('clean_mana_level_3', raise.level_3)
+    produce('clean_mana_level_4', raise.level_4)
+    produce('clean_mana_level_5', raise.level_5)
   }
 
   get mana_count() {

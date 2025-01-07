@@ -83,6 +83,9 @@ export class ResourceStore<K extends string, T extends string> {
   }
 
   public produce = (key: K, amount?: number) => {
+    if (!amount) {
+      return
+    }
     const resource = this.get(key)!;
     const cost = resource.cost;
     if (!cost) {

@@ -1,6 +1,6 @@
 import {ResourceClass, ResourceStoreClass} from "../../../Resource";
 import {SLAVES_INITIALLY_ARWA, SLAVES_INITIALLY_MARID} from "../../constants/constants.ts";
-import {randomResultFromChances} from "../../helpers/randomResultFromChances.ts";
+import {randomChances} from "../../helpers/randomChances.ts";
 import {makeAutoObservable} from "mobx";
 
 type FactionKeys = 'ifrit' | 'marid' | 'arwa' | 'ghoul'
@@ -169,7 +169,7 @@ export class SlaveClass {
         chance: this.ghoul,
       },
     ]
-    const randomKey = randomResultFromChances(chances).key;
+    const randomKey = randomChances(chances).key;
     if (this[randomKey] > 0) {
       this[randomKey]--
     }
