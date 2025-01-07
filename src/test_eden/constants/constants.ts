@@ -1,5 +1,5 @@
 // Game start
-export const AUTO_CLIMB = false
+export const AUTO_CLIMB = true
 
 
 // Slaves

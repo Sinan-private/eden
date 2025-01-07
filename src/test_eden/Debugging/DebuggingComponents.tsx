@@ -1,13 +1,14 @@
+import {useState} from "react";
+import styled from "styled-components";
 import {Stack, Switch, Typography} from "@mui/material";
 import {Debug_Behemoth} from "./Debug_Behemoth.tsx";
 import {Debug_SlaveManagement} from "./Debug_SlaveManagement.tsx";
-import {useState} from "react";
-import styled from "styled-components";
 import {blue} from "../../constants/colors.ts";
+import {BEAUTIFY_DEBUG, DEBUG} from "../../constants/config.ts";
 
 export const DebuggingComponents = () => {
-  const [beautifyValues, setBeautifyValues] = useState(true)
-  const [show, setShow] = useState(true)
+  const [beautifyValues, setBeautifyValues] = useState(BEAUTIFY_DEBUG)
+  const [show, setShow] = useState(DEBUG)
   const onSwitch = () => {
     setBeautifyValues(!beautifyValues)
   }
@@ -33,9 +34,6 @@ export const DebuggingComponents = () => {
           <Stack
             direction="row"
             alignItems="center"
-
-
-            // sx={{position: 'absolute', top: 40, left: 10, zIndex: 100}}
           >
             <Switch onChange={onSwitch} checked={beautifyValues}/>
             <Typography>Beautify values</Typography>
@@ -59,7 +57,6 @@ const Container = styled.div`
     width: 100%;
     height: 100%;
     pointer-events: none;
-    //border: 1px solid red;
     z-index: 5000;
 `;
 
