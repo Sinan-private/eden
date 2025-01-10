@@ -1,5 +1,5 @@
 import {Box, LinearProgress, Stack} from "@mui/material";
-import {useGame} from "./context/game.context.ts";
+import {useGame} from "../context/game.context.ts";
 import styled from "styled-components";
 
 export const FactionManager = () => {

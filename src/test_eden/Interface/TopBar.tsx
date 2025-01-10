@@ -8,9 +8,9 @@ import LinkIcon from '@mui/icons-material/Link';
 import HeightIcon from '@mui/icons-material/Height';
 import AutoAwesomeIcon from '@mui/icons-material/AutoAwesome';
 import BugReportIcon from '@mui/icons-material/BugReport';
-import {useGame} from "./context/game.context.ts";
-import {useTurnSubscription} from "../Resource";
-import {grey_blue} from "../constants/colors.ts";
+import {useGame} from "../context/game.context.ts";
+import {useTurnSubscription} from "../../Resource";
+import {grey_blue} from "../../constants/colors.ts";
 
 export const TopBar = () => {
   return (

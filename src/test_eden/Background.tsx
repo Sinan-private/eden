@@ -1,6 +1,5 @@
 import styled from "styled-components";
 import background from '../assets/images/hell_background.jpg'
-import './background.css';
 import {useGame} from "./context/game.context.ts";
 
 export const Background = () => {

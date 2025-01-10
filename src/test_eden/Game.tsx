@@ -22,10 +22,9 @@ export const Game = () => {
         $paused={!isActive}
         sx={{pointerEvents: 'none'}}
       >
-
-      <Gaja/>
+        <Gaja/>
       </Content>
-      <Interface />
+      <Interface/>
       <Upstream/>
       <Background/>
       <DebuggingComponents/>
