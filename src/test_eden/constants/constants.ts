@@ -1,5 +1,5 @@
 // Game start
-export const AUTO_CLIMB = false
+export const AUTO_CLIMB = true
 export const AUTO_COLLECT_MANA = true
 export const AUTO_CRAFT = true
 export const AUTO_SLAVE_HUNT = true

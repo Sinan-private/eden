@@ -5,10 +5,10 @@ import {randomResourceRaise} from "../../helpers/randomChances.ts";
 
 export class ManaClass {
   private _finding_chance_level_1: number = 1
-  private _finding_chance_level_2: number = 0.02
-  private _finding_chance_level_3: number = 0.0003
-  private _finding_chance_level_4: number = 0.000004
-  private _finding_chance_level_5: number = 0.00000005
+  private _finding_chance_level_2: number = 1/20
+  private _finding_chance_level_3: number = 1/300
+  private _finding_chance_level_4: number = 1/4000
+  private _finding_chance_level_5: number = 1/50000
   constructor(private _resourceStore: ResourceStoreClass) {
   }
 

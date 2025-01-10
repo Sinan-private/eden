@@ -31,6 +31,7 @@ export const Debug_Resource = observer((
   }: Debug_ResourceProps) => {
   const onIncrement = () => updateValueBy(incrementBy)
   const onDecrement = () => updateValueBy(-decrementBy)
+
   return (
     <Box display="flex" gap={2} justifyContent="space-between"
          sx={{fontFamily: 'monospace', fontSize: '12px', color: '#79ae79'}}>

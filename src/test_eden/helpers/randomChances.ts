@@ -1,6 +1,8 @@
 import {getWinnerIndex} from "./mapMultiply";
 import {ResourceClass, ResourceKeys} from "../../Resource";
 
+// Todo This needs to be cleaned. Possibly a class because I love classes
+
 export type GetProbability<T> = {
   chance: number;
   // [rest: string]: any
