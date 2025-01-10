@@ -13,7 +13,7 @@ import {Behemoth} from "./Behemoth.tsx";
 const BACKGROUND_IMAGE_HEIGHT = 600;
 const BACKGROUND_IMAGE_WIDTH = 571;
 
-export const TreeTrunk = observer(() => {
+export const Gaja = observer(() => {
   const {get} = useGame().resources
   const climbing_speed = get('behemoth_climb_speed').value
   const [displacement, setDisplacement] = useState(0);
@@ -42,10 +42,21 @@ export const TreeTrunk = observer(() => {
 
 
 const Tree = styled(Box)`
-    position: relative;
+    position: fixed;
+    top: 0;
+    right: 0;
     width: ${BACKGROUND_IMAGE_WIDTH}px;
     height: 100vh;
     z-index: 1;
+    @media only screen and (max-width: 1200px) {
+        width: ${BACKGROUND_IMAGE_WIDTH * 0.8}px;
+    }
+    @media only screen and (max-width: 992px) {
+        width: ${BACKGROUND_IMAGE_WIDTH * 0.6}px;
+    }
+    @media only screen and (max-width: 768px) {
+        width: ${BACKGROUND_IMAGE_WIDTH * 0.3}px;
+    }
 `
 
 const TrunkContainer = styled(Box)`

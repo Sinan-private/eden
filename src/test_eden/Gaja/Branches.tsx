@@ -5,7 +5,7 @@ import {useMemo, useRef} from "react";
 import {useTurnSubscription} from "../../Resource";
 import {BranchClass} from "./BranchClass.ts";
 
-
+const WIDTH = 800;
 
 export const Branches = observer(({displacement}: { displacement: number }) => {
   const branchClass = useRef<BranchClass>(new BranchClass(7)).current
@@ -42,9 +42,21 @@ export const Branches = observer(({displacement}: { displacement: number }) => {
 const Branch = styled('img')`
     position: absolute;
     top: 0;
-    right: 400px;
-    width: 800px;
+    right: ${WIDTH * 0.5}px;
+    width: ${WIDTH}px;
     height: 400px;
     object-fit: contain;
     z-index: -1;
+    @media only screen and (max-width: 1200px) {
+        right: ${WIDTH * 0.5}px;
+        width: ${WIDTH * 0.8}px;
+    }
+    @media only screen and (max-width: 992px) {
+        right: ${WIDTH * 0.4}px;
+        width: ${WIDTH * 0.7}px;
+    }
+    @media only screen and (max-width: 768px) {
+        right: ${WIDTH * 0.3}px;
+        width: ${WIDTH * 0.6}px;
+    }
 `
