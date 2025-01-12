@@ -8,15 +8,17 @@ import {ManaClass} from "../Classes/Mana/ManaClass.ts";
 import {UpstreamClass} from "../Classes/UpstreamClass.ts";
 import {Tick, useTick} from "../../Resource/context/tick.context.ts";
 import {Resources} from "../../Resource/context/resource.context.ts";
+import {InterfaceController} from "../Interface/InterfaceController.ts";
 
 
 const useGameBase = () => {
   const {resources} = useResource();
+  const tick = useTick();
   const slaves = useMemo(() => new SlaveClass(resources), [resources]);
   const mana = useMemo(() => new ManaClass(resources), [resources])
   const behemoth = useMemo(() => new BehemothClass(resources), [resources]);
   const upstream = useMemo(() => new UpstreamClass(resources), [resources]);
-  const gameClasses: GameClasses = useMemo(() => ({
+  const gameClasses: GameBaseClasses = useMemo(() => ({
     resources,
     slaves,
     mana,
@@ -27,10 +29,11 @@ const useGameBase = () => {
   const factionArwa = useMemo(() => new ArwaClass(gameClasses), [gameClasses])
   const factionGhoul = useMemo(() => new GhoulClass(gameClasses), [gameClasses])
   const factionMarid = useMemo(() => new MaridClass(gameClasses), [gameClasses])
-  const tick = useTick();
+  const interfaceClass = useMemo(() => new InterfaceController(gameClasses), [gameClasses])
 
   const game: Game = {
     ...tick,
+    ui: interfaceClass,
     resources,
     behemoth,
     slaves,
@@ -58,7 +61,7 @@ const useGameContainer = createContainer(useGameBase);
 export const useGame = useGameContainer.useContainer;
 export const GameProvider = useGameContainer.Provider;
 
-export type GameClasses = {
+export type GameBaseClasses = {
   resources: Resources;
   behemoth: BehemothClass;
   slaves: SlaveClass;
@@ -75,4 +78,5 @@ type FactionClasses = {
 
 export type Game = {
   factions: FactionClasses;
-} & GameClasses & Tick;
+  ui: InterfaceController
+} & GameBaseClasses & Tick;

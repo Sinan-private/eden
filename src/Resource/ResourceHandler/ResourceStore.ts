@@ -1,7 +1,7 @@
 import {makeAutoObservable} from 'mobx'
 import {Resource, ResourceUpdateProps} from "./index.ts";
 import {ResourceTrade, Trade} from "./Trade.ts";
-import {ResourceCostUpdate} from "./genericTypes.ts";
+import {ResourceCostUpdate, TradeChange} from "./genericTypes.ts";
 
 export class ResourceStore<K extends string, T extends string> {
   public resources: Map<K, Resource<K, T>> = new Map();
@@ -112,6 +112,28 @@ export class ResourceStore<K extends string, T extends string> {
       amount: value,
     }))
     return new Trade(_give, _gain, amount)
+  }
+
+  private hasEnough = (to_check?: TradeChange<K>[]) => {
+    // const checkIfPossible = (to_check?: TradeChange<K>[]) =>
+    //   to_check?.reduce((result, {key, value}) => {
+    //     const resource = this.get(key)
+    //     return resource.hasEnough(value) && result
+    //   }, true);
+
+    // const meetsCost = !cost
+    //   ? true
+    //   : checkIfPossible(cost)
+    // const meetsNeed = !need
+    //   ? true
+    //   : checkIfPossible(need)
+    return !to_check
+      ? true
+      : (to_check?: TradeChange<K>[]) =>
+        to_check?.reduce((result, {key, value}) => {
+          const resource = this.get(key)
+          return resource.hasEnough(value) && result
+        }, true);
   }
 
   get allResources() {

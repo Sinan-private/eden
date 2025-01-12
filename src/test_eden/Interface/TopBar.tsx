@@ -15,9 +15,9 @@ import {grey_blue} from "../../constants/colors.ts";
 export const TopBar = () => {
   return (
     <Box sx={{
-      position: 'fixed',
-      top: 0,
-      left: 0,
+      position: 'relative',
+      // top: -10,
+      // left: 0,
       minHeight: 60,
       width: '100%',
       // border: '1px solid red',

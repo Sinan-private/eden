@@ -1,10 +1,51 @@
 import {makeAutoObservable} from "mobx";
-import {ResourceClass, ResourceStoreClass, ResourceTypes} from "../../../Resource";
+import {ResourceClass, ResourceStoreClass, ResourceTypes, TradeChange} from "../../../Resource";
 import {AUTO_CLIMB, STAMINA_REGEN, STAMINA_REGEN_ON_FLUSHING} from "../../constants/constants.ts";
 import {staminaDrain} from "../../constants/gameRules.ts";
 import {Game} from "../../context/game.context.ts";
 
+type Level = `level_${1 | 2 | 3 | 4 | 5}`;
+type Levels = {
+  [L in Level]: {
+    cost?: TradeChange[];
+    need?: TradeChange[];
+    gain?: TradeChange[];
+  };
+};
+
+const levels: Levels = {
+  level_1: {},
+  level_2: {
+    cost: [
+      {key: 'clean_mana_level_1', value: 100}
+    ],
+    gain: [
+      {key: 'behemoth_stamina', value: 100} // here I want to raise the max and not the value
+    ]
+  },
+  level_3: {
+    cost: [
+      {key: 'clean_mana_level_1', value: 200},
+      {key: 'clean_mana_level_2', value: 20}
+    ]
+  },
+  level_4: {
+    cost: [
+      {key: 'clean_mana_level_1', value: 200},
+      {key: 'clean_mana_level_2', value: 20}
+    ]
+  },
+  level_5: {
+    cost: [
+      {key: 'clean_mana_level_1', value: 200},
+      {key: 'clean_mana_level_2', value: 20}
+    ]
+  }
+}
+
+
 export class BehemothClass {
+  public level: number = 1;
   public movement_requested: boolean = AUTO_CLIMB;
   public digging_requested: boolean = false;
   public flushing_requested: boolean = false;
@@ -67,6 +108,39 @@ export class BehemothClass {
       .trade([{key: 'clean_mana_level_1', value: 1}], [{key: 'behemoth_acid', value: 5}], 20)
       .tradeIfPossible()
 
+  private _getLevel = (level: number) => {
+    const level_key = 'level_' + level as Level;
+    return levels[level_key] || {};
+  }
+
+  private _meetsLevelRequirements = () => {
+    const {cost, need} = this.level_requirement
+    if (!cost && !need) {
+      return true
+    }
+    const checkIfPossible = (to_check: TradeChange[]) =>
+      to_check?.reduce((result, {key, value}) => {
+        const resource = this._resourceStore.get(key)
+        return resource.hasEnough(value) && result
+      }, true);
+
+    const meetsCost = !cost
+      ? true
+      : checkIfPossible(cost)
+    const meetsNeed = !need
+      ? true
+      : checkIfPossible(need)
+    return !!meetsCost && !!meetsNeed
+  }
+
+  get meets_level_requirements() {
+    return this._meetsLevelRequirements()
+  }
+
+  get level_requirement() {
+    return this._getLevel(this.level + 1)
+  }
+
   get decelerating() {
     return !this.movement_requested && !!this.climb_speed.value;
   }
@@ -104,15 +178,17 @@ export class BehemothClass {
   }
 
   get can_harvest() {
-    return !this.is_moving && !!this.dirty_mana_sum  && !this.is_flushing
+    return !this.is_moving && !!this.dirty_mana_sum && !this.is_flushing
   }
 
   get liquid_mana_sum() {
     return this._getTypeSum('liquid_mana')
   }
+
   get dirty_mana_sum() {
     return this._getTypeSum('dirty_mana')
   }
+
   get raw_mana_sum() {
     return this._getTypeSum('raw_mana')
   }
@@ -120,6 +196,7 @@ export class BehemothClass {
   get is_flushing() {
     return this.flushing_requested && this.acid.value >= 1
   }
+
   get is_flushing_mana() {
     return this.is_flushing && this.flushing_depth.value >= this.flushing_depth.max
   }

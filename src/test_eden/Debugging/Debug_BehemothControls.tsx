@@ -37,7 +37,7 @@ export const Debug_BehemothControls = observer(() => {
 })
 
 const StyledGameControls = styled.div`
-    position: fixed;
+    position: relative;
     bottom: 0;
     left: 50%;
     transform: translateX(-50%);

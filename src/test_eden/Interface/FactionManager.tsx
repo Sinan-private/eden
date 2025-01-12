@@ -21,7 +21,7 @@ export const FactionManager = () => {
               <VerticalProgress value={progress.value} />
             }
           </Box>
-          <Stack color="gray">
+          <Stack color="gray" width={70}>
             <LinearProgress variant="determinate" value={active ? loyalty.value : 0} color={active ? "warning" : "inherit"}/>
             <LinearProgress variant="determinate" value={active ? influence.value : 0} color={active ? "error" : "inherit"}/>
           </Stack>

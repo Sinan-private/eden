@@ -1,5 +1,5 @@
 import {ResourceClass, ResourceStoreClass} from "../../../Resource";
-import {GameClasses} from "../../context/game.context.ts";
+import {GameBaseClasses} from "../../context/game.context.ts";
 import {SlaveClass} from "../Slaves/SlaveClass.ts";
 import {BehemothClass} from "../Behemoth/BehemothClass.ts";
 import {ManaClass} from "../Mana/ManaClass.ts";
@@ -18,7 +18,7 @@ export class FactionClass {
   public mana: ManaClass;
   public behemoth: BehemothClass;
   public upstream: UpstreamClass;
-  constructor(gameClasses: GameClasses) {
+  constructor(gameClasses: GameBaseClasses) {
     this.resources = gameClasses.resources
     this.slaves = gameClasses.slaves
     this.mana = gameClasses.mana

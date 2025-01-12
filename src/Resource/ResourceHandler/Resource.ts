@@ -128,6 +128,9 @@ export class Resource<K extends string, T extends string> {
     })
   }
 
+  public hasEnough = (value: number): boolean =>
+    this.value - value >= 0
+
   get percentage() {
     return Math.floor(mapMultiply(this.value, this.max) * 100);
   }
