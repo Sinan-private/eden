@@ -103,13 +103,13 @@ export class ResourceStore<K extends string, T extends string> {
     gain: ResourceCostUpdate<K>['gain'],
     amount = 1
   ) => {
-    const _give: ResourceTrade<K, T>[] = give.map(({key, value = 1}) => ({
+    const _give: ResourceTrade<K, T>[] = give.map(({key, ...update}) => ({
       resource: this.get(key)!,
-      amount: value,
+      ...update
     }))
-    const _gain: ResourceTrade<K, T>[] = gain.map(({key, value = 1}) => ({
+    const _gain: ResourceTrade<K, T>[] = gain.map(({key, ...update}) => ({
       resource: this.get(key)!,
-      amount: value,
+      ...update,
     }))
     return new Trade(_give, _gain, amount)
   }

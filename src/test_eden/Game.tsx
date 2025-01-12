@@ -15,18 +15,10 @@ export const Game = () => {
   const {isActive} = useGame();
   return (
     <Screen>
-      <Content
-        display="flex"
-        flexDirection="row"
-        justifyContent="space-between"
-        $paused={!isActive}
-        sx={{pointerEvents: 'none'}}
-      >
-        <Gaja/>
-      </Content>
-      <Interface/>
-      <Upstream/>
       <Background/>
+      <Upstream/>
+      <Gaja/>
+      <Interface/>
       <DebuggingComponents/>
     </Screen>
   )

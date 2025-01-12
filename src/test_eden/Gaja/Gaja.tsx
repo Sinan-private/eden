@@ -28,11 +28,9 @@ export const Gaja = observer(() => {
 
   return (
     <Tree>
-      <TrunkContainer>
-        <Trunk>
-          <TrunkBackground $displacement={prop}/>
-        </Trunk>
-      </TrunkContainer>
+      <Trunk>
+        <TrunkBackground $displacement={prop}/>
+      </Trunk>
       <Branches displacement={displacement}/>
       <Behemoth/>
       <Digging/>
@@ -59,13 +57,6 @@ const Tree = styled(Box)`
     }
 `
 
-const TrunkContainer = styled(Box)`
-    position: relative;
-    width: 100%;
-    height: 100%;
-    overflow-y: hidden;
-    z-index: 1;
-`
 const Trunk = styled(Box)`
     position: relative;
     width: 100%;

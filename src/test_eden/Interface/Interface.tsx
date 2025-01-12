@@ -1,9 +1,9 @@
+import React from "react";
 import {Debug_BehemothControls} from "../Debugging/Debug_BehemothControls.tsx";
 import {TopBar} from "./TopBar.tsx";
 import {SlaveManager} from "../Components/SlaveManager.tsx";
 import styled from "styled-components";
 import {FooterButtons} from "./FooterButtons.tsx";
-import React, {useMemo} from "react";
 import {SidebarContent} from "./SidebarContent.tsx";
 import {useGame} from "../context/game.context.ts";
 import {InterfaceActiveLeft} from "./InterfaceController.ts";
@@ -56,11 +56,20 @@ const FactionMain = () => (
   </>
 )
 
-const PlayerMain = () => (
-  <>
-    Player main
-  </>
-)
+// Todo the trade should also accept changes to the min and max.
+//  In general it seems to be good to accept a raw_resource to allow overwriting even things like the cost, the type or possibly the label (e.g. adding 'Master')
+
+const PlayerMain = observer(() => {
+  const {trade} = useGame().resources
+  const onClick = () =>
+    trade([{key: 'behemoth_hp', max: 20}], [{key: 'behemoth_acid', value: 100}], 10).tradeIfPossible()
+  return (
+    <>
+      Player main
+      <button onClick={onClick}>test level up</button>
+    </>
+  )
+})
 
 const BehemothMain = observer(() => {
   const {level, meets_level_requirements} = useGame().behemoth;
@@ -88,6 +97,7 @@ const Card = styled.div`
 
 const Grid = styled.div`
     position: fixed;
+    pointer-events: none;
     top: 0;
     left: 0;
     display: grid;
@@ -101,6 +111,9 @@ const Grid = styled.div`
     "header header header header"
     "sidebar sidebar_extention spacer main"
     "footer footer footer footer";
+    & div {
+        pointer-events: initial;
+    }
 `
 const Header = styled.header`
     grid-area: header;
