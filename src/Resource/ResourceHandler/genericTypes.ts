@@ -10,8 +10,8 @@ export type ResourceTypeRaw<K, T> = {
 }
 export type TradeChange<K> = {key: K, value: number};
 export type ResourceCostUpdate<K> = {
-  give: {key: K, value?: number}[];
-  gain: {key: K, value?: number}[];
+  give: TradeChange<K>[];
+  gain: TradeChange<K>[];
 }
 export type ResourceUpdateProps<K, T> = {
   key: K;
@@ -29,3 +29,6 @@ export type ResourceBeautyType = {
   fillPercentage: number;
 }
 export type Icon = { name: string, src: string };
+export type LevelUpdate<K> = ResourceCostUpdate<K> & {
+  need: TradeChange<K>[]
+}
