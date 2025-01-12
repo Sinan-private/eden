@@ -114,26 +114,10 @@ export class ResourceStore<K extends string, T extends string> {
     return new Trade(_give, _gain, amount)
   }
 
-  private hasEnough = (to_check?: TradeChange<K>[]) => {
-    // const checkIfPossible = (to_check?: TradeChange<K>[]) =>
-    //   to_check?.reduce((result, {key, value}) => {
-    //     const resource = this.get(key)
-    //     return resource.hasEnough(value) && result
-    //   }, true);
-
-    // const meetsCost = !cost
-    //   ? true
-    //   : checkIfPossible(cost)
-    // const meetsNeed = !need
-    //   ? true
-    //   : checkIfPossible(need)
+  public hasEnough = (to_check?: TradeChange<K>[]) => {
     return !to_check
       ? true
-      : (to_check?: TradeChange<K>[]) =>
-        to_check?.reduce((result, {key, value}) => {
-          const resource = this.get(key)
-          return resource.hasEnough(value) && result
-        }, true);
+      : this.trade(to_check, []).isTradePossible()
   }
 
   get allResources() {

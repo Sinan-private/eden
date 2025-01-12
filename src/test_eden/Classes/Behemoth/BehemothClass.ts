@@ -113,28 +113,10 @@ export class BehemothClass {
     return levels[level_key] || {};
   }
 
-  private _meetsLevelRequirements = () => {
-    const {cost, need} = this.level_requirement
-    if (!cost && !need) {
-      return true
-    }
-    const checkIfPossible = (to_check: TradeChange[]) =>
-      to_check?.reduce((result, {key, value}) => {
-        const resource = this._resourceStore.get(key)
-        return resource.hasEnough(value) && result
-      }, true);
-
-    const meetsCost = !cost
-      ? true
-      : checkIfPossible(cost)
-    const meetsNeed = !need
-      ? true
-      : checkIfPossible(need)
-    return !!meetsCost && !!meetsNeed
-  }
-
   get meets_level_requirements() {
-    return this._meetsLevelRequirements()
+    const {cost, need} = this.level_requirement
+    const {hasEnough} = this._resourceStore
+    return hasEnough(cost) && hasEnough(need)
   }
 
   get level_requirement() {
