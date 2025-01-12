@@ -8,16 +8,14 @@ export type ResourceTrade<K extends string, T extends string> = {
 export class Trade<K extends string, T extends string> {
   public costs: ResourceTrade<K, T>[];
   public gains: ResourceTrade<K, T>[];
-  public amount: number;
 
   constructor(
     costs: ResourceTrade<K, T>[],
     gains: ResourceTrade<K, T>[],
-    amount: number = 1
+    public amount: number = 1
   ) {
     this.costs = costs;
     this.gains = gains;
-    this.amount = amount;
     makeAutoObservable(this);
   }
 
@@ -34,6 +32,10 @@ export class Trade<K extends string, T extends string> {
     return this.getMaxPossibleAmount() > 0;
   }
 
+  public enforceTrade = ()=> {
+    this._executeTrade(this.amount)
+  }
+
   /**
    * Executes the trade for the maximum feasible amount.
    */
@@ -44,6 +46,16 @@ export class Trade<K extends string, T extends string> {
       console.warn("Trade not possible due to constraints");
       return 0;
     }
+    this._executeTrade(maxPossibleAmount)
+  }
+
+  public tradeIfPossible = () => {
+    if (this.isTradePossible()) {
+      this.executeTrade()
+    }
+  }
+
+  private _executeTrade = (amount: number) => {
     /** This does some heavy lifting. The change can be of many different types like
      * {value: 100}, {value: 10, max: 5}, {label: 'Mastered'}
      * Therefore it needs to create the right object to pass to the resource updateBy()
@@ -57,7 +69,7 @@ export class Trade<K extends string, T extends string> {
         const adjustedUpdate = Object.fromEntries(
           Object.entries(update).map(([key, value]) => {
             if (typeof value === 'number') {
-              return [key, calculation(value) * maxPossibleAmount]; // Adjust numerical values with the multipliers
+              return [key, calculation(value) * amount]; // Adjust numerical values with the multipliers
             }
             return [key, value]; // Leave non-numerical values as-is
           })
@@ -69,13 +81,6 @@ export class Trade<K extends string, T extends string> {
     updateResources(this.gains, (value) => value)
 
   }
-
-  public tradeIfPossible = () => {
-    if (this.isTradePossible()) {
-      this.executeTrade()
-    }
-  }
-
   /**
    * Evaluates the trade outcome for the maximum feasible amount without applying it.
    * -> This might be outdated after the improvement to allow every change in a trade, e.g. max updates

@@ -1,51 +1,13 @@
 import {makeAutoObservable} from "mobx";
-import {ResourceClass, ResourceStoreClass, ResourceTypes, TradeChange} from "../../../Resource";
+import {ResourceClass, ResourceStoreClass, ResourceTypes} from "../../../Resource";
 import {AUTO_CLIMB, STAMINA_REGEN, STAMINA_REGEN_ON_FLUSHING} from "../../constants/constants.ts";
 import {staminaDrain} from "../../constants/gameRules.ts";
 import {Game} from "../../context/game.context.ts";
-
-type Level = `level_${1 | 2 | 3 | 4 | 5}`;
-type Levels = {
-  [L in Level]: {
-    cost?: TradeChange[];
-    need?: TradeChange[];
-    gain?: TradeChange[];
-  };
-};
-
-const levels: Levels = {
-  level_1: {},
-  level_2: {
-    cost: [
-      {key: 'clean_mana_level_1', value: 100}
-    ],
-    gain: [
-      {key: 'behemoth_stamina', value: 100} // here I want to raise the max and not the value
-    ]
-  },
-  level_3: {
-    cost: [
-      {key: 'clean_mana_level_1', value: 200},
-      {key: 'clean_mana_level_2', value: 20}
-    ]
-  },
-  level_4: {
-    cost: [
-      {key: 'clean_mana_level_1', value: 200},
-      {key: 'clean_mana_level_2', value: 20}
-    ]
-  },
-  level_5: {
-    cost: [
-      {key: 'clean_mana_level_1', value: 200},
-      {key: 'clean_mana_level_2', value: 20}
-    ]
-  }
-}
-
+import {LevelClass} from "../LevelClass.ts";
+import {levels} from "./levels.ts";
 
 export class BehemothClass {
-  public level: number = 1;
+  public level: LevelClass;
   public movement_requested: boolean = AUTO_CLIMB;
   public digging_requested: boolean = false;
   public flushing_requested: boolean = false;
@@ -60,6 +22,7 @@ export class BehemothClass {
   public drying_delay: ResourceClass;
 
   constructor(private _resourceStore: ResourceStoreClass) {
+    this.level = new LevelClass(_resourceStore, levels)
     this.hp = _resourceStore.get('behemoth_hp')
     this.acid = _resourceStore.get('behemoth_acid')
     this.climb_height = _resourceStore.get('behemoth_climb_height')
@@ -107,21 +70,30 @@ export class BehemothClass {
     this._resourceStore
       .trade([{key: 'clean_mana_level_1', value: 1}], [{key: 'behemoth_acid', value: 5}], 20)
       .tradeIfPossible()
+  public slaveToStamina = () =>
+    // Todo. To actually change the more complex slaves to stamina might be tricky
+    this._resourceStore
+      .trade([{key: 'clean_mana_level_1', value: 1}], [{key: 'behemoth_stamina', value: 5}], 20)
+      .tradeIfPossible()
 
-  private _getLevel = (level: number) => {
-    const level_key = 'level_' + level as Level;
-    return levels[level_key] || {};
-  }
-
-  get meets_level_requirements() {
-    const {cost, need} = this.level_requirement
-    const {hasEnough} = this._resourceStore
-    return hasEnough(cost) && hasEnough(need)
-  }
-
-  get level_requirement() {
-    return this._getLevel(this.level + 1)
-  }
+  // private _getLevel = (level: number): LevelUpdate => {
+  //   const level_key = 'level_' + level as Level;
+  //   return levels[level_key] || {};
+  // }
+  //
+  // public levelUp = () => {
+  //   this._resourceStore.levelUp(this.level_requirement)
+  // }
+  //
+  // get meets_level_requirements() {
+  //   const {give, need} = this.level_requirement
+  //   const {hasEnough} = this._resourceStore
+  //   return hasEnough(give) && hasEnough(need)
+  // }
+  //
+  // get level_requirement(): LevelUpdate {
+  //   return this._getLevel(this.level + 1)
+  // }
 
   get decelerating() {
     return !this.movement_requested && !!this.climb_speed.value;

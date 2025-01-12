@@ -60,9 +60,9 @@ const FactionMain = () => (
 //  In general it seems to be good to accept a raw_resource to allow overwriting even things like the cost, the type or possibly the label (e.g. adding 'Master')
 
 const PlayerMain = observer(() => {
-  const {trade} = useGame().resources
-  const onClick = () =>
-    trade([{key: 'behemoth_hp', max: 20}], [{key: 'behemoth_acid', value: 100}], 10).tradeIfPossible()
+  const {level} = useGame().behemoth
+  const onClick = () => {}
+    // trade([{key: 'behemoth_hp', max: 20}], [{key: 'behemoth_acid', value: 100}], 10).tradeIfPossible()
   return (
     <>
       Player main
@@ -72,15 +72,18 @@ const PlayerMain = observer(() => {
 })
 
 const BehemothMain = observer(() => {
-  const {level, meets_level_requirements} = useGame().behemoth;
+  const {level} = useGame().behemoth;
   // console.log(meetsLevelRequirements());
   return(
     <Box p={2}>
       <Card>
         <Typography variant="h5">Behemoth</Typography>
         <Stack direction="row" spacing={2} alignItems="center">
-        <Typography>Level {level}</Typography>
-        <Button disabled={!meets_level_requirements}>Level up</Button>
+        <Typography>Level {level.level}</Typography>
+          <Typography>{JSON.stringify(level.level_requirements)}</Typography>
+        <Button disabled={!level.meets_level_requirements} onClick={level.levelUp}>
+          Level up
+        </Button>
         </Stack>
       </Card>
     </Box>

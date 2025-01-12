@@ -29,6 +29,6 @@ export type ResourceBeautyType = {
   fillPercentage: number;
 }
 export type Icon = { name: string, src: string };
-export type LevelUpdate<K, T> = ResourceCostUpdate<K, T> & {
-  need: TradeChange<K, T>[]
+export type LevelUpdate<K, T> = Partial<ResourceCostUpdate<K, T>> & {
+  need?: TradeChange<K, T>[]
 }

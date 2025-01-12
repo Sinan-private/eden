@@ -70,12 +70,13 @@ const Center = () => {
 }
 
 const BehemothPreview = observer(() => {
-  const {manaToAcid} = useGame().behemoth;
+  const {manaToAcid, slaveToStamina} = useGame().behemoth;
 
   return (
     <Box p={2}>
       Behemoth
       <Button onClick={manaToAcid}>Mana to acid</Button>
+      <Button onClick={slaveToStamina}>Mana to stamina</Button>
     </Box>
   )
 })
