@@ -20,8 +20,8 @@ export class Resource<K extends string, T extends string> {
   public max: number = Infinity;
   public label: string;
   public type: T;
-  public cost: ResourceCostUpdate<K> | null;
-  public revealedAt: ResourceCostUpdate<K> | null;
+  public cost: ResourceCostUpdate<K, T> | null;
+  public revealedAt: ResourceCostUpdate<K, T> | null;
   public iconName: string = 'empty';
 
   constructor(
@@ -89,7 +89,7 @@ export class Resource<K extends string, T extends string> {
         ? this.min
         : value
 
-  public updateCost = (changeKey: 'give' | 'gain', {key, value}: TradeChange<K>) => {
+  public updateCost = (changeKey: 'give' | 'gain', {key, value}: TradeChange<K, T>) => {
     if (!this.cost) {
       return null
     }
@@ -105,7 +105,7 @@ export class Resource<K extends string, T extends string> {
     })
   }
 
-  public addCost = (changeKey: 'give' | 'gain', extraCost: TradeChange<K>) => {
+  public addCost = (changeKey: 'give' | 'gain', extraCost: TradeChange<K, T>) => {
     const cost = this.cost || {give: [], gain: []};
     this.setTo({
       cost: {

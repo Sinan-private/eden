@@ -58,7 +58,7 @@ export class ResourceStore<K extends string, T extends string> {
       if (resource.key === key) return false; // Exclude self-reference
 
       return dependencyKeys.some(depKey => {
-        const dependency = resource[depKey] as ResourceCostUpdate<K> | null;
+        const dependency = resource[depKey] as ResourceCostUpdate<K, T> | null;
         if (!dependency) return false;
 
         const isReferencedInGive = dependency.give.some(item => item.key === key);
@@ -99,8 +99,8 @@ export class ResourceStore<K extends string, T extends string> {
   }
 
   public trade = (
-    give: ResourceCostUpdate<K>['give'],
-    gain: ResourceCostUpdate<K>['gain'],
+    give: ResourceCostUpdate<K, T>['give'],
+    gain: ResourceCostUpdate<K, T>['gain'],
     amount = 1
   ) => {
     const _give: ResourceTrade<K, T>[] = give.map(({key, ...update}) => ({
@@ -114,14 +114,14 @@ export class ResourceStore<K extends string, T extends string> {
     return new Trade(_give, _gain, amount)
   }
 
-  public levelUp = (level: LevelUpdate<K>) => {
+  public levelUp = (level: LevelUpdate<K, T>) => {
     const canLevelUp = this.hasEnough(level.give) && this.hasEnough(level.need)
     if (canLevelUp) {
 
     }
   }
 
-  public hasEnough = (to_check?: TradeChange<K>[]) => {
+  public hasEnough = (to_check?: TradeChange<K, T>[]) => {
     return !to_check
       ? true
       : this.trade(to_check, []).isTradePossible()

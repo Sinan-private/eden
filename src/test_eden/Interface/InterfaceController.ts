@@ -5,7 +5,7 @@ export type InterfaceActiveLeft = 'faction' | 'player' | 'behemoth' | null;
 
 export class InterfaceController {
   public selectionActiveLeft: InterfaceActiveLeft = 'faction';
-  constructor(private game: GameBaseClasses) {
+  constructor(public game: GameBaseClasses) {
     makeAutoObservable(this)
   }
   public selectActiveLeft = (selection: InterfaceActiveLeft) => {

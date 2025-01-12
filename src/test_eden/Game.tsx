@@ -4,7 +4,6 @@ import {Gaja} from "./Gaja/Gaja.tsx";
 import upstream_image from '../assets/images/upstream.gif';
 import {useGame} from "./context/game.context.ts";
 import {Background} from "./Background.tsx";
-import {blue} from "../constants/colors.ts";
 import {DebuggingComponents} from "./Debugging/DebuggingComponents.tsx";
 import {Interface} from "./Interface/Interface.tsx";
 
@@ -12,7 +11,6 @@ const IMAGE_HEIGHT = 400
 
 
 export const Game = () => {
-  const {isActive} = useGame();
   return (
     <Screen>
       <Background/>
@@ -24,13 +22,7 @@ export const Game = () => {
   )
 }
 
-// type FactionButtonProps = {
-//   disabled: boolean;
-//   faction: FactionClass
-// }
 
-
-// Todo offer this as part of the Beveled component
 
 const Screen = styled('div')`
     position: fixed;
@@ -40,16 +32,6 @@ const Screen = styled('div')`
     height: 100vh;
     overflow: hidden;
 `
-
-const Content = styled(Box)<{ $paused: boolean }>`
-    width: 100vw;
-    height: 100vh;
-    border: 2px solid transparent;
-    border-color: ${props => props.$paused ? blue : 'transparent'};
-    transition: border-color 0.5s ease;
-    overflow: hidden;
-`
-
 
 const Upstream = () => {
   const {upstream, behemoth} = useGame();

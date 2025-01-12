@@ -4,19 +4,19 @@ export type ResourceTypeRaw<K, T> = {
   max: number;
   label: string;
   type?: T;
-  cost: ResourceCostUpdate<K> | null;
-  revealedAt: ResourceCostUpdate<K> | null;
+  cost: ResourceCostUpdate<K, T> | null;
+  revealedAt: ResourceCostUpdate<K, T> | null;
   iconName?: string;
 }
-export type TradeChange<K> = {key: K, value?: number, min?: number, max?: number};
-export type ResourceCostUpdate<K> = {
-  give: TradeChange<K>[];
-  gain: TradeChange<K>[];
+export type TradeChange<K, T> = {key: K} & Partial<ResourceTypeRaw<K, T>>;
+export type ResourceCostUpdate<K, T> = {
+  give: TradeChange<K, T>[];
+  gain: TradeChange<K, T>[];
 }
 export type ResourceUpdateProps<K, T> = {
   key: K;
-  cost?: ResourceCostUpdate<K> | null;
-  revealedAt?: ResourceCostUpdate<K> | null;
+  cost?: ResourceCostUpdate<K, T> | null;
+  revealedAt?: ResourceCostUpdate<K, T> | null;
   iconName?: string;
   min?: number | null;
   max?: number | null;
@@ -29,6 +29,6 @@ export type ResourceBeautyType = {
   fillPercentage: number;
 }
 export type Icon = { name: string, src: string };
-export type LevelUpdate<K> = ResourceCostUpdate<K> & {
-  need: TradeChange<K>[]
+export type LevelUpdate<K, T> = ResourceCostUpdate<K, T> & {
+  need: TradeChange<K, T>[]
 }
