@@ -1,6 +1,7 @@
 import {ResourceStoreClass, ResourceTypes} from "../../../Resource";
 import {CRAFTING_SPEED, DRYING_SPEED, FLUSHING_SPEED, HARVEST_SPEED} from "../../constants/constants.ts";
 import {randomResourceRaise} from "../../helpers/randomChances.ts";
+import {RandomResourceUpdate} from "../RandomResourceUpdate.ts";
 
 
 export class ManaClass {
@@ -26,6 +27,7 @@ export class ManaClass {
       .reduce((a, b) => a + b, 0);
   }
 
+  // This can be replaced by the resource store one
   public getTypeSum = (type: ResourceTypes) => {
     const resources = this._resourceStore.getByType(type)
     const sum = resources.reduce((sum, {value}) => (sum + Math.floor(value)), 0)
@@ -61,11 +63,18 @@ export class ManaClass {
     const {produce, getByType} = this._resourceStore
     const power = (slaves / 2) * HARVEST_SPEED
     const raise = randomResourceRaise(getByType('dirty_mana'), power)
-    produce('raw_mana_level_1', raise.level_1)
-    produce('raw_mana_level_2', raise.level_2)
-    produce('raw_mana_level_3', raise.level_3)
-    produce('raw_mana_level_4', raise.level_4)
-    produce('raw_mana_level_5', raise.level_5)
+    const random_conversion = new RandomResourceUpdate().resourceConversion(
+      getByType('dirty_mana'),
+      getByType('raw_mana'),
+    )
+    produce(random_conversion.key, power)
+    console.log(power, random_conversion.value)
+    console.log(raise,random_conversion)
+    // produce('raw_mana_level_1', raise.level_1)
+    // produce('raw_mana_level_2', raise.level_2)
+    // produce('raw_mana_level_3', raise.level_3)
+    // produce('raw_mana_level_4', raise.level_4)
+    // produce('raw_mana_level_5', raise.level_5)
   }
 
   public produceCleanMana = (slaves: number) => {
@@ -77,6 +86,10 @@ export class ManaClass {
     produce('clean_mana_level_3', raise.level_3)
     produce('clean_mana_level_4', raise.level_4)
     produce('clean_mana_level_5', raise.level_5)
+  }
+
+  public hasRawMana = () => {
+    return this._resourceStore.getTypeSum('raw_mana')
   }
 
   get mana_count() {

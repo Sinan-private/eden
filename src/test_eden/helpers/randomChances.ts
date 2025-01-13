@@ -26,16 +26,19 @@ export const randomResourceByChance = (resources: ResourceClass[]) =>
 
 export const randomResourceRaise = (
   resources: ResourceClass[],
-  expected_results: number
+  power: number
 ) => {
-  const emptyList =  Array.from(Array(Math.round(expected_results)))
-
+  // I need the
+  // const x = resources.s
+  const emptyList =  Array.from(Array(Math.ceil(power)))
   const chanceList = emptyList.map(() =>
     // creating a list of results where the current amount of the resource in the list becomes the chance
     randomChances(randomResourceByChance(resources))
       .resource
       .key
   )
+  // console.log(resources, power)
+  // console.log(chanceList)
   return countOccurrencesByLevel(chanceList)
 }
 

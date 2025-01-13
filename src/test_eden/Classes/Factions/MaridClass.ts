@@ -33,7 +33,7 @@ export class MaridClass extends FactionClass {
 
   public turnUpdate = (game: Game) => {
 
-    if (this.crafting_requested) {
+    if (this.crafting_requested && game.mana.hasRawMana()) {
       game.mana.produceCleanMana(game.slaves.marid)
     }
     if (this.is_hunting) {

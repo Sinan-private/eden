@@ -131,6 +131,12 @@ export class ResourceStore<K extends string, T extends string> {
       : this.trade(to_check, []).isTradePossible()
   }
 
+  public getTypeSum = (type: T) => {
+    const resources = this.getByType(type)
+    const sum = resources.reduce((sum, {value}) => (sum + Math.floor(value)), 0)
+    return Number(Math.floor(sum).toFixed())
+  }
+
   get allResources() {
     return Array.from(this.resources.values());
   }

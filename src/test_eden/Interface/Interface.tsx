@@ -60,7 +60,6 @@ const FactionMain = () => (
 //  In general it seems to be good to accept a raw_resource to allow overwriting even things like the cost, the type or possibly the label (e.g. adding 'Master')
 
 const PlayerMain = observer(() => {
-  const {level} = useGame().behemoth
   const onClick = () => {}
     // trade([{key: 'behemoth_hp', max: 20}], [{key: 'behemoth_acid', value: 100}], 10).tradeIfPossible()
   return (
