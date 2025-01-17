@@ -171,11 +171,8 @@ export class BehemothClass {
     return !this.is_moving && !this.is_flushing
   }
 
-  private _getTypeSum = (type: ResourceTypes) => {
-    const resources = this._resourceStore.getByType(type)
-    const sum = resources.reduce((sum, {value}) => (sum + Math.floor(value)), 0)
-    return Number(Math.floor(sum).toFixed())
-  }
+  private _getTypeSum = (type: ResourceTypes) =>
+    this._resourceStore.getTypeSum(type)
 
   public turnUpdate = (game: Game) => {
     const {

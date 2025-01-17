@@ -11,6 +11,10 @@ const IMAGE_HEIGHT = 400
 
 
 export const Game = () => {
+  const game = useGame();
+  window.game = game;
+  // Test trade
+  // game.resources.trade([{key: 'dirty_mana_level_1', value: 1}], [{key: 'raw_mana_level_1', value: 1}], 0.2).tradeIfPossible()
   return (
     <Screen>
       <Background/>

@@ -63,7 +63,6 @@ export class Trade<K extends string, T extends string> {
      * Therefore it needs to create the right object to pass to the resource updateBy()
      * Decided to leave it here because it calls a resource update
      */
-    console.log('amount', amount)
     const updateResources = (
       change: ResourceTrade<K, T>[],
       calculation: (value: number) => number
@@ -129,13 +128,13 @@ const getMaxPossibleAmount = <K extends string, T extends string>(
       switch (key) {
         case 'value':
           // The regular method just checking how often the trade could be executed
-          return Math.floor((resource.value - resource.min) / (change as number))
+          return (resource.value - resource.min) / (change as number)
         case 'min':
           // passing a min into costs means the min value will be reduced. The is no limit to this
           return Infinity
         case 'max':
           // The max will reduce the max and only allow it to be bigger or equal to the min
-          return Math.floor((resource.max - resource.min) / (change as number))
+          return (resource.max - resource.min) / (change as number)
         default:
           return Infinity
       }
@@ -148,10 +147,10 @@ const getMaxPossibleAmount = <K extends string, T extends string>(
       switch (key) {
         case 'value':
           // The gain has a regular check against max
-          return Math.floor((resource.max - resource.value) / (change as number))
+          return (resource.max - resource.value) / (change as number)
         case 'min':
           // Providing a min here means the min will be raised. Also to the limit of the max
-          return Math.floor((resource.max - resource.min) / (change as number))
+          return (resource.max - resource.min) / (change as number)
         case 'max':
           // The max value can raise infinitely
           return Infinity

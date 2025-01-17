@@ -38,7 +38,7 @@ export const Debug_Behemoth = ({beautifyValues}: { beautifyValues: boolean }) =>
               </Debug_ResourceGroup>
               <Debug_ResourceGroup>
                 {raw_mana.map((resource) => (
-                  <Debug_Resource key={resource.id} resource={resource} beautifyValues={beautifyValues}/>
+                  <Debug_Resource key={resource.id} resource={resource} beautifyValues={beautifyValues} incrementBy={2}/>
                 ))}
               </Debug_ResourceGroup>
               <Debug_ResourceGroup>

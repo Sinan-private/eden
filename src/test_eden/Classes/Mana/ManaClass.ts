@@ -1,6 +1,5 @@
 import {ResourceStoreClass, ResourceTypes} from "../../../Resource";
 import {CRAFTING_SPEED, DRYING_SPEED, FLUSHING_SPEED, HARVEST_SPEED} from "../../constants/constants.ts";
-import {randomResourceRaise} from "../../helpers/randomChances.ts";
 import {RandomResourceUpdate} from "../RandomResourceUpdate.ts";
 
 
@@ -28,11 +27,8 @@ export class ManaClass {
   }
 
   // This can be replaced by the resource store one
-  public getTypeSum = (type: ResourceTypes) => {
-    const resources = this._resourceStore.getByType(type)
-    const sum = resources.reduce((sum, {value}) => (sum + Math.floor(value)), 0)
-    return Math.floor(Math.floor(sum))
-  }
+  public getTypeSum = (type: ResourceTypes) =>
+    this._resourceStore.getTypeSum(type)
 
   // This comes from flushing. Nothing more is needed to do than just flushing
   public produceLiquidMana = () => {
@@ -51,28 +47,35 @@ export class ManaClass {
   // This comes from liquid mana. It doesn't need any interaction. Just time to dry
   public produceDirtyMana = () => {
     const {produce, getByType} = this._resourceStore
-    const raise = randomResourceRaise(getByType('liquid_mana'), DRYING_SPEED)
-    produce('dirty_mana_level_1', raise.level_1)
-    produce('dirty_mana_level_2', raise.level_2)
-    produce('dirty_mana_level_3', raise.level_3)
-    produce('dirty_mana_level_4', raise.level_4)
-    produce('dirty_mana_level_5', raise.level_5)
+    const random_conversion = new RandomResourceUpdate().resourceConversion(
+      getByType('liquid_mana'),
+      getByType('dirty_mana'),
+    )
+    console.log(random_conversion.conversion_to.key, DRYING_SPEED)
+    produce(random_conversion.conversion_to.key, DRYING_SPEED)
+
+    // const raise = randomResourceRaise(getByType('liquid_mana'), DRYING_SPEED)
+    // produce('dirty_mana_level_1', raise.level_1)
+    // produce('dirty_mana_level_2', raise.level_2)
+    // produce('dirty_mana_level_3', raise.level_3)
+    // produce('dirty_mana_level_4', raise.level_4)
+    // produce('dirty_mana_level_5', raise.level_5)
   }
 
   public produceRawMana = (slaves: number) => {
     const {produce, getByType} = this._resourceStore
     const power = (slaves / 2) * HARVEST_SPEED
-    const raise = randomResourceRaise(getByType('dirty_mana'), power)
+    // const raise = randomResourceRaise(getByType('dirty_mana'), power)
     const random_conversion = new RandomResourceUpdate().resourceConversion(
       getByType('dirty_mana'),
       getByType('raw_mana'),
     )
-    const produce_amount = power > random_conversion.conversion_from.value
-    ? random_conversion.conversion_from.value
-      :power
-    produce(random_conversion.conversion_to.key, produce_amount)
-    console.log(power, random_conversion.conversion_from.value)
-    console.log(raise,random_conversion)
+    console.log(random_conversion.conversion_to.key, power)
+    produce(random_conversion.conversion_to.key, power)
+    // console.log(power, random_conversion.conversion_from.value)
+    // console.log(raise,random_conversion)
+
+
     // produce('raw_mana_level_1', raise.level_1)
     // produce('raw_mana_level_2', raise.level_2)
     // produce('raw_mana_level_3', raise.level_3)
@@ -83,12 +86,11 @@ export class ManaClass {
   public produceCleanMana = (slaves: number) => {
     const {produce, getByType} = this._resourceStore
     const power = CRAFTING_SPEED * (slaves / 3)
-    const raise = randomResourceRaise(getByType('raw_mana'), power)
-    produce('clean_mana_level_1', raise.level_1)
-    produce('clean_mana_level_2', raise.level_2)
-    produce('clean_mana_level_3', raise.level_3)
-    produce('clean_mana_level_4', raise.level_4)
-    produce('clean_mana_level_5', raise.level_5)
+    const random_conversion = new RandomResourceUpdate().resourceConversion(
+      getByType('raw_mana'),
+      getByType('mana'),
+    )
+    produce(random_conversion.conversion_to.key, power)
   }
 
   public hasRawMana = () => {
