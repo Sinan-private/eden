@@ -44,7 +44,6 @@ const useGameBase = () => {
       factionIfrit,
       factionGhoul,
       factionArwa,
-      // all: [factionIfrit, factionMarid, factionGhoul, factionArwa]
     }
   };
   useTurnSubscription(slaves.turnUpdate);
@@ -52,7 +51,6 @@ const useGameBase = () => {
   useTurnSubscription(() => behemoth.turnUpdate(game));
   useTurnSubscription(() => factionMarid.turnUpdate(game));
   useTurnSubscription(() => factionArwa.turnUpdate(game));
-
 
   return game
 }

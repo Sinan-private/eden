@@ -114,9 +114,9 @@ const SlavePreview = observer(() => {
 
 
 const ManaPreview = observer(() => {
-  const {resources, mana} = useGame();
-    const raw_mana = mana.getTypeSum('raw_mana')
+  const {resources} = useGame();
   const manaView = useMemo(() => {
+    const raw_mana = resources.getTypeSum('raw_mana')
     const list = resources.getByType('mana')
     return (
       <Box p={2}>
@@ -132,7 +132,7 @@ const ManaPreview = observer(() => {
         <Typography>Raw mana {raw_mana}</Typography>
       </Box>
     )
-  }, [raw_mana, resources])
+  }, [resources])
 
   return (
     <Box>

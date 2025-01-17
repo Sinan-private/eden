@@ -1,5 +1,5 @@
 import {makeAutoObservable} from "mobx";
-import {ResourceClass, ResourceStoreClass, ResourceTypes} from "../../../Resource";
+import {ResourceClass, ResourceStoreClass} from "../../../Resource";
 import {AUTO_CLIMB, STAMINA_REGEN, STAMINA_REGEN_ON_FLUSHING} from "../../constants/constants.ts";
 import {staminaDrain} from "../../constants/gameRules.ts";
 import {Game} from "../../context/game.context.ts";
@@ -76,25 +76,6 @@ export class BehemothClass {
       .trade([{key: 'clean_mana_level_1', value: 1}], [{key: 'behemoth_stamina', value: 5}], 20)
       .tradeIfPossible()
 
-  // private _getLevel = (level: number): LevelUpdate => {
-  //   const level_key = 'level_' + level as Level;
-  //   return levels[level_key] || {};
-  // }
-  //
-  // public levelUp = () => {
-  //   this._resourceStore.levelUp(this.level_requirement)
-  // }
-  //
-  // get meets_level_requirements() {
-  //   const {give, need} = this.level_requirement
-  //   const {hasEnough} = this._resourceStore
-  //   return hasEnough(give) && hasEnough(need)
-  // }
-  //
-  // get level_requirement(): LevelUpdate {
-  //   return this._getLevel(this.level + 1)
-  // }
-
   get decelerating() {
     return !this.movement_requested && !!this.climb_speed.value;
   }
@@ -136,15 +117,15 @@ export class BehemothClass {
   }
 
   get liquid_mana_sum() {
-    return this._getTypeSum('liquid_mana')
+    return this._resourceStore.getTypeSum('liquid_mana')
   }
 
   get dirty_mana_sum() {
-    return this._getTypeSum('dirty_mana')
+    return this._resourceStore.getTypeSum('dirty_mana')
   }
 
   get raw_mana_sum() {
-    return this._getTypeSum('raw_mana')
+    return this._resourceStore.getTypeSum('raw_mana')
   }
 
   get is_flushing() {
@@ -170,9 +151,6 @@ export class BehemothClass {
   get is_still() {
     return !this.is_moving && !this.is_flushing
   }
-
-  private _getTypeSum = (type: ResourceTypes) =>
-    this._resourceStore.getTypeSum(type)
 
   public turnUpdate = (game: Game) => {
     const {

@@ -1,8 +1,6 @@
 import {Resource} from "./index.ts";
 import {makeAutoObservable} from "mobx";
 
-// Todo trades are somehow not happening for e.g. 0.2 values.
-
 export type ResourceTrade<K extends string, T extends string> = {
   resource: Resource<K, T>;
 } & Partial<Resource<K, T>>;

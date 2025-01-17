@@ -2,17 +2,21 @@ import {Box} from "@mui/material";
 import styled from "styled-components";
 import {Gaja} from "./Gaja/Gaja.tsx";
 import upstream_image from '../assets/images/upstream.gif';
-import {useGame} from "./context/game.context.ts";
+import {Game as GameType, useGame} from "./context/game.context.ts";
 import {Background} from "./Background.tsx";
 import {DebuggingComponents} from "./Debugging/DebuggingComponents.tsx";
 import {Interface} from "./Interface/Interface.tsx";
 
 const IMAGE_HEIGHT = 400
 
+declare global {
+  interface Window {
+    game: GameType;
+  }
+}
 
 export const Game = () => {
-  const game = useGame();
-  window.game = game;
+  window.game = useGame();
   // Test trade
   // game.resources.trade([{key: 'dirty_mana_level_1', value: 1}], [{key: 'raw_mana_level_1', value: 1}], 0.2).tradeIfPossible()
   return (

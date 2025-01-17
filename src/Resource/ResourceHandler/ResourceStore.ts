@@ -11,7 +11,6 @@ export class ResourceStore<K extends string, T extends string> {
   constructor(initialResources: ResourceUpdateProps<K, T>[], public caller: string) {
     this.initializeResources(initialResources);
     this.newResource = new Resource({key: '' as K})
-    // console.log("ResourceStore instance created", initialResources);
     makeAutoObservable(this);
   }
 
