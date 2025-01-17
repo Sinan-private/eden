@@ -127,7 +127,7 @@ export class ResourceStore<K extends string, T extends string> {
   public hasEnough = (to_check?: TradeChange<K, T>[]) => {
     return !to_check
       ? true
-      : this.trade(to_check, []).isTradePossible()
+      : this.trade(to_check, []).getMaxPossibleAmount() >= 1
   }
 
   public getTypeSum = (type: T) => {

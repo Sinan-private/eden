@@ -11,6 +11,7 @@ export class LevelClass {
     public levels: Levels,
     public level = 1
   ) {
+    // makeAutoObservable(this)
   }
   public levelUp = () => {
     if (this.meets_level_requirements) {
