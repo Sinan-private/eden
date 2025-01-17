@@ -8,7 +8,10 @@ export class RandomResourceUpdate {
   public resourceConversion = (resources: ResourceClass[], to_resources: ResourceClass[]) => {
     const values = resources.map(({value}) => value)
     const index = this._randomIndexFromChances(values)
-    return to_resources[index];
+    return {
+      conversion_from: resources[index],
+      conversion_to: to_resources[index],
+    }
   }
   private _randomIndexFromChances = (values: number[]) => {
     // If a value like this [5, 3, 2] is provided there is a random value between 1 and 10 (the sum) generated.
@@ -24,21 +27,4 @@ export class RandomResourceUpdate {
     }
     return cumulativeWeight;
   }
-}
-
-const mapMultiply = (
-  input: number,
-  input_end: number,
-  // config?: MapChancesConfigProps,
-  input_start = defaultValues.input_start,
-  output_end = defaultValues.output_end,
-  output_start = defaultValues.output_start,
-): number => {
-  return output_start + ((output_end - output_start) / (input_end - input_start)) * (input - input_start)
-}
-
-const defaultValues = {
-  input_start: 0, // The lowest number of the range input.
-  output_start: 0, // The lowest number of the range output.
-  output_end: 1, // The largest number of the range output. Currently, set to a percentage range between 0 and 1
 }

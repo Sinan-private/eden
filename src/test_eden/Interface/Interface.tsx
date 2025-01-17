@@ -50,11 +50,17 @@ const SidebarExtension = observer(() => {
   return selectionActiveLeft ? sidebarContent[selectionActiveLeft] : null
 })
 
-const FactionMain = () => (
-  <>
-    Faction main
-  </>
-)
+const FactionMain = observer(() => {
+  const {produce} = useGame().resources
+  const testProduce = () => produce('raw_mana_level_1', 0.35)
+  // const testProduce = () => get('dirty_mana_level_1').updateValueBy(0.2)
+  return (
+    <>
+      Faction main
+      <Button onClick={testProduce}>Testing</Button>
+    </>
+  )
+})
 
 // Todo the trade should also accept changes to the min and max.
 //  In general it seems to be good to accept a raw_resource to allow overwriting even things like the cost, the type or possibly the label (e.g. adding 'Master')

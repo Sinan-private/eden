@@ -67,8 +67,11 @@ export class ManaClass {
       getByType('dirty_mana'),
       getByType('raw_mana'),
     )
-    produce(random_conversion.key, power)
-    console.log(power, random_conversion.value)
+    const produce_amount = power > random_conversion.conversion_from.value
+    ? random_conversion.conversion_from.value
+      :power
+    produce(random_conversion.conversion_to.key, produce_amount)
+    console.log(power, random_conversion.conversion_from.value)
     console.log(raise,random_conversion)
     // produce('raw_mana_level_1', raise.level_1)
     // produce('raw_mana_level_2', raise.level_2)

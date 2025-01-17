@@ -1,6 +1,8 @@
 import {Resource} from "./index.ts";
 import {makeAutoObservable} from "mobx";
 
+// Todo trades are somehow not happening for e.g. 0.2 values.
+
 export type ResourceTrade<K extends string, T extends string> = {
   resource: Resource<K, T>;
 } & Partial<Resource<K, T>>;
@@ -32,7 +34,7 @@ export class Trade<K extends string, T extends string> {
     return this.getMaxPossibleAmount() > 0;
   }
 
-  public enforceTrade = ()=> {
+  public enforceTrade = () => {
     this._executeTrade(this.amount)
   }
 
@@ -61,11 +63,12 @@ export class Trade<K extends string, T extends string> {
      * Therefore it needs to create the right object to pass to the resource updateBy()
      * Decided to leave it here because it calls a resource update
      */
+    console.log('amount', amount)
     const updateResources = (
       change: ResourceTrade<K, T>[],
       calculation: (value: number) => number
     ) => {
-      change.forEach(({ resource, ...update }) => {
+      change.forEach(({resource, ...update}) => {
         const adjustedUpdate = Object.fromEntries(
           Object.entries(update).map(([key, value]) => {
             if (typeof value === 'number') {
@@ -81,6 +84,7 @@ export class Trade<K extends string, T extends string> {
     updateResources(this.gains, (value) => value)
 
   }
+
   /**
    * Evaluates the trade outcome for the maximum feasible amount without applying it.
    * -> This might be outdated after the improvement to allow every change in a trade, e.g. max updates
@@ -90,7 +94,7 @@ export class Trade<K extends string, T extends string> {
     const result: { [key: string]: { before: number; after: number } } = {};
 
     // Evaluate scaled costs
-    this.costs.forEach(({ resource, value = 1 }) => {
+    this.costs.forEach(({resource, value = 1}) => {
       result[resource.key] = {
         before: resource.value,
         after: resource.respectConstraints(
@@ -100,7 +104,7 @@ export class Trade<K extends string, T extends string> {
     });
 
     // Evaluate scaled gains
-    this.gains.forEach(({ resource, value = 1 }) => {
+    this.gains.forEach(({resource, value = 1}) => {
       result[resource.key] = result[resource.key] || {
         before: resource.value,
         after: resource.value,
@@ -120,7 +124,7 @@ const getMaxPossibleAmount = <K extends string, T extends string>(
   amount: number,
 ): number => {
 
-  const maxByCosts = costs.map(({ resource, ...updates}) => {
+  const maxByCosts = costs.map(({resource, ...updates}) => {
     const list = Object.entries(updates).map(([key, change]) => {
       switch (key) {
         case 'value':
@@ -139,7 +143,7 @@ const getMaxPossibleAmount = <K extends string, T extends string>(
     return Math.min(...list)
   });
 
-  const maxByGains = gains.map(({ resource, ...updates}) => {
+  const maxByGains = gains.map(({resource, ...updates}) => {
     const list = Object.entries(updates).map(([key, change]) => {
       switch (key) {
         case 'value':

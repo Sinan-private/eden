@@ -14,8 +14,8 @@ export const Game = () => {
   return (
     <Screen>
       <Background/>
-      <Upstream/>
       <Gaja/>
+      <Upstream/>
       <Interface/>
       <DebuggingComponents/>
     </Screen>
@@ -68,7 +68,7 @@ const UpstreamContainer = styled(Box).attrs<{ $position: number }>((props) => ({
     height: 600px;
     position: fixed;
     left: 0;
-    z-index: 1;
+    z-index: 100;
 `
 
 
