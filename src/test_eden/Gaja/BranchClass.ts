@@ -1,4 +1,4 @@
-import {makeAutoObservable, toJS} from "mobx";
+import {makeAutoObservable} from "mobx";
 import branch_image1 from "../../assets/images/Branch3.png";
 import branch_image2 from "../../assets/images/Branch4.png";
 import branch_image3 from "../../assets/images/Branch5.png";
@@ -87,8 +87,8 @@ export class BranchClass {
   public turnUpdate = (y: number) => {
     if (this._shouldRemoveBranch(y)) {
 
-      console.log('remove oldest', toJS(this._branches))
-      console.log('y', y)
+      // console.log('remove oldest', toJS(this._branches))
+      // console.log('y', y)
       this._removeOldest()
     }
     if (this._shouldCreateBranch(y)) {

@@ -13,9 +13,9 @@ export const SLAVES_INITIALLY_ARWA = 4;
 // Coefficients
 export const CLIMBING_SPEED_COEFFICIENT = 0.1
 export const FLUSHING_SPEED = 1;
-export const DRYING_SPEED = 5;
-export const HARVEST_SPEED = 0.9;
-export const CRAFTING_SPEED = 0.7;
+export const DRYING_SPEED = 3;
+export const HARVEST_SPEED = 0.7;
+export const CRAFTING_SPEED = 0.5;
 export const MANA_FINDINGS = [1, 20, 300, 4000, 50000];
 export const STAMINA_DRAIN = 1.5
 export const STAMINA_REGEN = 0.3

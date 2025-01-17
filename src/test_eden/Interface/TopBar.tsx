@@ -36,10 +36,10 @@ export const TopBar = () => {
 }
 
 const Center = () => {
-  const {slaves, behemoth, mana, upstream} = useGame();
+  const {slaves, behemoth, mana, upstream, resources} = useGame();
   const {slaves_enslaved, unassigned_slaves} = slaves;
   const slaveAmount = `${unassigned_slaves} / ${slaves_enslaved.beautify.value}`;
-  const manaAmount = `${Math.floor(mana.mana_count)} (${Math.floor(mana.getTypeSum('raw_mana'))})`;
+  const manaAmount = `${Math.floor(mana.mana_count)} (${Math.floor(resources.getTypeSum('raw_mana'))})`;
   // const behemothAmount = `${behemoth.hp.beautify.value} (${behemoth.acid.beautify.value})`;
   const behemothHeight = `${behemoth.climb_height.beautify.value} (${upstream.height.beautify.value})`;
   // const behemothHeight = `${behemoth.climb_height.beautify.value}`;
