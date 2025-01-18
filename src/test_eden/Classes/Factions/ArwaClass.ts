@@ -11,10 +11,10 @@ export class ArwaClass extends FactionClass {
     const {get} = this.resources;
     this.image = image;
     this.visible = true;
-    this.loyalty = get('deception_loyalty');
-    this.influence = get('deception_influence');
-    this.progress = get('deception_progress');
-    this.level = get('deception_level');
+    this.loyalty = get('arwa_loyalty');
+    this.influence = get('arwa_influence');
+    this.progress = get('arwa_progress');
+    this.level = get('arwa_level');
   }
 
   get is_collecting() {

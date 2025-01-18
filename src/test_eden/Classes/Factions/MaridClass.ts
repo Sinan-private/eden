@@ -14,10 +14,10 @@ export class MaridClass extends FactionClass {
     this.image = image;
     this.active = true;
     this.visible = true;
-    this.loyalty = get('slave_hunter_loyalty');
-    this.influence = get('slave_hunter_influence');
-    this.progress = get('slave_hunter_progress');
-    this.level = get('slave_hunter_level');
+    this.loyalty = get('marid_loyalty');
+    this.influence = get('marid_influence');
+    this.progress = get('marid_progress');
+    this.level = get('marid_level');
   }
 
   get is_hunting(): boolean {
@@ -25,7 +25,7 @@ export class MaridClass extends FactionClass {
   }
 
   get has_slave_caught() {
-    const progress_done = this.resources.get('slave_hunter_progress').is_max
+    const progress_done = this.resources.get('marid_progress').is_max
     const can_enslave = this.slaves.can_enslave;
     return progress_done && can_enslave;
   }

@@ -9,9 +9,9 @@ export class GhoulClass extends FactionClass {
     const {get} = this.resources;
     this.image = image;
     this.visible = true;
-    this.loyalty = get('guard_loyalty');
-    this.influence = get('guard_influence');
-    this.progress = get('guard_progress');
-    this.level = get('guard_level');
+    this.loyalty = get('ghoul_loyalty');
+    this.influence = get('ghoul_influence');
+    this.progress = get('ghoul_progress');
+    this.level = get('ghoul_level');
   }
 }

@@ -27,7 +27,7 @@ const useGameBase = () => {
     behemoth,
     upstream,
     player,
-  }), [behemoth, mana, resources, slaves, upstream])
+  }), [player, behemoth, mana, resources, slaves, upstream])
   const factionIfrit = useMemo(() => new IfritClass(gameClasses), [gameClasses])
   const factionArwa = useMemo(() => new ArwaClass(gameClasses), [gameClasses])
   const factionGhoul = useMemo(() => new GhoulClass(gameClasses), [gameClasses])

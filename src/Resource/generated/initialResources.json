@@ -342,7 +342,7 @@
   },
   {
     "key": "clean_mana_level_2",
-    "value": 5,
+    "value": 3,
     "min": 0,
     "max": null,
     "label": "Clean mana level 2",
@@ -481,7 +481,7 @@
     "revealedAt": null
   },
   {
-    "key": "slave_hunter_loyalty",
+    "key": "marid_loyalty",
     "value": 50,
     "min": 0,
     "max": 100,
@@ -492,7 +492,7 @@
     "revealedAt": null
   },
   {
-    "key": "slave_hunter_influence",
+    "key": "marid_influence",
     "value": 25,
     "min": 0,
     "max": 100,
@@ -503,7 +503,7 @@
     "revealedAt": null
   },
   {
-    "key": "slave_hunter_progress",
+    "key": "marid_progress",
     "value": 0,
     "min": 0,
     "max": 100,
@@ -547,7 +547,7 @@
     "revealedAt": null
   },
   {
-    "key": "demon_loyalty",
+    "key": "ifrit_loyalty",
     "value": 50,
     "min": 0,
     "max": 100,
@@ -558,7 +558,7 @@
     "revealedAt": null
   },
   {
-    "key": "demon_influence",
+    "key": "ifrit_influence",
     "value": 25,
     "min": 0,
     "max": 100,
@@ -569,7 +569,7 @@
     "revealedAt": null
   },
   {
-    "key": "demon_progress",
+    "key": "ifrit_progress",
     "value": 0,
     "min": 0,
     "max": 100,
@@ -580,7 +580,7 @@
     "revealedAt": null
   },
   {
-    "key": "guard_loyalty",
+    "key": "ghoul_loyalty",
     "value": 50,
     "min": 0,
     "max": 100,
@@ -591,7 +591,7 @@
     "revealedAt": null
   },
   {
-    "key": "guard_influence",
+    "key": "ghoul_influence",
     "value": 25,
     "min": 0,
     "max": 100,
@@ -602,7 +602,7 @@
     "revealedAt": null
   },
   {
-    "key": "guard_progress",
+    "key": "ghoul_progress",
     "value": 0,
     "min": 0,
     "max": 100,
@@ -613,7 +613,7 @@
     "revealedAt": null
   },
   {
-    "key": "slave_hunter_level",
+    "key": "marid_level",
     "value": 1,
     "min": 0,
     "max": 50,
@@ -635,7 +635,7 @@
     "revealedAt": null
   },
   {
-    "key": "demon_level",
+    "key": "ifrit_level",
     "value": 1,
     "min": 0,
     "max": 50,
@@ -646,7 +646,7 @@
     "revealedAt": null
   },
   {
-    "key": "guard_level",
+    "key": "ghoul_level",
     "value": 1,
     "min": 0,
     "max": 50,
