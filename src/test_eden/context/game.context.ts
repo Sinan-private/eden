@@ -9,11 +9,13 @@ import {UpstreamClass} from "../Classes/UpstreamClass.ts";
 import {Tick, useTick} from "../../Resource/context/tick.context.ts";
 import {Resources} from "../../Resource/context/resource.context.ts";
 import {InterfaceController} from "../Interface/InterfaceController.ts";
+import {PlayerClass} from "../Classes/Player/PlayerClass.ts";
 
 
 const useGameBase = () => {
   const {resources} = useResource();
   const tick = useTick();
+  const player = useMemo(() => new PlayerClass(resources), [resources]);
   const slaves = useMemo(() => new SlaveClass(resources), [resources]);
   const mana = useMemo(() => new ManaClass(resources), [resources])
   const behemoth = useMemo(() => new BehemothClass(resources), [resources]);
@@ -24,6 +26,7 @@ const useGameBase = () => {
     mana,
     behemoth,
     upstream,
+    player,
   }), [behemoth, mana, resources, slaves, upstream])
   const factionIfrit = useMemo(() => new IfritClass(gameClasses), [gameClasses])
   const factionArwa = useMemo(() => new ArwaClass(gameClasses), [gameClasses])
@@ -39,6 +42,7 @@ const useGameBase = () => {
     slaves,
     mana,
     upstream,
+    player,
     factions: {
       factionMarid,
       factionIfrit,
@@ -65,6 +69,7 @@ export type GameBaseClasses = {
   slaves: SlaveClass;
   upstream: UpstreamClass;
   mana: ManaClass;
+  player: PlayerClass;
 };
 
 type FactionClasses = {

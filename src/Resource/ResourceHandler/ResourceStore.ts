@@ -104,6 +104,11 @@ export class ResourceStore<K extends string, T extends string> {
     }
   }
 
+  // Todo For a long time this needed to be reworked
+  //  internally I want to be able to use this with missing value props. This will just be 0 then
+  //  From an outside the value should be enforced
+  //  But most importantly the stupid trade().tradeIfPossible() should be replaced by simple trade()
+  //  In addition there can be some kind of check that is available to evaluate the trade
   public trade = (
     give: ResourceCostUpdate<K, T>['give'],
     gain: ResourceCostUpdate<K, T>['gain'],
@@ -127,20 +132,27 @@ export class ResourceStore<K extends string, T extends string> {
         give = [],
         gain = [],
       } = level
-      this.trade(give, gain).enforceTrade()
+      this.trade(this._levelToTradeConversion(give), this._levelToTradeConversion(gain)).enforceTrade()
     }
   }
 
-  public hasEnough = (to_check?: TradeChange<K, T>[]) => {
-    return !to_check
-      ? true
-      : this.trade(to_check, []).getMaxPossibleAmount() >= 1
+  public hasEnough = (to_check?: LevelUpdate<K, T>['gain']) => {
+    if (!to_check) {
+      return true
+    }
+    return this.trade(this._levelToTradeConversion(to_check), []).getMaxPossibleAmount() >= 1
   }
 
   public getTypeSum = (type: T) => {
     const resources = this.getByType(type)
     return  resources.reduce((sum, {value}) => (sum + value), 0)
   }
+
+  private _levelToTradeConversion = (to_check: LevelUpdate<K, T>['gain']): TradeChange<K, T>[] =>
+    to_check!.map(({value = 0, ...check}) => ({
+      value,
+      ...check
+    } as TradeChange<K, T>))
 
   get allResources() {
     return Array.from(this.resources.values());
