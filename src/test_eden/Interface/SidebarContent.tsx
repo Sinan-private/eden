@@ -3,8 +3,7 @@ import {useGame} from "../context/game.context.ts";
 import {InterfaceActiveLeft} from "./InterfaceController.ts";
 import React from "react";
 import {FactionManager} from "./FactionManager.tsx";
-import {Box, LinearProgress, Paper, Typography} from "@mui/material";
-import {ResourceClass} from "../../Resource";
+import {ValueDisplay} from "./ValueDisplay.tsx";
 
 export const SidebarContent = observer(() => {
   const {selectionActiveLeft} = useGame().ui;
@@ -34,19 +33,3 @@ const BehemothSettings = () => {
     </>
   )
 }
-type ValueDisplayProps = {
-  resource: ResourceClass;
-  label?: string;
-}
-const ValueDisplay = observer(({resource, label = resource.label}: ValueDisplayProps) => (
-  <Paper>
-    <Box sx={{
-      display: 'flex',
-      justifyContent: 'space-between',
-    }}>
-      <Typography variant="caption">{label}</Typography>
-      <Typography>{resource.beautify.value}</Typography>
-    </Box>
-    <LinearProgress variant="determinate" value={resource.percentage} sx={{color: 'white'}}/>
-  </Paper>
-))

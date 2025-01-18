@@ -1,5 +1,5 @@
 import {Resource} from "./index.ts";
-import {makeAutoObservable, toJS} from "mobx";
+import {makeAutoObservable} from "mobx";
 
 export type ResourceTrade<K extends string, T extends string> = {
   resource: Resource<K, T>;
@@ -77,8 +77,6 @@ export class Trade<K extends string, T extends string> {
         resource.updateBy(adjustedUpdate);
       });
     }
-      console.log(toJS(this.costs[0]))
-      console.log(toJS(this.gains[0]))
     updateResources(this.costs, (value) => -value)
     updateResources(this.gains, (value) => value)
 

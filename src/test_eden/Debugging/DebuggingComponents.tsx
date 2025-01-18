@@ -3,7 +3,6 @@ import styled from "styled-components";
 import {Stack, Switch, Typography} from "@mui/material";
 import {Debug_Behemoth} from "./Debug_Behemoth.tsx";
 import {Debug_SlaveManagement} from "./Debug_SlaveManagement.tsx";
-import {blue} from "../../constants/colors.ts";
 
 import {BEAUTIFY_DEBUG, DEBUG} from "../constants/constants.ts";
 
@@ -69,11 +68,3 @@ const Child = styled.div`
      overflow: auto;
 `
 
-export const Debug_Box = styled.div`
-    border: 1px solid ${blue};
-    margin: 0 8px 8px 0;
-    background-color: #17212a91;
-    padding: 4px 8px;
-    border-radius: 4px;
-}
-`

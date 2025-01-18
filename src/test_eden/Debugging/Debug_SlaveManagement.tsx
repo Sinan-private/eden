@@ -1,7 +1,8 @@
 import {useGame} from "../context/game.context.ts";
 import {Box, Button, Stack} from "@mui/material";
 import {Debug_CustomResource, Debug_Resource, Debug_ResourceGroup} from "./Debug_Resource.tsx";
-import {Debug_Box} from "./DebuggingComponents.tsx";
+
+import {Debug_Box} from "./Debug_Box.tsx";
 
 export const Debug_SlaveManagement = ({beautifyValues}: { beautifyValues: boolean }) => {
   const {slaves} = useGame();

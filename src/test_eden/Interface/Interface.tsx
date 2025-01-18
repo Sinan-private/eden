@@ -8,8 +8,9 @@ import {SidebarContent} from "./SidebarContent.tsx";
 import {useGame} from "../context/game.context.ts";
 import {InterfaceActiveLeft} from "./InterfaceController.ts";
 import {observer} from "mobx-react";
-import {grey_blue} from "../../constants/colors.ts";
-import {Box, Button, Stack, Typography} from "@mui/material";
+import {Button} from "@mui/material";
+import {BehemothManager} from "./BehemothManager.tsx";
+import {PlayerManager} from "./PlayerManager.tsx";
 
 const HEADER_HEIGHT = 60;
 export const FOOTER_HEIGHT = 80;
@@ -44,8 +45,8 @@ const SidebarExtension = observer(() => {
   const {selectionActiveLeft} = useGame().ui;
   const sidebarContent: Record<Exclude<InterfaceActiveLeft, null>, React.ReactNode> = {
     faction: (<FactionMain/>),
-    player: (<PlayerMain/>),
-    behemoth: (<BehemothMain/>),
+    player: (<PlayerManager/>),
+    behemoth: (<BehemothManager/>),
   }
   return selectionActiveLeft ? sidebarContent[selectionActiveLeft] : null
 })
@@ -61,47 +62,6 @@ const FactionMain = observer(() => {
     </>
   )
 })
-
-// Todo the trade should also accept changes to the min and max.
-//  In general it seems to be good to accept a raw_resource to allow overwriting even things like the cost, the type or possibly the label (e.g. adding 'Master')
-
-const PlayerMain = observer(() => {
-  const onClick = () => {}
-    // trade([{key: 'behemoth_hp', max: 20}], [{key: 'behemoth_acid', value: 100}], 10).tradeIfPossible()
-  return (
-    <>
-      Player main
-      <button onClick={onClick}>test level up</button>
-    </>
-  )
-})
-
-const BehemothMain = observer(() => {
-  const {level} = useGame().behemoth;
-  // console.log(meetsLevelRequirements());
-  return(
-    <Box p={2}>
-      <Card>
-        <Typography variant="h5">Behemoth</Typography>
-        <Stack direction="row" spacing={2} alignItems="center">
-        <Typography>Level {level.level}</Typography>
-          <Typography>{JSON.stringify(level.level_requirements)}</Typography>
-        <Button disabled={!level.meets_level_requirements} onClick={level.levelUp}>
-          Level up
-        </Button>
-        </Stack>
-      </Card>
-    </Box>
-  )
-})
-
-const Card = styled.div`
-    border: 1px solid ${grey_blue};
-    margin: 0 8px 8px 0;
-    background-color: #17212a91;
-    padding: 4px 8px;
-    border-radius: 4px;
-`
 
 const Grid = styled.div`
     position: fixed;

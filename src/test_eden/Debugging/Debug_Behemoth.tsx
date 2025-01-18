@@ -1,7 +1,8 @@
 import {useGame} from "../context/game.context.ts";
 import {Box} from "@mui/material";
 import {Debug_Resource, Debug_ResourceGroup} from "./Debug_Resource.tsx";
-import {Debug_Box} from "./DebuggingComponents.tsx";
+
+import {Debug_Box} from "./Debug_Box.tsx";
 
 export const Debug_Behemoth = ({beautifyValues}: { beautifyValues: boolean }) => {
   const {behemoth, resources} = useGame()

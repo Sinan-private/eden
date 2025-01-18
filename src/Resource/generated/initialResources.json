@@ -663,7 +663,7 @@
     "max": 1000,
     "label": "Acid",
     "type": "behemoth",
-    "iconName": "empty",
+    "iconName": "potion_green",
     "cost": null,
     "revealedAt": null
   },
@@ -674,7 +674,7 @@
     "max": 500,
     "label": "HP",
     "type": "behemoth",
-    "iconName": "empty",
+    "iconName": "portion_red",
     "cost": null,
     "revealedAt": null
   },
@@ -696,7 +696,7 @@
     "max": 150,
     "label": "Stamina",
     "type": "behemoth",
-    "iconName": "empty",
+    "iconName": "potion_blue",
     "cost": null,
     "revealedAt": null
   },

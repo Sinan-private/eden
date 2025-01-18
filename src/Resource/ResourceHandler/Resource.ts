@@ -4,7 +4,7 @@ import {
   ResourceTypeRaw,
   ResourceCostUpdate, TradeChange,
 } from "./genericTypes.ts";
-import {beautifyNumber, mapMultiply} from "../helpers";
+import {beautifyNumber} from "../helpers";
 import {makeAutoObservable, toJS} from "mobx";
 import icons from "../assets/icons/icons.ts";
 import {id} from "../helpers/id.ts";
@@ -132,7 +132,7 @@ export class Resource<K extends string, T extends string> {
     this.value - value >= 0
 
   get percentage() {
-    return Math.floor(mapMultiply(this.value, this.max) * 100);
+    return this.value / this.max * 100
   }
 
   get beautify(): ResourceBeautyType {
