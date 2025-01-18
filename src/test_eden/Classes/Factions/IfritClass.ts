@@ -12,5 +12,7 @@ export class IfritClass extends FactionClass {
     this.influence = get('ifrit_influence');
     this.progress = get('ifrit_progress');
     this.level = get('ifrit_level');
+    this.skill_speed_primary = get('ifrit_speed_primary_skill');
+    this.skill_speed_secondary = get('ifrit_speed_secondary_skill');
   }
 }

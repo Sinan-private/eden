@@ -299,7 +299,7 @@
     "value": 50,
     "min": 0,
     "max": null,
-    "label": "Clean mana level 1",
+    "label": "Mana level 1",
     "type": "mana",
     "iconName": "mana_clean_lvl1",
     "cost": {
@@ -345,7 +345,7 @@
     "value": 3,
     "min": 0,
     "max": null,
-    "label": "Clean mana level 2",
+    "label": "Mana level 2",
     "type": "mana",
     "iconName": "mana_clean_lvl2",
     "cost": {
@@ -369,7 +369,7 @@
     "value": 0,
     "min": 0,
     "max": null,
-    "label": "Clean mana level 3",
+    "label": "Mana level 3",
     "type": "mana",
     "iconName": "mana_clean_lvl3",
     "cost": {
@@ -393,7 +393,7 @@
     "value": 0,
     "min": 0,
     "max": null,
-    "label": "Clean mana level 4",
+    "label": "Mana level 4",
     "type": "mana",
     "iconName": "mana_clean_lvl4",
     "cost": {
@@ -417,7 +417,7 @@
     "value": 0,
     "min": 0,
     "max": null,
-    "label": "Clean mana level 5",
+    "label": "Mana level 5",
     "type": "mana",
     "iconName": "mana_clean_lvl5",
     "cost": {
@@ -485,7 +485,7 @@
     "value": 50,
     "min": 0,
     "max": 100,
-    "label": "Slave hunter loyalty",
+    "label": "Loyalty",
     "type": "faction_marid",
     "iconName": "empty",
     "cost": null,
@@ -496,7 +496,7 @@
     "value": 25,
     "min": 0,
     "max": 100,
-    "label": "Slave hunter influence",
+    "label": "Influence",
     "type": "faction_marid",
     "iconName": "empty",
     "cost": null,
@@ -507,14 +507,14 @@
     "value": 0,
     "min": 0,
     "max": 100,
-    "label": "Slave hunter progress",
+    "label": "Progress",
     "type": "faction_marid",
     "iconName": "empty",
     "cost": null,
     "revealedAt": null
   },
   {
-    "key": "deception_loyalty",
+    "key": "arwa_loyalty",
     "value": 50,
     "min": 0,
     "max": 100,
@@ -525,7 +525,7 @@
     "revealedAt": null
   },
   {
-    "key": "deception_influence",
+    "key": "arwa_influence",
     "value": 25,
     "min": 0,
     "max": 100,
@@ -536,7 +536,7 @@
     "revealedAt": null
   },
   {
-    "key": "deception_progress",
+    "key": "arwa_progress",
     "value": 0,
     "min": 0,
     "max": 100,
@@ -624,7 +624,7 @@
     "revealedAt": null
   },
   {
-    "key": "deception_level",
+    "key": "arwa_level",
     "value": 1,
     "min": 0,
     "max": 50,
@@ -773,6 +773,94 @@
     "max": null,
     "label": "Consumed",
     "type": "slaves",
+    "iconName": "empty",
+    "cost": null,
+    "revealedAt": null
+  },
+  {
+    "key": "marid_speed_primary_skill",
+    "value": 1,
+    "min": 0,
+    "max": null,
+    "label": "Primary skill speed",
+    "type": "faction_marid",
+    "iconName": "empty",
+    "cost": null,
+    "revealedAt": null
+  },
+  {
+    "key": "marid_speed_secondary_skill",
+    "value": 1,
+    "min": 0,
+    "max": null,
+    "label": "Secondary skill speed",
+    "type": "faction_marid",
+    "iconName": "empty",
+    "cost": null,
+    "revealedAt": null
+  },
+  {
+    "key": "arwa_speed_primary_skill",
+    "value": 1,
+    "min": 0,
+    "max": null,
+    "label": "Primary skill speed",
+    "type": "faction_arwa",
+    "iconName": "empty",
+    "cost": null,
+    "revealedAt": null
+  },
+  {
+    "key": "arwa_speed_secondary_skill",
+    "value": 1,
+    "min": 0,
+    "max": null,
+    "label": "Secondary skill speed",
+    "type": "faction_arwa",
+    "iconName": "empty",
+    "cost": null,
+    "revealedAt": null
+  },
+  {
+    "key": "ifrit_speed_primary_skill",
+    "value": 1,
+    "min": 0,
+    "max": null,
+    "label": "Primary skill speed",
+    "type": "faction_ifrit",
+    "iconName": "empty",
+    "cost": null,
+    "revealedAt": null
+  },
+  {
+    "key": "ifrit_speed_secondary_skill",
+    "value": 1,
+    "min": 0,
+    "max": null,
+    "label": "Secondary skill speed",
+    "type": "faction_ifrit",
+    "iconName": "empty",
+    "cost": null,
+    "revealedAt": null
+  },
+  {
+    "key": "ghoul_speed_primary_skill",
+    "value": 1,
+    "min": 0,
+    "max": null,
+    "label": "Primary skill speed",
+    "type": "faction_ghoul",
+    "iconName": "empty",
+    "cost": null,
+    "revealedAt": null
+  },
+  {
+    "key": "ghoul_speed_secondary_skill",
+    "value": 1,
+    "min": 0,
+    "max": null,
+    "label": "Secondary skill speed",
+    "type": "faction_ghoul",
     "iconName": "empty",
     "cost": null,
     "revealedAt": null

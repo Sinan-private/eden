@@ -18,6 +18,8 @@ export class MaridClass extends FactionClass {
     this.influence = get('marid_influence');
     this.progress = get('marid_progress');
     this.level = get('marid_level');
+    this.skill_speed_primary = get('marid_speed_primary_skill');
+    this.skill_speed_secondary = get('marid_speed_secondary_skill');
   }
 
   get is_hunting(): boolean {

@@ -13,6 +13,8 @@ export class FactionClass {
   public influence!: ResourceClass;
   public progress!: ResourceClass;
   public level!: ResourceClass;
+  public skill_speed_primary!: ResourceClass;
+  public skill_speed_secondary!: ResourceClass;
   public resources: ResourceStoreClass;
   public slaves: SlaveClass;
   public mana: ManaClass;

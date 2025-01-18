@@ -15,11 +15,14 @@ export class ArwaClass extends FactionClass {
     this.influence = get('arwa_influence');
     this.progress = get('arwa_progress');
     this.level = get('arwa_level');
+    this.skill_speed_primary = get('arwa_speed_primary_skill');
+    this.skill_speed_secondary = get('arwa_speed_secondary_skill');
   }
 
   get is_collecting() {
     return this.collecting_requested
       && !this.behemoth.is_flushing_mana
+      && !this.behemoth.is_moving
       && !!this.resources.getTypeSum('dirty_mana')
   }
 

@@ -51,5 +51,13 @@ export const resourceKeys = [
   "slaves_wasted",
   "slaves_in_rebirth",
   "slaves_limit",
-  "slaves_consumed"
+  "slaves_consumed",
+  "marid_speed_primary_skill",
+  "marid_speed_secondary_skill",
+  "arwa_speed_primary_skill",
+  "arwa_speed_secondary_skill",
+  "ifrit_speed_primary_skill",
+  "ifrit_speed_secondary_skill",
+  "ghoul_speed_primary_skill",
+  "ghoul_speed_secondary_skill"
 ] as const;
