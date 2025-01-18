@@ -1,3 +1,11 @@
+// Config
+export const MS_TO_TICK = 25;
+export const TICKS_PER_SECOND = 5;
+export const TICK_AUTO_START = true;
+export const DEBUG = true;
+export const BEAUTIFY_DEBUG = false;
+
+
 // Game start
 export const AUTO_CLIMB = true
 export const AUTO_COLLECT_MANA = true
@@ -23,4 +31,4 @@ export const MANA_TRANSFER = 0.4 // This it the global coefficient of mana trans
 // export const STAMINA_DRAIN = 200
 // export const STAMINA_REGEN = 1
 export const STAMINA_REGEN_ON_FLUSHING = 0.05
-export const SLAVE_CREATION = 1
+export const SLAVE_CREATION = 0.5

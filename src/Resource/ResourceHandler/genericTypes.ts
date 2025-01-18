@@ -8,7 +8,7 @@ export type ResourceTypeRaw<K, T> = {
   revealedAt: ResourceCostUpdate<K, T> | null;
   iconName?: string;
 }
-export type TradeChange<K, T> = {key: K} & Partial<ResourceTypeRaw<K, T>>;
+export type TradeChange<K, T> = {key: K; value: number} & Partial<ResourceTypeRaw<K, T>>;
 export type ResourceCostUpdate<K, T> = {
   give: TradeChange<K, T>[];
   gain: TradeChange<K, T>[];

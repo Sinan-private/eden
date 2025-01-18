@@ -200,6 +200,7 @@ export class BehemothClass {
     }
     if (is_flushing_mana) {
       game.mana.produceLiquidMana()
+      this._resourceStore.get('upstream_height').updateValueBy(10)
     }
     if (stopped_flushing_mana) {
       flushing_depth.updateValueBy(-1)

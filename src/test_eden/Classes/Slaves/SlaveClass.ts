@@ -24,7 +24,7 @@ type FactionKeys = 'ifrit' | 'marid' | 'arwa' | 'ghoul'
 export class SlaveClass {
   public limit: ResourceClass;
   public slaves_bound: ResourceClass;
-  private _slaves_in_rebirth: ResourceClass;
+  public slaves_in_rebirth: ResourceClass;
   public slaves_roaming: ResourceClass;
   public slaves_enslaved: ResourceClass;
   public slaves_wasted: ResourceClass;
@@ -38,7 +38,7 @@ export class SlaveClass {
   constructor(private _resourceStore: ResourceStoreClass) {
     this.limit = _resourceStore.get('slaves_limit')
     this.slaves_bound = _resourceStore.get('slaves_bound')
-    this._slaves_in_rebirth =  _resourceStore.get('slaves_in_rebirth')
+    this.slaves_in_rebirth =  _resourceStore.get('slaves_in_rebirth')
     this.slaves_roaming = _resourceStore.get('slaves_roaming')
     this.slaves_enslaved = _resourceStore.get('slaves_enslaved')
     this.slaves_wasted = _resourceStore.get('slaves_wasted')
@@ -50,11 +50,12 @@ export class SlaveClass {
   // public bindSlave = (amount = 1) => {
   //
   // }
-  get slaves_in_rebirth() {
-    return this._slaves_in_rebirth.value
-  }
+  // get slaves_in_rebirth() {
+  //   console.log(this._slaves_in_rebirth.value, this.max_slaves_in_rebirth)
+  //   return this._slaves_in_rebirth.value
+  // }
   get slaves_in_eden() {
-    return this._slaves_in_rebirth.value
+    return this.slaves_in_rebirth.value
       + this.slaves_roaming.value
       + this.slaves_enslaved.value
       + this.slaves_wasted.value
@@ -65,30 +66,27 @@ export class SlaveClass {
   }
   public addSlaveToRebirth = (amount = 1) => {
     const maxPossible = amount <= this.max_slaves_in_rebirth ? amount : this.max_slaves_in_rebirth;
-    this._slaves_in_rebirth.updateValueBy(maxPossible);
+    this.slaves_in_rebirth.updateValueBy(maxPossible);
   }
   public removeSlaveFromRebirth = (amount = 1) => {
-    this._slaves_in_rebirth.updateValueBy(-amount);
+    this.slaves_in_rebirth.updateValueBy(-amount);
   }
 
   public resurrect = () => {
     this._resourceStore
-      .trade([{key: 'slaves_consumed'}], [{key: 'slaves_in_rebirth'}])
+      .trade([{key: 'slaves_consumed', value: 1}], [{key: 'slaves_in_rebirth', value: 1}])
       .tradeIfPossible()
   }
 
   public revive = () => {
     this._resourceStore
-      .trade([{key: 'slaves_in_rebirth'}], [{key: 'slaves_roaming'}])
+      .trade([{key: 'slaves_in_rebirth', value: 1}], [{key: 'slaves_roaming', value: 1}])
       .tradeIfPossible()
   }
 
   public enslave = () => {
-    // const maxPossible = amount <= this.slaves_roaming.value ? amount : this.slaves_roaming.value;
-    // this.slaves_roaming.updateValueBy(-maxPossible)
-    // this.slaves_enslaved.updateValueBy(maxPossible)
     this._resourceStore
-      .trade([{key: 'slaves_roaming'}], [{key: 'slaves_enslaved'}])
+      .trade([{key: 'slaves_roaming', value: 1}], [{key: 'slaves_enslaved', value: 1}])
       .tradeIfPossible()
   }
 
@@ -110,12 +108,12 @@ export class SlaveClass {
       this.unassignRandom()
     }
     this._resourceStore
-      .trade([{key: 'slaves_enslaved'}], [{key: 'slaves_wasted'}])
+      .trade([{key: 'slaves_enslaved', value: 1}], [{key: 'slaves_wasted', value: 1}])
       .tradeIfPossible()
   }
   public consume = () => {
     this._resourceStore
-      .trade([{key: 'slaves_wasted'}], [{key: 'slaves_consumed'}])
+      .trade([{key: 'slaves_wasted', value: 1}], [{key: 'slaves_consumed', value: 1}])
       .tradeIfPossible()
   }
   // public revive

@@ -1,6 +1,7 @@
 import {createContainer} from "unstated-next";
 import {useEffect, useState} from "react";
-import {MS_TO_TICK, TICK_AUTO_START, TICKS_PER_SECOND} from "../../constants/config.ts";
+
+import {MS_TO_TICK, TICK_AUTO_START, TICKS_PER_SECOND} from "../../test_eden/constants/constants.ts";
 
 export type Tick = ReturnType<typeof useTickBase>
 

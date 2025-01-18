@@ -19,7 +19,7 @@ export const Debug_SlaveManagement = ({beautifyValues}: { beautifyValues: boolea
                 onIncrement={slaves.addSlaveToRebirth}
                 onDecrement={slaves.revive}
                 beautifyValues={beautifyValues}
-                value={slaves.slaves_in_rebirth}
+                value={slaves.slaves_in_rebirth.value}
               />
               <Button onClick={slaves.resurrect} sx={{width: 100}}>Resurrect</Button>
             </Stack>

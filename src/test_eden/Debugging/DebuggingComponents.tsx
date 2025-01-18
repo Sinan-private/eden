@@ -4,7 +4,8 @@ import {Stack, Switch, Typography} from "@mui/material";
 import {Debug_Behemoth} from "./Debug_Behemoth.tsx";
 import {Debug_SlaveManagement} from "./Debug_SlaveManagement.tsx";
 import {blue} from "../../constants/colors.ts";
-import {BEAUTIFY_DEBUG, DEBUG} from "../../constants/config.ts";
+
+import {BEAUTIFY_DEBUG, DEBUG} from "../constants/constants.ts";
 
 export const DebuggingComponents = () => {
   const [beautifyValues, setBeautifyValues] = useState(BEAUTIFY_DEBUG)
@@ -20,7 +21,7 @@ export const DebuggingComponents = () => {
         pointerEvents: 'initial',
         zIndex: 1000,
         width: 200,
-        maxWidth: '20%'
+        maxWidth: '20%',
       }}>
 
         <Stack
@@ -64,6 +65,8 @@ const Child = styled.div`
     pointer-events: initial;
     z-index: 1000;
     padding: 30px 100px;
+     height: calc(100% - 60px);
+     overflow: auto;
 `
 
 export const Debug_Box = styled.div`
