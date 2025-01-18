@@ -7,8 +7,8 @@ export const resourceTypes = [
   "mana",
   "behemoth",
   "slaves",
-  "faction_slave_hunter",
-  "faction_demon",
-  "faction_guard",
-  "faction_deception"
+  "faction_marid",
+  "faction_ifrit",
+  "faction_ghoul",
+  "faction_arwa"
 ] as const;

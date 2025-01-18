@@ -486,7 +486,7 @@
     "min": 0,
     "max": 100,
     "label": "Slave hunter loyalty",
-    "type": "faction_slave_hunter",
+    "type": "faction_marid",
     "iconName": "empty",
     "cost": null,
     "revealedAt": null
@@ -497,7 +497,7 @@
     "min": 0,
     "max": 100,
     "label": "Slave hunter influence",
-    "type": "faction_slave_hunter",
+    "type": "faction_marid",
     "iconName": "empty",
     "cost": null,
     "revealedAt": null
@@ -508,7 +508,7 @@
     "min": 0,
     "max": 100,
     "label": "Slave hunter progress",
-    "type": "faction_slave_hunter",
+    "type": "faction_marid",
     "iconName": "empty",
     "cost": null,
     "revealedAt": null
@@ -519,7 +519,7 @@
     "min": 0,
     "max": 100,
     "label": "Deception loyalty",
-    "type": "faction_deception",
+    "type": "faction_arwa",
     "iconName": "empty",
     "cost": null,
     "revealedAt": null
@@ -530,7 +530,7 @@
     "min": 0,
     "max": 100,
     "label": "Deception influence",
-    "type": "faction_deception",
+    "type": "faction_arwa",
     "iconName": "empty",
     "cost": null,
     "revealedAt": null
@@ -541,7 +541,7 @@
     "min": 0,
     "max": 100,
     "label": "Deception progress",
-    "type": "faction_deception",
+    "type": "faction_arwa",
     "iconName": "empty",
     "cost": null,
     "revealedAt": null
@@ -552,7 +552,7 @@
     "min": 0,
     "max": 100,
     "label": "Demon loyalty",
-    "type": "faction_demon",
+    "type": "faction_ifrit",
     "iconName": "empty",
     "cost": null,
     "revealedAt": null
@@ -563,7 +563,7 @@
     "min": 0,
     "max": 100,
     "label": "Demon influence",
-    "type": "faction_demon",
+    "type": "faction_ifrit",
     "iconName": "empty",
     "cost": null,
     "revealedAt": null
@@ -574,7 +574,7 @@
     "min": 0,
     "max": 100,
     "label": "Demon progress",
-    "type": "faction_demon",
+    "type": "faction_ifrit",
     "iconName": "empty",
     "cost": null,
     "revealedAt": null
@@ -585,7 +585,7 @@
     "min": 0,
     "max": 100,
     "label": "Guard loyalty",
-    "type": "faction_guard",
+    "type": "faction_ghoul",
     "iconName": "empty",
     "cost": null,
     "revealedAt": null
@@ -596,7 +596,7 @@
     "min": 0,
     "max": 100,
     "label": "Guard influence",
-    "type": "faction_guard",
+    "type": "faction_ghoul",
     "iconName": "empty",
     "cost": null,
     "revealedAt": null
@@ -607,7 +607,7 @@
     "min": 0,
     "max": 100,
     "label": "Guard progress",
-    "type": "faction_guard",
+    "type": "faction_ghoul",
     "iconName": "empty",
     "cost": null,
     "revealedAt": null
@@ -618,7 +618,7 @@
     "min": 0,
     "max": 50,
     "label": "Slave hunter level",
-    "type": "faction_slave_hunter",
+    "type": "faction_marid",
     "iconName": "empty",
     "cost": null,
     "revealedAt": null
@@ -629,7 +629,7 @@
     "min": 0,
     "max": 50,
     "label": "Deception level",
-    "type": "faction_deception",
+    "type": "faction_arwa",
     "iconName": "empty",
     "cost": null,
     "revealedAt": null
@@ -640,7 +640,7 @@
     "min": 0,
     "max": 50,
     "label": "Demon level",
-    "type": "faction_demon",
+    "type": "faction_ifrit",
     "iconName": "empty",
     "cost": null,
     "revealedAt": null
@@ -651,7 +651,7 @@
     "min": 0,
     "max": 50,
     "label": "Guard level",
-    "type": "faction_guard",
+    "type": "faction_ghoul",
     "iconName": "empty",
     "cost": null,
     "revealedAt": null
