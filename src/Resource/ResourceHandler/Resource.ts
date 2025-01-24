@@ -137,6 +137,7 @@ export class Resource<K extends string, T extends string> {
 
   get beautify(): ResourceBeautyType {
     return {
+      // value: this.value.toLocaleString(),
       value: beautifyNumber(this.value),
       min: beautifyNumber(this.min),
       max: beautifyNumber(this.max),

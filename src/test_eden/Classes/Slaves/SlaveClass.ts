@@ -72,15 +72,15 @@ export class SlaveClass {
     this.slaves_in_rebirth.updateValueBy(-amount);
   }
 
-  public resurrect = () => {
+  public resurrect = (value = 1) => {
     this._resourceStore
-      .trade([{key: 'slaves_consumed', value: 1}], [{key: 'slaves_in_rebirth', value: 1}])
+      .trade([{key: 'slaves_consumed', value}], [{key: 'slaves_in_rebirth', value}])
       .tradeIfPossible()
   }
 
-  public revive = () => {
+  public revive = (value = 1) => {
     this._resourceStore
-      .trade([{key: 'slaves_in_rebirth', value: 1}], [{key: 'slaves_roaming', value: 1}])
+      .trade([{key: 'slaves_in_rebirth', value}], [{key: 'slaves_roaming', value}])
       .tradeIfPossible()
   }
 
@@ -141,7 +141,7 @@ export class SlaveClass {
   }
 
   get unassigned_slaves() {
-    return this.slaves_enslaved.value - this.assigned_slaves
+    return Math.floor(this.slaves_enslaved.value - this.assigned_slaves)
   }
 
   get can_enslave() {
@@ -178,12 +178,20 @@ export class SlaveClass {
   }
 
   public turnUpdate = () => {
+    // Slaves weaken over time and die
     if (this.slave_health.value) {
       this.slave_health.updateValueBy(-0.1)
     }
     else {
       this.slave_health.setValueTo(100)
       this.waste()
+    }
+  //   Consumed slaves move to rebirth
+    if (this.slaves_wasted.value > 0) {
+      this.resurrect(0.005)
+    }
+    if (this.slaves_in_rebirth.value > 0) {
+      this.revive(0.0025)
     }
   }
 }

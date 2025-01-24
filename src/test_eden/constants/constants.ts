@@ -17,6 +17,10 @@ export const AUTO_SLAVE_HUNT = true
 export const SLAVES_INITIALLY_MARID = 4;
 export const SLAVES_INITIALLY_ARWA = 4;
 
+// Behemoth
+export const BEHEMOTH_STAMINA_PER_WASTED_SLAVE = 15;
+export const BEHEMOTH_STAMINA_PER_SLAVE = 35;
+
 
 // Coefficients
 export const CLIMBING_SPEED_COEFFICIENT = 0.1

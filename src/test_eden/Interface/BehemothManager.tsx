@@ -3,14 +3,16 @@ import {useGame} from "../context/game.context.ts";
 import {Box, Button, Stack, Typography} from "@mui/material";
 import {Card} from "./Card.ts";
 import {LevelGain, LevelProgress} from "./LevelProgress.tsx";
+import {BEHEMOTH_STAMINA_PER_SLAVE, BEHEMOTH_STAMINA_PER_WASTED_SLAVE} from "../constants/constants.ts";
 
 export const BehemothManager = observer(() => {
-  const {behemoth} = useGame();
+  const {behemoth, slaves, resources} = useGame();
   const {
     level_requirements,
     levelUp,
     meets_level_requirements
   } = behemoth.level;
+  const staminaIcon = resources.get('behemoth_stamina').icon;
   return (
     <Box p={2}>
       <Card>
@@ -40,6 +42,18 @@ export const BehemothManager = observer(() => {
           <Button disabled={!meets_level_requirements} onClick={levelUp}>
             Level up
           </Button>
+        </Stack>
+        <Stack gap={1}>
+        <button onClick={behemoth.consumeWastedSlave}>
+          ({slaves.slaves_wasted.beautify.value}) Consume wasted slave
+          <img src={staminaIcon} alt="Stamina" />
+          {BEHEMOTH_STAMINA_PER_WASTED_SLAVE}
+        </button>
+        <button onClick={behemoth.consumeSlave}>
+          ({slaves.unassigned_slaves.toFixed()}) Consume slave
+          <img src={staminaIcon} alt="Stamina" />
+          {BEHEMOTH_STAMINA_PER_SLAVE}
+        </button>
         </Stack>
       </Card>
     </Box>

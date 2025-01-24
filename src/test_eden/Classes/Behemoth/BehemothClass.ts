@@ -1,6 +1,11 @@
 import {makeAutoObservable} from "mobx";
 import {ResourceClass, ResourceStoreClass} from "../../../Resource";
-import {AUTO_CLIMB, STAMINA_REGEN, STAMINA_REGEN_ON_FLUSHING} from "../../constants/constants.ts";
+import {
+  AUTO_CLIMB, BEHEMOTH_STAMINA_PER_SLAVE,
+  BEHEMOTH_STAMINA_PER_WASTED_SLAVE,
+  STAMINA_REGEN,
+  STAMINA_REGEN_ON_FLUSHING
+} from "../../constants/constants.ts";
 import {staminaDrain} from "../../constants/gameRules.ts";
 import {Game} from "../../context/game.context.ts";
 import {LevelClass} from "../LevelClass.ts";
@@ -70,11 +75,17 @@ export class BehemothClass {
     this._resourceStore
       .trade([{key: 'clean_mana_level_1', value: 1}], [{key: 'behemoth_acid', value: 5}], 20)
       .tradeIfPossible()
-  public slaveToStamina = () =>
-    // Todo. To actually change the more complex slaves to stamina might be tricky
+  public consumeWastedSlave = () => {
+      this._resourceStore
+        .trade([{key: 'slaves_wasted', value: 1}], [{key: 'behemoth_stamina', value: BEHEMOTH_STAMINA_PER_WASTED_SLAVE}])
+        .tradeIfPossible()
+  }
+
+  public consumeSlave = () => {
     this._resourceStore
-      .trade([{key: 'clean_mana_level_1', value: 1}], [{key: 'behemoth_stamina', value: 5}], 20)
+      .trade([{key: 'slaves_enslaved', value: 1}], [{key: 'behemoth_stamina', value: BEHEMOTH_STAMINA_PER_SLAVE}])
       .tradeIfPossible()
+  }
 
   get decelerating() {
     return !this.movement_requested && !!this.climb_speed.value;

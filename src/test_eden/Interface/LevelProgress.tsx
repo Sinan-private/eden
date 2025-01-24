@@ -56,7 +56,7 @@ export const LevelProgress = (
   }: LevelProgressProps) => {
   const {get, percentageOf} = useGame().resources;
   const resource = get(level.key);
-  const percentage = percentageOf(resource.value, level.value!)
+  const percentage = percentageOf(Math.floor(resource.value), level.value!)
   return (
     <>
       <Box sx={{
@@ -64,9 +64,9 @@ export const LevelProgress = (
         justifyContent: 'space-between',
       }}>
         <Typography variant="caption">{label || resource.label}</Typography>
-        <Typography>{level.value}</Typography>
+        <Typography>{resource.beautify.value} / {level.value}</Typography>
       </Box>
-      <LinearProgress variant="determinate" value={percentage} sx={{color: 'white'}}/>
+      <LinearProgress variant="determinate" value={percentage} color={percentage < 100 ? "error" : "info"}/>
     </>
   )
 }

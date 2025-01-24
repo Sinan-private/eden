@@ -38,7 +38,7 @@ export const TopBar = () => {
 const Center = () => {
   const {slaves, behemoth, mana, upstream, resources} = useGame();
   const {slaves_enslaved, unassigned_slaves} = slaves;
-  const slaveAmount = `${unassigned_slaves} / ${slaves_enslaved.beautify.value}`;
+  const slaveAmount = `${unassigned_slaves.toFixed()} / ${slaves_enslaved.beautify.value}`;
   const manaAmount = `${Math.floor(mana.mana_count)} (${Math.floor(resources.getTypeSum('raw_mana'))})`;
   // const behemothAmount = `${behemoth.hp.beautify.value} (${behemoth.acid.beautify.value})`;
   const behemothHeight = `${behemoth.climb_height.beautify.value} (${upstream.height.beautify.value})`;
@@ -70,13 +70,13 @@ const Center = () => {
 }
 
 const BehemothPreview = observer(() => {
-  const {manaToAcid, slaveToStamina} = useGame().behemoth;
+  const {manaToAcid, consumeWastedSlave} = useGame().behemoth;
 
   return (
     <Box p={2}>
       Behemoth
       <Button onClick={manaToAcid}>Mana to acid</Button>
-      <Button onClick={slaveToStamina}>Mana to stamina</Button>
+      <Button onClick={consumeWastedSlave}>Mana to stamina</Button>
     </Box>
   )
 })
@@ -95,7 +95,7 @@ const SlavePreview = observer(() => {
         {list.map(([value, label]) => (
           <Box key={label} sx={{width: 240, display: 'flex', mb: 1, alignItems: "center"}}>
             <Typography sx={{mr: 2}} variant="caption">{label}</Typography>
-            <Typography>{value}</Typography>
+            <Typography>{value.toFixed()}</Typography>
           </Box>
         ))}
         <Divider sx={{my: 2}} />

@@ -24,6 +24,7 @@ export class MaridClass extends FactionClass {
 
   get is_hunting(): boolean {
     return this.hunting_requested
+      && this.slaves.slaves_roaming.value >= 1
   }
 
   get has_slave_caught() {
