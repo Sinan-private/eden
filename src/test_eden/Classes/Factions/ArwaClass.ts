@@ -11,6 +11,9 @@ export class ArwaClass extends FactionClass {
     const {get} = this.resources;
     this.image = image;
     this.visible = true;
+    this.faction = 'arwa';
+    this.active = true;
+    this.visible = true;
     this.loyalty = get('arwa_loyalty');
     this.influence = get('arwa_influence');
     this.progress = get('arwa_progress');

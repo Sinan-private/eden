@@ -1,7 +1,7 @@
 import React from "react";
 import {Debug_BehemothControls} from "../Debugging/Debug_BehemothControls.tsx";
 import {TopBar} from "./TopBar.tsx";
-import {SlaveManager} from "../Components/SlaveManager.tsx";
+// import {SlaveManager} from "../Components/SlaveManager.tsx";
 import styled from "styled-components";
 import {FooterButtons} from "./FooterButtons.tsx";
 import {SidebarContent} from "./SidebarContent.tsx";
@@ -31,7 +31,7 @@ export const Interface = () => {
       </SideBarExtension>
       <Spacer/>
       <Right>
-        <SlaveManager/>
+        {/*<SlaveManager/>*/}
       </Right>
       <Footer>
         <FooterButtons/>

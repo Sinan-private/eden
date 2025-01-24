@@ -11,7 +11,7 @@ export const SlaveManager = observer(() => {
   const demonsImage = factions.factionIfrit.image;
   const guardsImage = factions.factionGhoul.image;
   const mindBendersImage = factions.factionArwa.image;
-  const {unassigned_slaves, addToFaction, arwa, marid} = slaves;
+  const {unassigned_slaves, assignToFaction, arwa, marid} = slaves;
   return (
     <Box position="relative" sx={{width: SIZE, height: SIZE}}>
       <SlaveTop>
@@ -20,13 +20,13 @@ export const SlaveManager = observer(() => {
       <SlaveLeft>
         <FullSizedImage src={guardsImage} $disabled $inactive/>
       </SlaveLeft>
-      <SlaveRight onClick={() => addToFaction('marid')}>
+      <SlaveRight onClick={() => assignToFaction('marid')}>
         <FullSizedImage src={slaveHunterImage} $disabled={!slaves.unassigned_slaves}/>
         <Typography>{marid}</Typography>
 
         {/*<FactionButton faction={factions.slaveHunters}/>*/}
       </SlaveRight>
-      <SlaveBottom onClick={() => addToFaction('arwa')}>
+      <SlaveBottom onClick={() => assignToFaction('arwa')}>
         <FullSizedImage src={mindBendersImage} $disabled={!slaves.unassigned_slaves}/>
         <Typography>{arwa}</Typography>
       </SlaveBottom>

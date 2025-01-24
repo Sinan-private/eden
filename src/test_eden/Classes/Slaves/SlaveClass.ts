@@ -2,8 +2,8 @@ import {ResourceClass, ResourceStoreClass} from "../../../Resource";
 import {SLAVES_INITIALLY_ARWA, SLAVES_INITIALLY_MARID} from "../../constants/constants.ts";
 import {randomChances} from "../../helpers/randomChances.ts";
 import {makeAutoObservable} from "mobx";
+import {FactionKeys} from "../Factions/FactionClass.ts";
 
-type FactionKeys = 'ifrit' | 'marid' | 'arwa' | 'ghoul'
 // type FactionKeys = Pick<keyof SlaveClass, 'ifrit' | 'marid' | 'arwa' | 'ghoul'>
 
 // The slave
@@ -90,7 +90,7 @@ export class SlaveClass {
       .tradeIfPossible()
   }
 
-  public addToFaction = (faction: FactionKeys, amount = 1) => {
+  public assignToFaction = (faction: FactionKeys, amount = 1) => {
     const maxPossible = amount <= this.unassigned_slaves ? amount : this.unassigned_slaves;
     this[faction] += maxPossible
   }
@@ -146,6 +146,10 @@ export class SlaveClass {
 
   get can_enslave() {
     return !!this.slaves_roaming.value
+  }
+
+  get can_assign() {
+    return (this.slaves_enslaved.value - this.assigned_slaves) >= 1;
   }
 
   public unassignRandom = () => {

@@ -8,6 +8,7 @@ export class IfritClass extends FactionClass {
     super(gameClasses)
     const {get} = this.resources;
     this.image = image;
+    this.faction = 'ifrit';
     this.loyalty = get('ifrit_loyalty');
     this.influence = get('ifrit_influence');
     this.progress = get('ifrit_progress');

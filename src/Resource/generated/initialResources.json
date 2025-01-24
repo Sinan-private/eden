@@ -724,7 +724,7 @@
   },
   {
     "key": "slaves_enslaved",
-    "value": 8,
+    "value": 9,
     "min": 0,
     "max": null,
     "label": "Enslaved",

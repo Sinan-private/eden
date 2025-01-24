@@ -58,28 +58,28 @@ export const Debug_SlaveManagement = ({beautifyValues}: { beautifyValues: boolea
             />
             <Debug_CustomResource
               label="Add to Ifrit"
-              onIncrement={() => slaves.addToFaction('ifrit')}
+              onIncrement={() => slaves.assignToFaction('ifrit')}
               onDecrement={() => slaves.removeFromFaction('ifrit')}
               beautifyValues={beautifyValues}
               value={slaves.ifrit}
             />
             <Debug_CustomResource
               label="Add to Marid"
-              onIncrement={() => slaves.addToFaction('marid')}
+              onIncrement={() => slaves.assignToFaction('marid')}
               onDecrement={() => slaves.removeFromFaction('marid')}
               beautifyValues={beautifyValues}
               value={slaves.marid}
             />
             <Debug_CustomResource
               label="Add to Arwa"
-              onIncrement={() => slaves.addToFaction('arwa')}
+              onIncrement={() => slaves.assignToFaction('arwa')}
               onDecrement={() => slaves.removeFromFaction('arwa')}
               beautifyValues={beautifyValues}
               value={slaves.arwa}
             />
             <Debug_CustomResource
               label="Add to Ghoul"
-              onIncrement={() => slaves.addToFaction('ghoul')}
+              onIncrement={() => slaves.assignToFaction('ghoul')}
               onDecrement={() => slaves.removeFromFaction('ghoul')}
               beautifyValues={beautifyValues}
               value={slaves.ghoul}

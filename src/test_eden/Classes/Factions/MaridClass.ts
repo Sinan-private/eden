@@ -10,7 +10,7 @@ export class MaridClass extends FactionClass {
   constructor(gameClasses: GameBaseClasses) {
     super(gameClasses)
     const {get} = this.resources;
-
+    this.faction = 'marid';
     this.image = image;
     this.active = true;
     this.visible = true;

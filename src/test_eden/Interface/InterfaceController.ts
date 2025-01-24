@@ -4,7 +4,7 @@ import {makeAutoObservable} from "mobx";
 export type InterfaceActiveLeft = 'faction' | 'player' | 'behemoth' | null;
 
 export class InterfaceController {
-  public selectionActiveLeft: InterfaceActiveLeft = 'player';
+  public selectionActiveLeft: InterfaceActiveLeft = 'faction';
   constructor(public game: GameBaseClasses) {
     makeAutoObservable(this)
   }

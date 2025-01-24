@@ -5,7 +5,10 @@ import {BehemothClass} from "../Behemoth/BehemothClass.ts";
 import {ManaClass} from "../Mana/ManaClass.ts";
 import {UpstreamClass} from "../UpstreamClass.ts";
 
+export type FactionKeys = 'ifrit' | 'marid' | 'arwa' | 'ghoul'
+
 export class FactionClass {
+  public faction!: FactionKeys;
   public image: string;
   public active: boolean;
   public visible: boolean;
@@ -20,12 +23,12 @@ export class FactionClass {
   public mana: ManaClass;
   public behemoth: BehemothClass;
   public upstream: UpstreamClass;
-  constructor(gameClasses: GameBaseClasses) {
-    this.resources = gameClasses.resources
-    this.slaves = gameClasses.slaves
-    this.mana = gameClasses.mana
-    this.behemoth = gameClasses.behemoth
-    this.upstream = gameClasses.upstream
+  constructor(private _gameClasses: GameBaseClasses) {
+    this.resources = _gameClasses.resources
+    this.slaves = _gameClasses.slaves
+    this.mana = _gameClasses.mana
+    this.behemoth = _gameClasses.behemoth
+    this.upstream = _gameClasses.upstream
     this.image = '';
     this.active = false;
     this.visible = true;
@@ -33,5 +36,10 @@ export class FactionClass {
 
   public setActive = () => this.active = true;
   public setVisible = () => this.visible = true;
+  public addSlave = () => this._gameClasses.slaves.assignToFaction(this.faction);
+
+  get assigned_slaves() {
+    return this.slaves[this.faction];
+  }
 
 }
