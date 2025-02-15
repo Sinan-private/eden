@@ -1,26 +1,35 @@
 import {useMemo} from "react";
-import {Box, Button, Divider, Paper, Stack, Tooltip, Typography} from "@mui/material";
 import {observer} from "mobx-react";
 import styled from "styled-components";
-import PlayArrowIcon from '@mui/icons-material/PlayArrow';
-import PauseIcon from '@mui/icons-material/Pause';
-import LinkIcon from '@mui/icons-material/Link';
-import HeightIcon from '@mui/icons-material/Height';
-import AutoAwesomeIcon from '@mui/icons-material/AutoAwesome';
-import BugReportIcon from '@mui/icons-material/BugReport';
 import {useGame} from "../context/game.context.ts";
-import {useTurnSubscription} from "../../Resource";
-import {grey_blue} from "../../constants/colors.ts";
+import {useTurnSubscription} from "@/Resource";
+import {grey_blue} from "@/constants/colors.ts";
+import {Button} from "@/components/ui/button.tsx";
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+} from "@/components/ui/tooltip"
+import {
+  Play,
+  Pause,
+  BrandGitlab,
+  ShootingStar,
+  FatArrowUp,
+  HeartPlus,
+  Thermometer,
+  SignalCircle,
+} from "@mynaui/icons-react";
+
+
 
 export const TopBar = () => {
   return (
-    <Box sx={{
+    <div style={{
       position: 'relative',
-      // top: -10,
-      // left: 0,
       minHeight: 60,
       width: '100%',
-      // border: '1px solid red',
       display: 'flex',
       gap: 2,
       pointerEvents: 'none',
@@ -31,7 +40,7 @@ export const TopBar = () => {
       <Center/>
       <Side>
       </Side>
-    </Box>
+    </div>
   )
 }
 
@@ -45,42 +54,66 @@ const Center = () => {
   // const behemothHeight = `${behemoth.climb_height.beautify.value}`;
 
   return (
-    <Box sx={{flex: '1 1 500px', mt: 1.5, position: 'relative', pointerEvents: 'initial', zIndex: 100}}>
-      <Box sx={{display: 'flex', width: '100%', '*': {flex: '1 1 auto'}, position: 'relative'}}>
-        <CenterUi>
-          <UIStack tooltip={(<SlavePreview />)} Icon={(<LinkIcon sx={{transform: 'rotate(-90deg)'}} />)} value={slaveAmount} />
-          <UIStack tooltip={(<ManaPreview />)} Icon={(<AutoAwesomeIcon />)} value={manaAmount} />
-          <UIStack tooltip="Height" Icon={(<HeightIcon />)} value={behemothHeight} />
-        </CenterUi>
-        <PlayButton/>
-        <CenterUi style={{paddingLeft: 32}}>
-          <UIStack tooltip={(<BehemothPreview />)} Icon={(<BugReportIcon />)}>
-            <Typography>HP</Typography>
-            <Typography>{behemoth.hp.beautify.value}</Typography>
-            <Typography>Stamina</Typography>
-            <Typography>{behemoth.stamina.beautify.value}</Typography>
-            <Typography>Acid</Typography>
-            <Typography>{behemoth.acid.beautify.value}</Typography>
+    <TooltipProvider>
+      <div className="mt-2 z-50 pointer-events-auto">
+        <div className="flex relative bg-accent rounded-md border-cyan-900 border-2">
 
-          </UIStack>
-        </CenterUi>
-      </Box>
-    </Box>
+          <div className="flex py-1 pl-3 pr-5 gap-8" style={{width: 380}}>
+            <UIStack tooltip={(<SlavePreview/>)} Icon={(<BrandGitlab />)}
+                     value={slaveAmount}/>
+            <UIStack tooltip={(<ManaPreview/>)} Icon={(<ShootingStar/>)} value={manaAmount}/>
+            <UIStack tooltip="Height" Icon={(<FatArrowUp/>)} value={behemothHeight}/>
+          </div>
+          <PlayButton/>
+          <div className="flex py-1 pl-8 pr-3 gap-8" style={{width: 380}}>
+            <UIStack tooltip={(<BehemothPreview/>)} Icon={(<HeartPlus/>)}>
+              <p>HP</p>
+              <p>{behemoth.hp.beautify.value}</p>
+            </UIStack>
+            <UIStack tooltip={(<BehemothAcid />)} Icon={(<Thermometer />)}>
+              <p>Acid</p>
+              <p>{behemoth.acid.beautify.value}</p>
+            </UIStack>
+            <UIStack tooltip={(<BehemothStamina/>)} Icon={(<SignalCircle />)}>
+              <p>{behemoth.stamina.beautify.value}</p>
+              <p>Stamina</p>
+            </UIStack>
+          </div>
+          {/*</Box>*/}
+          {/*</Box>*/}
+        </div>
+      </div>
+    </TooltipProvider>
   )
 }
 
 const BehemothPreview = observer(() => {
-  const {manaToAcid, consumeWastedSlave} = useGame().behemoth;
 
   return (
-    <Box p={2}>
+    <div className="p-2">
       Behemoth
-      <Button onClick={manaToAcid}>Mana to acid</Button>
-      <Button onClick={consumeWastedSlave}>Mana to stamina</Button>
-    </Box>
+    </div>
   )
 })
 
+const BehemothAcid = observer(() => {
+  const {manaToAcid} = useGame().behemoth;
+
+  return (
+    <div className="p-2">
+      <Button onClick={manaToAcid}>Mana to acid</Button>
+    </div>
+  )
+})
+const BehemothStamina = observer(() => {
+  const {consumeWastedSlave} = useGame().behemoth;
+
+  return (
+    <div className="p-2">
+      <Button onClick={consumeWastedSlave}>Mana to stamina</Button>
+    </div>
+  )
+})
 const SlavePreview = observer(() => {
   const {slaves} = useGame();
   const slaveView = useMemo(() => {
@@ -90,27 +123,25 @@ const SlavePreview = observer(() => {
       [slaves.marid, 'Blacksmiths'],
     ]
     return (
-      <Box p={2}>
-        <Typography variant="h5">Slaves</Typography>
+      <div className="p-2">
+        <p className="text-2xl">Slaves</p>
         {list.map(([value, label]) => (
-          <Box key={label} sx={{width: 240, display: 'flex', mb: 1, alignItems: "center"}}>
-            <Typography sx={{mr: 2}} variant="caption">{label}</Typography>
-            <Typography>{value.toFixed()}</Typography>
-          </Box>
+          <div key={label} style={{width: 240, display: 'flex', marginBottom: 8, alignItems: "center"}}>
+            <p className="mr-2">{label}</p>
+            <p>{value.toFixed()}</p>
+          </div>
         ))}
-        <Divider sx={{my: 2}} />
-        <Typography>Total slaves {slaves.slaves_enslaved.beautify.value}</Typography>
-      </Box>
+        <p>Total slaves {slaves.slaves_enslaved.beautify.value}</p>
+      </div>
     )
   }, [slaves.arwa, slaves.marid, slaves.slaves_enslaved.beautify.value, slaves.unassigned_slaves])
 
   return (
-    <Box>
+    <div>
       {slaveView}
-    </Box>
+    </div>
   )
 })
-
 
 
 const ManaPreview = observer(() => {
@@ -119,53 +150,52 @@ const ManaPreview = observer(() => {
     const raw_mana = resources.getTypeSum('raw_mana')
     const list = resources.getByType('mana')
     return (
-      <Box p={2}>
-        <Typography variant="h5">Mana</Typography>
+      <div className="p-2">
+        <p className="text-2xl">Mana</p>
         {list.map(({id, beautify, icon}, i) => (
-          <Box key={id} sx={{width: 240, display: 'flex', mb: 1, alignItems: "center"}}>
-            <img src={icon} alt={icon} />
-            <Typography sx={{mr: 2}} variant="caption">Level {i + 1}</Typography>
-            <Typography>{beautify.value}</Typography>
-          </Box>
+          <div key={id} style={{width: 240, display: 'flex', marginBottom: 1, alignItems: "center"}}>
+            <img src={icon} alt={icon}/>
+            <p style={{marginRight: 16}}>Level {i + 1}</p>
+            <p>{beautify.value}</p>
+          </div>
         ))}
-        <Divider sx={{my: 2}} />
-        <Typography>Raw mana {raw_mana}</Typography>
-      </Box>
+        <p>Raw mana {raw_mana}</p>
+      </div>
     )
   }, [resources])
 
   return (
-    <Box>
+    <div>
       {manaView}
-    </Box>
+    </div>
   )
 })
 
 type UIStackProps = {
   tooltip: React.ReactNode | string;
-  Icon: React.ReactNode;
+  Icon?: React.ReactNode;
   value?: string | number;
   children?: React.ReactNode;
 }
 
 const UIStack = ({tooltip, Icon, value, children}: UIStackProps) => (
-  <Tooltip title={tooltip}>
-    <Stack direction="row" gap={1} sx={{
-      alignItems: 'center',
-      flexGrow: 0.5,
-      justifyContent: 'center',
-      'div': {
-        flex: '0 0 30px'
-      },
-    }}>
-      <CenterContent>{Icon}</CenterContent>
-      {value ?
-          <Typography align="left" fontSize="inherit" noWrap>{value}</Typography>
-        : children
-          ? (<>{children}</>)
-          : null
-      }
-    </Stack>
+  <Tooltip delayDuration={200}>
+    <TooltipTrigger asChild>
+      <div className="flex gap-1">
+        {Icon &&
+          <div>{Icon}</div>
+        }
+        {value ?
+          <p className="text-nowrap" text-align="left" font-size="inherit">{value}</p>
+          : children
+            ? (<>{children}</>)
+            : null
+        }
+      </div>
+    </TooltipTrigger>
+    <TooltipContent>
+      {tooltip}
+    </TooltipContent>
   </Tooltip>
 )
 
@@ -179,30 +209,15 @@ const PlayButton = () => {
   return (
     <PlayContainer onClick={onClick}>
       {isActive
-        ? <PauseIcon/>
-        : <PlayArrowIcon/>
+        ? <Pause/>
+        : <Play/>
       }
     </PlayContainer>
   )
 }
 
 
-const CenterContent = styled.div`
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-`;
-
-const CenterUi = styled(Paper)`
-    display: flex;
-    align-items: center;
-    width: 300px;
-    border: 1px solid ${grey_blue};
-    font-size: 14px;
-    gap: 24px;
-`;
-
-const PlayContainer = styled(Box)`
+const PlayContainer = styled('div')`
     position: absolute;
     cursor: pointer;
     display: flex;

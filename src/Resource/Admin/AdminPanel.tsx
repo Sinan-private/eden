@@ -1,12 +1,12 @@
 import {useEffect, useState} from "react";
 import styled from "styled-components";
 import Box from "@mui/material/Box";
-import {IconButton} from "@mui/material";
-import Close from "@mui/icons-material/Close";
 import {AdminResources} from "./Resource/AdminResources.tsx";
 import TabNav from "./TabNav.tsx";
 import {HandleTypes} from "./Resource/HandleTypes.tsx";
 import {useAdmin} from "../context/admin.context.ts";
+import { X } from "@mynaui/icons-react";
+import {Button} from "@/components/ui/button.tsx";
 
 export const AdminPanel = () => {
   const {onCloseAdminPanel} = useAdmin();
@@ -26,9 +26,9 @@ export const AdminPanel = () => {
   return (
       <StyledContainer>
         <Box position="absolute" top={10} right={10}>
-          <IconButton onClick={onCloseAdminPanel} sx={{zIndex: 100}}>
-            <Close/>
-          </IconButton>
+          <Button variant="outline" onClick={onCloseAdminPanel} style={{zIndex: 100}}>
+            <X/>
+          </Button>
 
         </Box>
 

@@ -11,7 +11,7 @@ export const Behemoth = () => {
   const src = speed && isActive ? behemoth_animated : behemoth_image;
   return (
     <StyledBehemoth>
-      <img src={src} alt={src} style={{transform: 'rotate(-90deg)'}}/>
+      <Image src={src} alt={src} />
     </StyledBehemoth>
   )
 }
@@ -26,6 +26,12 @@ const StyledBehemoth = styled('div')`
     transform: translateY(-50%);
     width: 40px;
     height: 100px;
-    background: #66756f;
+    //background: #66756f;
     z-index: 10;
+`
+
+const Image = styled.img`
+    transform: rotate(-90deg);
+    width: 170px;
+    max-width: none;
 `

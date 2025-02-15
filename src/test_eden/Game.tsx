@@ -20,7 +20,7 @@ export const Game = () => {
   // Test trade
   // game.resources.trade([{key: 'dirty_mana_level_1', value: 1}], [{key: 'raw_mana_level_1', value: 1}], 0.2).tradeIfPossible()
   return (
-    <Screen>
+    <Screen id="Game" className="font-geist-sans text-sm antialiased">
       <Background/>
       <Gaja/>
       <Upstream/>

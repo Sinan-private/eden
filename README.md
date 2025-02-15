@@ -30,3 +30,5 @@ https://pinetools.com/split-image
 # Known issues
 - Adding a resource to the cost and then removing it before saving creates a weird issue
 - Replacing an Icon currently doesn't work
+- components baseColor only accepts "gray" | "neutral" | "slate" | "stone" | "zinc"
+  - https://github.com/shadcn-ui/ui/issues/4946

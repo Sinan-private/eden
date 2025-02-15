@@ -1,5 +1,4 @@
 import {useState} from "react";
-import {Box} from "@mui/material";
 import styled from "styled-components";
 import {observer} from "mobx-react";
 import {useGame} from "../context/game.context.ts";
@@ -39,7 +38,7 @@ export const Gaja = observer(() => {
 })
 
 
-const Tree = styled(Box)`
+const Tree = styled('div')`
     position: fixed;
     top: 0;
     right: 0;
@@ -57,7 +56,7 @@ const Tree = styled(Box)`
     }
 `
 
-const Trunk = styled(Box)`
+const Trunk = styled('div')`
     position: relative;
     width: 100%;
     height: 600px;
