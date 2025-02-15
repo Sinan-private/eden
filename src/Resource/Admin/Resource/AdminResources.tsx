@@ -1,10 +1,9 @@
-import {ResourceKeys, ResourceTypes} from "../../ResourceHandler/specificTypes.ts";
+import {useState} from "react";
+import {observer} from "mobx-react";
+import {ResourceKeys, ResourceTypes} from "@/Resource";
 import {useAdmin} from "../../context/admin.context.ts";
 import {Resource} from "../../ResourceHandler";
-import {Box, Typography} from "@mui/material";
 import {AdminResource} from "./AdminResource.tsx";
-import {observer} from "mobx-react";
-import {useState} from "react";
 import {EditResource} from "./EditResource.tsx";
 import {useComponentMount} from "../../hooks";
 
@@ -13,7 +12,7 @@ export const AdminResources = observer(() => {
   const types = groupByType()
   return (
     <>
-      <Typography variant="h2" align="left" sx={{ml: 4}}>Starting Resources</Typography>
+      <h2 className="ml-4">Starting Resources</h2>
       <div style={{display: "flex", justifyContent: "center", flexDirection: "row"}}>
         <div className="card">
           {types.map(({type, resources}) => (
@@ -40,9 +39,9 @@ const ResourceType = observer(({type, resources, label = "Add resource"}: Resour
 
   return (
     <>
-      <Box>
-        <Typography align="left" variant="h5">{type}</Typography>
-      </Box>
+      <div>
+        <h5 className="align text-left">{type}</h5>
+      </div>
       {resources.map(resource => (
         <AdminResource key={resource.key} resource={resource}/>
       ))}
@@ -69,13 +68,13 @@ const AddResource = observer(({closeAddMode, type}: AddResourceProps) => {
   }
 
   return (
-    <Box maxWidth={1000}>
+    <div style={{maxWidth: 1000}}>
       <EditResource
         enableKeyEdit
         resource={newResource}
         onSubmit={onSubmit}
         onClose={closeAddMode}
       />
-    </Box>
+    </div>
   )
 })

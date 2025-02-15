@@ -1,7 +1,6 @@
 import styled from "styled-components";
 import {observer} from "mobx-react";
 import {useGame} from "../context/game.context.ts";
-import {Box, Typography} from "@mui/material";
 import chains from "../../assets/images/chains.png";
 
 export const SlaveManager = observer(() => {
@@ -13,7 +12,7 @@ export const SlaveManager = observer(() => {
   const mindBendersImage = factions.factionArwa.image;
   const {unassigned_slaves, assignToFaction, arwa, marid} = slaves;
   return (
-    <Box position="relative" sx={{width: SIZE, height: SIZE}}>
+    <div className="relative" style={{width: SIZE, height: SIZE}}>
       <SlaveTop>
         <FullSizedImage src={demonsImage} $disabled $inactive/>
       </SlaveTop>
@@ -22,21 +21,21 @@ export const SlaveManager = observer(() => {
       </SlaveLeft>
       <SlaveRight onClick={() => assignToFaction('marid')}>
         <FullSizedImage src={slaveHunterImage} $disabled={!slaves.unassigned_slaves}/>
-        <Typography>{marid}</Typography>
+        <p>{marid}</p>
 
         {/*<FactionButton faction={factions.slaveHunters}/>*/}
       </SlaveRight>
       <SlaveBottom onClick={() => assignToFaction('arwa')}>
         <FullSizedImage src={mindBendersImage} $disabled={!slaves.unassigned_slaves}/>
-        <Typography>{arwa}</Typography>
+        <p>{arwa}</p>
       </SlaveBottom>
       <SlaveCenter>
         <FullSizedImage src={chains}/>
-        <Typography fontSize="2rem" lineHeight="2.7rem">{unassigned_slaves}</Typography>
-        {/*<Typography fontSize={10} px={2}>Unassigned slaves</Typography>*/}
+        <p className="text-2xl">{unassigned_slaves}</p>
+        {/*<p fontSize={10} px={2}>Unassigned slaves</p>*/}
       </SlaveCenter>
       <Shadow size={SIZE} x={3} y={3} color="#3f675e" blur={0} opacity={0.15}/>
-    </Box>
+    </div>
   )
 })
 const FullSizedImage = styled.img<{ $disabled?: boolean; $inactive?: boolean }>`
@@ -72,7 +71,7 @@ const Shadow = (
     opacity = 0.3,
     blur = 2,
   }: ShadowProps) => (
-  <Box position="absolute" sx={{
+  <div className="absolute" style={{
     width: size,
     height: size,
     top: y,
@@ -86,7 +85,7 @@ const Shadow = (
     <SlaveRight $disabled $backgroundColor={color}/>
     <SlaveBottom $disabled $backgroundColor={color}/>
     <SlaveCenter $disabled $backgroundColor={color}/>
-  </Box>
+  </div>
 )
 const SlaveAssignmentBase = styled.div<{ $disabled?: boolean, $backgroundColor?: string }>`
     position: absolute;

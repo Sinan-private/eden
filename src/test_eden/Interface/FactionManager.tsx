@@ -1,17 +1,17 @@
-import {Box, LinearProgress, Stack} from "@mui/material";
-import {useGame} from "../context/game.context.ts";
 import styled from "styled-components";
+import {Progress} from "@/components/ui/progress.tsx";
+import {useGame} from "../context/game.context.ts";
 
 export const FactionManager = () => {
   const {factions, slaves} = useGame();
   const all = Object.values(factions);
 
   return (
-    <Box sx={{display: 'flex', flexDirection: 'column', justifyContent: 'space-between', gap: 2}}>
+    <div className="flex, flex-col, justify-between gap-2">
       {all.map(({image, visible, active, loyalty, influence, progress, setActive, addSlave, faction, assigned_slaves}) => (
-        <Box id={'Faction Button ' + faction} key={image} sx={{display: visible ? 'flex' : 'none'}}>
-          <Box>
-            <Box sx={{position: 'relative', width: 70, height: 70, zIndex: 2}}>
+        <div id={'Faction Button ' + faction} key={image} style={{display: visible ? 'flex' : 'none'}}>
+          <div>
+            <div className="relative" style={{width: 70, height: 70, zIndex: 2}}>
               <img
                 onClick={setActive}
                 src={image}
@@ -28,14 +28,20 @@ export const FactionManager = () => {
               {active &&
                 <VerticalProgress value={progress.value}/>
               }
-            </Box>
-            <Stack color="gray" width={70}>
-              <LinearProgress variant="determinate" value={active ? loyalty.value : 0}
-                              color={active ? "warning" : "inherit"}/>
-              <LinearProgress variant="determinate" value={active ? influence.value : 0}
-                              color={active ? "error" : "inherit"}/>
-            </Stack>
-          </Box>
+            </div>
+            <div style={{width: 70}}>
+              <Progress
+                className="h-1 rounded-none"
+                value={active ? loyalty.value : 0}
+                color={active ? "warning" : "default"}
+              />
+              <Progress
+                className="h-1 rounded-none"
+                value={active ? influence.value : 0}
+                color={active ? "error" : "default"}
+              />
+            </div>
+          </div>
           <button
             onClick={addSlave}
             disabled={!slaves.can_assign || !active}
@@ -47,19 +53,17 @@ export const FactionManager = () => {
               left: -1,
             }}>+
           </button>
-        </Box>
+        </div>
       ))}
-    </Box>
+    </div>
   )
 }
 
 const VerticalProgress = ({value = 50}: { value?: number }) => {
-  const absolute = {position: 'absolute', bottom: 0, right: 0}
   return (
-    <Box id="custom progress" sx={{width: 4, height: '100%', background: '#ffffff21', ...absolute}}>
+    <div id="custom progress" className="h-full absolute" style={{width: 4, background: '#ffffff21', bottom: 0, right: 0}}>
       <VerticalBar $height={value}/>
-      {/*<Box sx={{width: '100%', height: value + '%', backgroundColor: 'white', ...absolute}} />*/}
-    </Box>
+    </div>
   )
 }
 

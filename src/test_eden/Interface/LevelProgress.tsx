@@ -1,6 +1,6 @@
 import {TradeChange} from "../../Resource";
 import {useGame} from "../context/game.context.ts";
-import {Box, Chip, LinearProgress, Stack, Typography} from "@mui/material";
+import {Progress} from "@/components/ui/progress.tsx";
 
 type LevelGainProps = {
   gain: TradeChange
@@ -10,16 +10,12 @@ export const LevelGain = ({gain}: LevelGainProps) => {
   const {label, icon} = get(gain.key)
 
   return (
-    <Stack direction="row">
+    <div className="flex">
 
-      <Box p={1} mx={1} position="relative">
+      <div className="relative p-1 mx-1">
         <img src={icon} alt={label}/>
-        <Typography
-          variant="caption"
-          textAlign="center"
-          sx={{position: 'absolute', bottom: 8, left: 0, width: '100%'}}
-        >{label}</Typography>
-      </Box>
+        <p className="text-center absolute w-full" style={{bottom: 8, left: 0}}>{label}</p>
+      </div>
       {gain.min &&
         <LevelGainDetail label="Value" value={gain.min}/>
       }
@@ -29,21 +25,19 @@ export const LevelGain = ({gain}: LevelGainProps) => {
       {gain.value &&
         <LevelGainDetail label="Value" value={gain.value}/>
       }
-    </Stack>
+    </div>
   )
 }
 const LevelGainDetail = ({label, value}: { label: string; value: number }) => (
-  <Stack justifyContent="center" mr={1} mt={-1}>
-    <Typography
-      variant="caption"
-      textAlign="center"
-      position="relative"
-      top={8}
-    >
+  <div className="justify-center mr-1 mt-1">
+    <p className="text-center relative w-full" style={{top: 8}}>
       {label}
-    </Typography>
-    <Chip label={value} size="small"/>
-  </Stack>
+    </p>
+    <span
+      className="inline-flex items-center rounded-md bg-gray-800 px-2 py-1 text-xs font-medium text-gray-100 ring-1 ring-gray-500/10 ring-inset">
+      {value}
+    </span>
+  </div>
 )
 type LevelProgressProps = {
   level: TradeChange;
@@ -59,14 +53,11 @@ export const LevelProgress = (
   const percentage = percentageOf(Math.floor(resource.value), level.value!)
   return (
     <>
-      <Box sx={{
-        display: 'flex',
-        justifyContent: 'space-between',
-      }}>
-        <Typography variant="caption">{label || resource.label}</Typography>
-        <Typography>{resource.beautify.value} / {level.value}</Typography>
-      </Box>
-      <LinearProgress variant="determinate" value={percentage} color={percentage < 100 ? "error" : "info"}/>
+      <div className="flex justify-between">
+        <p className="text-sm text-muted-foreground">{label || resource.label}</p>
+        <p>{resource.beautify.value} / {level.value}</p>
+      </div>
+      <Progress value={percentage} color={percentage < 100 ? "error" : "info"}/>
     </>
   )
 }

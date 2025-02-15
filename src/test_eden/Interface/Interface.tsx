@@ -8,9 +8,9 @@ import {SidebarContent} from "./SidebarContent.tsx";
 import {useGame} from "../context/game.context.ts";
 import {InterfaceActiveLeft} from "./InterfaceController.ts";
 import {observer} from "mobx-react";
-import {Button} from "@mui/material";
 import {BehemothManager} from "./BehemothManager.tsx";
 import {PlayerManager} from "./PlayerManager.tsx";
+import {Button} from "@/components/ui/button.tsx";
 
 const HEADER_HEIGHT = 60;
 export const FOOTER_HEIGHT = 80;

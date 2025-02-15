@@ -25,11 +25,11 @@ const PlayerSettings = () => {
 const BehemothSettings = () => {
   const {hp, acid, stamina} = useGame().behemoth;
   return (
-    <>
+    <div className="flex flex-col gap-2">
       Behemoth Settings
       <ValueDisplay resource={hp}/>
       <ValueDisplay resource={stamina}/>
       <ValueDisplay resource={acid}/>
-    </>
+    </div>
   )
 }

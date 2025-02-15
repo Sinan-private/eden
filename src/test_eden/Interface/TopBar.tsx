@@ -186,7 +186,7 @@ const UIStack = ({tooltip, Icon, value, children}: UIStackProps) => (
           <div>{Icon}</div>
         }
         {value ?
-          <p className="text-nowrap" text-align="left" font-size="inherit">{value}</p>
+          <p className="text-nowrap" text-align="left">{value}</p>
           : children
             ? (<>{children}</>)
             : null
