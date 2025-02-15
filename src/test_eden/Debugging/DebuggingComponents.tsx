@@ -3,7 +3,6 @@ import styled from "styled-components";
 import {Stack, Switch, Typography} from "@mui/material";
 import {Debug_Behemoth} from "./Debug_Behemoth.tsx";
 import {Debug_SlaveManagement} from "./Debug_SlaveManagement.tsx";
-
 import {BEAUTIFY_DEBUG, DEBUG} from "../constants/constants.ts";
 
 export const DebuggingComponents = () => {
@@ -22,7 +21,6 @@ export const DebuggingComponents = () => {
         width: 200,
         maxWidth: '20%',
       }}>
-
         <Stack
           direction="row"
           alignItems="center"
