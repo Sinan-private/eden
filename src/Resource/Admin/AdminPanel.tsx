@@ -1,12 +1,11 @@
 import {useEffect, useState} from "react";
 import styled from "styled-components";
-import Box from "@mui/material/Box";
 import {AdminResources} from "./Resource/AdminResources.tsx";
-import TabNav from "./TabNav.tsx";
 import {HandleTypes} from "./Resource/HandleTypes.tsx";
 import {useAdmin} from "../context/admin.context.ts";
-import { X } from "@mynaui/icons-react";
+import {X} from "@mynaui/icons-react";
 import {Button} from "@/components/ui/button.tsx";
+import {Tabs, TabsContent, TabsList, TabsTrigger} from "@/components/ui/tabs.tsx";
 
 export const AdminPanel = () => {
   const {onCloseAdminPanel} = useAdmin();
@@ -24,29 +23,28 @@ export const AdminPanel = () => {
   }, []);
 
   return (
-      <StyledContainer>
-        <Box position="absolute" top={10} right={10}>
-          <Button variant="outline" onClick={onCloseAdminPanel} style={{zIndex: 100}}>
-            <X/>
-          </Button>
+    <StyledContainer>
+      <div className="absolute" style={{top: 10, right: 10}}>
+        <Button variant="outline" onClick={onCloseAdminPanel} style={{zIndex: 100}}>
+          <X/>
+        </Button>
 
-        </Box>
+      </div>
 
-        <Content>
-          <TabNav tabs={[
-            {
-              label: 'Resources',
-              // Component: HandleResources,
-              Component: AdminResources,
-            },
-            {
-              label: 'Types',
-              Component: HandleTypes,
-            },
-          ]} />
-        </Content>
+      <Content>
+        <Tabs defaultValue="resources" className="w-full">
+          <TabsList>
+            <TabsTrigger value="resources">Resources</TabsTrigger>
+            <TabsTrigger value="types">Types</TabsTrigger>
+          </TabsList>
+          <div className="px-8">
+            <TabsContent value="resources"><AdminResources/></TabsContent>
+            <TabsContent value="types"><HandleTypes/></TabsContent>
+          </div>
+        </Tabs>
+      </Content>
 
-      </StyledContainer>
+    </StyledContainer>
   )
 }
 

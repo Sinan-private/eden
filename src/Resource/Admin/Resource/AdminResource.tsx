@@ -3,7 +3,6 @@ import {ResourceKeys, ResourceTypes} from "../../ResourceHandler/specificTypes.t
 import {useMemo, useState} from "react";
 import {Chip, IconButton, Paper, Stack, Typography} from "@mui/material";
 import {themeColors} from "../../assets/colors.ts";
-import Box from "@mui/material/Box";
 import DeleteOutlineIcon from "@mui/icons-material/DeleteOutline";
 import ModeEditOutlineIcon from "@mui/icons-material/ModeEditOutline";
 import {useAdmin} from "../../context/admin.context.ts";
@@ -61,7 +60,7 @@ export const AdminResource = ({resource}: { resource: Resource<ResourceKeys, Res
   if (!resource) return null
 
   return (
-    <Box position="relative">
+    <div className="relative">
       <IconButton
         onClick={onDeleteResource}
         size="small"
@@ -80,7 +79,7 @@ export const AdminResource = ({resource}: { resource: Resource<ResourceKeys, Res
           }>
           <Stack direction="row" alignItems="center" spacing={1}>
             <Stack direction="row" alignItems="center" spacing={1}>
-              <Box sx={{
+              <div style={{
                 backgroundColor: 'rgb(255 255 255 / 3%)',
                 borderRadius: 20,
                 height: 40,
@@ -90,7 +89,7 @@ export const AdminResource = ({resource}: { resource: Resource<ResourceKeys, Res
                 alignItems: 'center',
               }}>
                 <img src={resource?.icon} alt={resource?.label} width={32} height={32}/>
-              </Box>
+              </div>
               <Stack width={80} alignItems="flex-end">
                 <Typography sx={{mb: -1}} variant="caption">{resource.label}</Typography>
                 <Typography sx={{fontSize: '1.2rem', fontWeight: 'bold'}}>
@@ -117,6 +116,6 @@ export const AdminResource = ({resource}: { resource: Resource<ResourceKeys, Res
           </Stack>
         </Stack>
       </Paper>
-    </Box>
+    </div>
   )
 }

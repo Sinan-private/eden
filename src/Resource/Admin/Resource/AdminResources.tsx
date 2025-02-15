@@ -3,7 +3,7 @@ import {observer} from "mobx-react";
 import {ResourceKeys, ResourceTypes} from "@/Resource";
 import {useAdmin} from "../../context/admin.context.ts";
 import {Resource} from "../../ResourceHandler";
-import {AdminResource} from "./AdminResource.tsx";
+import {AdminResource} from "./new/AdminResourceNew.tsx";
 import {EditResource} from "./EditResource.tsx";
 import {useComponentMount} from "../../hooks";
 
@@ -13,7 +13,7 @@ export const AdminResources = observer(() => {
   return (
     <>
       <h2 className="ml-4">Starting Resources</h2>
-      <div style={{display: "flex", justifyContent: "center", flexDirection: "row"}}>
+      <div className="flex justify-center flex-row" style={{maxWidth: 1100}}>
         <div className="card">
           {types.map(({type, resources}) => (
             <ResourceType key={type} type={type} resources={resources} label={"Add " + type}/>
@@ -42,9 +42,12 @@ const ResourceType = observer(({type, resources, label = "Add resource"}: Resour
       <div>
         <h5 className="align text-left">{type}</h5>
       </div>
+      <div className="flex gap-2 flex-wrap">
+
       {resources.map(resource => (
         <AdminResource key={resource.key} resource={resource}/>
       ))}
+      </div>
       {!isAddMode
         ? <button onClick={onOpenAddMode}>{label}</button>
         : <AddResource closeAddMode={onCloseAddMode} type={type} />

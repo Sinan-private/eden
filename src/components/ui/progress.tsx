@@ -30,7 +30,6 @@ const Progress = React.forwardRef<
   React.ElementRef<typeof ProgressPrimitive.Root>,
   ProgressProps
 >(({ className, value, color = 'default', ...props }, ref) => {
-  console.log(color)
   const bar_color = barClasses[color]
   const bg_color = bgClasses[color]
 
