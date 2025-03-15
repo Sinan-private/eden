@@ -20,19 +20,19 @@ export const AdminResource = ({resource}: AdminResourcesProps) => {
   return (
     <>
       <AlertDialog>
-        <div className="overflow-hidden bg-zinc-900 py-4 sm:py-2 rounded" style={{width: 200}}>
+        <div className="relative overflow-hidden bg-zinc-900 py-4 sm:py-2 rounded" style={{width: 200}}>
           <div
             className="mx-auto px-4 max-w-2xl grid-cols-1 gap-x-8 gap-y-16 sm:gap-y-20 lg:mx-0 lg:max-w-none lg:grid-cols-2">
             <div className="flex justify-between items-center">
               <img src={resource.icon} alt={resource.label}/>
-              <div className="flex items-center gap-1">
+              <div className="flex items-center gap-1 pr-4">
 
                 {max
                   ? <p>{resource.value}<span className="text-gray-400"> / {max}</span></p>
                   : <p>{resource.value}</p>
                 }
                 <AlertDialogTrigger asChild>
-                  <Button variant="ghost" className="p-1.5 text-gray-500 hover:text-gray-200">
+                  <Button variant="ghost" className="p-1.5 absolute top-0 right-0 text-gray-500 hover:text-gray-200">
                     <EditOne size={16}/>
                   </Button>
                 </AlertDialogTrigger>
@@ -47,6 +47,7 @@ export const AdminResource = ({resource}: AdminResourcesProps) => {
                   <ConstView key={give.key} trade={give}/>
                 ))}
               </div>
+
             </div>
           </div>
         </div>

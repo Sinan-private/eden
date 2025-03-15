@@ -1,10 +1,10 @@
 import {useState} from "react";
 import {observer} from "mobx-react";
 import {ResourceKeys, ResourceTypes} from "@/Resource";
-import {useAdmin} from "../../context/admin.context.ts";
-import {Resource} from "../../ResourceHandler";
-import {AdminResource} from "./new/AdminResourceNew.tsx";
-import {useComponentMount} from "../../hooks";
+import {useAdmin} from "../../../context/admin.context.ts";
+import {Resource} from "../../../ResourceHandler";
+import {AdminResource} from "../new/AdminResourceNew.tsx";
+import {useComponentMount} from "../../../hooks";
 import { PlusCircle } from "@mynaui/icons-react";
 import {
   AlertDialog,
@@ -18,6 +18,8 @@ export const AdminResources = observer(() => {
   const types = groupByType()
   return (
     <>
+    <AlertDialog>
+
       <h3 className="mb-6">Starting Resources</h3>
       <div className="flex justify-center flex-row" style={{maxWidth: 1100}}>
         <div className="flex flex-col gap-12">
@@ -28,6 +30,7 @@ export const AdminResources = observer(() => {
          <ResourceType type={'' as ResourceTypes} resources={[]}/>
         </div>
       </div>
+    </AlertDialog>
     </>
   )
 })

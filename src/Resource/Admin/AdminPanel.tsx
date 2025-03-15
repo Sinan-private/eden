@@ -1,6 +1,6 @@
 import {useEffect, useState} from "react";
 import styled from "styled-components";
-import {AdminResources} from "./Resource/AdminResources.tsx";
+import {AdminResources} from "./Resource/new/AdminResourcesNew.tsx";
 import {HandleTypes} from "./Resource/HandleTypes.tsx";
 import {useAdmin} from "../context/admin.context.ts";
 import {X} from "@mynaui/icons-react";
