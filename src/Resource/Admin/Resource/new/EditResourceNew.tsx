@@ -15,32 +15,34 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select"
-import {ResourceCostUpdate, ResourceTypeRaw} from "@/Resource/ResourceHandler/genericTypes.ts";
+import {ResourceCostUpdate} from "@/Resource/ResourceHandler/genericTypes.ts";
 import {ResourceClass, ResourceKeys, ResourceTypes, TradeChange} from "@/Resource";
 import {Input} from "@/components/ui/input.tsx";
 import {Label} from "@/components/ui/label.tsx";
 import {Switch} from "@/components/ui/switch.tsx";
 import {useState} from "react";
 import {Separator} from "@/components/ui/separator.tsx";
-import {useAdmin} from "@/Resource/context/admin.context.ts";
+import {EditResourceProps, useAdmin} from "@/Resource/context/admin.context.ts";
 import {resourceTypes} from "@/Resource/generated/resourceTypes.ts";
 import {Image} from "@mynaui/icons-react";
 import {Button} from "@/components/ui/button.tsx";
+import {observer} from "mobx-react";
 
 // Todo This is currently rendered for each single resource on opening the admin tool.
 //  Instead it should be rendered individually
 
-type EditResourceProps = {
-  resource?: Partial<ResourceTypeRaw<ResourceKeys, ResourceTypes>>;
-}
-
-export const EditResource = ({resource}: EditResourceProps) => {
+export const EditResource = observer(() => {
+  // Can I just create a Resource here and use it with direct methods?
+  const {editableResource: resource} = useAdmin()
   const [useMax, setUseMax] = useState(!!resource?.max && resource.max !== Infinity);
   const [useMin, setUseMin] = useState(!!resource?.min && resource.min !== -Infinity);
   const [type, setType] = useState(resource?.type)
   const onToggleMax = () => setUseMax(!useMax);
   const onToggleMin = () => setUseMin(!useMin);
+  const onSetType = (type: string) => setType(type as ResourceTypes)
   const {icon, key} = (resource as ResourceClass);
+  const {onCloseAlertDialog} = useAdmin();
+  console.log(type, resource?.type)
 
   return (
     <AlertDialogContent className="overflow-y-auto max-h-full">
@@ -63,20 +65,31 @@ export const EditResource = ({resource}: EditResourceProps) => {
 
           <div className="grid w-full max-w-sm items-center gap-1.5">
             <Label>Name</Label>
-            <Input type="text" id="resource name" placeholder={resource?.label}/>
+            <Input
+              type="text"
+              id="resource name"
+              value={resource.label}
+              onChange={(e) => resource.setTo({label: e.target.value})}
+              placeholder="Resource label"
+            />
           </div>
           <div className="grid w-full max-w-sm items-center gap-1.5">
             <Label>Key</Label>
-            <Input type="text" id="resource key" placeholder={key}/>
+            <Input
+              type="text"
+              id="resource key"
+              value={resource.key}
+              onChange={(e) => resource.setTo({key: e.target.value as ResourceKeys})}
+              placeholder="Resource key (unique)"
+            />
           </div>
           <div className="flex w-full max-w-sm items-center gap-1.5">
             <div>
               <Label>Type</Label>
-              <Select value={type} onValueChange={(value) => setType(value as ResourceTypes)}>
+              <Select value={type} onValueChange={onSetType}>
                 <SelectTrigger className="w-[180px]">
                   <SelectValue placeholder="Select the type"/>
                 </SelectTrigger>
-
                 <SelectContent style={{zIndex: 6000}}>
                   <SelectGroup>
                     <SelectLabel>Types</SelectLabel>
@@ -126,12 +139,12 @@ export const EditResource = ({resource}: EditResourceProps) => {
         </div>
       </div>
       <AlertDialogFooter>
-        <AlertDialogCancel>Cancel</AlertDialogCancel>
+        <AlertDialogCancel onClick={onCloseAlertDialog}>Cancel</AlertDialogCancel>
         <AlertDialogAction>Continue</AlertDialogAction>
       </AlertDialogFooter>
     </AlertDialogContent>
   )
-}
+})
 
 const Cost = ({trade}: { trade?: ResourceCostUpdate<ResourceKeys, ResourceTypes> | null }) => {
   if (!trade) {

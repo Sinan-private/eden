@@ -23,7 +23,7 @@ export const AdminPanel = () => {
   }, []);
 
   return (
-    <StyledContainer>
+    <StyledContainer id="Admin Panel BG">
       <div className="absolute" style={{top: 10, right: 10}}>
         <Button variant="outline" onClick={onCloseAdminPanel} style={{zIndex: 100}}>
           <X/>
@@ -53,8 +53,8 @@ const StyledContainer = styled.div`
     left: 0;
     top: 0;
     min-width: 60vw;
-    background: linear-gradient(180deg, rgb(53, 57, 70) 0%, rgba(35, 42, 60, 1) 100%);
-    box-shadow: 10px 0 74px 0 #22183887;
+    background-color: #09090b;
+    //box-shadow: 10px 0 74px 0 #22183887;
     z-index: 1000;
 `
 const Content = styled.div`

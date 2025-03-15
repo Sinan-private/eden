@@ -2,13 +2,32 @@ import {ChangeEvent, useCallback, useState} from "react";
 import {createContainer} from "unstated-next";
 import {ResourceKeys, ResourceState, ResourceStoreClass, ResourceTypes} from "../ResourceHandler/specificTypes.ts";
 import {ResourceStore} from "../ResourceHandler/ResourceStore.ts";
-import {Icon} from "../ResourceHandler/genericTypes.ts";
+import {Icon, ResourceTypeRaw} from "../ResourceHandler/genericTypes.ts";
 import {Resource} from "../ResourceHandler";
 import {useToggle, useComponentMount} from "../hooks";
 import {SelectChangeEvent} from "@mui/material";
 import {useApi} from "../hooks/useApi.ts";
 
+type Update = Partial<ResourceTypeRaw<ResourceKeys, ResourceTypes>>;
+
+export type EditResourceProps = {
+  resource?: Partial<ResourceTypeRaw<ResourceKeys, ResourceTypes>>;
+}
+
 const useAdminBase = () => {
+  const editableResource = new Resource({key: '' as ResourceKeys});
+  const [alertDialogOpen, setAlertDialogOpen] = useState(false);
+  const [alertDialogContent, setAlertDialogContent] = useState<Update>({});
+
+  const onOpenAlertDialog = (resource: Update = {}) => {
+    console.log('I should open', resource)
+    setAlertDialogOpen(true);
+    setAlertDialogContent(resource);
+  }
+  const onCloseAlertDialog = () => {
+    setAlertDialogOpen(false);
+    setAlertDialogContent({});
+  };
   const {
     fetchResources,
     updateResources,
@@ -42,6 +61,8 @@ const useAdminBase = () => {
     setResources(new ResourceStore(resourcesOriginal!.state, 'admin.context'))
   }
 
+  // ----------------------------------- Write Resource to file ---------------------------------------
+
   const write__initialResources = useCallback(() => {
       // console.log(resources?.state.length)
     const state = resources!.state.filter(({key}) => key.length)
@@ -70,6 +91,8 @@ const useAdminBase = () => {
     removeType(typesToRemove)
   }
 
+  // ----------------------------------- Checks ---------------------------------------
+
   const canRemoveResource = (key: ResourceKeys) => {
     return !resources?.isResourceReferenced(key)
   }
@@ -81,12 +104,16 @@ const useAdminBase = () => {
     return false
   }, [resources, resourcesOriginal])
 
+  // Todo this needs to be checked
   const getActions = useCallback((resource: Resource<ResourceKeys, ResourceTypes>, enableKeyEdit?: boolean) => {
 
     const onSelectIcon = (clickedIcon: Icon) => {
       resource.setTo({iconName: clickedIcon.name})
       handleCloseIconPicker()
     }
+
+    // ----------------------------------- Callbacks ---------------------------------------
+
     const onSetKey = (e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
       console.log(resource)
       resource.setTo({key: e.target.value as ResourceKeys})
@@ -162,6 +189,11 @@ const useAdminBase = () => {
     onToggleAdminPanel,
     onCloseAdminPanel,
     resetResources,
+    alertDialogOpen,
+    alertDialogContent,
+    onOpenAlertDialog,
+    onCloseAlertDialog,
+    editableResource,
   }
 }
 
