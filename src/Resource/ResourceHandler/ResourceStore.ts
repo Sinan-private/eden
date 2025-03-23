@@ -4,7 +4,7 @@ import {ResourceTrade, Trade} from "./Trade.ts";
 import {LevelUpdate, ResourceCostUpdate, TradeChange} from "./genericTypes.ts";
 
 export class ResourceStore<K extends string, T extends string> {
-  public resources: Map<K, Resource<K, T>> = new Map();
+  public resources: Map<string, Resource<K, T>> = new Map();
   // This is the one that gets edited when the user wants to add a new resource
   public newResource: Resource<K, T>;
 
@@ -14,8 +14,12 @@ export class ResourceStore<K extends string, T extends string> {
     makeAutoObservable(this);
   }
 
-  public get = (key: K) => {
-    return this.resources.get(key)!
+  public get = (id: string) => {
+    return this.resources.get(id)!
+  };
+
+  public getByKey = (key: K) => {
+    return Array.from(this.resources.values()).find(resource => resource.key === key);
   };
 
   public percentageOf = (value: number, max: number) => {
@@ -36,13 +40,14 @@ export class ResourceStore<K extends string, T extends string> {
 
   public initializeResources(resources: ResourceUpdateProps<K, T>[]) {
     resources.forEach((resource) => {
-      this.resources.set(resource.key, new Resource(resource));
+      const initialResource = new Resource(resource);
+      this.resources.set(initialResource.id, initialResource);
     });
   }
 
   public addEditableResource = () => {
     console.log(this.resources)
-    this.resources.set(this.newResource.key, this.newResource);
+    this.resources.set(this.newResource.id, this.newResource);
     console.log(this.resources)
     this.newResource = new Resource({key: '' as K})
   }
@@ -92,7 +97,7 @@ export class ResourceStore<K extends string, T extends string> {
     if (!amount) {
       return
     }
-    const resource = this.get(key)!;
+    const resource = this.getByKey(key)!;
     const cost = resource.cost;
     if (!cost) {
       resource.updateValueBy(amount || 0)
@@ -115,11 +120,11 @@ export class ResourceStore<K extends string, T extends string> {
     amount = 1
   ) => {
     const _give: ResourceTrade<K, T>[] = give.map(({key, ...update}) => ({
-      resource: this.get(key)!,
+      resource: this.getByKey(key)!,
       ...update
     }))
     const _gain: ResourceTrade<K, T>[] = gain.map(({key, ...update}) => ({
-      resource: this.get(key)!,
+      resource: this.getByKey(key)!,
       ...update,
     }))
     return new Trade(_give, _gain, amount)

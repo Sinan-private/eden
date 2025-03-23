@@ -94,7 +94,7 @@ type SingleCostProps = {
 }
 
 const SingleCost = ({change, changeKey, resource}: SingleCostProps) => {
-  const {get} = useAdmin().resources;
+  const {getByKey} = useAdmin().resources;
 
   const onChange = (event: ChangeEvent<HTMLInputElement>) => {
     const value = Number(event.target.value);
@@ -106,7 +106,7 @@ const SingleCost = ({change, changeKey, resource}: SingleCostProps) => {
   }
   // This one is a nasty little bitch. The already annoying situation that I need to get cost icons this way
   // really brakes the chain here. A newly created resource can not provide this yet. -> See getResource.ts
-  const icon = get(change.key)?.icon
+  const icon = getByKey(change.key)?.icon
 
   return (
     <Stack spacing={1} direction="row" alignItems="center">

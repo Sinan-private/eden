@@ -28,14 +28,14 @@ export class BehemothClass {
 
   constructor(private _resourceStore: ResourceStoreClass) {
     this.level = new LevelClass(_resourceStore, levels)
-    this.hp = _resourceStore.get('behemoth_hp')
-    this.acid = _resourceStore.get('behemoth_acid')
-    this.climb_height = _resourceStore.get('behemoth_climb_height')
-    this.climb_speed = _resourceStore.get('behemoth_climb_speed')
-    this.digging_depth = _resourceStore.get('behemoth_digging_depth')
-    this.flushing_depth = _resourceStore.get('behemoth_flushing_depth')
-    this.stamina = _resourceStore.get('behemoth_stamina')
-    this.drying_delay = _resourceStore.get('behemoth_drying_delay')
+    this.hp = _resourceStore.getByKey('behemoth_hp')
+    this.acid = _resourceStore.getByKey('behemoth_acid')
+    this.climb_height = _resourceStore.getByKey('behemoth_climb_height')
+    this.climb_speed = _resourceStore.getByKey('behemoth_climb_speed')
+    this.digging_depth = _resourceStore.getByKey('behemoth_digging_depth')
+    this.flushing_depth = _resourceStore.getByKey('behemoth_flushing_depth')
+    this.stamina = _resourceStore.getByKey('behemoth_stamina')
+    this.drying_delay = _resourceStore.getByKey('behemoth_drying_delay')
     makeAutoObservable(this)
   }
 
@@ -50,12 +50,12 @@ export class BehemothClass {
 
   public startClimbing = () => {
     if (!this.digging_requested) {
-      const {get, getByType} = this._resourceStore
+      const {getByKey, getByType} = this._resourceStore
       this.digging_depth.setValueTo(0)
       this.movement_requested = true;
       this._has_flushed = false;
-      get('behemoth_flushing_depth').setValueTo(0) // This needs to reset to a previous state
-      get('behemoth_drying_delay').setValueTo(10) // This needs to reset to a previous state
+      getByKey('behemoth_flushing_depth').setValueTo(0) // This needs to reset to a previous state
+      getByKey('behemoth_drying_delay').setValueTo(10) // This needs to reset to a previous state
       getByType('liquid_mana').forEach(liquid_mana => liquid_mana.setValueTo(0))
       getByType('dirty_mana').forEach(dirty_mana => dirty_mana.setValueTo(0))
     }
@@ -184,7 +184,7 @@ export class BehemothClass {
       acid,
       stopClimbing,
     } = this
-    const {get} = this._resourceStore
+    const {getByKey} = this._resourceStore
     if (accelerating) {
       climb_speed.updateValueBy(0.2)
     }
@@ -211,13 +211,13 @@ export class BehemothClass {
     }
     if (is_flushing_mana) {
       game.mana.produceLiquidMana()
-      this._resourceStore.get('upstream_height').updateValueBy(10)
+      this._resourceStore.getByKey('upstream_height').updateValueBy(10)
     }
     if (stopped_flushing_mana) {
       flushing_depth.updateValueBy(-1)
     }
     if (is_mana_starting_to_dry) {
-      get('behemoth_drying_delay').updateValueBy(-1)
+      getByKey('behemoth_drying_delay').updateValueBy(-1)
     }
     if (is_mana_drying) {
       game.mana.produceDirtyMana()

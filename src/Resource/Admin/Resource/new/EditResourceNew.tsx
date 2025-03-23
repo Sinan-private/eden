@@ -183,8 +183,8 @@ const SafeCost = ({trade}: { trade: ResourceCostUpdate<ResourceKeys, ResourceTyp
 }
 
 const SingleCost = ({trade}: { trade: TradeChange }) => {
-  const {get} = useAdmin().resources;
-  const resource = get(trade.key);
+  const {getByKey} = useAdmin().resources;
+  const resource = getByKey(trade.key);
   return (
     <>
       <div className="flex items-center space-x-2">

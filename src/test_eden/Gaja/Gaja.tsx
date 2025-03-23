@@ -13,8 +13,8 @@ const BACKGROUND_IMAGE_HEIGHT = 600;
 const BACKGROUND_IMAGE_WIDTH = 571;
 
 export const Gaja = observer(() => {
-  const {get} = useGame().resources
-  const climbing_speed = get('behemoth_climb_speed').value
+  const {getByKey} = useGame().resources
+  const climbing_speed = getByKey('behemoth_climb_speed').value
   const [displacement, setDisplacement] = useState(0);
   useAnimationSubscription(() => {
     if (climbing_speed) {

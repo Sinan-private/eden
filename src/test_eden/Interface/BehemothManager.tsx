@@ -12,7 +12,7 @@ export const BehemothManager = observer(() => {
     levelUp,
     meets_level_requirements
   } = behemoth.level;
-  const staminaIcon = resources.get('behemoth_stamina').icon;
+  const staminaIcon = resources.getByKey('behemoth_stamina').icon;
   return (
     <div className="p-2">
       <Card>

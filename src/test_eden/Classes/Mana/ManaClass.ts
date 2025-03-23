@@ -15,14 +15,14 @@ export class ManaClass {
 
   // This comes from flushing. Nothing more is needed to do than just flushing
   public produceLiquidMana = () => {
-    const {get} = this._resourceStore
-    const digging_depth = this._resourceStore.get("behemoth_digging_depth").value;
+    const {getByKey} = this._resourceStore
+    const digging_depth = this._resourceStore.getByKey("behemoth_digging_depth").value;
     const power = (digging_depth / 10) * FLUSHING_SPEED
-    get('liquid_mana_level_1').updateValueBy(this.random.chance(this._finding_chance_level_1, power))
-    get('liquid_mana_level_2').updateValueBy(this.random.chance(this._finding_chance_level_2, power))
-    get('liquid_mana_level_3').updateValueBy(this.random.chance(this._finding_chance_level_3, power))
-    get('liquid_mana_level_4').updateValueBy(this.random.chance(this._finding_chance_level_4, power))
-    get('liquid_mana_level_5').updateValueBy(this.random.chance(this._finding_chance_level_5, power))
+    getByKey('liquid_mana_level_1').updateValueBy(this.random.chance(this._finding_chance_level_1, power))
+    getByKey('liquid_mana_level_2').updateValueBy(this.random.chance(this._finding_chance_level_2, power))
+    getByKey('liquid_mana_level_3').updateValueBy(this.random.chance(this._finding_chance_level_3, power))
+    getByKey('liquid_mana_level_4').updateValueBy(this.random.chance(this._finding_chance_level_4, power))
+    getByKey('liquid_mana_level_5').updateValueBy(this.random.chance(this._finding_chance_level_5, power))
   }
 
   // This comes from liquid mana. It doesn't need any interaction. Just time to dry

@@ -5,9 +5,9 @@ import behemoth_image from "../../assets/images/Behemoth.png";
 import styled from "styled-components";
 
 export const Behemoth = () => {
-  const {get} = useGame().resources;
+  const {getByKey} = useGame().resources;
   const {isActive} = useTick();
-  const speed = get('behemoth_climb_speed').value;
+  const speed = getByKey('behemoth_climb_speed').value;
   const src = speed && isActive ? behemoth_animated : behemoth_image;
   return (
     <StyledBehemoth>

@@ -9,17 +9,17 @@ export class MaridClass extends FactionClass {
   public hunting_requested: boolean = AUTO_SLAVE_HUNT;
   constructor(gameClasses: GameBaseClasses) {
     super(gameClasses)
-    const {get} = this.resources;
+    const {getByKey} = this.resources;
     this.faction = 'marid';
     this.image = image;
     this.active = true;
     this.visible = true;
-    this.loyalty = get('marid_loyalty');
-    this.influence = get('marid_influence');
-    this.progress = get('marid_progress');
-    this.level = get('marid_level');
-    this.skill_speed_primary = get('marid_speed_primary_skill');
-    this.skill_speed_secondary = get('marid_speed_secondary_skill');
+    this.loyalty = getByKey('marid_loyalty');
+    this.influence = getByKey('marid_influence');
+    this.progress = getByKey('marid_progress');
+    this.level = getByKey('marid_level');
+    this.skill_speed_primary = getByKey('marid_speed_primary_skill');
+    this.skill_speed_secondary = getByKey('marid_speed_secondary_skill');
   }
 
   get is_hunting(): boolean {
@@ -28,7 +28,7 @@ export class MaridClass extends FactionClass {
   }
 
   get has_slave_caught() {
-    const progress_done = this.resources.get('marid_progress').is_max
+    const progress_done = this.resources.getByKey('marid_progress').is_max
     const can_enslave = this.slaves.can_enslave;
     return progress_done && can_enslave;
   }

@@ -14,7 +14,7 @@ export const AdminResource = ({resource}: { resource: Resource<ResourceKeys, Res
     canRemoveResource,
     resetResources,
     resources: {
-      get
+      getByKey
     }
   } = useAdmin()
   const [edit, setEdit] = useState(false);
@@ -35,7 +35,7 @@ export const AdminResource = ({resource}: { resource: Resource<ResourceKeys, Res
         {resource.cost?.give.map(cost => (
           <Stack key={cost.key}>
             <img
-              src={get(cost.key).icon}
+              src={getByKey(cost.key).icon}
               width={16}
               height={16}
               alt={cost.key}
@@ -45,7 +45,7 @@ export const AdminResource = ({resource}: { resource: Resource<ResourceKeys, Res
         ))}
       </Stack>
     </Stack>
-  ), [get, resource]);
+  ), [getByKey, resource]);
 
   if (edit) {
     return (

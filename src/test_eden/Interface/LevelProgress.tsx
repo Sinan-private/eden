@@ -6,8 +6,8 @@ type LevelGainProps = {
   gain: TradeChange
 }
 export const LevelGain = ({gain}: LevelGainProps) => {
-  const {get} = useGame().resources;
-  const {label, icon} = get(gain.key)
+  const {getByKey} = useGame().resources;
+  const {label, icon} = getByKey(gain.key)
 
   return (
     <div className="flex">
@@ -48,8 +48,8 @@ export const LevelProgress = (
     level,
     label,
   }: LevelProgressProps) => {
-  const {get, percentageOf} = useGame().resources;
-  const resource = get(level.key);
+  const {getByKey, percentageOf} = useGame().resources;
+  const resource = getByKey(level.key);
   const percentage = percentageOf(Math.floor(resource.value), level.value!)
   return (
     <>

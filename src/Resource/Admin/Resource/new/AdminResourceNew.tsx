@@ -57,8 +57,8 @@ type ConstViewProps = {
 }
 
 const ConstView = ({trade}: ConstViewProps) => {
-  const {get} = useAdmin().resources;
-  const resource = get(trade.key)
+  const {getByKey} = useAdmin().resources;
+  const resource = getByKey(trade.key)
   return (
     <div className="flex items-center gap-1">
       <span

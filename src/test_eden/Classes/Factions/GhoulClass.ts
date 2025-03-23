@@ -6,15 +6,15 @@ import {GameBaseClasses} from "../../context/game.context.ts";
 export class GhoulClass extends FactionClass {
   constructor(gameClasses: GameBaseClasses) {
     super(gameClasses)
-    const {get} = this.resources;
+    const {getByKey} = this.resources;
     this.image = image;
     this.visible = true;
     this.faction = 'ghoul';
-    this.loyalty = get('ghoul_loyalty');
-    this.influence = get('ghoul_influence');
-    this.progress = get('ghoul_progress');
-    this.level = get('ghoul_level');
-    this.skill_speed_primary = get('ghoul_speed_primary_skill');
-    this.skill_speed_secondary = get('ghoul_speed_secondary_skill');
+    this.loyalty = getByKey('ghoul_loyalty');
+    this.influence = getByKey('ghoul_influence');
+    this.progress = getByKey('ghoul_progress');
+    this.level = getByKey('ghoul_level');
+    this.skill_speed_primary = getByKey('ghoul_speed_primary_skill');
+    this.skill_speed_secondary = getByKey('ghoul_speed_secondary_skill');
   }
 }

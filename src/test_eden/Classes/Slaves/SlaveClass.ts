@@ -36,14 +36,14 @@ export class SlaveClass {
   public slave_health: ResourceClass;
 
   constructor(private _resourceStore: ResourceStoreClass) {
-    this.limit = _resourceStore.get('slaves_limit')
-    this.slaves_bound = _resourceStore.get('slaves_bound')
-    this.slaves_in_rebirth =  _resourceStore.get('slaves_in_rebirth')
-    this.slaves_roaming = _resourceStore.get('slaves_roaming')
-    this.slaves_enslaved = _resourceStore.get('slaves_enslaved')
-    this.slaves_wasted = _resourceStore.get('slaves_wasted')
-    this.slaves_consumed = _resourceStore.get('slaves_consumed')
-    this.slave_health = _resourceStore.get('slave_health')
+    this.limit = _resourceStore.getByKey('slaves_limit')
+    this.slaves_bound = _resourceStore.getByKey('slaves_bound')
+    this.slaves_in_rebirth =  _resourceStore.getByKey('slaves_in_rebirth')
+    this.slaves_roaming = _resourceStore.getByKey('slaves_roaming')
+    this.slaves_enslaved = _resourceStore.getByKey('slaves_enslaved')
+    this.slaves_wasted = _resourceStore.getByKey('slaves_wasted')
+    this.slaves_consumed = _resourceStore.getByKey('slaves_consumed')
+    this.slave_health = _resourceStore.getByKey('slave_health')
     makeAutoObservable(this)
   }
 

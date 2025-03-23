@@ -108,9 +108,9 @@ const useAdminBase = () => {
     return !resources?.isResourceReferenced(key)
   }
 
-  const isDisabled = useCallback((key: ResourceKeys) => {
-    if (resources?.get(key) && resourcesOriginal?.get(key)) {
-      return areObjectsEqual(resources!.get(key).state, resourcesOriginal!.get(key).state)
+  const isDisabled = useCallback((id: string) => {
+    if (resources?.get(id) && resourcesOriginal?.get(id)) {
+      return areObjectsEqual(resources!.get(id).state, resourcesOriginal!.get(id).state)
     }
     return false
   }, [resources, resourcesOriginal])
@@ -163,7 +163,7 @@ const useAdminBase = () => {
         onSubmit();
       }
     }
-    const saveDisabled = isDisabled(resource?.key) || (enableKeyEdit && keyAlreadyExists) || !resource?.key.length;
+    const saveDisabled = isDisabled(resource?.id) || (enableKeyEdit && keyAlreadyExists) || !resource?.key.length;
 
     return {
       onSelectIcon,

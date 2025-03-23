@@ -3,13 +3,13 @@ import {ResourceClass, ResourceStoreClass} from "../../Resource";
 export class UpstreamClass {
   private _height: ResourceClass;
   constructor(private _resourceStore: ResourceStoreClass) {
-    this._height = _resourceStore.get('upstream_height')
+    this._height = _resourceStore.getByKey('upstream_height')
   }
   get height() {
-    return this._resourceStore.get('upstream_height')
+    return this._resourceStore.getByKey('upstream_height')
   }
   get distance() {
-    return this._resourceStore.get('behemoth_climb_height').value - this.height.value
+    return this._resourceStore.getByKey('behemoth_climb_height').value - this.height.value
   }
 
   get danger() {
@@ -27,7 +27,7 @@ export class UpstreamClass {
     }
     if (this.distance < 300) {
       const damage = (300 - this.distance) / 50
-      this._resourceStore.get('behemoth_hp').updateValueBy(-damage)
+      this._resourceStore.getByKey('behemoth_hp').updateValueBy(-damage)
     }
   }
 }
