@@ -1,6 +1,12 @@
 import {ChangeEvent, useCallback, useState} from "react";
 import {createContainer} from "unstated-next";
-import {ResourceKeys, ResourceState, ResourceStoreClass, ResourceTypes} from "../ResourceHandler/specificTypes.ts";
+import {
+  ResourceClass,
+  ResourceKeys,
+  ResourceState,
+  ResourceStoreClass,
+  ResourceTypes
+} from "@/Resource";
 import {ResourceStore} from "../ResourceHandler/ResourceStore.ts";
 import {Icon, ResourceTypeRaw} from "../ResourceHandler/genericTypes.ts";
 import {Resource} from "../ResourceHandler";
@@ -13,16 +19,21 @@ type Update = Partial<ResourceTypeRaw<ResourceKeys, ResourceTypes>>;
 export type EditResourceProps = {
   resource?: Partial<ResourceTypeRaw<ResourceKeys, ResourceTypes>>;
 }
+const editableResource = new Resource({key: '' as ResourceKeys});
 
 const useAdminBase = () => {
-  const editableResource = new Resource({key: '' as ResourceKeys});
+  // const [editableResource] = useState(new Resource({key: '' as ResourceKeys}))
   const [alertDialogOpen, setAlertDialogOpen] = useState(false);
   const [alertDialogContent, setAlertDialogContent] = useState<Update>({});
 
+  // console.log('admin key: ', editableResource.key)
+  console.log(editableResource.key, editableResource.id)
+
+
   const onOpenAlertDialog = (resource: Update = {}) => {
-    console.log('I should open', resource)
     setAlertDialogOpen(true);
     setAlertDialogContent(resource);
+    editableResource.setTo(resource)
   }
   const onCloseAlertDialog = () => {
     setAlertDialogOpen(false);
@@ -169,6 +180,11 @@ const useAdminBase = () => {
     }
   }, [isDisabled, isKeyPristine, resources, write__initialResources])
 
+  const onSave = () => {
+    (resources as ResourceStore<ResourceKeys, ResourceTypes>).addResource(editableResource as ResourceClass)
+    write__initialResources()
+  }
+
   return {
     resources: resources as ResourceStore<ResourceKeys, ResourceTypes>,
     resourcesOriginal: resourcesOriginal as ResourceStore<ResourceKeys, ResourceTypes>,
@@ -194,6 +210,7 @@ const useAdminBase = () => {
     onOpenAlertDialog,
     onCloseAlertDialog,
     editableResource,
+    onSave,
   }
 }
 

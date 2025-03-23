@@ -28,7 +28,7 @@ export const AdminResource = ({resource}: AdminResourcesProps) => {
                 <Button
                   variant="ghost"
                   className="p-1.5 absolute top-0 right-0 text-gray-500 hover:text-gray-200"
-                  onClick={() => onOpenAlertDialog(resource)}
+                  onClick={() => onOpenAlertDialog(resource.state)}
                 >
                   <EditOne size={16}/>
                 </Button>

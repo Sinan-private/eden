@@ -20,29 +20,34 @@ import {ResourceClass, ResourceKeys, ResourceTypes, TradeChange} from "@/Resourc
 import {Input} from "@/components/ui/input.tsx";
 import {Label} from "@/components/ui/label.tsx";
 import {Switch} from "@/components/ui/switch.tsx";
-import {useState} from "react";
+import {ChangeEvent, useState} from "react";
 import {Separator} from "@/components/ui/separator.tsx";
-import {EditResourceProps, useAdmin} from "@/Resource/context/admin.context.ts";
+import {useAdmin} from "@/Resource/context/admin.context.ts";
 import {resourceTypes} from "@/Resource/generated/resourceTypes.ts";
 import {Image} from "@mynaui/icons-react";
 import {Button} from "@/components/ui/button.tsx";
 import {observer} from "mobx-react";
 
-// Todo This is currently rendered for each single resource on opening the admin tool.
-//  Instead it should be rendered individually
 
 export const EditResource = observer(() => {
   // Can I just create a Resource here and use it with direct methods?
-  const {editableResource: resource} = useAdmin()
+  const {editableResource: resource, onSave, onCloseAlertDialog} = useAdmin()
   const [useMax, setUseMax] = useState(!!resource?.max && resource.max !== Infinity);
   const [useMin, setUseMin] = useState(!!resource?.min && resource.min !== -Infinity);
-  const [type, setType] = useState(resource?.type)
   const onToggleMax = () => setUseMax(!useMax);
   const onToggleMin = () => setUseMin(!useMin);
-  const onSetType = (type: string) => setType(type as ResourceTypes)
-  const {icon, key} = (resource as ResourceClass);
-  const {onCloseAlertDialog} = useAdmin();
-  console.log(type, resource?.type)
+  // const [type, setType] = useState(resource?.type)
+  // const onSetType = (type: string) => setType(type as ResourceTypes)
+  const {icon} = (resource as ResourceClass);
+  console.log(resource.key, resource.id)
+
+  const setLabel = (e: ChangeEvent<HTMLInputElement>)=> {
+    const label = e.target.value
+    console.log(label, resource.label)
+    resource.setTo({label: label})
+
+    console.log(resource.label)
+  }
 
   return (
     <AlertDialogContent className="overflow-y-auto max-h-full">
@@ -69,7 +74,7 @@ export const EditResource = observer(() => {
               type="text"
               id="resource name"
               value={resource.label}
-              onChange={(e) => resource.setTo({label: e.target.value})}
+              onChange={setLabel}
               placeholder="Resource label"
             />
           </div>
@@ -86,7 +91,7 @@ export const EditResource = observer(() => {
           <div className="flex w-full max-w-sm items-center gap-1.5">
             <div>
               <Label>Type</Label>
-              <Select value={type} onValueChange={onSetType}>
+              <Select value={resource.type} onValueChange={(type) => resource.setTo({type})}>
                 <SelectTrigger className="w-[180px]">
                   <SelectValue placeholder="Select the type"/>
                 </SelectTrigger>
@@ -106,7 +111,12 @@ export const EditResource = observer(() => {
 
           <div className="grid w-full max-w-sm items-center gap-1.5">
             <Label>Value</Label>
-            <Input type="number" id="resource key" placeholder={String(resource?.value)}/>
+            <Input
+              type="number"
+              id="resource value"
+              value={String(resource?.value)}
+              onChange={val => resource.setValueTo(Number(val.target.value))}
+            />
           </div>
           <div className="flex w-full max-w-sm items-center gap-1.5">
             <div className="flex items-center space-x-2">
@@ -140,7 +150,7 @@ export const EditResource = observer(() => {
       </div>
       <AlertDialogFooter>
         <AlertDialogCancel onClick={onCloseAlertDialog}>Cancel</AlertDialogCancel>
-        <AlertDialogAction>Continue</AlertDialogAction>
+        <AlertDialogAction onClick={onSave}>Continue</AlertDialogAction>
       </AlertDialogFooter>
     </AlertDialogContent>
   )
