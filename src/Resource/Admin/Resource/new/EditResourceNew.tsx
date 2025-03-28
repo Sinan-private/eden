@@ -34,10 +34,23 @@ export const EditResource = observer(() => {
   const {editableResource: resource, onSave, onCloseAlertDialog} = useAdmin()
   const [useMax, setUseMax] = useState(!!resource?.max && resource.max !== Infinity);
   const [useMin, setUseMin] = useState(!!resource?.min && resource.min !== -Infinity);
+  const [min, setMin] = useState(resource?.min ? resource.min : -Infinity);
+  const [max, setMax] = useState(resource?.max ? resource.max : Infinity);
   const onToggleMax = () => setUseMax(!useMax);
   const onToggleMin = () => setUseMin(!useMin);
   // const [type, setType] = useState(resource?.type)
   // const onSetType = (type: string) => setType(type as ResourceTypes)
+  const onSetMax = (e: ChangeEvent<HTMLInputElement>) =>
+    setMax(Number(e.target.value))
+
+  const onSetMin = (e: ChangeEvent<HTMLInputElement>) =>
+    setMin(Number(e.target.value))
+
+  const onWriteMin = () =>
+    resource.setTo({min})
+  const onWriteMax = () =>
+    resource.setTo({max})
+
   const {icon} = (resource as ResourceClass);
   console.log(resource.key, resource.id)
 
@@ -124,8 +137,14 @@ export const EditResource = observer(() => {
               <Label htmlFor="use-max">use max value</Label>
             </div>
             <div>
-              <Input disabled={!useMax} type="number" id="resource max"
-                     placeholder={resource?.max ? String(resource.max) : ''}/>
+              <Input
+                disabled={!useMax}
+                type="number"
+                id="resource max"
+                value={max}
+                onBlur={onWriteMax}
+                onChange={onSetMax}
+              />
             </div>
           </div>
           <div className="flex w-full max-w-sm items-center gap-1.5">
@@ -134,8 +153,14 @@ export const EditResource = observer(() => {
               <Label htmlFor="use-min">use min value</Label>
             </div>
             <div>
-              <Input disabled={!useMin} type="number" id="resource min"
-                     placeholder={resource?.min ? String(resource.min) : ''}/>
+              <Input
+                disabled={!useMin}
+                type="number"
+                id="resource min"
+                value={min}
+                onBlur={onWriteMin}
+                onChange={onSetMin}
+              />
             </div>
           </div>
 

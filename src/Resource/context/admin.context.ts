@@ -1,4 +1,4 @@
-import {ChangeEvent, useCallback, useState} from "react";
+import {useCallback, useState} from "react";
 import {createContainer} from "unstated-next";
 import {
   ResourceClass,
@@ -8,10 +8,9 @@ import {
   ResourceTypes
 } from "@/Resource";
 import {ResourceStore} from "../ResourceHandler/ResourceStore.ts";
-import {Icon, ResourceTypeRaw} from "../ResourceHandler/genericTypes.ts";
+import {ResourceTypeRaw} from "../ResourceHandler/genericTypes.ts";
 import {Resource} from "../ResourceHandler";
 import {useToggle, useComponentMount} from "../hooks";
-import {SelectChangeEvent} from "@mui/material";
 import {useApi} from "../hooks/useApi.ts";
 
 type Update = Partial<ResourceTypeRaw<ResourceKeys, ResourceTypes>>;
@@ -116,72 +115,20 @@ const useAdminBase = () => {
   }, [resources, resourcesOriginal])
 
   // Todo this needs to be checked
-  const getActions = useCallback((resource: Resource<ResourceKeys, ResourceTypes>, enableKeyEdit?: boolean) => {
 
-    const onSelectIcon = (clickedIcon: Icon) => {
-      resource.setTo({iconName: clickedIcon.name})
-      handleCloseIconPicker()
-    }
-
-    // ----------------------------------- Callbacks ---------------------------------------
-
-    const onSetKey = (e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
-      console.log(resource)
-      resource.setTo({key: e.target.value as ResourceKeys})
-      if (isKeyPristine) {
-        setIsKeyPristine(false)
-      }
-    }
-    const onSetLabel = (e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
-      resource.setTo({label: e.target.value})
-      if (isKeyPristine && enableKeyEdit) {
-        const generatedKey = e.target.value.replace(/[^a-zA-Z0-9]+/g, '_').toLowerCase() as ResourceKeys
-        resource.setTo({key: generatedKey})
-      }
-    }
-    const onChange = (change: 'min' | 'max' | 'value') =>
-      (e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) =>
-        resource.setTo({[change]: Number(e.target.value)})
-    const onSetMin = onChange('min');
-    const onSetMax = onChange('max');
-    const onSetValue = onChange('value');
-    const keyAlreadyExists = getKeyAlreadyExists(resources!.allResources, resource);
-    const onBlurMax = () => {
-      const shouldBeInfinite = (resource?.max || 0) < 1
-      if (shouldBeInfinite) {
-        resource?.setTo({max: Infinity})
-      }
-    }
-    const onSetType = (e: SelectChangeEvent<ResourceTypes>) => {
-      const _type = e.target.value as ResourceTypes
-      resource?.setTo({type: _type})
-    }
-
-    const onSubmitChanges = (onSubmit: () => void) => {
-      if (!(keyAlreadyExists && enableKeyEdit)) {
-        write__initialResources()
-        onSubmit();
-      }
-    }
-    const saveDisabled = isDisabled(resource?.id) || (enableKeyEdit && keyAlreadyExists) || !resource?.key.length;
-
-    return {
-      onSelectIcon,
-      onSetKey,
-      onSetLabel,
-      onSetMin,
-      onSetMax,
-      onSetValue,
-      onBlurMax,
-      onSetType,
-      onSubmitChanges,
-      saveDisabled,
-      keyAlreadyExists,
-    }
-  }, [isDisabled, isKeyPristine, resources, write__initialResources])
 
   const onSave = () => {
-    (resources as ResourceStore<ResourceKeys, ResourceTypes>).addResource(editableResource as ResourceClass)
+    const resource = editableResource as ResourceClass;
+    const resourceStore = resources as ResourceStore<ResourceKeys, ResourceTypes>
+    // Todo here lies the issue. I want to check for the id since I might want to change the key.
+    //  This needs the original clone to inherit this id
+    const keyAlreadyExists = getKeyAlreadyExists(resources!.allResources, resource);
+    if (!(keyAlreadyExists)) {
+      resourceStore.addResource(resource)
+      // onSubmit();
+    } else (
+      resourceStore.getByKey(editableResource.key).setTo(resource.state)
+    )
     write__initialResources()
   }
 
@@ -195,7 +142,7 @@ const useAdminBase = () => {
     write__removeType,
     write__removeResource,
     write__initialResources,
-    getActions,
+    // getActions,
     openIconPicker,
     filterUsed,
     handleOpenIconPicker,

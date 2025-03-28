@@ -19,7 +19,8 @@ export class ResourceStore<K extends string, T extends string> {
   };
 
   public getByKey = (key: K) => {
-    return Array.from(this.resources.values()).find(resource => resource.key === key);
+    return Array.from(this.resources.values())
+      .find(resource => resource.key === key)!;
   };
 
   public percentageOf = (value: number, max: number) => {
