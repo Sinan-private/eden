@@ -11,6 +11,9 @@ type AdminResourcesProps = {
 export const AdminResource = ({resource}: AdminResourcesProps) => {
   const max = resource.max !== Infinity ? resource.max : undefined;
   const {onOpenAlertDialog} = useAdmin()
+  if (resource.key === 'liquid_mana_level_4' || resource.key === 'raw_mana_level_4') {
+    console.log(resource.state)
+  }
 
   return (
     <>

@@ -20,7 +20,7 @@ import {ResourceClass, ResourceKeys, ResourceTypes, TradeChange} from "@/Resourc
 import {Input} from "@/components/ui/input.tsx";
 import {Label} from "@/components/ui/label.tsx";
 import {Switch} from "@/components/ui/switch.tsx";
-import {ChangeEvent, useState} from "react";
+import {useState} from "react";
 import {Separator} from "@/components/ui/separator.tsx";
 import {useAdmin} from "@/Resource/context/admin.context.ts";
 import {resourceTypes} from "@/Resource/generated/resourceTypes.ts";
@@ -30,37 +30,36 @@ import {observer} from "mobx-react";
 
 
 export const EditResource = observer(() => {
-  // Can I just create a Resource here and use it with direct methods?
-  const {editableResource: resource, onSave, onCloseAlertDialog} = useAdmin()
-  const [useMax, setUseMax] = useState(!!resource?.max && resource.max !== Infinity);
+  const {
+    editableResource: resource,
+    onSave,
+    onCloseAlertDialog,
+    edit
+  } = useAdmin()
+  const {
+    min,
+    max,
+    onSetMin,
+    onSetMax,
+    onWriteMin,
+    onWriteMax,
+    setKey,
+    setLabel,
+    setType,
+    setValue,
+  } = edit
+  const useMaxInitial = typeof resource.max === 'number' && resource.max !== Infinity
+  const [useMax, setUseMax] = useState(useMaxInitial);
   const [useMin, setUseMin] = useState(!!resource?.min && resource.min !== -Infinity);
-  const [min, setMin] = useState(resource?.min ? resource.min : -Infinity);
-  const [max, setMax] = useState(resource?.max ? resource.max : Infinity);
-  const onToggleMax = () => setUseMax(!useMax);
+  // This is super weird
+  console.log(resource.max)
+  console.log(useMaxInitial, useMax)
+  const onToggleMax = () => {
+    console.log('toggle max')
+    setUseMax(!useMax)
+  };
   const onToggleMin = () => setUseMin(!useMin);
-  // const [type, setType] = useState(resource?.type)
-  // const onSetType = (type: string) => setType(type as ResourceTypes)
-  const onSetMax = (e: ChangeEvent<HTMLInputElement>) =>
-    setMax(Number(e.target.value))
-
-  const onSetMin = (e: ChangeEvent<HTMLInputElement>) =>
-    setMin(Number(e.target.value))
-
-  const onWriteMin = () =>
-    resource.setTo({min})
-  const onWriteMax = () =>
-    resource.setTo({max})
-
   const {icon} = (resource as ResourceClass);
-  console.log(resource.key, resource.id)
-
-  const setLabel = (e: ChangeEvent<HTMLInputElement>)=> {
-    const label = e.target.value
-    console.log(label, resource.label)
-    resource.setTo({label: label})
-
-    console.log(resource.label)
-  }
 
   return (
     <AlertDialogContent className="overflow-y-auto max-h-full">
@@ -97,14 +96,14 @@ export const EditResource = observer(() => {
               type="text"
               id="resource key"
               value={resource.key}
-              onChange={(e) => resource.setTo({key: e.target.value as ResourceKeys})}
+              onChange={setKey}
               placeholder="Resource key (unique)"
             />
           </div>
           <div className="flex w-full max-w-sm items-center gap-1.5">
             <div>
               <Label>Type</Label>
-              <Select value={resource.type} onValueChange={(type) => resource.setTo({type})}>
+              <Select value={resource.type} onValueChange={setType}>
                 <SelectTrigger className="w-[180px]">
                   <SelectValue placeholder="Select the type"/>
                 </SelectTrigger>
@@ -128,7 +127,7 @@ export const EditResource = observer(() => {
               type="number"
               id="resource value"
               value={String(resource?.value)}
-              onChange={val => resource.setValueTo(Number(val.target.value))}
+              onChange={setValue}
             />
           </div>
           <div className="flex w-full max-w-sm items-center gap-1.5">

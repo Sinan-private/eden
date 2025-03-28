@@ -1,4 +1,4 @@
-import {useCallback, useState} from "react";
+import {useState} from "react";
 import {createContainer} from "unstated-next";
 import {
   ResourceClass,
@@ -12,27 +12,34 @@ import {ResourceTypeRaw} from "../ResourceHandler/genericTypes.ts";
 import {Resource} from "../ResourceHandler";
 import {useToggle, useComponentMount} from "../hooks";
 import {useApi} from "../hooks/useApi.ts";
+import {useWriteToFile} from "@/Resource/context/admin/useWriteToFile.ts";
+import {useResourceEdit} from "@/Resource/context/admin/useResourceEdit.ts";
 
 type Update = Partial<ResourceTypeRaw<ResourceKeys, ResourceTypes>>;
 
 export type EditResourceProps = {
   resource?: Partial<ResourceTypeRaw<ResourceKeys, ResourceTypes>>;
 }
-const editableResource = new Resource({key: '' as ResourceKeys});
+const editableResource = new Resource({key: '' as ResourceKeys}) as ResourceClass;
 
 const useAdminBase = () => {
-  // const [editableResource] = useState(new Resource({key: '' as ResourceKeys}))
+  const [resources, setResources] = useState<ResourceStoreClass>()
   const [alertDialogOpen, setAlertDialogOpen] = useState(false);
   const [alertDialogContent, setAlertDialogContent] = useState<Update>({});
+  const {
+    write__initialResources,
+    write__removeResource,
+    write__addType,
+    write__removeType,
+  } = useWriteToFile(resources)
+  const edit = useResourceEdit(editableResource)
+  window.adminResources = resources;
 
-  // console.log('admin key: ', editableResource.key)
-  console.log(editableResource.key, editableResource.id)
-
-
-  const onOpenAlertDialog = (resource: Update = {}) => {
+  const onOpenAlertDialog = (resource: Update) => {
+    const mergedResource = {...EMPTY_RESOURCE, ...resource}
     setAlertDialogOpen(true);
-    setAlertDialogContent(resource);
-    editableResource.setTo(resource)
+    setAlertDialogContent(mergedResource);
+    editableResource.setTo(mergedResource)
   }
   const onCloseAlertDialog = () => {
     setAlertDialogOpen(false);
@@ -40,12 +47,8 @@ const useAdminBase = () => {
   };
   const {
     fetchResources,
-    updateResources,
-    addType,
-    removeType,
   } = useApi();
-  const [resourcesOriginal, setResourcesOriginal] = useState<ResourceStoreClass>()
-  const [resources, setResources] = useState<ResourceStoreClass>()
+
   const [isFetching, setIsFetching] = useState(true);
   const [showAdminPanel, setShowAdminPanel] = useState(false);
   const onToggleAdminPanel = () => setShowAdminPanel(!showAdminPanel);
@@ -56,50 +59,15 @@ const useAdminBase = () => {
   const [openIconPicker, setOpenIconPicker] = useState(false);
   const [filterUsed, onToggleFilter] = useToggle(false);
 
-  const [isKeyPristine, setIsKeyPristine] = useState(true);
   const handleOpenIconPicker = () => setOpenIconPicker(true);
   const handleCloseIconPicker = () => setOpenIconPicker(false);
 
   useComponentMount(async () => {
     const rawState = await fetchResources();
+    console.log(rawState)
     setResources(new ResourceStore(rawState, 'admin.context'));
-    setResourcesOriginal(new ResourceStore(rawState, 'admin.context - original reference'));
     setIsFetching(false);
   })
-
-  const resetResources = () => {
-    setResources(new ResourceStore(resourcesOriginal!.state, 'admin.context'))
-  }
-
-  // ----------------------------------- Write Resource to file ---------------------------------------
-
-  const write__initialResources = useCallback(() => {
-      // console.log(resources?.state.length)
-    const state = resources!.state.filter(({key}) => key.length)
-    updateResources(state).then(() => {
-      // console.log(resources?.state.length)
-      setResourcesOriginal(new ResourceStore(state, 'admin.context - original reference'))
-    })
-  }, [resources, updateResources])
-
-  const write__removeResource = (key: ResourceKeys) => {
-    resources?.removeResource(key);
-    updateResources(resources!.state)
-  }
-
-  const write__addType = (type: string | string[]) =>
-    addType(([] as string[]).concat(type))
-
-  const write__removeType = (type: ResourceTypes | ResourceTypes[]) => {
-    const usedTypes = resources!.allResources.map(({type}) => type);
-    const typesToRemove = ([] as ResourceTypes[]).concat(type);
-    const matches = typesToRemove.filter(value => usedTypes.includes(value!));
-    if (matches.length) {
-      console.error('These Types are being in used and can not be removed', matches)
-      return;
-    }
-    removeType(typesToRemove)
-  }
 
   // ----------------------------------- Checks ---------------------------------------
 
@@ -107,14 +75,12 @@ const useAdminBase = () => {
     return !resources?.isResourceReferenced(key)
   }
 
-  const isDisabled = useCallback((id: string) => {
-    if (resources?.get(id) && resourcesOriginal?.get(id)) {
-      return areObjectsEqual(resources!.get(id).state, resourcesOriginal!.get(id).state)
-    }
-    return false
-  }, [resources, resourcesOriginal])
-
-  // Todo this needs to be checked
+  // const isDisabled = useCallback((id: string) => {
+  //   if (resources?.get(id)) {
+  //     return areObjectsEqual(resources!.get(id).state, resourcesOriginal!.get(id).state)
+  //   }
+  //   return false
+  // }, [resources, resourcesOriginal])
 
 
   const onSave = () => {
@@ -134,15 +100,11 @@ const useAdminBase = () => {
 
   return {
     resources: resources as ResourceStore<ResourceKeys, ResourceTypes>,
-    resourcesOriginal: resourcesOriginal as ResourceStore<ResourceKeys, ResourceTypes>,
     isFetching,
-    isDisabled,
     canRemoveResource,
     write__addType,
     write__removeType,
     write__removeResource,
-    write__initialResources,
-    // getActions,
     openIconPicker,
     filterUsed,
     handleOpenIconPicker,
@@ -151,13 +113,13 @@ const useAdminBase = () => {
     showAdminPanel,
     onToggleAdminPanel,
     onCloseAdminPanel,
-    resetResources,
     alertDialogOpen,
     alertDialogContent,
     onOpenAlertDialog,
     onCloseAlertDialog,
     editableResource,
     onSave,
+    edit,
   }
 }
 
@@ -193,3 +155,14 @@ const getKeyAlreadyExists = (
   .filter(({id}) => id !== resource?.id)
   .map(({key}) => key)
   .includes(resource?.key as ResourceKeys);
+
+const EMPTY_RESOURCE: Update & {key: ResourceKeys} = {
+  label: '',
+  key: '' as ResourceKeys,
+  value: 0,
+  min: 0,
+  max: Infinity,
+  iconName: 'empty',
+  cost: null,
+  revealedAt: null,
+}
