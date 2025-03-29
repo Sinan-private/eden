@@ -3,9 +3,12 @@ import {ResourceClass, ResourceKeys, ResourceTypes} from "@/Resource";
 
 export const useResourceEdit = (resource: ResourceClass) => {
   // const [isKeyPristine, setIsKeyPristine] = useState(true);
-  const [min, setMin] = useState(resource?.min ? resource.min : -Infinity);
+  const [min, setMin] = useState(typeof resource?.min === 'number' ? resource.min : -Infinity);
   // console.log(resource.max)
-  const [max, setMax] = useState(resource?.max ? resource.max : Infinity);
+  const [max, setMax] = useState(typeof resource?.max === 'number' ? resource.max : Infinity);
+  console.log('useResouceEdit')
+  console.log(resource.max, max)
+
   const onSetMax = (e: ChangeEvent<HTMLInputElement>) =>
     setMax(Number(e.target.value))
 

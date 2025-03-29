@@ -62,7 +62,6 @@ const ResourceType = observer(({type, resources, label = "Add resource"}: Resour
       ))}
       </div>
     </div>
-      <EditResource resource={{type}} />
     </AlertDialog>
   )
 })

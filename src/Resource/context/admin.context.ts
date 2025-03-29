@@ -13,7 +13,7 @@ import {Resource} from "../ResourceHandler";
 import {useToggle, useComponentMount} from "../hooks";
 import {useApi} from "../hooks/useApi.ts";
 import {useWriteToFile} from "@/Resource/context/admin/useWriteToFile.ts";
-import {useResourceEdit} from "@/Resource/context/admin/useResourceEdit.ts";
+import {useResourceEdit} from "@/Resource/Admin/Resource/new/useResourceEdit.ts";
 
 type Update = Partial<ResourceTypeRaw<ResourceKeys, ResourceTypes>>;
 
@@ -32,10 +32,11 @@ const useAdminBase = () => {
     write__addType,
     write__removeType,
   } = useWriteToFile(resources)
-  const edit = useResourceEdit(editableResource)
+  // const edit = useResourceEdit(editableResource)
   window.adminResources = resources;
 
   const onOpenAlertDialog = (resource: Update) => {
+    console.log('I guess I somehow need to trigger the state update here?')
     const mergedResource = {...EMPTY_RESOURCE, ...resource}
     setAlertDialogOpen(true);
     setAlertDialogContent(mergedResource);
@@ -64,7 +65,6 @@ const useAdminBase = () => {
 
   useComponentMount(async () => {
     const rawState = await fetchResources();
-    console.log(rawState)
     setResources(new ResourceStore(rawState, 'admin.context'));
     setIsFetching(false);
   })
@@ -119,7 +119,7 @@ const useAdminBase = () => {
     onCloseAlertDialog,
     editableResource,
     onSave,
-    edit,
+    // edit,
   }
 }
 

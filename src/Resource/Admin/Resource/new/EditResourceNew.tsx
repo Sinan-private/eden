@@ -27,6 +27,7 @@ import {resourceTypes} from "@/Resource/generated/resourceTypes.ts";
 import {Image} from "@mynaui/icons-react";
 import {Button} from "@/components/ui/button.tsx";
 import {observer} from "mobx-react";
+import {useResourceEdit} from "@/Resource/Admin/Resource/new/useResourceEdit.ts";
 
 
 export const EditResource = observer(() => {
@@ -34,7 +35,6 @@ export const EditResource = observer(() => {
     editableResource: resource,
     onSave,
     onCloseAlertDialog,
-    edit
   } = useAdmin()
   const {
     min,
@@ -47,19 +47,14 @@ export const EditResource = observer(() => {
     setLabel,
     setType,
     setValue,
-  } = edit
-  const useMaxInitial = typeof resource.max === 'number' && resource.max !== Infinity
-  const [useMax, setUseMax] = useState(useMaxInitial);
-  const [useMin, setUseMin] = useState(!!resource?.min && resource.min !== -Infinity);
-  // This is super weird
-  console.log(resource.max)
-  console.log(useMaxInitial, useMax)
-  const onToggleMax = () => {
-    console.log('toggle max')
-    setUseMax(!useMax)
-  };
-  const onToggleMin = () => setUseMin(!useMin);
+  } = useResourceEdit(resource)
+  const limitMaxInitial = typeof resource.max === 'number' && resource.max !== Infinity
+  const [limitMax, setLimitMax] = useState(limitMaxInitial);
+  const [limitMin, setLimitMin] = useState(!!resource?.min && resource.min !== -Infinity);
+  const onToggleMax = () => setLimitMax(!limitMax)
+  const onToggleMin = () => setLimitMin(!limitMin)
   const {icon} = (resource as ResourceClass);
+  console.log(resource.max, max)
 
   return (
     <AlertDialogContent className="overflow-y-auto max-h-full">
@@ -132,12 +127,12 @@ export const EditResource = observer(() => {
           </div>
           <div className="flex w-full max-w-sm items-center gap-1.5">
             <div className="flex items-center space-x-2">
-              <Switch id="use-max" checked={useMax} onCheckedChange={onToggleMax}/>
+              <Switch id="use-max" checked={limitMax} onCheckedChange={onToggleMax}/>
               <Label htmlFor="use-max">use max value</Label>
             </div>
             <div>
               <Input
-                disabled={!useMax}
+                disabled={!limitMax}
                 type="number"
                 id="resource max"
                 value={max}
@@ -148,12 +143,12 @@ export const EditResource = observer(() => {
           </div>
           <div className="flex w-full max-w-sm items-center gap-1.5">
             <div className="flex items-center space-x-2">
-              <Switch id="use-min" checked={useMin} onCheckedChange={onToggleMin}/>
+              <Switch id="use-min" checked={limitMin} onCheckedChange={onToggleMin}/>
               <Label htmlFor="use-min">use min value</Label>
             </div>
             <div>
               <Input
-                disabled={!useMin}
+                disabled={!limitMin}
                 type="number"
                 id="resource min"
                 value={min}
