@@ -20,7 +20,6 @@ import {ResourceClass, ResourceKeys, ResourceTypes, TradeChange} from "@/Resourc
 import {Input} from "@/components/ui/input.tsx";
 import {Label} from "@/components/ui/label.tsx";
 import {Switch} from "@/components/ui/switch.tsx";
-import {useState} from "react";
 import {Separator} from "@/components/ui/separator.tsx";
 import {useAdmin} from "@/Resource/context/admin.context.ts";
 import {resourceTypes} from "@/Resource/generated/resourceTypes.ts";
@@ -47,12 +46,16 @@ export const EditResource = observer(() => {
     setLabel,
     setType,
     setValue,
+    limitMin,
+    limitMax,
+    onToggleMin,
+    onToggleMax,
   } = useResourceEdit(resource)
-  const limitMaxInitial = typeof resource.max === 'number' && resource.max !== Infinity
-  const [limitMax, setLimitMax] = useState(limitMaxInitial);
-  const [limitMin, setLimitMin] = useState(!!resource?.min && resource.min !== -Infinity);
-  const onToggleMax = () => setLimitMax(!limitMax)
-  const onToggleMin = () => setLimitMin(!limitMin)
+  // const limitMaxInitial = typeof resource.max === 'number' && resource.max !== Infinity
+  // const [limitMax, setLimitMax] = useState(limitMaxInitial);
+  // const [limitMin, setLimitMin] = useState(!!resource?.min && resource.min !== -Infinity);
+  // const onToggleMax = () => setLimitMax(!limitMax)
+  // const onToggleMin = () => setLimitMin(!limitMin)
   const {icon} = (resource as ResourceClass);
   console.log(resource.max, max)
 

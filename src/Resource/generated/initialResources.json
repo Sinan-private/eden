@@ -25,7 +25,7 @@
     "key": "liquid_mana_level_3",
     "value": 0,
     "min": 0,
-    "max": 0,
+    "max": null,
     "label": "Liquid mana level 3",
     "type": "liquid_mana",
     "iconName": "water",

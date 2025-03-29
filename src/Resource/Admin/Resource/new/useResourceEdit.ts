@@ -3,12 +3,26 @@ import {ResourceClass, ResourceKeys, ResourceTypes} from "@/Resource";
 
 export const useResourceEdit = (resource: ResourceClass) => {
   // const [isKeyPristine, setIsKeyPristine] = useState(true);
-  const [min, setMin] = useState(typeof resource?.min === 'number' ? resource.min : -Infinity);
-  // console.log(resource.max)
-  const [max, setMax] = useState(typeof resource?.max === 'number' ? resource.max : Infinity);
-  console.log('useResouceEdit')
-  console.log(resource.max, max)
 
+  const limitMaxInitial = typeof resource.max === 'number' && resource.max !== Infinity
+  const [limitMax, setLimitMax] = useState(limitMaxInitial);
+  const [limitMin, setLimitMin] = useState(!!resource?.min && resource.min !== -Infinity);
+  const onToggleMax = () => {
+    if (limitMax) {
+      resource.setTo({max: Infinity})
+    }
+    setLimitMax(!limitMax)
+  }
+
+  const onToggleMin = () => {
+    if (limitMin) {
+      resource.setTo({min: -Infinity})
+    }
+    setLimitMin(!limitMin)
+  }
+
+  const [min, setMin] = useState(typeof resource?.min === 'number' ? resource.min : -Infinity);
+  const [max, setMax] = useState(typeof resource?.max === 'number' ? resource.max : Infinity);
   const onSetMax = (e: ChangeEvent<HTMLInputElement>) =>
     setMax(Number(e.target.value))
 
@@ -43,5 +57,9 @@ export const useResourceEdit = (resource: ResourceClass) => {
     setLabel,
     setType,
     setValue,
+    limitMin,
+    limitMax,
+    onToggleMin,
+    onToggleMax,
   }
 }

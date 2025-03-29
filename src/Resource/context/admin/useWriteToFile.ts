@@ -2,7 +2,6 @@ import {useCallback} from "react";
 import {ResourceKeys, ResourceState, ResourceStoreClass, ResourceTypes} from "@/Resource";
 import {useApi} from "@/Resource/hooks/useApi.ts";
 
-
 export const useWriteToFile = (resources?: ResourceStoreClass) => {
     const {
       addType,
