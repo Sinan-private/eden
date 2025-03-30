@@ -4,8 +4,7 @@ import {ResourceClass, ResourceKeys, ResourceStoreClass, ResourceTypes} from "@/
 import {ResourceStore} from "../ResourceHandler/ResourceStore.ts";
 import {ResourceTypeRaw} from "../ResourceHandler/genericTypes.ts";
 import {Resource} from "../ResourceHandler";
-import {useComponentMount, useToggle} from "../hooks";
-import {useApi} from "../hooks/useApi.ts";
+import {useToggle} from "../hooks";
 import {useWriteToFile} from "@/Resource/context/admin/useWriteToFile.ts";
 import {getKeyAlreadyExists} from "@/Resource/context/admin/equalityChecks.ts";
 import {Editable} from "@/Resource/context/admin/Editable.ts";
@@ -13,16 +12,20 @@ import {Editable} from "@/Resource/context/admin/Editable.ts";
 type Update = Partial<ResourceTypeRaw<ResourceKeys, ResourceTypes>>;
 
 export type EditResourceProps = {
-  resource?: Partial<ResourceTypeRaw<ResourceKeys, ResourceTypes>>;
+  resourceStore?: Partial<ResourceTypeRaw<ResourceKeys, ResourceTypes>>;
 }
 const editableResource = new Resource({key: '' as ResourceKeys}) as ResourceClass;
 
-const useAdminBase = () => {
-  // Here I want to store the ID to make everything else just listen to it
-  const [resourceToEdit, setResourceToEdit] = useState('new_resource')
+const useAdminBase = (resourceStore?: ResourceStoreClass) => {
+  if (!resourceStore) {
+    throw new Error("ResourceStore is required but was not provided.");
+  }
 
-  const [resources, setResources] = useState<ResourceStoreClass>()
-  const editable = new Editable(resources)
+  // Here I want to store the ID to make everything else just listen to it
+  // const [resourceToEdit, setResourceToEdit] = useState('new_resource')
+
+  // const [resources, setResources] = useState<ResourceStoreClass>()
+  const editable = new Editable(resourceStore)
   const [alertDialogOpen, setAlertDialogOpen] = useState(false);
   const [alertDialogContent, setAlertDialogContent] = useState<Update>({});
   const {
@@ -30,10 +33,10 @@ const useAdminBase = () => {
     write__removeResource,
     write__addType,
     write__removeType,
-  } = useWriteToFile(resources)
+  } = useWriteToFile(resourceStore)
 
-  const onOpenAlertDialog = (resource: Update) => {
-    console.log('I guess I somehow need to trigger the state update here?')
+  const onOpenAlertDialog = (resource: Update, id?: string) => {
+    console.log('I guess I somehow need to trigger the state update here?', id)
     const mergedResource = {...EMPTY_RESOURCE, ...resource}
     setAlertDialogOpen(true);
     setAlertDialogContent(mergedResource);
@@ -43,16 +46,12 @@ const useAdminBase = () => {
     setAlertDialogOpen(false);
     setAlertDialogContent({});
   };
-  const {
-    fetchResources,
-  } = useApi();
 
-  const [isFetching, setIsFetching] = useState(true);
   const [showAdminPanel, setShowAdminPanel] = useState(false);
   const onToggleAdminPanel = () => setShowAdminPanel(!showAdminPanel);
   const onCloseAdminPanel = () => setShowAdminPanel(false);
 
-  // console.log(resources)
+  // console.log(resourceStore)
 
   const [openIconPicker, setOpenIconPicker] = useState(false);
   const [filterUsed, onToggleFilter] = useToggle(false);
@@ -60,32 +59,25 @@ const useAdminBase = () => {
   const handleOpenIconPicker = () => setOpenIconPicker(true);
   const handleCloseIconPicker = () => setOpenIconPicker(false);
 
-  useComponentMount(async () => {
-    const rawState = await fetchResources();
-    setResources(new ResourceStore(rawState, 'admin.context'));
-    setIsFetching(false);
-  })
-
   // ----------------------------------- Checks ---------------------------------------
 
   const canRemoveResource = (key: ResourceKeys) => {
-    return !resources?.isResourceReferenced(key)
+    return !resourceStore?.isResourceReferenced(key)
   }
 
   // const isDisabled = useCallback((id: string) => {
-  //   if (resources?.get(id)) {
-  //     return areObjectsEqual(resources!.get(id).state, resourcesOriginal!.get(id).state)
+  //   if (resourceStore?.get(id)) {
+  //     return areObjectsEqual(resourceStore!.get(id).state, resourcesOriginal!.get(id).state)
   //   }
   //   return false
-  // }, [resources, resourcesOriginal])
+  // }, [resourceStore, resourcesOriginal])
 
 
   const onSave = () => {
     const resource = editableResource as ResourceClass;
-    const resourceStore = resources as ResourceStore<ResourceKeys, ResourceTypes>
     // Todo here lies the issue. I want to check for the id since I might want to change the key.
     //  This needs the original clone to inherit this id
-    const keyAlreadyExists = getKeyAlreadyExists(resources!.allResources, resource);
+    const keyAlreadyExists = getKeyAlreadyExists(resourceStore!.allResources, resource);
     if (!(keyAlreadyExists)) {
       resourceStore.addResource(resource)
       // onSubmit();
@@ -96,8 +88,7 @@ const useAdminBase = () => {
   }
 
   return {
-    resources: resources as ResourceStore<ResourceKeys, ResourceTypes>,
-    isFetching,
+    resources: resourceStore as ResourceStore<ResourceKeys, ResourceTypes>,
     canRemoveResource,
     write__addType,
     write__removeType,

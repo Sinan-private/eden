@@ -7,7 +7,6 @@ export {AdminResourceProvider} from "./Providers/AdminResourceProvider.tsx";
 // Those are the hooks to read and manipulate the states.
 // - useResource is for direct interaction or printing of resources
 // - useTickSubscription is used for updates that happen on every tick
-export {useResource} from "./context/resource.context.ts";
 export {useTurnSubscription, useAnimationSubscription} from "./hooks/useSubscription.ts";
 
 export type {ResourceTypes} from "./ResourceHandler/specificTypes.ts";

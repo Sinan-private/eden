@@ -11,4 +11,14 @@ export class Editable {
     this.origin = '';
     this.update
   }
+
+  public readonly createNewResource = () => {
+
+  }
+
+  public readonly updateResource = (id: string) => {
+
+  }
+
+
 }

@@ -1,19 +1,20 @@
 import {useMemo} from "react";
 import {createContainer} from "unstated-next";
-import {useResource, useTurnSubscription} from "../../Resource";
+import {ResourceStoreClass, useTurnSubscription} from "@/Resource";
 import {BehemothClass} from "../Classes/Behemoth/BehemothClass.ts";
 import {SlaveClass} from "../Classes/Slaves/SlaveClass.ts";
 import {IfritClass, GhoulClass, ArwaClass, MaridClass} from "../Classes/Factions";
 import {ManaClass} from "../Classes/Mana/ManaClass.ts";
 import {UpstreamClass} from "../Classes/UpstreamClass.ts";
-import {Tick, useTick} from "../../Resource/context/tick.context.ts";
-import {Resources} from "../../Resource/context/resource.context.ts";
+import {Tick, useTick} from "@/Resource/context/tick.context.ts";
 import {InterfaceController} from "../Interface/InterfaceController.ts";
 import {PlayerClass} from "../Classes/Player/PlayerClass.ts";
 
 
-const useGameBase = () => {
-  const {resources} = useResource();
+const useGameBase = (resources?: ResourceStoreClass) => {
+  if (!resources) {
+    throw new Error("ResourceStore is required but was not provided.");
+  }
   const tick = useTick();
   const player = useMemo(() => new PlayerClass(resources), [resources]);
   const slaves = useMemo(() => new SlaveClass(resources), [resources]);
@@ -64,7 +65,7 @@ export const useGame = useGameContainer.useContainer;
 export const GameProvider = useGameContainer.Provider;
 
 export type GameBaseClasses = {
-  resources: Resources;
+  resources: ResourceStoreClass;
   behemoth: BehemothClass;
   slaves: SlaveClass;
   upstream: UpstreamClass;
