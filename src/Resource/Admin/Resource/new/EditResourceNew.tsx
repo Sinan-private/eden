@@ -34,6 +34,7 @@ export const EditResource = observer(() => {
     editableResource: resource,
     onSave,
     onCloseAlertDialog,
+    editable
   } = useAdmin()
   const {
     min,
@@ -51,13 +52,9 @@ export const EditResource = observer(() => {
     onToggleMin,
     onToggleMax,
   } = useResourceEdit(resource)
-  // const limitMaxInitial = typeof resource.max === 'number' && resource.max !== Infinity
-  // const [limitMax, setLimitMax] = useState(limitMaxInitial);
-  // const [limitMin, setLimitMin] = useState(!!resource?.min && resource.min !== -Infinity);
-  // const onToggleMax = () => setLimitMax(!limitMax)
-  // const onToggleMin = () => setLimitMin(!limitMin)
   const {icon} = (resource as ResourceClass);
-  console.log(resource.max, max)
+
+  console.log(editable._resourceStore?.resources)
 
   return (
     <AlertDialogContent className="overflow-y-auto max-h-full">
@@ -93,10 +90,12 @@ export const EditResource = observer(() => {
             <Input
               type="text"
               id="resource key"
+              className="border-red-600 ring-red-600 focus-visible:ring-red-500"
               value={resource.key}
               onChange={setKey}
               placeholder="Resource key (unique)"
             />
+            <p className="text-xs">Key already exists</p>
           </div>
           <div className="flex w-full max-w-sm items-center gap-1.5">
             <div>

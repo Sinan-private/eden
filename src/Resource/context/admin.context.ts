@@ -1,18 +1,14 @@
 import {useState} from "react";
 import {createContainer} from "unstated-next";
-import {
-  ResourceClass,
-  ResourceKeys,
-  ResourceState,
-  ResourceStoreClass,
-  ResourceTypes
-} from "@/Resource";
+import {ResourceClass, ResourceKeys, ResourceStoreClass, ResourceTypes} from "@/Resource";
 import {ResourceStore} from "../ResourceHandler/ResourceStore.ts";
 import {ResourceTypeRaw} from "../ResourceHandler/genericTypes.ts";
 import {Resource} from "../ResourceHandler";
-import {useToggle, useComponentMount} from "../hooks";
+import {useComponentMount, useToggle} from "../hooks";
 import {useApi} from "../hooks/useApi.ts";
 import {useWriteToFile} from "@/Resource/context/admin/useWriteToFile.ts";
+import {getKeyAlreadyExists} from "@/Resource/context/admin/equalityChecks.ts";
+import {Editable} from "@/Resource/context/admin/Editable.ts";
 
 type Update = Partial<ResourceTypeRaw<ResourceKeys, ResourceTypes>>;
 
@@ -22,7 +18,11 @@ export type EditResourceProps = {
 const editableResource = new Resource({key: '' as ResourceKeys}) as ResourceClass;
 
 const useAdminBase = () => {
+  // Here I want to store the ID to make everything else just listen to it
+  const [resourceToEdit, setResourceToEdit] = useState('new_resource')
+
   const [resources, setResources] = useState<ResourceStoreClass>()
+  const editable = new Editable(resources)
   const [alertDialogOpen, setAlertDialogOpen] = useState(false);
   const [alertDialogContent, setAlertDialogContent] = useState<Update>({});
   const {
@@ -116,41 +116,13 @@ const useAdminBase = () => {
     onCloseAlertDialog,
     editableResource,
     onSave,
+    editable,
   }
 }
 
 const useAdminContainer = createContainer(useAdminBase);
 export const useAdmin = useAdminContainer.useContainer;
 export const AdminProvider = useAdminContainer.Provider;
-
-const areObjectsEqual = <K extends string>(obj1: ResourceState, obj2?: Partial<ResourceState>): boolean => {
-  if (obj1 === obj2) return true;
-
-  if (typeof obj1 !== 'object' || typeof obj2 !== 'object' || obj1 === null || obj2 === null) {
-    return false;
-  }
-
-  const keys1 = Object.keys(obj1) as K[];
-  const keys2 = Object.keys(obj2) as K[];
-
-  for (const key of keys1) {
-    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-    // @ts-expect-error
-    if (!keys2.includes(key) || !areObjectsEqual(obj1[key], obj2[key])) {
-      return false;
-    }
-  }
-
-  return true;
-}
-
-const getKeyAlreadyExists = (
-  resources: Resource<ResourceKeys, ResourceTypes>[],
-  resource: Resource<ResourceKeys, ResourceTypes>
-) => resources
-  .filter(({id}) => id !== resource?.id)
-  .map(({key}) => key)
-  .includes(resource?.key as ResourceKeys);
 
 const EMPTY_RESOURCE: Update & {key: ResourceKeys} = {
   label: '',

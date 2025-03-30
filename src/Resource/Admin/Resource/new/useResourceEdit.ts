@@ -2,7 +2,8 @@ import {ChangeEvent, useState} from "react";
 import {ResourceClass, ResourceKeys, ResourceTypes} from "@/Resource";
 
 export const useResourceEdit = (resource: ResourceClass) => {
-  // const [isKeyPristine, setIsKeyPristine] = useState(true);
+  const [isKeyPristine, setIsKeyPristine] = useState(true);
+  console.log(resource.id)
 
   const limitMaxInitial = typeof resource.max === 'number' && resource.max !== Infinity
   const [limitMax, setLimitMax] = useState(limitMaxInitial);
@@ -33,6 +34,9 @@ export const useResourceEdit = (resource: ResourceClass) => {
     resource.setTo({min})
   const onWriteMax = () =>
     resource.setTo({max})
+
+
+
   const setValue = (e: ChangeEvent<HTMLInputElement>)=> {
     const value = Number(e.target.value);
     resource.setTo({value})
@@ -40,12 +44,20 @@ export const useResourceEdit = (resource: ResourceClass) => {
   const setKey = (e: ChangeEvent<HTMLInputElement>)=> {
     const key = e.target.value as ResourceKeys;
     resource.setTo({key})
+    if (isKeyPristine) {
+      setIsKeyPristine(false)
+    }
   }
   const setLabel = (e: ChangeEvent<HTMLInputElement>)=> {
     const label = e.target.value
     resource.setTo({label})
+    if (isKeyPristine) {
+      const generatedKey = e.target.value.replace(/[^a-zA-Z0-9]+/g, '_').toLowerCase() as ResourceKeys
+      resource.setTo({key: generatedKey})
+    }
   }
   const setType = (type: string) => resource.setTo({type: type as ResourceTypes})
+
   return {
     min,
     max,
