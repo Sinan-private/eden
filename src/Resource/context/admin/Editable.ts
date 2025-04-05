@@ -10,7 +10,7 @@ import {ResourceStore} from "@/Resource/ResourceHandler/ResourceStore.ts";
 //  and I want to prepare the resource so that it checks against the ID and overwrites even if the key was changed
 
 export class Editable {
-  private resourceStore: ResourceStoreClass;
+  public resourceStore: ResourceStoreClass;
   private origin: ResourceClass | null = null;
   private update: ResourceClass | null = null;
   private keyIsDirty: boolean = true;
@@ -35,7 +35,7 @@ export class Editable {
   }
 
   public readonly updateResource = (id: string) => {
-    const resource = this.originalResourceStore?.get(id) as ResourceClass
+    const resource = this.resourceStore?.get(id) as ResourceClass
     const {min, max, state} = resource
     this.useMax = typeof max === "number" && max !== Infinity
     this.useMin = typeof max === "number" && max !== -Infinity

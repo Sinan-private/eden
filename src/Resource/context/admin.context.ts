@@ -108,7 +108,7 @@ const useAdminBase = (resourceStore?: ResourceStoreClass) => {
   }
 
   return {
-    resources: resourceStore as ResourceStore<ResourceKeys, ResourceTypes>,
+    resources: editable.resourceStore as ResourceStore<ResourceKeys, ResourceTypes>,
     canRemoveResource,
     write__addType,
     write__removeType,
