@@ -16,7 +16,7 @@ import {
   SelectValue,
 } from "@/components/ui/select"
 import {ResourceCostUpdate} from "@/Resource/ResourceHandler/genericTypes.ts";
-import {ResourceClass, ResourceKeys, ResourceTypes, TradeChange} from "@/Resource";
+import {ResourceKeys, ResourceTypes, TradeChange} from "@/Resource";
 import {Input} from "@/components/ui/input.tsx";
 import {Label} from "@/components/ui/label.tsx";
 import {Switch} from "@/components/ui/switch.tsx";
@@ -30,12 +30,10 @@ import {observer} from "mobx-react";
 
 export const EditResource = observer(() => {
   const {
-    editableResource: resource,
     onSave,
     onCloseAlertDialog,
     editable,
   } = useAdmin()
-  const {icon} = (resource as ResourceClass);
 
   const {
     setLabel,
@@ -50,17 +48,17 @@ export const EditResource = observer(() => {
     toggleUseMin,
     useMin,
     useMax,
+    resource: {
+      label,
+      key,
+      type,
+      value,
+      min,
+      max,
+      cost,
+      icon,
+    }
   } = editable
-
-  const {
-    label,
-    key,
-    type,
-    value,
-    min,
-    max,
-  } = editable.resource
-  console.log(editable.resource.key, editable.resource.label)
 
   return (
     <AlertDialogContent className="overflow-y-auto max-h-full">
@@ -170,7 +168,7 @@ export const EditResource = observer(() => {
 
           <div>
             <p>Cost</p>
-            <Cost trade={resource?.cost}/>
+            <Cost trade={cost}/>
           </div>
 
         </div>

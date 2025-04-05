@@ -98,8 +98,10 @@ export class Editable {
   get resource() {
     return {
       ...this.update!.state,
+      id: this.update!.id,
       min: this.useMin ? this.min : Infinity,
       max: this.useMax ? this.max : Infinity,
+      icon: this.update!.icon,
     }
   }
   get isKeyPristine() {

@@ -23,7 +23,7 @@ export const areObjectsEqual = <K extends string>(obj1: ResourceState, obj2?: Pa
 }
 export const getKeyAlreadyExists = (
   resources: Resource<ResourceKeys, ResourceTypes>[],
-  resource: Resource<ResourceKeys, ResourceTypes>
+  resource: ResourceState & {id: string}
 ) => resources
   .filter(({id}) => id !== resource?.id)
   .map(({key}) => key)

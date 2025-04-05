@@ -1,9 +1,8 @@
-import {useMemo, useRef, useState} from "react";
+import {useRef, useState} from "react";
 import {createContainer} from "unstated-next";
-import {ResourceClass, ResourceKeys, ResourceStoreClass, ResourceTypes} from "@/Resource";
+import {ResourceKeys, ResourceStoreClass, ResourceTypes} from "@/Resource";
 import {ResourceStore} from "../ResourceHandler/ResourceStore.ts";
 import {ResourceTypeRaw} from "../ResourceHandler/genericTypes.ts";
-import {Resource} from "../ResourceHandler";
 import {useToggle} from "../hooks";
 import {useWriteToFile} from "@/Resource/context/admin/useWriteToFile.ts";
 import {getKeyAlreadyExists} from "@/Resource/context/admin/equalityChecks.ts";
@@ -11,7 +10,7 @@ import {Editable} from "@/Resource/context/admin/Editable.ts";
 
 export type Update = Partial<ResourceTypeRaw<ResourceKeys, ResourceTypes>>;
 
-const editableResource = new Resource({key: '' as ResourceKeys}) as ResourceClass;
+// const editableResource = new Resource({key: '' as ResourceKeys}) as ResourceClass;
 
 const useAdminBase = (_resourceStore?: ResourceStoreClass) => {
   if (!_resourceStore) {
@@ -19,10 +18,7 @@ const useAdminBase = (_resourceStore?: ResourceStoreClass) => {
   }
   const resourceStore = useRef(new ResourceStore(_resourceStore.state, 'admin')).current;
   const editable = useRef(new Editable(resourceStore)).current;
-  // // Here I want to store the ID to make everything else just listen to it
-  // const editable = new Editable(resourceStore)
   const [alertDialogOpen, setAlertDialogOpen] = useState(false);
-  const [alertDialogContent, setAlertDialogContent] = useState<Update>({});
   const {
     write__initialResources,
     write__removeResource,
@@ -74,15 +70,15 @@ const useAdminBase = (_resourceStore?: ResourceStoreClass) => {
 
 
   const onSave = () => {
-    const resource = editableResource as ResourceClass;
+    const resourceState = editable.resource;
     // Todo here lies the issue. I want to check for the id since I might want to change the key.
     //  This needs the original clone to inherit this id
-    const keyAlreadyExists = getKeyAlreadyExists(resourceStore!.allResources, resource);
+    const keyAlreadyExists = getKeyAlreadyExists(resourceStore!.allResources, resourceState);
     if (!(keyAlreadyExists)) {
-      resourceStore.addResource(resource)
+      resourceStore.addResource(resourceState)
       // onSubmit();
     } else (
-      resourceStore.getByKey(editableResource.key).setTo(resource.state)
+      resourceStore.getByKey(resourceState.key).setTo(resourceState)
     )
     write__initialResources()
   }
@@ -102,10 +98,7 @@ const useAdminBase = (_resourceStore?: ResourceStoreClass) => {
     onToggleAdminPanel,
     onCloseAdminPanel,
     alertDialogOpen,
-    alertDialogContent,
-    // onOpenAlertDialog,
     onCloseAlertDialog,
-    editableResource,
     onSave,
     editable,
     createResource,
@@ -116,14 +109,3 @@ const useAdminBase = (_resourceStore?: ResourceStoreClass) => {
 const useAdminContainer = createContainer(useAdminBase);
 export const useAdmin = useAdminContainer.useContainer;
 export const AdminProvider = useAdminContainer.Provider;
-
-const EMPTY_RESOURCE: Update & {key: ResourceKeys} = {
-  label: '',
-  key: '' as ResourceKeys,
-  value: 0,
-  min: 0,
-  max: Infinity,
-  iconName: 'empty',
-  cost: null,
-  revealedAt: null,
-}

@@ -30,7 +30,7 @@ export const useWriteToFile = (resources?: ResourceStoreClass) => {
     // console.log(resources?.state.length)
     const state = resources!.state.filter(({key}) => key.length)
     updateResources(state)
-  }, [updateResources])
+  }, [resources])
 
   const write__removeResource = (key: ResourceKeys) => {
     resources?.removeResource(key);
