@@ -24,7 +24,7 @@ export const AdminResources = observer(() => {
         </div>
       </div>
       {alertDialogOpen &&
-        <EditResource/>
+        <EditResource />
       }
     </AlertDialog>
   )
@@ -37,7 +37,7 @@ type ResourceTypeProps = {
 }
 
 const ResourceType = observer(({type, resources}: ResourceTypeProps) => {
-  const {onOpenAlertDialog} = useAdmin();
+  const {createResource} = useAdmin();
   const _type = typeToLabel(type)
 
   return (
@@ -47,7 +47,7 @@ const ResourceType = observer(({type, resources}: ResourceTypeProps) => {
           <h5 className="align text-left font-bold">{_type}</h5>
           <PlusCircle
             className="text-2xl text-gray-500 hover:text-gray-100 transition cursor-pointer"
-            onClick={() => onOpenAlertDialog({type})}
+            onClick={() => createResource({type})}
           />
         </div>
         <div className="flex gap-2 flex-wrap">

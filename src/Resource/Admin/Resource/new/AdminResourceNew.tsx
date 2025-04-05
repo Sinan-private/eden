@@ -10,7 +10,10 @@ type AdminResourcesProps = {
 
 export const AdminResource = ({resource}: AdminResourcesProps) => {
   const max = resource.max !== Infinity ? resource.max : undefined;
-  const {onOpenAlertDialog} = useAdmin()
+  const {updateResource} = useAdmin();
+  // if (resource.key === 'liquid_mana_level_3') {
+  //   console.log(resource.key, resource.id)
+  // }
 
   return (
     <>
@@ -28,7 +31,7 @@ export const AdminResource = ({resource}: AdminResourcesProps) => {
                 <Button
                   variant="ghost"
                   className="p-1.5 absolute top-0 right-0 text-gray-500 hover:text-gray-200"
-                  onClick={() => onOpenAlertDialog(resource.state)}
+                  onClick={() => updateResource(resource.id)}
                 >
                   <EditOne size={16}/>
                 </Button>

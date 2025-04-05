@@ -1,4 +1,4 @@
-import {useState} from "react";
+import {useMemo, useRef, useState} from "react";
 import {createContainer} from "unstated-next";
 import {ResourceClass, ResourceKeys, ResourceStoreClass, ResourceTypes} from "@/Resource";
 import {ResourceStore} from "../ResourceHandler/ResourceStore.ts";
@@ -9,23 +9,18 @@ import {useWriteToFile} from "@/Resource/context/admin/useWriteToFile.ts";
 import {getKeyAlreadyExists} from "@/Resource/context/admin/equalityChecks.ts";
 import {Editable} from "@/Resource/context/admin/Editable.ts";
 
-type Update = Partial<ResourceTypeRaw<ResourceKeys, ResourceTypes>>;
+export type Update = Partial<ResourceTypeRaw<ResourceKeys, ResourceTypes>>;
 
-export type EditResourceProps = {
-  resourceStore?: Partial<ResourceTypeRaw<ResourceKeys, ResourceTypes>>;
-}
 const editableResource = new Resource({key: '' as ResourceKeys}) as ResourceClass;
 
-const useAdminBase = (resourceStore?: ResourceStoreClass) => {
-  if (!resourceStore) {
+const useAdminBase = (_resourceStore?: ResourceStoreClass) => {
+  if (!_resourceStore) {
     throw new Error("ResourceStore is required but was not provided.");
   }
-
-  // Here I want to store the ID to make everything else just listen to it
-  // const [resourceToEdit, setResourceToEdit] = useState('new_resource')
-
-  // const [resources, setResources] = useState<ResourceStoreClass>()
-  const editable = new Editable(resourceStore)
+  const resourceStore = useRef(new ResourceStore(_resourceStore.state, 'admin')).current;
+  const editable = useRef(new Editable(resourceStore)).current;
+  // // Here I want to store the ID to make everything else just listen to it
+  // const editable = new Editable(resourceStore)
   const [alertDialogOpen, setAlertDialogOpen] = useState(false);
   const [alertDialogContent, setAlertDialogContent] = useState<Update>({});
   const {
@@ -35,16 +30,21 @@ const useAdminBase = (resourceStore?: ResourceStoreClass) => {
     write__removeType,
   } = useWriteToFile(resourceStore)
 
-  const onOpenAlertDialog = (resource: Update, id?: string) => {
-    console.log('I guess I somehow need to trigger the state update here?', id)
-    const mergedResource = {...EMPTY_RESOURCE, ...resource}
+  const createResource = (resource: Update) => {
+    editable.createResource(resource)
+    onOpenAlertDialog()
+  }
+
+  const updateResource = (id: string) => {
+    editable.updateResource(id)
+    onOpenAlertDialog()
+  }
+
+  const onOpenAlertDialog = () => {
     setAlertDialogOpen(true);
-    setAlertDialogContent(mergedResource);
-    editableResource.setTo(mergedResource)
   }
   const onCloseAlertDialog = () => {
     setAlertDialogOpen(false);
-    setAlertDialogContent({});
   };
 
   const [showAdminPanel, setShowAdminPanel] = useState(false);
@@ -103,11 +103,13 @@ const useAdminBase = (resourceStore?: ResourceStoreClass) => {
     onCloseAdminPanel,
     alertDialogOpen,
     alertDialogContent,
-    onOpenAlertDialog,
+    // onOpenAlertDialog,
     onCloseAlertDialog,
     editableResource,
     onSave,
     editable,
+    createResource,
+    updateResource,
   }
 }
 

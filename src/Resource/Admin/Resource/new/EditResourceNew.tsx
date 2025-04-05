@@ -26,7 +26,6 @@ import {resourceTypes} from "@/Resource/generated/resourceTypes.ts";
 import {Image} from "@mynaui/icons-react";
 import {Button} from "@/components/ui/button.tsx";
 import {observer} from "mobx-react";
-import {useResourceEdit} from "@/Resource/Admin/Resource/new/useResourceEdit.ts";
 
 
 export const EditResource = observer(() => {
@@ -34,37 +33,44 @@ export const EditResource = observer(() => {
     editableResource: resource,
     onSave,
     onCloseAlertDialog,
-    editable
+    editable,
   } = useAdmin()
-  const {
-    min,
-    max,
-    onSetMin,
-    onSetMax,
-    onWriteMin,
-    onWriteMax,
-    setKey,
-    setLabel,
-    setType,
-    setValue,
-    limitMin,
-    limitMax,
-    onToggleMin,
-    onToggleMax,
-  } = useResourceEdit(resource)
   const {icon} = (resource as ResourceClass);
 
-  console.log(editable._resourceStore?.resources)
+  const {
+    setLabel,
+    setKey,
+    setType,
+    setValue,
+    onInputMin,
+    onInputMax,
+    setMin,
+    setMax,
+    toggleUseMax,
+    toggleUseMin,
+    useMin,
+    useMax,
+  } = editable
+
+  const {
+    label,
+    key,
+    type,
+    value,
+    min,
+    max,
+  } = editable.resource
+  console.log(editable.resource.key, editable.resource.label)
 
   return (
     <AlertDialogContent className="overflow-y-auto max-h-full">
       <AlertDialogHeader className="flex-row justify-between items-center mb-2 space-y-0">
         <AlertDialogTitle>
-          {resource?.label}
+          {label}
         </AlertDialogTitle>
         <Button variant="ghost">
           {icon && !icon.endsWith('empty.png')
-            ? <img src={icon} alt={resource?.label} width={24} height={24} />
+            ? <img src={icon} alt={label} width={24} height={24} />
             : <Image/>
           }
         </Button>
@@ -80,7 +86,7 @@ export const EditResource = observer(() => {
             <Input
               type="text"
               id="resource name"
-              value={resource.label}
+              value={label}
               onChange={setLabel}
               placeholder="Resource label"
             />
@@ -91,7 +97,7 @@ export const EditResource = observer(() => {
               type="text"
               id="resource key"
               className="border-red-600 ring-red-600 focus-visible:ring-red-500"
-              value={resource.key}
+              value={key}
               onChange={setKey}
               placeholder="Resource key (unique)"
             />
@@ -100,7 +106,7 @@ export const EditResource = observer(() => {
           <div className="flex w-full max-w-sm items-center gap-1.5">
             <div>
               <Label>Type</Label>
-              <Select value={resource.type} onValueChange={setType}>
+              <Select value={type} onValueChange={setType}>
                 <SelectTrigger className="w-[180px]">
                   <SelectValue placeholder="Select the type"/>
                 </SelectTrigger>
@@ -123,39 +129,39 @@ export const EditResource = observer(() => {
             <Input
               type="number"
               id="resource value"
-              value={String(resource?.value)}
+              value={value}
               onChange={setValue}
             />
           </div>
           <div className="flex w-full max-w-sm items-center gap-1.5">
             <div className="flex items-center space-x-2">
-              <Switch id="use-max" checked={limitMax} onCheckedChange={onToggleMax}/>
+              <Switch id="use-max" checked={useMax} onCheckedChange={toggleUseMax}/>
               <Label htmlFor="use-max">use max value</Label>
             </div>
             <div>
               <Input
-                disabled={!limitMax}
-                type="number"
+                disabled={!useMax}
+                type={useMax ? "number" : "text"}
                 id="resource max"
                 value={max}
-                onBlur={onWriteMax}
-                onChange={onSetMax}
+                onBlur={setMax}
+                onChange={onInputMax}
               />
             </div>
           </div>
           <div className="flex w-full max-w-sm items-center gap-1.5">
             <div className="flex items-center space-x-2">
-              <Switch id="use-min" checked={limitMin} onCheckedChange={onToggleMin}/>
+              <Switch id="use-min" checked={useMin} onCheckedChange={toggleUseMin}/>
               <Label htmlFor="use-min">use min value</Label>
             </div>
             <div>
               <Input
-                disabled={!limitMin}
-                type="number"
+                disabled={!useMin}
+                type={useMin ? "number" : "text"}
                 id="resource min"
                 value={min}
-                onBlur={onWriteMin}
-                onChange={onSetMin}
+                onBlur={setMin}
+                onChange={onInputMin}
               />
             </div>
           </div>
