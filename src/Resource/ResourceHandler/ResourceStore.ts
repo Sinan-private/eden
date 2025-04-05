@@ -1,5 +1,5 @@
-import {makeAutoObservable} from 'mobx'
-import {Resource, ResourceUpdateProps} from "./index.ts";
+import {makeAutoObservable, toJS} from 'mobx'
+import {Resource, ResourceState, ResourceUpdateProps} from "./index.ts";
 import {ResourceTrade, Trade} from "./Trade.ts";
 import {LevelUpdate, ResourceCostUpdate, TradeChange} from "./genericTypes.ts";
 
@@ -30,15 +30,6 @@ export class ResourceStore<K extends string, T extends string> {
       : 100;
   }
 
-  public getById = (id: string): Resource<K, T> | undefined => {
-    for (const resource of this.resources.values()) {
-      if (resource.id === id) {
-        return resource;
-      }
-    }
-    return undefined; // Return undefined if no resource matches the id
-  };
-
   public initializeResources(resources: ResourceUpdateProps<K, T>[]) {
     resources.forEach((resource) => {
       const initialResource = new Resource(resource);
@@ -46,12 +37,6 @@ export class ResourceStore<K extends string, T extends string> {
     });
   }
 
-  public addEditableResource = () => {
-    console.log(this.resources)
-    this.resources.set(this.newResource.id, this.newResource);
-    console.log(this.resources)
-    this.newResource = new Resource({key: '' as K})
-  }
 
   public addResource = (resource: ResourceUpdateProps<K, T>) => {
     this.resources.set(resource.key, new Resource(resource));
@@ -63,23 +48,38 @@ export class ResourceStore<K extends string, T extends string> {
     }
   }
 
+  public updateResources = (updates: ResourceUpdateProps<K, T>[]) => {
+
+  }
+
+  public resourceReferences = (key: K) => resourceReferences(key, this.allResources)
+
   public isResourceReferenced = (key: K): boolean => {
-    const dependencyKeys: (keyof Resource<K, T>)[] = ["cost", "revealedAt"]; // Everything with a structure like cost
-
-    return this.allResources.some(resource => {
-      if (resource.key === key) return false; // Exclude self-reference
-
-      return dependencyKeys.some(depKey => {
-        const dependency = resource[depKey] as ResourceCostUpdate<K, T> | null;
-        if (!dependency) return false;
-
-        const isReferencedInGive = dependency.give.some(item => item.key === key);
-        const isReferencedInGain = dependency.gain.some(item => item.key === key);
-
-        return isReferencedInGive || isReferencedInGain;
-      });
-    });
+    return !!this.resourceReferences(key).length
   };
+
+  public replaceTradeKeys = (key: K, newKey: string): ResourceState<K, T>[] => {
+    const toUpdate = this.resourceReferences(key);
+    return toUpdate.map(k => {
+      const resource = this.getByKey(k);
+      return this.__replaceTradeKey(resource, key, newKey);
+    });
+  }
+
+  private __replaceTradeKey = (resource: Resource<K, T>, key: K, newKey: string): Resource<K, T>['state'] => {
+    const replace = (toChange: TradeChange<K, T>[]): TradeChange<K, T>[] =>
+      toChange.map(change => change.key === key
+          ? {...change, key: newKey as K}
+          : {...change}
+      )
+    return {
+      ...resource.state,
+      cost: {
+        give: replace(resource.cost!.give),
+        gain: replace(resource.cost!.gain),
+      }
+    }
+  }
 
 
   public getByType = (type?: T): Resource<K, T>[] => {
@@ -91,7 +91,10 @@ export class ResourceStore<K extends string, T extends string> {
   }
 
   public groupByType = () => {
-    return groupedByType(this.allResources).map(resourceGroup => ({type: resourceGroup[0].type, resources: resourceGroup}));
+    return groupedByType(this.allResources).map(resourceGroup => ({
+      type: resourceGroup[0].type,
+      resources: resourceGroup
+    }));
   }
 
   public produce = (key: K, amount?: number) => {
@@ -151,7 +154,7 @@ export class ResourceStore<K extends string, T extends string> {
 
   public getTypeSum = (type: T) => {
     const resources = this.getByType(type)
-    return  resources.reduce((sum, {value}) => (sum + value), 0)
+    return resources.reduce((sum, {value}) => (sum + value), 0)
   }
 
   private _levelToTradeConversion = (to_check: LevelUpdate<K, T>['gain']): TradeChange<K, T>[] =>
@@ -181,3 +184,26 @@ const groupedByType = <K extends string, T extends string>(resources: Resource<K
     return acc;
   }, {} as Record<string, Resource<K, T>[]>)
 );
+
+const resourceReferences = <K extends string, T extends string>(
+  key: K,
+  allResources: Resource<K, T>[]
+): K[] => {
+  const dependencyKeys: (keyof Resource<K, T>)[] = ["cost", "revealedAt"];
+
+  return allResources
+    .filter(resource => {
+      if (resource.key === key) return false; // Exclude self-reference
+
+      return dependencyKeys.some(depKey => {
+        const dependency = resource[depKey] as ResourceCostUpdate<K, T> | null;
+        if (!dependency) return false;
+
+        const isReferencedInGive = dependency.give.some(item => item.key === key);
+        const isReferencedInGain = dependency.gain.some(item => item.key === key);
+
+        return isReferencedInGive || isReferencedInGain;
+      });
+    })
+    .map(resource => resource.key);
+}

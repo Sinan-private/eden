@@ -1,14 +1,16 @@
-import {ResourceClass, ResourceKeys, ResourceStoreClass, ResourceTypes} from "@/Resource";
+import {ResourceClass, ResourceKeys, ResourceState, ResourceStoreClass, ResourceTypes} from "@/Resource";
 import {Update} from "@/Resource/context/admin.context.ts";
 import {Resource} from "@/Resource/ResourceHandler";
 import {ChangeEvent} from "react";
 import {makeAutoObservable} from "mobx";
+import {ResourceStore} from "@/Resource/ResourceHandler/ResourceStore.ts";
 
 // Todo - Why am I starting version 3.000? I still don't like my setup and now I need to check if a key already
 //  exists (overwrite or create new), I need to check if the resource is pristine (disabled buttons)
 //  and I want to prepare the resource so that it checks against the ID and overwrites even if the key was changed
 
 export class Editable {
+  private resourceStore: ResourceStoreClass;
   private origin: ResourceClass | null = null;
   private update: ResourceClass | null = null;
   private keyIsDirty: boolean = true;
@@ -19,19 +21,21 @@ export class Editable {
   private max: number = Infinity;
   private min: number = -Infinity;
   constructor(
-    private readonly _resourceStore?: ResourceStoreClass
+    public readonly originalResourceStore: ResourceStoreClass
   ) {
+    this.resourceStore = new ResourceStore(originalResourceStore.state, 'admin');
     makeAutoObservable(this)
   }
 
   public readonly createResource = (resource: Update) => {
     this.update = new Resource(resource as ResourceClass)
     this.keyIsDirty = false;
+    this.origin = null;
     // console.log(this.update)
   }
 
   public readonly updateResource = (id: string) => {
-    const resource = this._resourceStore?.get(id) as ResourceClass
+    const resource = this.originalResourceStore?.get(id) as ResourceClass
     const {min, max, state} = resource
     this.useMax = typeof max === "number" && max !== Infinity
     this.useMin = typeof max === "number" && max !== -Infinity
@@ -39,6 +43,15 @@ export class Editable {
     this.max = max;
     this.origin = resource!
     this.update = new Resource(state)
+  }
+
+  public writeUpdates = () => {
+    const resourceStore = this.originalResourceStore;
+    const resourceToUpdate = resourceStore.get(this.origin!.id);
+    const updatedDependencies = resourceStore.replaceTradeKeys(this.origin!.key, this.update!.key);
+    console.log(updatedDependencies)
+    resourceStore.updateResources(updatedDependencies.concat(this.update!.state))
+    // resourceToUpdate.setTo(this.update!.state)
   }
 
   public setLabel = (e: ChangeEvent<HTMLInputElement>) => {
@@ -95,6 +108,10 @@ export class Editable {
     this.update?.setTo({min: this.min})
   }
 
+  public save = (): ResourceState => {
+    return this.resource
+  }
+
   get resource() {
     return {
       ...this.update!.state,
@@ -108,6 +125,14 @@ export class Editable {
     console.log(this.update?.key, this.origin?.key)
     return !this.keyIsDirty
     // return this.update?.key === this.origin?.key;
+  }
+
+  get isUpdate() {
+    return !!(this.update && this.origin)
+  }
+
+  get isCreation() {
+    return !!(this.update && !this.origin)
   }
 
 }

@@ -26,9 +26,9 @@ export const useWriteToFile = (resources?: ResourceStoreClass) => {
     }
   };
 
-  const write__initialResources = useCallback(() => {
+  const write__initialResources = useCallback((_resources = resources) => {
     // console.log(resources?.state.length)
-    const state = resources!.state.filter(({key}) => key.length)
+    const state = _resources!.state.filter(({key}) => key.length)
     updateResources(state)
   }, [resources])
 

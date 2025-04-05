@@ -8,7 +8,7 @@ import {beautifyNumber} from "../helpers";
 import {makeAutoObservable, toJS} from "mobx";
 import icons from "../assets/icons/icons.ts";
 import {id} from "../helpers/id.ts";
-import {ResourceKeys} from "./specificTypes.ts";
+import {ResourceKeys} from "@/Resource";
 
 type UpdateProps<K, T> = Partial<ResourceTypeRaw<K, T>>;
 

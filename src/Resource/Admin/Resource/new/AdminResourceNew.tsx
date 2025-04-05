@@ -69,9 +69,9 @@ const ConstView = ({trade}: ConstViewProps) => {
         {trade.value}
       </span>
 
-      <img width={16} height={16} src={resource.icon} alt={trade.label}/>
+      <img width={16} height={16} src={resource?.icon} alt={trade.label}/>
       <p className="text-xs">
-        {resource.label}
+        {resource?.label}
       </p>
     </div>
   )
