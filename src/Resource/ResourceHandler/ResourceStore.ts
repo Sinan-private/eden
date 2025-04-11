@@ -49,15 +49,8 @@ export class ResourceStore<K extends string, T extends string> {
   }
 
   public updateResources = (updates: (ResourceUpdateProps<K, T> & {id: string})[]) => {
-    console.log(updates)
     updates.forEach((update) => {
       const change = this.get(update.id)
-      console.log(update.key, update.id);
-      console.log(this.get(update.id));
-      console.log(this.getByKey('liquid_mana_level_3').id);
-      console.log(this.allResources.find(({id}) => id === update.id).id);
-      // console.log(this.allResources.find(({key, id}) => key === update.key).id);
-      console.log(change)
       change.setTo(update);
     })
   }

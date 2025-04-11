@@ -50,12 +50,9 @@ export class Editable {
   }
 
   public writeUpdates = () => {
-    // Todo I need to merge the old id as reference into each object to change
-    //  Screwed this up. Here I am passing the wrong id into the update object
-
-    const resourceStore = this.resourceStore;
-    const updatedDependencies = this.originalResourceStore.replaceTradeKeys(this.origin!.key, this.update!.key);
-    const origin = this.originalResourceStore.get(this.origin!.id);
+    const original = this.originalResourceStore;
+    const updatedDependencies = original.replaceTradeKeys(this.origin!.key, this.update!.key);
+    const origin = original.get(this.origin!.id);
     const newState = {
       ...this.update!.state,
       id: this.origin!.id,
@@ -64,7 +61,8 @@ export class Editable {
     console.log(newState, updatedDependencies)
     // console.log(this.update, updatedDependencies)
     console.log('origin', origin.id)
-    this.originalResourceStore.updateResources(changes)
+    original.updateResources(changes)
+    return changes
     // resourceToUpdate.setTo(this.update!.state)
   }
 

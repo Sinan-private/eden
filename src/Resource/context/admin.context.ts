@@ -18,7 +18,7 @@ const useAdminBase = (resourceStore?: ResourceStoreClass) => {
   const editable = useRef(new Editable(resourceStore)).current;
   const [alertDialogOpen, setAlertDialogOpen] = useState(false);
   const {
-    // write__initialResources,
+    write__initialResources,
     write__removeResource,
     write__addType,
     write__removeType,
@@ -30,14 +30,6 @@ const useAdminBase = (resourceStore?: ResourceStoreClass) => {
   }
 
   const editResource = (cloneId: string) => {
-    const test1 = editable.originalResourceStore.getByKey('liquid_mana_level_3');
-    const test3 = editable.originalResourceStore.getByKey('dirty_mana_level_3');
-    const test2 = resourceStore.getByKey('liquid_mana_level_3');
-    // console.log(test1.id, test2.id);
-    // console.log(test1 === test2);
-    console.log('original id', test1.id);
-    console.log('clone id', cloneId);
-    console.log('original dirty_mana id', test3.id);
     editable.editResource(cloneId)
     onOpenAlertDialog()
   }
@@ -90,7 +82,7 @@ const useAdminBase = (resourceStore?: ResourceStoreClass) => {
       //   resourceStore
       // }
       // _resourceStore.initializeResources(resourceStore.state)
-      // write__initialResources()
+      write__initialResources()
     }
     if (editable.isCreation) {
       // console.log('create', resourceState)
