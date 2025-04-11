@@ -15,12 +15,10 @@ const useAdminBase = (resourceStore?: ResourceStoreClass) => {
   if (!resourceStore) {
     throw new Error("ResourceStore is required but was not provided.");
   }
-  // const resourceStore = useRef(new ResourceStore(_resourceStore.state, 'admin')).current;
   const editable = useRef(new Editable(resourceStore)).current;
-  // const resourceStore = editable.originalResourceStore!
   const [alertDialogOpen, setAlertDialogOpen] = useState(false);
   const {
-    write__initialResources,
+    // write__initialResources,
     write__removeResource,
     write__addType,
     write__removeType,
@@ -31,8 +29,16 @@ const useAdminBase = (resourceStore?: ResourceStoreClass) => {
     onOpenAlertDialog()
   }
 
-  const updateResource = (id: string) => {
-    editable.updateResource(id)
+  const editResource = (cloneId: string) => {
+    const test1 = editable.originalResourceStore.getByKey('liquid_mana_level_3');
+    const test3 = editable.originalResourceStore.getByKey('dirty_mana_level_3');
+    const test2 = resourceStore.getByKey('liquid_mana_level_3');
+    // console.log(test1.id, test2.id);
+    // console.log(test1 === test2);
+    console.log('original id', test1.id);
+    console.log('clone id', cloneId);
+    console.log('original dirty_mana id', test3.id);
+    editable.editResource(cloneId)
     onOpenAlertDialog()
   }
 
@@ -46,8 +52,6 @@ const useAdminBase = (resourceStore?: ResourceStoreClass) => {
   const [showAdminPanel, setShowAdminPanel] = useState(false);
   const onToggleAdminPanel = () => setShowAdminPanel(!showAdminPanel);
   const onCloseAdminPanel = () => setShowAdminPanel(false);
-
-  // console.log(resourceStore)
 
   const [openIconPicker, setOpenIconPicker] = useState(false);
   const [filterUsed, onToggleFilter] = useToggle(false);
@@ -71,13 +75,13 @@ const useAdminBase = (resourceStore?: ResourceStoreClass) => {
 
   const onSave = () => {
     const {
-      icon,
+      // icon,
       ...resourceState
     } = editable.resource;
     // Todo here lies the issue. I want to check for the id since I might want to change the key.
     //  This needs the original clone to inherit this id
     if (editable.isUpdate) {
-      const resourceToUpdate = resourceStore.get(editable.origin.id);
+      // const resourceToUpdate = resourceStore.get(editable.origin.id);
       // console.log('update', resourceToUpdate)
       // console.log(resourceStore.resourceReferences(editable.origin.key))
       editable.writeUpdates()
@@ -126,7 +130,7 @@ const useAdminBase = (resourceStore?: ResourceStoreClass) => {
     onSave,
     editable,
     createResource,
-    updateResource,
+    updateResource: editResource,
   }
 }
 

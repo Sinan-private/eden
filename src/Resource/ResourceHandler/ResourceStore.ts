@@ -1,4 +1,4 @@
-import {makeAutoObservable, toJS} from 'mobx'
+import {makeAutoObservable} from 'mobx'
 import {Resource, ResourceState, ResourceUpdateProps} from "./index.ts";
 import {ResourceTrade, Trade} from "./Trade.ts";
 import {LevelUpdate, ResourceCostUpdate, TradeChange} from "./genericTypes.ts";
@@ -48,8 +48,18 @@ export class ResourceStore<K extends string, T extends string> {
     }
   }
 
-  public updateResources = (updates: ResourceUpdateProps<K, T>[]) => {
-
+  public updateResources = (updates: (ResourceUpdateProps<K, T> & {id: string})[]) => {
+    console.log(updates)
+    updates.forEach((update) => {
+      const change = this.get(update.id)
+      console.log(update.key, update.id);
+      console.log(this.get(update.id));
+      console.log(this.getByKey('liquid_mana_level_3').id);
+      console.log(this.allResources.find(({id}) => id === update.id).id);
+      // console.log(this.allResources.find(({key, id}) => key === update.key).id);
+      console.log(change)
+      change.setTo(update);
+    })
   }
 
   public resourceReferences = (key: K) => resourceReferences(key, this.allResources)
@@ -58,7 +68,10 @@ export class ResourceStore<K extends string, T extends string> {
     return !!this.resourceReferences(key).length
   };
 
-  public replaceTradeKeys = (key: K, newKey: string): ResourceState<K, T>[] => {
+  public replaceTradeKeys = (key: K, newKey: string): (ResourceState<K, T> & {id: string})[] => {
+    if (key === newKey) {
+      return []
+    }
     const toUpdate = this.resourceReferences(key);
     return toUpdate.map(k => {
       const resource = this.getByKey(k);
@@ -66,13 +79,14 @@ export class ResourceStore<K extends string, T extends string> {
     });
   }
 
-  private __replaceTradeKey = (resource: Resource<K, T>, key: K, newKey: string): Resource<K, T>['state'] => {
+  private __replaceTradeKey = (resource: Resource<K, T>, key: K, newKey: string): Resource<K, T>['state'] & {id: string} => {
     const replace = (toChange: TradeChange<K, T>[]): TradeChange<K, T>[] =>
       toChange.map(change => change.key === key
           ? {...change, key: newKey as K}
           : {...change}
       )
     return {
+      id: resource.id,
       ...resource.state,
       cost: {
         give: replace(resource.cost!.give),

@@ -68,7 +68,7 @@ export class Resource<K extends string, T extends string> {
     return this;
   }
 
-  public readonly setTo = (update: UpdateProps<K, T> & { key?: K }): Resource<K, T> => {
+  public readonly setTo = (update: ResourceUpdateProps<K, T> & { key?: K }): Resource<K, T> => {
     // I want to be able to set every value here
     const {
       value = this.value,

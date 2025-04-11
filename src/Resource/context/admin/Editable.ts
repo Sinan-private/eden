@@ -34,23 +34,37 @@ export class Editable {
     // console.log(this.update)
   }
 
-  public readonly updateResource = (id: string) => {
-    const resource = this.resourceStore?.get(id) as ResourceClass
-    const {min, max, state} = resource
+  public readonly editResource = (cloneId: string) => {
+    const resource = this.resourceStore?.get(cloneId) as ResourceClass
+    const {min, max, state, key} = resource
     this.useMax = typeof max === "number" && max !== Infinity
     this.useMin = typeof max === "number" && max !== -Infinity
     this.min = min;
     this.max = max;
-    this.origin = resource!
+    this.origin = this.originalResourceStore.getByKey(key)
     this.update = new Resource(state)
+    console.log('clone id editResource', cloneId)
+    console.log('original id editResource', this.origin.id)
+    // console.log('editResource resource', this.originalResourceStore.get(cloneId))
+    // console.log('editResource resource', this.resourceStore.get(cloneId))
   }
 
   public writeUpdates = () => {
-    const resourceStore = this.originalResourceStore;
-    const resourceToUpdate = resourceStore.get(this.origin!.id);
-    const updatedDependencies = resourceStore.replaceTradeKeys(this.origin!.key, this.update!.key);
-    console.log(updatedDependencies)
-    resourceStore.updateResources(updatedDependencies.concat(this.update!.state))
+    // Todo I need to merge the old id as reference into each object to change
+    //  Screwed this up. Here I am passing the wrong id into the update object
+
+    const resourceStore = this.resourceStore;
+    const updatedDependencies = this.originalResourceStore.replaceTradeKeys(this.origin!.key, this.update!.key);
+    const origin = this.originalResourceStore.get(this.origin!.id);
+    const newState = {
+      ...this.update!.state,
+      id: this.origin!.id,
+    }
+    const changes = updatedDependencies.concat(newState);
+    console.log(newState, updatedDependencies)
+    // console.log(this.update, updatedDependencies)
+    console.log('origin', origin.id)
+    this.originalResourceStore.updateResources(changes)
     // resourceToUpdate.setTo(this.update!.state)
   }
 
@@ -128,7 +142,8 @@ export class Editable {
   }
 
   get isUpdate() {
-    return !!(this.update && this.origin)
+    return true
+    // return !!(this.update && this.origin)
   }
 
   get isCreation() {

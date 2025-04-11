@@ -14,6 +14,7 @@ export type ResourceCostUpdate<K, T> = {
   gain: TradeChange<K, T>[];
 }
 export type ResourceUpdateProps<K, T> = {
+  // id: string;
   key: K;
   cost?: ResourceCostUpdate<K, T> | null;
   revealedAt?: ResourceCostUpdate<K, T> | null;
