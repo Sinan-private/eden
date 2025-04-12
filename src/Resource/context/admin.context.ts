@@ -24,12 +24,12 @@ const useAdminBase = (resourceStore?: ResourceStoreClass) => {
     write__removeType,
   } = useWriteToFile(resourceStore)
 
-  const createResource = (resource: Update) => {
+  const openNewResource = (resource: Update) => {
     editable.createResource(resource)
     onOpenAlertDialog()
   }
 
-  const editResource = (cloneId: string) => {
+  const openExistingResource = (cloneId: string) => {
     editable.editResource(cloneId)
     onOpenAlertDialog()
   }
@@ -73,8 +73,9 @@ const useAdminBase = (resourceStore?: ResourceStoreClass) => {
     // Todo here lies the issue. I want to check for the id since I might want to change the key.
     //  This needs the original clone to inherit this id
     if (editable.isUpdate) {
-      editable.overwriteOriginalResources()
-      write__initialResources()
+      const changes = editable.getChanges()
+      console.log(changes.getByKey('liquid_mana_level_1'))
+      write__initialResources(changes)
     }
     if (editable.isCreation) {
       resourceStore.addResource(resourceState)
@@ -113,8 +114,8 @@ const useAdminBase = (resourceStore?: ResourceStoreClass) => {
     onCloseAlertDialog,
     onSave,
     editable,
-    createResource,
-    updateResource: editResource,
+    openNewResource,
+    openExistingResource,
   }
 }
 

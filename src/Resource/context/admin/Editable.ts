@@ -56,6 +56,22 @@ export class Editable {
     return updatedDependencies.concat(newState);
   }
 
+  private _getOverwriteClone = () => {
+    const updatedDependencies = this.cloneResourceStore.replaceTradeKeys(this.origin!.key, this.update!.key);
+    const newState = {
+      ...this.update!.state,
+      // id: this.origin!.id,
+    }
+    this.cloneResourceStore.updateResources(updatedDependencies.concat(newState))
+    return this.cloneResourceStore
+    // return updatedDependencies.concat(newState);
+  }
+
+  public getChanges = () => {
+    // return this._getOverwriteClone()
+    return this._getOverwriteClone()
+  }
+
   public overwriteOriginalResources = () => {
     const changes = this._getOverwriteOriginal()
     this.originalResourceStore.updateResources(changes)

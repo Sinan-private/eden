@@ -61,7 +61,6 @@ export const EditResource = observer(() => {
       icon,
     }
   } = editable
-  console.log(keyAlreadyExists(key))
   const keyExists = useMemo(() => keyAlreadyExists(key), [key, keyAlreadyExists])
 
   const keyInput = useMemo(() => {
