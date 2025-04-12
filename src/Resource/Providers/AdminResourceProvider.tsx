@@ -1,7 +1,7 @@
 import React from "react";
-import {AdminProvider} from "../Admin";
+import {AdminProvider} from "../Admin2";
 import {TickProvider} from "../context/tick.context.ts";
-import {ResourceAdmin, ResourceAdminProps} from "../Admin/ResourceAdmin.tsx";
+import {ResourceAdmin, ResourceAdminProps} from "../Admin2/ResourceAdmin.tsx";
 import {ResourceStoreClass} from "@/Resource";
 
 export type ResourceProviderProps = {
