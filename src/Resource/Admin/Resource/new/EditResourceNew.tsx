@@ -26,6 +26,7 @@ import {resourceTypes} from "@/Resource/generated/resourceTypes.ts";
 import {Image} from "@mynaui/icons-react";
 import {Button} from "@/components/ui/button.tsx";
 import {observer} from "mobx-react";
+import {useMemo} from "react";
 
 
 export const EditResource = observer(() => {
@@ -48,6 +49,7 @@ export const EditResource = observer(() => {
     toggleUseMin,
     useMin,
     useMax,
+    keyAlreadyExists,
     resource: {
       label,
       key,
@@ -59,6 +61,39 @@ export const EditResource = observer(() => {
       icon,
     }
   } = editable
+  console.log(keyAlreadyExists(key))
+  const keyExists = useMemo(() => keyAlreadyExists(key), [key, keyAlreadyExists])
+
+  const keyInput = useMemo(() => {
+    if (keyExists) {
+      return (
+        <div className="grid w-full max-w-sm items-center gap-1.5">
+          <Label>Key</Label>
+          <Input
+            type="text"
+            id="resource key"
+            className="border-red-600 ring-red-600 focus-visible:ring-red-500"
+            value={key}
+            onChange={setKey}
+            placeholder="Resource key (unique)"
+          />
+          <p className="text-xs text-red-500">Key already exists</p>
+        </div>
+      )
+    }
+    return (
+      <div className="grid w-full max-w-sm items-center gap-1.5">
+        <Label>Key</Label>
+        <Input
+          type="text"
+          id="resource key"
+          value={key}
+          onChange={setKey}
+          placeholder="Resource key (unique)"
+        />
+      </div>
+    )
+  }, [key, keyExists, setKey])
 
   return (
     <AlertDialogContent className="overflow-y-auto max-h-full">
@@ -68,7 +103,7 @@ export const EditResource = observer(() => {
         </AlertDialogTitle>
         <Button variant="ghost">
           {icon && !icon.endsWith('empty.png')
-            ? <img src={icon} alt={label} width={24} height={24} />
+            ? <img src={icon} alt={label} width={24} height={24}/>
             : <Image/>
           }
         </Button>
@@ -89,18 +124,7 @@ export const EditResource = observer(() => {
               placeholder="Resource label"
             />
           </div>
-          <div className="grid w-full max-w-sm items-center gap-1.5">
-            <Label>Key</Label>
-            <Input
-              type="text"
-              id="resource key"
-              className="border-red-600 ring-red-600 focus-visible:ring-red-500"
-              value={key}
-              onChange={setKey}
-              placeholder="Resource key (unique)"
-            />
-            <p className="text-xs">Key already exists</p>
-          </div>
+          {keyInput}
           <div className="flex w-full max-w-sm items-center gap-1.5">
             <div>
               <Label>Type</Label>
@@ -175,7 +199,7 @@ export const EditResource = observer(() => {
       </div>
       <AlertDialogFooter>
         <AlertDialogCancel onClick={onCloseAlertDialog}>Cancel</AlertDialogCancel>
-        <AlertDialogAction onClick={onSave}>Continue</AlertDialogAction>
+        <AlertDialogAction disabled={keyExists} onClick={onSave}>Continue</AlertDialogAction>
       </AlertDialogFooter>
     </AlertDialogContent>
   )

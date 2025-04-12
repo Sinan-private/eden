@@ -1,7 +1,7 @@
 import {makeAutoObservable} from 'mobx'
 import {Resource, ResourceState, ResourceUpdateProps} from "./index.ts";
 import {ResourceTrade, Trade} from "./Trade.ts";
-import {LevelUpdate, ResourceCostUpdate, TradeChange} from "./genericTypes.ts";
+import {LevelUpdate, ResourceCostUpdate, ResourceTypeRaw, TradeChange} from "./genericTypes.ts";
 
 export class ResourceStore<K extends string, T extends string> {
   public resources: Map<string, Resource<K, T>> = new Map();
@@ -51,7 +51,7 @@ export class ResourceStore<K extends string, T extends string> {
   public updateResources = (updates: (ResourceUpdateProps<K, T> & {id: string})[]) => {
     updates.forEach((update) => {
       const change = this.get(update.id)
-      change.setTo(update);
+      change.setTo(update as Partial<ResourceTypeRaw<K, T>>);
     })
   }
 

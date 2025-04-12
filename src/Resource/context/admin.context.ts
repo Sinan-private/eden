@@ -73,20 +73,12 @@ const useAdminBase = (resourceStore?: ResourceStoreClass) => {
     // Todo here lies the issue. I want to check for the id since I might want to change the key.
     //  This needs the original clone to inherit this id
     if (editable.isUpdate) {
-      // const resourceToUpdate = resourceStore.get(editable.origin.id);
-      // console.log('update', resourceToUpdate)
-      // console.log(resourceStore.resourceReferences(editable.origin.key))
-      editable.writeUpdates()
-      // resourceToUpdate.setTo(resourceState)
-      // const replaceKeys = () => {
-      //   resourceStore
-      // }
-      // _resourceStore.initializeResources(resourceStore.state)
+      editable.overwriteOriginalResources()
       write__initialResources()
     }
     if (editable.isCreation) {
-      // console.log('create', resourceState)
       resourceStore.addResource(resourceState)
+      write__initialResources()
     }
 
     // if (!(keyAlreadyExists)) {
@@ -104,7 +96,7 @@ const useAdminBase = (resourceStore?: ResourceStoreClass) => {
   }
 
   return {
-    resources: editable.resourceStore as ResourceStore<ResourceKeys, ResourceTypes>,
+    resources: editable.cloneResourceStore as ResourceStore<ResourceKeys, ResourceTypes>,
     canRemoveResource,
     write__addType,
     write__removeType,
