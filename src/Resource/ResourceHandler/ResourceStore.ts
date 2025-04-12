@@ -14,6 +14,9 @@ export class ResourceStore<K extends string, T extends string> {
     makeAutoObservable(this);
   }
 
+  public clone = () =>
+    new ResourceStore(this.allResources.map(resource => resource.clone()), 'admin')
+
   public get = (id: string) => {
     return this.resources.get(id)!
   };
@@ -39,7 +42,9 @@ export class ResourceStore<K extends string, T extends string> {
 
 
   public addResource = (resource: ResourceUpdateProps<K, T>) => {
-    this.resources.set(resource.key, new Resource(resource));
+    const _resource = new Resource(resource);
+    this.resources.set(_resource.id, _resource);
+    return _resource;
   }
 
   public removeResource = (key: K) => {

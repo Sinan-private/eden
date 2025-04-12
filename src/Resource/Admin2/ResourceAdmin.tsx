@@ -1,5 +1,5 @@
 import {AdminPanel} from "./AdminPanel.tsx";
-import {useAdmin} from "../context/admin.context.ts";
+import {useAdmin} from "../context/admin2.context.ts";
 import styled from "styled-components";
 
 export type ResourceAdminProps = {

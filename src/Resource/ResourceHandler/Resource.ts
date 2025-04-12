@@ -14,6 +14,7 @@ type UpdateProps<K, T> = Partial<ResourceTypeRaw<K, T>>;
 
 export class Resource<K extends string, T extends string> {
   public id: string = id();
+  public reference_id: string;
   public key: K;
   public value: number = 1;
   public min: number = 0;
@@ -35,8 +36,10 @@ export class Resource<K extends string, T extends string> {
       cost,
       revealedAt,
       iconName,
+      reference_id,
     }: ResourceUpdateProps<K, T>) {
 
+    this.reference_id = reference_id || '';
     this.key = key;
     this.value = typeof value === 'number' ? value : 1;
     this.min = typeof min === 'number' ? min : 0;
@@ -129,7 +132,12 @@ export class Resource<K extends string, T extends string> {
   }
 
   public hasEnough = (value: number): boolean =>
-    this.value - value >= 0
+    this.value - value >= this.min
+
+  public clone = () => new Resource({
+    ...this.state,
+    reference_id: this.id,
+  })
 
   get percentage() {
     return this.value / this.max * 100

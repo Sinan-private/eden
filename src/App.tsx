@@ -11,6 +11,7 @@ function App() {
   const [loaded, setLoaded] = useState(false);
   const resourceRef = useRef<ResourceStoreClass | null>(null) as MutableRefObject<ResourceStoreClass | null>;
   const resourceStore = resourceRef.current as ResourceStoreClass;
+  window.resources = resourceStore
 
   useComponentMount(async () => {
     const rawState = await fetchResources();

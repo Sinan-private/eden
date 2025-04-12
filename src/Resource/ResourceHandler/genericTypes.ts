@@ -15,6 +15,7 @@ export type ResourceCostUpdate<K, T> = {
 }
 export type ResourceUpdateProps<K, T> = {
   // id: string;
+  reference_id?: string;
   key: K;
   cost?: ResourceCostUpdate<K, T> | null;
   revealedAt?: ResourceCostUpdate<K, T> | null;
