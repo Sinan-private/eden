@@ -3,6 +3,7 @@ import {createContainer} from "unstated-next";
 import {ResourceKeys, ResourceStoreClass, ResourceTypes} from "@/Resource";
 import {AdminUser} from "@/Resource/Admin2/AdminUser.ts";
 import {ResourceStore} from "@/Resource/ResourceHandler/ResourceStore.ts";
+import {ResourceCloneProps} from "@/Resource/ResourceHandler/genericTypes.ts";
 
 
 const useAdminBase = (resourceStore?: ResourceStoreClass) => {
@@ -15,13 +16,20 @@ const useAdminBase = (resourceStore?: ResourceStoreClass) => {
   const [showResourceEdit, setShowResourceEdit] = useState(false);
   const onToggleAdminPanel = () => setShowAdminPanel(!showAdminPanel);
   const onCloseAdminPanel = () => setShowAdminPanel(false);
+  const onCloseResourceEdit = () => setShowResourceEdit(false);
+  const onResetEdit = () => {
+    onCloseResourceEdit();
+  //   And all the resets
+  }
 
-  const openNewResource = (type: ResourceTypes) => {
-    console.log('click openNewResource', type)
+  const openNewResource = (raw_resource: ResourceCloneProps<ResourceKeys, ResourceTypes>) => {
+    editable.createResource(raw_resource)
+    setShowResourceEdit(true)
   }
 
   const openExistingResource = (id: string) => {
-    console.log('click openExistingResource', id)
+    editable.editResource(id)
+    setShowResourceEdit(true)
   }
 
   return {
@@ -33,6 +41,7 @@ const useAdminBase = (resourceStore?: ResourceStoreClass) => {
     showResourceEdit,
     openNewResource,
     openExistingResource,
+    onResetEdit,
   }
 }
 

@@ -1,5 +1,7 @@
-import {ResourceKeys, ResourceStoreClass} from "@/Resource";
+import {ResourceKeys, ResourceStoreClass, ResourceTypes} from "@/Resource";
 import {makeAutoObservable} from "mobx";
+import {AdminUserResource} from "@/Resource/Admin2/AdminUserResource.ts";
+import {ResourceCloneProps} from "@/Resource/ResourceHandler/genericTypes.ts";
 
 // Todo: I need two clones in a way.
 //  - I want to keep an original reference at least of the ids
@@ -20,12 +22,31 @@ export class AdminUser {
     this.cloneResourceStore = originalResourceStore.clone();
     makeAutoObservable(this)
   }
-  public createResource = () => {
-    const newResource = this.cloneResourceStore.addResource({key: '' as ResourceKeys})
+  public createResource = (raw_resource?: ResourceCloneProps<ResourceKeys, ResourceTypes>) => {
+    const _raw_resource = {
+      key: '' as ResourceKeys,
+      ...raw_resource,
+    }
+    const newResource = this.cloneResourceStore.addResource(_raw_resource)
     this.editing = newResource.id
-    return newResource
+  }
+  public editResource = (id: string) => {
+    // Actually when a resource is edited I should also just create a new one with a reference to the old
+
+    const newResource = this.cloneResourceStore.addResource(this.cloneResourceStore.get(id).clone())
+    this.editing = newResource.id
+
   }
 
-
+  public getEditableResource = () => {
+    if (!this.editing.length) {
+      throw new Error(`${this.editing} is empty`)
+    }
+    const resource = this.cloneResourceStore.get(this.editing)
+    if (!resource) {
+      throw new Error(`${resource} is empty`)
+    }
+    return new AdminUserResource(resource)
+  }
 
 }

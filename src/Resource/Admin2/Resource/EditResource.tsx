@@ -30,11 +30,15 @@ import {ResourceKeys, ResourceTypes, TradeChange} from "@/Resource";
 
 export const EditResource = observer(() => {
   const {
-    onSave,
-    onCloseAlertDialog,
+    // onSave,
+    onResetEdit,
     editable,
   } = useAdmin()
 
+  const {
+    // keyAlreadyExists,
+    getEditableResource,
+  } = editable
   const {
     setLabel,
     setKey,
@@ -48,7 +52,6 @@ export const EditResource = observer(() => {
     toggleUseMin,
     useMin,
     useMax,
-    keyAlreadyExists,
     resource: {
       label,
       key,
@@ -59,7 +62,13 @@ export const EditResource = observer(() => {
       cost,
       icon,
     }
-  } = editable
+  } = getEditableResource()
+  const onSave = () => {console.log('save')}
+  const keyAlreadyExists = (key: any) => {
+    // console.log('key', key)
+    return true
+  }
+
   const keyExists = useMemo(() => keyAlreadyExists(key), [key, keyAlreadyExists])
 
   const keyInput = useMemo(() => {
@@ -196,7 +205,7 @@ export const EditResource = observer(() => {
         </div>
       </div>
       <AlertDialogFooter>
-        <AlertDialogCancel onClick={onCloseAlertDialog}>Cancel</AlertDialogCancel>
+        <AlertDialogCancel onClick={onResetEdit}>Cancel</AlertDialogCancel>
         <AlertDialogAction disabled={keyExists} onClick={onSave}>Continue</AlertDialogAction>
       </AlertDialogFooter>
     </AlertDialogContent>

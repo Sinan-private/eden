@@ -5,6 +5,7 @@ import {useAdmin} from "@/Resource/context/admin2.context.ts";
 import {PlusCircle} from "@mynaui/icons-react";
 import {AlertDialog} from "@/components/ui/alert-dialog.tsx";
 import {AdminResource} from "@/Resource/Admin2/Resource/AdminResource.tsx";
+import {EditResource} from "@/Resource/Admin2/Resource/EditResource.tsx";
 
 export const AdminResourceOverview = () => {
   const {resources, showResourceEdit} = useAdmin();
@@ -22,9 +23,9 @@ export const AdminResourceOverview = () => {
           <ResourceType type={'' as ResourceTypes} resources={[]}/>
         </div>
       </div>
-      {/*{alertDialogOpen &&*/}
-      {/*  <EditResource />*/}
-      {/*}*/}
+      {showResourceEdit &&
+        <EditResource />
+      }
     </AlertDialog>
   )
 }
@@ -51,7 +52,7 @@ const ResourceType = observer(({type, resources}: ResourceTypeProps) => {
         </div>
         <div className="flex gap-2 flex-wrap">
           {resources.map(resource => (
-            <AdminResource key={resource.key} resource={resource}/>
+            <AdminResource key={resource.id} resource={resource}/>
           ))}
         </div>
       </div>

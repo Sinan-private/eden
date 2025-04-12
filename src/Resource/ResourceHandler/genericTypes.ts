@@ -13,6 +13,7 @@ export type ResourceCostUpdate<K, T> = {
   give: TradeChange<K, T>[];
   gain: TradeChange<K, T>[];
 }
+export type ResourceCloneProps<K, T> = Partial<ResourceUpdateProps<K, T>>
 export type ResourceUpdateProps<K, T> = {
   // id: string;
   reference_id?: string;
