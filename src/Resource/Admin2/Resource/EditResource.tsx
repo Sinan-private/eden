@@ -1,6 +1,5 @@
 import {useMemo} from "react";
 import {observer} from "mobx-react";
-import {useAdmin} from "@/Resource/context/admin2.context.ts";
 import {Label} from "@/components/ui/label.tsx";
 import {Input} from "@/components/ui/input.tsx";
 import {
@@ -27,19 +26,23 @@ import {Switch} from "@/components/ui/switch.tsx";
 import {resourceTypes} from "@/Resource/generated/resourceTypes.ts";
 import {ResourceCostUpdate} from "@/Resource/ResourceHandler/genericTypes.ts";
 import {ResourceKeys, ResourceTypes, TradeChange} from "@/Resource";
-import {useApi} from "@/Resource/hooks/useApi.ts";
+// import {useApi} from "@/Resource/hooks/useApi.ts";
+import {AdminController} from "@/Resource/Admin2/AdminController.ts";
 
 export const EditResource = observer(() => {
+  const editable = AdminController.getInstance()
   const {
     // onSave,
-    onResetEdit,
-    editable,
-  } = useAdmin()
+    resetEditableResource,
+  } = editable
 
   const {
     // keyAlreadyExists,
+    onSave,
     getEditableForInput,
+    keyAlreadyExists,
   } = editable
+
   const {
     setLabel,
     setKey,
@@ -63,16 +66,16 @@ export const EditResource = observer(() => {
       cost,
       icon,
     }
-  } = getEditableForInput()
-  const {updateResources} = useApi();
-  const onSave = () => {
-    console.log('save', editable.cloneResourceStore)
-    // updateResources(editable.cloneResourceStore.state)
-  }
-  const keyAlreadyExists = (key: any) => {
-    // console.log('key', key)
-    return false
-  }
+  } = useMemo(getEditableForInput, [getEditableForInput])
+  // const {updateResources} = useApi();
+  // const onSave = () => {
+  //   console.log('save', editable.cloneResourceStore)
+  //   // updateResources(editable.cloneResourceStore.state)
+  // }
+  // const keyAlreadyExists = (key: any) => {
+  //   // console.log('key', key)
+  //   return false
+  // }
 
   const keyExists = useMemo(() => keyAlreadyExists(key), [key, keyAlreadyExists])
 
@@ -210,7 +213,7 @@ export const EditResource = observer(() => {
         </div>
       </div>
       <AlertDialogFooter>
-        <AlertDialogCancel onClick={onResetEdit}>Cancel</AlertDialogCancel>
+        <AlertDialogCancel onClick={resetEditableResource}>Cancel</AlertDialogCancel>
         <AlertDialogAction disabled={keyExists} onClick={onSave}>Continue</AlertDialogAction>
       </AlertDialogFooter>
     </AlertDialogContent>
@@ -244,7 +247,7 @@ const SafeCost = ({trade}: { trade: ResourceCostUpdate<ResourceKeys, ResourceTyp
 }
 
 const SingleCost = ({trade}: { trade: TradeChange }) => {
-  const {getByKey} = useAdmin().resources;
+  const {getByKey} = AdminController.getInstance().cloneResourceStore
   const resource = getByKey(trade.key);
   return (
     <>

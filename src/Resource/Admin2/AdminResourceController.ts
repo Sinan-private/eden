@@ -1,22 +1,26 @@
 import {ChangeEvent} from "react";
 import {ResourceClass, ResourceKeys, ResourceTypes} from "@/Resource";
+import {makeAutoObservable} from "mobx";
 
 type Event = ChangeEvent<HTMLInputElement>;
 
-export class AdminUserResource {
+export class AdminResourceController {
   public useMax: boolean;
   public useMin: boolean;
   public min: number;
   public max: number;
+  public keyIsPristine: boolean;
 
   constructor(
     public resource: ResourceClass,
-    public keyIsPristine: boolean = true,
+    isExistingResource: boolean,
   ) {
-    this.useMax = !!(resource.max) && resource.max !== Infinity;
-    this.useMin = !!(resource.min) && resource.min !== -Infinity;
+    this.keyIsPristine = !isExistingResource;
+    this.useMax = typeof resource.max === 'number' && resource.max !== Infinity;
+    this.useMin = typeof resource.max === 'number' && resource.min !== -Infinity;
     this.min = resource.min;
     this.max = resource.max;
+    makeAutoObservable(this);
   }
 
   public setLabel = (e: Event) => {
@@ -30,16 +34,15 @@ export class AdminUserResource {
   }
 
   public setKey = (e: Event) => {
-    this.resource?.setTo({key: e.target.value as ResourceKeys})
     this.keyIsPristine = false
+    this.resource?.setTo({key: e.target.value as ResourceKeys})
   }
 
   public setType = (type: string) =>
     this.resource?.setTo({type: type as ResourceTypes})
 
-  public setValue = (e: Event) => {
+  public setValue = (e: Event) =>
     this.resource?.setTo({value: Number(e.target.value)})
-  }
 
   public toggleUseMax = () => {
     this.useMax = !this.useMax;
@@ -57,19 +60,8 @@ export class AdminUserResource {
     }
   }
 
-  public onInputMax = (e: Event) => {
-    this.max = Number(e.target.value)
-  }
-
-  public onInputMin = (e: Event) => {
-    this.min = Number(e.target.value)
-  }
-
-  public setMax = () => {
-    this.resource?.setTo({max: this.max})
-  }
-
-  public setMin = () => {
-    this.resource?.setTo({min: this.min})
-  }
+  public onInputMax = (e: Event) => this.max = Number(e.target.value)
+  public onInputMin = (e: Event) => this.min = Number(e.target.value)
+  public setMax = () => this.resource?.setTo({max: this.max})
+  public setMin = () => this.resource?.setTo({min: this.min})
 }

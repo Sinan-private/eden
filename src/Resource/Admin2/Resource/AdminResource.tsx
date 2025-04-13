@@ -1,8 +1,8 @@
 import {EditOne} from "@mynaui/icons-react";
 import {Button} from "@/components/ui/button.tsx";
-import {useAdmin} from "@/Resource/context/admin2.context.ts";
 import {ResourceKeys, ResourceTypes, TradeChange} from "@/Resource";
 import {Resource} from "@/Resource/ResourceHandler";
+import {AdminController} from "@/Resource/Admin2/AdminController.ts";
 
 type AdminResourcesProps = {
   resource: Resource<ResourceKeys, ResourceTypes>
@@ -10,7 +10,7 @@ type AdminResourcesProps = {
 
 export const AdminResource = ({resource}: AdminResourcesProps) => {
   const max = resource.max !== Infinity ? resource.max : undefined;
-  const {openExistingResource} = useAdmin();
+  const {editResource} = AdminController.getInstance();
 
   return (
     <>
@@ -28,7 +28,7 @@ export const AdminResource = ({resource}: AdminResourcesProps) => {
                 <Button
                   variant="ghost"
                   className="p-1.5 absolute top-0 right-0 text-gray-500 hover:text-gray-200"
-                  onClick={() => openExistingResource(resource.id)}
+                  onClick={() => editResource(resource.id)}
                 >
                   <EditOne size={16}/>
                 </Button>
@@ -58,7 +58,7 @@ type CostViewProps = {
 
 
 const CostView = ({trade}: CostViewProps) => {
-  const {getByKey} = useAdmin().resources;
+  const {getByKey} = AdminController.getInstance().cloneResourceStore;
   const resource = getByKey(trade.key)
   return (
     <div className="flex items-center gap-1">

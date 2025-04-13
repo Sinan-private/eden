@@ -5,6 +5,7 @@ import {MutableRefObject, useEffect, useRef, useState} from "react";
 import {useApi} from "@/Resource/hooks/useApi.ts";
 import {useComponentMount} from "@/Resource/hooks";
 import {ResourceStore} from "@/Resource/ResourceHandler/ResourceStore.ts";
+import {AdminController} from "@/Resource/Admin2/AdminController.ts";
 
 function App() {
   const {fetchResources} = useApi();
@@ -14,8 +15,10 @@ function App() {
 
   useComponentMount(async () => {
     const rawState = await fetchResources();
-    resourceRef.current = new ResourceStore(rawState, 'resource.context');
+    const resourceStore = new ResourceStore(rawState, 'resource.context') as ResourceStoreClass;
+    resourceRef.current = resourceStore;
     setLoaded(true);
+    AdminController.getInstance(resourceStore)
   })
 
   useEffect(() => {

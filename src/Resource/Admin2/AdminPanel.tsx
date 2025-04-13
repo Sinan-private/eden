@@ -2,11 +2,11 @@ import styled from "styled-components";
 import {Button} from "@/components/ui/button.tsx";
 import {X} from "@mynaui/icons-react";
 import {Tabs, TabsContent, TabsList, TabsTrigger} from "@/components/ui/tabs.tsx";
-import {useAdmin} from "@/Resource/context/admin2.context.ts";
 import {AdminResourceOverview} from "@/Resource/Admin2/Resource/AdminResourceOverview.tsx";
+import {AdminController} from "@/Resource/Admin2/AdminController.ts";
 
 export const AdminPanel = () => {
-  const {onCloseAdminPanel} = useAdmin();
+  const {onCloseAdminPanel} = AdminController.getInstance();
 
   return (
     <>

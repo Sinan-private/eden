@@ -1,14 +1,14 @@
 import {ResourceKeys, ResourceTypes} from "@/Resource";
 import {Resource} from "@/Resource/ResourceHandler";
 import {observer} from "mobx-react";
-import {useAdmin} from "@/Resource/context/admin2.context.ts";
 import {PlusCircle} from "@mynaui/icons-react";
 import {AlertDialog} from "@/components/ui/alert-dialog.tsx";
 import {AdminResource} from "@/Resource/Admin2/Resource/AdminResource.tsx";
 import {EditResource} from "@/Resource/Admin2/Resource/EditResource.tsx";
+import {AdminController} from "@/Resource/Admin2/AdminController.ts";
 
-export const AdminResourceOverview = () => {
-  const {resources, showResourceEdit} = useAdmin();
+export const AdminResourceOverview = observer(() => {
+  const {cloneResourceStore: resources, showResourceEdit, canEdit} = AdminController.getInstance()
   const {groupByType} = resources;
   const types = groupByType()
   return (
@@ -23,12 +23,12 @@ export const AdminResourceOverview = () => {
           <ResourceType type={'' as ResourceTypes} resources={[]}/>
         </div>
       </div>
-      {showResourceEdit &&
+      {canEdit &&
         <EditResource />
       }
     </AlertDialog>
   )
-}
+})
 
 type ResourceTypeProps = {
   type: ResourceTypes;
@@ -37,7 +37,7 @@ type ResourceTypeProps = {
 }
 
 const ResourceType = observer(({type, resources}: ResourceTypeProps) => {
-  const {openNewResource} = useAdmin();
+  const {createResource} = AdminController.getInstance()
   const _type = typeToLabel(type)
 
   return (
@@ -47,7 +47,7 @@ const ResourceType = observer(({type, resources}: ResourceTypeProps) => {
           <h5 className="align text-left font-bold">{_type}</h5>
           <PlusCircle
             className="text-2xl text-gray-500 hover:text-gray-100 transition cursor-pointer"
-            onClick={() => openNewResource({type})}
+            onClick={() => createResource({type})}
           />
         </div>
         <div className="flex gap-2 flex-wrap">

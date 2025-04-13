@@ -1,7 +1,7 @@
 import {useRef, useState} from "react";
 import {createContainer} from "unstated-next";
 import {ResourceKeys, ResourceStoreClass, ResourceTypes} from "@/Resource";
-import {AdminUser} from "@/Resource/Admin2/AdminUser.ts";
+import {AdminController} from "@/Resource/Admin2/AdminController.ts";
 import {ResourceStore} from "@/Resource/ResourceHandler/ResourceStore.ts";
 import {ResourceCloneProps} from "@/Resource/ResourceHandler/genericTypes.ts";
 
@@ -10,7 +10,7 @@ const useAdminBase = (resourceStore?: ResourceStoreClass) => {
   if (!resourceStore) {
     throw new Error("ResourceStore is required but was not provided.");
   }
-  const editable = useRef(new AdminUser(resourceStore)).current;
+  const editable = useRef(AdminController.getInstance(resourceStore)).current;
 
   const [showAdminPanel, setShowAdminPanel] = useState(false);
   const [showResourceEdit, setShowResourceEdit] = useState(false);

@@ -1,13 +1,14 @@
 import {AdminPanel} from "./AdminPanel.tsx";
-import {useAdmin} from "../context/admin2.context.ts";
 import styled from "styled-components";
+import {AdminController} from "@/Resource/Admin2/AdminController.ts";
+import {observer} from "mobx-react";
 
 export type ResourceAdminProps = {
   buttonPosition?: "top-left" | "top-right" | "bottom-right" | "bottom-left";
 }
 
-export const ResourceAdmin = ({buttonPosition = 'top-right'}: ResourceAdminProps) => {
-  const {showAdminPanel} = useAdmin()
+export const ResourceAdmin = observer(({buttonPosition = 'top-right'}: ResourceAdminProps) => {
+  const {showAdminPanel} = AdminController.getInstance();
 
   return (
     <div style={{position: 'absolute', top: 0, left: 0, height: "100vh", width: "100vw", pointerEvents: "none"}}>
@@ -17,10 +18,10 @@ export const ResourceAdmin = ({buttonPosition = 'top-right'}: ResourceAdminProps
       </div>
     </div>
   )
-}
+})
 
 const ToggleButton = ({buttonPosition}: ResourceAdminProps) => {
-  const {onToggleAdminPanel} = useAdmin()
+  const {onToggleAdminPanel} = AdminController.getInstance();
 
   return (
     <StylesGameControl style={positions[buttonPosition!]}>
