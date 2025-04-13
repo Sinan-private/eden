@@ -41,6 +41,7 @@ export const useWriteToFile = (resources?: ResourceStoreClass) => {
     addType(([] as string[]).concat(type))
 
   const write__removeType = (type: ResourceTypes | ResourceTypes[]) => {
+    console.log('remove me')
     const usedTypes = resources!.allResources.map(({type}) => type);
     const typesToRemove = ([] as ResourceTypes[]).concat(type);
     const matches = typesToRemove.filter(value => usedTypes.includes(value!));

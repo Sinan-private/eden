@@ -4,6 +4,7 @@ import {X} from "@mynaui/icons-react";
 import {Tabs, TabsContent, TabsList, TabsTrigger} from "@/components/ui/tabs.tsx";
 import {AdminResourceOverview} from "@/Resource/Admin2/Resource/AdminResourceOverview.tsx";
 import {AdminController} from "@/Resource/Admin2/AdminController.ts";
+import {AdminType} from "@/Resource/Admin2/AdminType.tsx";
 
 export const AdminPanel = () => {
   const {onCloseAdminPanel} = AdminController.getInstance();
@@ -26,7 +27,7 @@ export const AdminPanel = () => {
             </TabsList>
             <div className="px-8">
               <TabsContent value="resources"><AdminResourceOverview /></TabsContent>
-              <TabsContent value="types">HandleTypes</TabsContent>
+              <TabsContent value="types"><AdminType /></TabsContent>
             </div>
           </Tabs>
         </Content>
