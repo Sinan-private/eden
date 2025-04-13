@@ -4,22 +4,10 @@ import {AdminResourceController} from "@/Resource/Admin2/AdminResourceController
 import {ResourceCloneProps} from "@/Resource/ResourceHandler/genericTypes.ts";
 import {Resource} from "@/Resource/ResourceHandler";
 
-// Todo: I need two clones in a way.
-//  - I want to keep an original reference at least of the ids
-//  - I want a cloned store that serves as the basis
-//  - I want another clone to just go crazy with.
-//  Use cases
-//  - I want to edit a single resource and store the update -> (clone2 is edited, on save clone1 is overwritten and saved to file)
-//  - I want to edit multiple resources at once (list view) -> (cloneStore2 stores the latest state, on save cloneStore1 is overwritten and saved to file
-//  - I change a key -> (just use the reference id to find the resource to update)
-//  I need a reference ID on the Resource. And an instance creator on the store and possibly the Resource itself
-
-
 export class AdminController {
   private static instance: AdminController;
   public cloneResourceStore: ResourceStoreClass;
-  private editing: ResourceClass | null = null;
-  // public keyIsPristine: boolean = true;
+  public editing: ResourceClass | null = null;
   public isExistingResource: boolean = false;
   public showAdminPanel: boolean = false;
   public showResourceEdit: boolean = false;
@@ -55,7 +43,6 @@ export class AdminController {
   // When altering an existing resource
   public editResource = (id: string) => {
     this.editing = this.cloneResourceStore.get(id).clone();
-    // this.keyIsPristine = false;
     this.isExistingResource = true;
     this.showResourceEdit = true;
   }
@@ -71,7 +58,6 @@ export class AdminController {
   public resetEditableResource = () => {
     this.editing = null;
     this.isExistingResource = false;
-    // this.keyIsPristine = true;
   }
 
   public keyAlreadyExists = (input: string): boolean => {
@@ -86,6 +72,12 @@ export class AdminController {
   }
 
   public onSave = () => {
+    const original = this.cloneResourceStore.get(this.editing!.reference_id)
+    const dependencyUpdates = this.cloneResourceStore.replaceTradeKeys(original.key, this.editing!.key)
+    original.setTo(this.editing!.state);
+    dependencyUpdates.forEach((update) =>
+      this.cloneResourceStore.get(update.id).setTo(update)
+    )
     this._updateResources(this.cloneResourceStore.state)
   }
 

@@ -6,12 +6,14 @@ import {
   AlertDialogAction,
   AlertDialogCancel,
   AlertDialogContent,
-  AlertDialogDescription, AlertDialogFooter,
+  AlertDialogDescription,
+  AlertDialogFooter,
   AlertDialogHeader,
   AlertDialogTitle
 } from "@/components/ui/alert-dialog.tsx";
 import {Button} from "@/components/ui/button.tsx";
 import {Image} from "@mynaui/icons-react";
+
 import {
   Select,
   SelectContent,
@@ -24,23 +26,19 @@ import {
 import {Separator} from "@/components/ui/separator.tsx";
 import {Switch} from "@/components/ui/switch.tsx";
 import {resourceTypes} from "@/Resource/generated/resourceTypes.ts";
-import {ResourceCostUpdate} from "@/Resource/ResourceHandler/genericTypes.ts";
-import {ResourceKeys, ResourceTypes, TradeChange} from "@/Resource";
-// import {useApi} from "@/Resource/hooks/useApi.ts";
 import {AdminController} from "@/Resource/Admin2/AdminController.ts";
+import {DeleteButton} from "@/components/ui/DeleteButton.tsx";
+import {Cost} from "@/Resource/Admin2/Resource/EditCost.tsx";
 
 export const EditResource = observer(() => {
   const editable = AdminController.getInstance()
-  const {
-    // onSave,
-    resetEditableResource,
-  } = editable
 
   const {
-    // keyAlreadyExists,
+    resetEditableResource,
     onSave,
     getEditableForInput,
     keyAlreadyExists,
+    editing
   } = editable
 
   const {
@@ -67,17 +65,11 @@ export const EditResource = observer(() => {
       icon,
     }
   } = useMemo(getEditableForInput, [getEditableForInput])
-  // const {updateResources} = useApi();
-  // const onSave = () => {
-  //   console.log('save', editable.cloneResourceStore)
-  //   // updateResources(editable.cloneResourceStore.state)
-  // }
-  // const keyAlreadyExists = (key: any) => {
-  //   // console.log('key', key)
-  //   return false
-  // }
 
   const keyExists = useMemo(() => keyAlreadyExists(key), [key, keyAlreadyExists])
+  const removeCost = () => {
+    editing?.setTo({cost: null})
+  }
 
   const keyInput = useMemo(() => {
     if (keyExists) {
@@ -159,7 +151,7 @@ export const EditResource = observer(() => {
             </div>
           </div>
 
-          <Separator className="my-4"/>
+          <Separator className="my-8"/>
 
           <div className="grid w-full max-w-sm items-center gap-1.5">
             <Label>Value</Label>
@@ -203,10 +195,13 @@ export const EditResource = observer(() => {
             </div>
           </div>
 
-          <Separator className="my-4"/>
+          <Separator className="my-8"/>
 
           <div>
-            <p>Cost</p>
+            <div className="flex items-center gap-2 mb-4">
+              <DeleteButton onClick={removeCost}/>
+              <p className="text-lg">Cost</p>
+            </div>
             <Cost trade={cost}/>
           </div>
 
@@ -219,47 +214,3 @@ export const EditResource = observer(() => {
     </AlertDialogContent>
   )
 })
-
-const Cost = ({trade}: { trade?: ResourceCostUpdate<ResourceKeys, ResourceTypes> | null }) => {
-  if (!trade) {
-    return null
-  }
-  return (<SafeCost trade={trade}/>)
-}
-
-const SafeCost = ({trade}: { trade: ResourceCostUpdate<ResourceKeys, ResourceTypes> }) => {
-  return (
-    <>
-      <div className="flex items-center justify-between">
-        <div>
-          {trade.give.map((trade) => (
-            <SingleCost key={trade.key} trade={trade}/>
-          ))}
-        </div>
-        <div>
-          {trade.gain.map((trade) => (
-            <SingleCost key={trade.key} trade={trade}/>
-          ))}
-        </div>
-      </div>
-    </>
-  )
-}
-
-const SingleCost = ({trade}: { trade: TradeChange }) => {
-  const {getByKey} = AdminController.getInstance().cloneResourceStore
-  const resource = getByKey(trade.key);
-  return (
-    <>
-      <div className="flex items-center space-x-2">
-        <div className="w-20 max-w-sm ">
-          <Input type="number" id="resource cost edit" placeholder={String(trade.value)}/>
-        </div>
-        <img src={resource.icon} alt={resource.label}/>
-        <p className="text-xs">
-          {resource.label}
-        </p>
-      </div>
-    </>
-  )
-}

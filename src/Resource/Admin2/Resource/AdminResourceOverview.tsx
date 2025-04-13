@@ -1,11 +1,11 @@
 import {ResourceKeys, ResourceTypes} from "@/Resource";
 import {Resource} from "@/Resource/ResourceHandler";
 import {observer} from "mobx-react";
-import {PlusCircle} from "@mynaui/icons-react";
 import {AlertDialog} from "@/components/ui/alert-dialog.tsx";
 import {AdminResource} from "@/Resource/Admin2/Resource/AdminResource.tsx";
 import {EditResource} from "@/Resource/Admin2/Resource/EditResource.tsx";
 import {AdminController} from "@/Resource/Admin2/AdminController.ts";
+import {AddButton} from "@/components/ui/AddButton.tsx";
 
 export const AdminResourceOverview = observer(() => {
   const {cloneResourceStore: resources, showResourceEdit, canEdit} = AdminController.getInstance()
@@ -45,10 +45,7 @@ const ResourceType = observer(({type, resources}: ResourceTypeProps) => {
       <div className="flex flex-col gap-2">
         <div className="flex gap-1 items-center">
           <h5 className="align text-left font-bold">{_type}</h5>
-          <PlusCircle
-            className="text-2xl text-gray-500 hover:text-gray-100 transition cursor-pointer"
-            onClick={() => createResource({type})}
-          />
+          <AddButton onClick={() => createResource({type})} />
         </div>
         <div className="flex gap-2 flex-wrap">
           {resources.map(resource => (
