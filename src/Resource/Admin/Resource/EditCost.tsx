@@ -1,4 +1,4 @@
-import {AdminController} from "@/Resource/Admin2/AdminController.ts";
+import {AdminController} from "@/Resource/Admin/AdminController.ts";
 import {ChangeEvent} from "react";
 import {DeleteButton} from "@/components/ui/DeleteButton.tsx";
 import {Input} from "@/components/ui/input.tsx";

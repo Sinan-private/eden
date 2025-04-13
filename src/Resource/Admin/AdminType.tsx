@@ -3,7 +3,6 @@ import {useAdmin} from "@/Resource/context/admin2.context.ts";
 import {resourceTypes} from "@/Resource/generated/resourceTypes.ts";
 import {ResourceTypes} from "@/Resource";
 import {Button} from "@/components/ui/button.tsx";
-import {useWriteToFile} from "@/Resource/context/admin/useWriteToFile.ts";
 import {Input} from "@/components/ui/input.tsx";
 import {ChangeEvent, useState} from "react";
 import {useApi} from "@/Resource/hooks/useApi.ts";
@@ -39,11 +38,12 @@ export const AdminType = () => {
 }
 
 const AddType = () => {
-  const {write__addType} = useWriteToFile();
+  const {addType} = useApi();
   const [input, setInput] = useState('');
   const onChange = (e: ChangeEvent<HTMLInputElement>) => setInput(e.target.value)
   const onSubmit = () => {
-    write__addType(input);
+    addType(([] as string[]).concat(input))
+    setInput('')
   }
   return (
     <div className="flex gap-2">

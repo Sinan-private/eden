@@ -2,7 +2,7 @@ import {EditOne} from "@mynaui/icons-react";
 import {Button} from "@/components/ui/button.tsx";
 import {ResourceKeys, ResourceTypes, TradeChange} from "@/Resource";
 import {Resource} from "@/Resource/ResourceHandler";
-import {AdminController} from "@/Resource/Admin2/AdminController.ts";
+import {AdminController} from "@/Resource/Admin/AdminController.ts";
 
 type AdminResourcesProps = {
   resource: Resource<ResourceKeys, ResourceTypes>

@@ -5,7 +5,7 @@ import {MutableRefObject, useEffect, useRef, useState} from "react";
 import {useApi} from "@/Resource/hooks/useApi.ts";
 import {useComponentMount} from "@/Resource/hooks";
 import {ResourceStore} from "@/Resource/ResourceHandler/ResourceStore.ts";
-import {AdminController} from "@/Resource/Admin2/AdminController.ts";
+import {AdminController} from "@/Resource/Admin/AdminController.ts";
 
 function App() {
   const {fetchResources} = useApi();

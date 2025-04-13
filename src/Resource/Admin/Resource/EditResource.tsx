@@ -26,9 +26,9 @@ import {
 import {Separator} from "@/components/ui/separator.tsx";
 import {Switch} from "@/components/ui/switch.tsx";
 import {resourceTypes} from "@/Resource/generated/resourceTypes.ts";
-import {AdminController} from "@/Resource/Admin2/AdminController.ts";
+import {AdminController} from "@/Resource/Admin/AdminController.ts";
 import {DeleteButton} from "@/components/ui/DeleteButton.tsx";
-import {Cost} from "@/Resource/Admin2/Resource/EditCost.tsx";
+import {Cost} from "@/Resource/Admin/Resource/EditCost.tsx";
 
 export const EditResource = observer(() => {
   const editable = AdminController.getInstance()

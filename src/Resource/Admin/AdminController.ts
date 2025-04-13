@@ -1,6 +1,6 @@
 import {ResourceClass, ResourceKeys, ResourceState, ResourceStoreClass, ResourceTypes} from "@/Resource";
 import {makeAutoObservable} from "mobx";
-import {AdminResourceController} from "@/Resource/Admin2/AdminResourceController.ts";
+import {AdminResourceController} from "@/Resource/Admin/AdminResourceController.ts";
 import {ResourceCloneProps} from "@/Resource/ResourceHandler/genericTypes.ts";
 import {Resource} from "@/Resource/ResourceHandler";
 

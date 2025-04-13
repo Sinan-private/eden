@@ -1,7 +1,7 @@
 import {useRef, useState} from "react";
 import {createContainer} from "unstated-next";
 import {ResourceKeys, ResourceStoreClass, ResourceTypes} from "@/Resource";
-import {AdminController} from "@/Resource/Admin2/AdminController.ts";
+import {AdminController} from "@/Resource/Admin/AdminController.ts";
 import {ResourceStore} from "@/Resource/ResourceHandler/ResourceStore.ts";
 import {ResourceCloneProps} from "@/Resource/ResourceHandler/genericTypes.ts";
 
