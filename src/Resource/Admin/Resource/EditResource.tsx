@@ -67,6 +67,7 @@ export const EditResource = observer(() => {
   } = useMemo(getEditableForInput, [getEditableForInput])
 
   const keyExists = useMemo(() => keyAlreadyExists(key), [key, keyAlreadyExists])
+  const disableSave = keyExists || editable.saveDisabled()
   const removeCost = () => {
     editing?.setTo({cost: null})
   }
@@ -209,7 +210,7 @@ export const EditResource = observer(() => {
       </div>
       <AlertDialogFooter>
         <AlertDialogCancel onClick={resetEditableResource}>Cancel</AlertDialogCancel>
-        <AlertDialogAction disabled={keyExists} onClick={onSave}>Continue</AlertDialogAction>
+        <AlertDialogAction disabled={disableSave} onClick={onSave}>Continue</AlertDialogAction>
       </AlertDialogFooter>
     </AlertDialogContent>
   )

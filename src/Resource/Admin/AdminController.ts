@@ -3,6 +3,7 @@ import {makeAutoObservable} from "mobx";
 import {AdminResourceController} from "@/Resource/Admin/AdminResourceController.ts";
 import {ResourceCloneProps} from "@/Resource/ResourceHandler/genericTypes.ts";
 import {Resource} from "@/Resource/ResourceHandler";
+import {areObjectsEqual} from "@/Resource/context/admin/equalityChecks.ts";
 
 export class AdminController {
   private static instance: AdminController;
@@ -11,12 +12,14 @@ export class AdminController {
   public isExistingResource: boolean = false;
   public showAdminPanel: boolean = false;
   public showResourceEdit: boolean = false;
+
   constructor(
     originalResourceStore: ResourceStoreClass
   ) {
     this.cloneResourceStore = originalResourceStore.clone();
     makeAutoObservable(this)
   }
+
   // Ensure singleton
   public static getInstance(originalResourceStore?: ResourceStoreClass): AdminController {
     if (!AdminController.instance) {
@@ -26,8 +29,15 @@ export class AdminController {
     return AdminController.instance;
   }
 
+  public saveDisabled = () => {
+    if (!this.editing) {
+      return true
+    }
+    if (this.isExistingResource) {
+      return areObjectsEqual(this._getOriginal()!.state, this.editing.state);
+    }
+  }
   public onCloseAdminPanel = () => this.showAdminPanel = false;
-  public onShowAdminPanel = () => this.showAdminPanel = true;
   public onToggleAdminPanel = () => this.showAdminPanel = !this.showAdminPanel;
 
   // When adding a new resource
@@ -71,31 +81,42 @@ export class AdminController {
     return !!this.editing
   }
 
+  private _getOriginal = () => this.editing
+    ? this.cloneResourceStore.get(this.editing.reference_id)
+    : undefined
+
   public onSave = () => {
-    const original = this.cloneResourceStore.get(this.editing!.reference_id)
-    const dependencyUpdates = this.cloneResourceStore.replaceTradeKeys(original.key, this.editing!.key)
-    original.setTo(this.editing!.state);
-    dependencyUpdates.forEach((update) =>
-      this.cloneResourceStore.get(update.id).setTo(update)
-    )
+    if (this.isExistingResource) {
+      const original = this._getOriginal()!
+      const dependencyUpdates = this.cloneResourceStore.replaceTradeKeys(original.key, this.editing!.key)
+      original.setTo(this.editing!.state);
+      dependencyUpdates.forEach((update) =>
+        this.cloneResourceStore.get(update.id).setTo(update)
+      )
+      this._updateResources(this.cloneResourceStore.state)
+      return;
+    }
+    this.cloneResourceStore.addResource(this.editing!.state)
     this._updateResources(this.cloneResourceStore.state)
   }
 
-  private _updateResources = async (newResources?: ResourceState[]) => {
-    if (!newResources) return;
-    try {
-      const response = await fetch('/api/resources', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(newResources),
-      });
-      const result = await response.json();
-
-      console.log(result.message);  // Success message
-    } catch (error) {
-      console.error('Error updating resources:', error);
-    }
-  };
+  private _updateResources = _updateResources
 }
+
+const _updateResources = async (newResources?: ResourceState[]) => {
+  if (!newResources) return;
+  try {
+    const response = await fetch('/api/resources', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(newResources),
+    });
+    const result = await response.json();
+
+    console.log(result.message);  // Success message
+  } catch (error) {
+    console.error('Error updating resources:', error);
+  }
+};

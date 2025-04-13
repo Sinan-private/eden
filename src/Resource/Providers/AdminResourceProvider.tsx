@@ -1,5 +1,4 @@
 import React from "react";
-import {AdminProvider} from "../Admin";
 import {TickProvider} from "../context/tick.context.ts";
 import {ResourceAdmin, ResourceAdminProps} from "@/Resource/Admin/ResourceAdmin.tsx";
 import {ResourceStoreClass} from "@/Resource";
@@ -16,10 +15,8 @@ export const AdminResourceProvider = ({children, initialState}: ResourceProvider
 
   return (
     <TickProvider>
-      <AdminProvider initialState={initialState.resourceStore}>
         {children}
         <ResourceAdmin buttonPosition={initialState?.admin?.buttonPosition}/>
-      </AdminProvider>
     </TickProvider>
   )
 }

@@ -1,17 +1,17 @@
 import CancelIcon from "@mui/icons-material/Cancel";
-import {useAdmin} from "@/Resource/context/admin2.context.ts";
 import {resourceTypes} from "@/Resource/generated/resourceTypes.ts";
 import {ResourceTypes} from "@/Resource";
 import {Button} from "@/components/ui/button.tsx";
 import {Input} from "@/components/ui/input.tsx";
 import {ChangeEvent, useState} from "react";
 import {useApi} from "@/Resource/hooks/useApi.ts";
+import {AdminController} from "@/Resource/Admin/AdminController.ts";
 
 export const AdminType = () => {
-  const {resources} = useAdmin();
+  const {cloneResourceStore} = AdminController.getInstance()
   const {removeType} = useApi()
 
-  const usedTypes = resources.getByType().map(({type}) => type);
+  const usedTypes = cloneResourceStore.getByType().map(({type}) => type);
   // const write__removeType = (a: any) => {}
 
   return (
