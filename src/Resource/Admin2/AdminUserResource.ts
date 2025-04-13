@@ -4,12 +4,15 @@ import {ResourceClass, ResourceKeys, ResourceTypes} from "@/Resource";
 type Event = ChangeEvent<HTMLInputElement>;
 
 export class AdminUserResource {
-  public keyIsPristine: boolean = true;
   public useMax: boolean;
   public useMin: boolean;
   public min: number;
   public max: number;
-  constructor(public resource: ResourceClass) {
+
+  constructor(
+    public resource: ResourceClass,
+    public keyIsPristine: boolean = true,
+  ) {
     this.useMax = !!(resource.max) && resource.max !== Infinity;
     this.useMin = !!(resource.min) && resource.min !== -Infinity;
     this.min = resource.min;
@@ -26,7 +29,7 @@ export class AdminUserResource {
     }
   }
 
-  public setKey = (e: Event)=> {
+  public setKey = (e: Event) => {
     this.resource?.setTo({key: e.target.value as ResourceKeys})
     this.keyIsPristine = false
   }
@@ -34,7 +37,7 @@ export class AdminUserResource {
   public setType = (type: string) =>
     this.resource?.setTo({type: type as ResourceTypes})
 
-  public setValue = (e: Event)=> {
+  public setValue = (e: Event) => {
     this.resource?.setTo({value: Number(e.target.value)})
   }
 

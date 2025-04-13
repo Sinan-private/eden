@@ -27,6 +27,7 @@ import {Switch} from "@/components/ui/switch.tsx";
 import {resourceTypes} from "@/Resource/generated/resourceTypes.ts";
 import {ResourceCostUpdate} from "@/Resource/ResourceHandler/genericTypes.ts";
 import {ResourceKeys, ResourceTypes, TradeChange} from "@/Resource";
+import {useApi} from "@/Resource/hooks/useApi.ts";
 
 export const EditResource = observer(() => {
   const {
@@ -37,7 +38,7 @@ export const EditResource = observer(() => {
 
   const {
     // keyAlreadyExists,
-    getEditableResource,
+    getEditableForInput,
   } = editable
   const {
     setLabel,
@@ -62,11 +63,15 @@ export const EditResource = observer(() => {
       cost,
       icon,
     }
-  } = getEditableResource()
-  const onSave = () => {console.log('save')}
+  } = getEditableForInput()
+  const {updateResources} = useApi();
+  const onSave = () => {
+    console.log('save', editable.cloneResourceStore)
+    // updateResources(editable.cloneResourceStore.state)
+  }
   const keyAlreadyExists = (key: any) => {
     // console.log('key', key)
-    return true
+    return false
   }
 
   const keyExists = useMemo(() => keyAlreadyExists(key), [key, keyAlreadyExists])

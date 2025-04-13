@@ -1,7 +1,8 @@
-import {ResourceKeys, ResourceStoreClass, ResourceTypes} from "@/Resource";
+import {ResourceClass, ResourceKeys, ResourceStoreClass, ResourceTypes} from "@/Resource";
 import {makeAutoObservable} from "mobx";
 import {AdminUserResource} from "@/Resource/Admin2/AdminUserResource.ts";
 import {ResourceCloneProps} from "@/Resource/ResourceHandler/genericTypes.ts";
+import {Resource} from "@/Resource/ResourceHandler";
 
 // Todo: I need two clones in a way.
 //  - I want to keep an original reference at least of the ids
@@ -13,9 +14,11 @@ import {ResourceCloneProps} from "@/Resource/ResourceHandler/genericTypes.ts";
 //  - I change a key -> (just use the reference id to find the resource to update)
 //  I need a reference ID on the Resource. And an instance creator on the store and possibly the Resource itself
 
+
 export class AdminUser {
   public cloneResourceStore: ResourceStoreClass;
-  public editing: string = '';
+  private editing: ResourceClass | null = null;
+  public keyIsPristine: boolean = true;
   constructor(
     public readonly originalResourceStore: ResourceStoreClass
   ) {
@@ -27,26 +30,27 @@ export class AdminUser {
       key: '' as ResourceKeys,
       ...raw_resource,
     }
-    const newResource = this.cloneResourceStore.addResource(_raw_resource)
-    this.editing = newResource.id
+    this.editing = new Resource(_raw_resource)
   }
   public editResource = (id: string) => {
-    // Actually when a resource is edited I should also just create a new one with a reference to the old
-
-    const newResource = this.cloneResourceStore.addResource(this.cloneResourceStore.get(id).clone())
-    this.editing = newResource.id
-
+    this.editing = this.cloneResourceStore.get(id).clone();
+    this.keyIsPristine = false;
   }
 
-  public getEditableResource = () => {
-    if (!this.editing.length) {
+  // public getEditableResource = () => this.cloneResourceStore.get(this.editing)
+
+  public getEditableForInput = () => {
+    if (!this.editing) {
       throw new Error(`${this.editing} is empty`)
     }
-    const resource = this.cloneResourceStore.get(this.editing)
-    if (!resource) {
-      throw new Error(`${resource} is empty`)
-    }
-    return new AdminUserResource(resource)
+    const resource = this.editing
+    return new AdminUserResource(resource, this.keyIsPristine)
+  }
+
+  public resetEditableResource = () => {
+    // this.cloneResourceStore.removeResource(this.editing.id)
+    this.editing = null;
+    this.keyIsPristine = true;
   }
 
 }

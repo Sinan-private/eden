@@ -19,6 +19,7 @@ const useAdminBase = (resourceStore?: ResourceStoreClass) => {
   const onCloseResourceEdit = () => setShowResourceEdit(false);
   const onResetEdit = () => {
     onCloseResourceEdit();
+    editable.resetEditableResource()
   //   And all the resets
   }
 
