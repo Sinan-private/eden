@@ -3,7 +3,7 @@ import {Resource} from "@/Resource/ResourceHandler";
 import {observer} from "mobx-react";
 import {AlertDialog} from "@/components/ui/alert-dialog.tsx";
 import {AdminResource} from "@/Resource/Admin/Resource/AdminResource.tsx";
-import {EditResource} from "@/Resource/Admin/Resource/EditResource.tsx";
+import {EditResource} from "@/Resource/Admin/Resource/Edit/EditResource.tsx";
 import {AdminController} from "@/Resource/Admin/AdminController.ts";
 import {AddButton} from "@/components/ui/AddButton.tsx";
 

@@ -23,6 +23,8 @@ export class AdminResourceController {
     makeAutoObservable(this);
   }
 
+  public addCost = () => this.resource.addCost('gain', {key: this.resource.key, value: 1})
+
   public setLabel = (e: Event) => {
     const label = e.target.value
     const resource = this.resource!

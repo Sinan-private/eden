@@ -59,5 +59,8 @@ export const resourceKeys = [
   "ifrit_speed_primary_skill",
   "ifrit_speed_secondary_skill",
   "ghoul_speed_primary_skill",
-  "ghoul_speed_secondary_skill"
+  "ghoul_speed_secondary_skill",
+  "earth_pollution",
+  "earth_fascism",
+  "human_virtue"
 ] as const;

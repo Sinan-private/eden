@@ -35,9 +35,10 @@ export const AdminResource = ({resource}: AdminResourcesProps) => {
                   <PopoverTrigger asChild>
                     <Button
                       variant="ghost"
-                      className="p-1.5 absolute top-0 right-0 text-gray-500 hover:text-gray-200"
+                      size="icon"
+                      className="absolute top-0 right-0 text-gray-500 hover:text-gray-200"
                     >
-                      <DotsVertical/>
+                      <DotsVertical size={36}/>
                     </Button>
                   </PopoverTrigger>
                   <PopoverContent className="flex flex-col">

@@ -10,5 +10,6 @@ export const resourceTypes = [
   "faction_marid",
   "faction_ifrit",
   "faction_ghoul",
-  "faction_arwa"
+  "faction_arwa",
+  "earth"
 ] as const;

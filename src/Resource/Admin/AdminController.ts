@@ -5,6 +5,12 @@ import {ResourceCloneProps} from "@/Resource/ResourceHandler/genericTypes.ts";
 import {Resource} from "@/Resource/ResourceHandler";
 import {areObjectsEqual} from "@/Resource/context/admin/equalityChecks.ts";
 
+declare global {
+  interface Window {
+    __adminController?: AdminController;
+  }
+}
+
 export class AdminController {
   private static instance: AdminController;
   public cloneResourceStore: ResourceStoreClass;
@@ -22,8 +28,16 @@ export class AdminController {
 
   // Ensure singleton
   public static getInstance(originalResourceStore?: ResourceStoreClass): AdminController {
+    if (typeof window !== "undefined") {
+      if (!window.__adminController) {
+        if (!originalResourceStore) throw new Error("First call must provide resourceStore");
+        window.__adminController = new AdminController(originalResourceStore);
+      }
+      return window.__adminController;
+    }
+    // fallback (non-browser, SSR, etc.)
     if (!AdminController.instance) {
-      if (!originalResourceStore) throw new Error("First call must provide config");
+      if (!originalResourceStore) throw new Error("First call must provide resourceStore");
       AdminController.instance = new AdminController(originalResourceStore);
     }
     return AdminController.instance;
@@ -34,7 +48,7 @@ export class AdminController {
       return true
     }
     if (this.isExistingResource) {
-      return areObjectsEqual(this._getOriginal()!.state, this.editing.state);
+      return areObjectsEqual(this._getOriginal()!.state, this.editing.state) || this.keyAlreadyExists(this.editing.key);
     }
   }
   public onCloseAdminPanel = () => this.showAdminPanel = false;
@@ -63,7 +77,7 @@ export class AdminController {
     this.showResourceEdit = true;
   }
 
-  public getEditableForInput = () => {
+  public getResourceForInput = () => {
     if (!this.editing) {
       throw new Error(`${this.editing} is empty`)
     }

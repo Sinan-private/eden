@@ -1,6 +1,6 @@
-import {LevelUpdate, ResourceStoreClass} from "../../Resource/ResourceHandler/specificTypes.ts";
+import {LevelUpdate, ResourceStoreClass} from "@/Resource/ResourceHandler/specificTypes.ts";
 
-type Level = `level_${1 | 2 | 3 | 4 | 5}`;
+type Level = `level_${ 1 | 2 | 3 | 4 | 5 }`;
 export type Levels = {
   [L in Level]: LevelUpdate
 };

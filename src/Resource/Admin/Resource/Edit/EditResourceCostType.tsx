@@ -14,24 +14,11 @@ import {
   SelectValue
 } from "@/components/ui/select.tsx";
 
-export const Cost = ({trade}: { trade?: ResourceCostUpdate<ResourceKeys, ResourceTypes> | null }) => {
-  if (!trade) {
-    return null
-  }
-  return (
-    <>
-      <div className="flex justify-between gap-4 items-start">
-        <SingleTrade trade={trade} type="give"/>
-        <SingleTrade trade={trade} type="gain"/>
-      </div>
-    </>
-  )
-}
 type SingleTradeProps = {
   trade: ResourceCostUpdate<ResourceKeys, ResourceTypes>;
   type: keyof ResourceCostUpdate<ResourceKeys, ResourceTypes>
 }
-const SingleTrade = ({trade, type}: SingleTradeProps) => {
+export const EditResourceCostType = ({trade, type}: SingleTradeProps) => {
   return (
     <div>
       <div className="flex items-center mb-2">
