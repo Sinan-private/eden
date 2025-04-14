@@ -23,3 +23,4 @@ export {Separator} from "@/components/ui/separator.tsx";
 export {Switch} from "@/components/ui/switch.tsx";
 export {DeleteButton} from "@/components/ui/DeleteButton.tsx";
 export {Box} from "@/components/ui/Box.tsx";
+export {Progress} from "@/components/ui/progress.tsx";
