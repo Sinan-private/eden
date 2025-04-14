@@ -26,6 +26,13 @@ export class AdminController {
     makeAutoObservable(this)
   }
 
+  get availableCostKeys () {
+    const resourceKeys = this.cloneResourceStore.allResources.map(({key, label}) => ({key, label}))
+    const costs = this.editing?.cost?.give.concat(this.editing?.cost?.gain) || []
+    const keysInUse = costs.map(({key}) => key)
+    return resourceKeys.filter(({key}) => !keysInUse.includes(key))
+  }
+
   // Ensure singleton
   public static getInstance(originalResourceStore?: ResourceStoreClass): AdminController {
     if (typeof window !== "undefined") {

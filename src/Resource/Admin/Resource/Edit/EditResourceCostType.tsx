@@ -37,10 +37,9 @@ export const EditResourceCostType = ({trade, type}: SingleTradeProps) => {
 }
 
 const AddCost = ({type}: { type: SingleTradeProps['type'] }) => {
-  const {editing, cloneResourceStore} = AdminController.getInstance();
-  const onSelect = (key: ResourceKeys) => {
+  const {editing, availableCostKeys} = AdminController.getInstance();
+  const onSelect = (key: ResourceKeys) =>
     editing?.addCost(type, {key, value: 1})
-  }
 
   return (
     <div className="relative z-100 flex items-center">
@@ -55,8 +54,8 @@ const AddCost = ({type}: { type: SingleTradeProps['type'] }) => {
           <SelectContent style={{zIndex: 6000}}>
             <SelectGroup>
               <SelectLabel>Types</SelectLabel>
-              {cloneResourceStore.allResources.map(resource => (
-                <SelectItem key={resource.id} value={resource.key}>{resource.label}</SelectItem>
+              {availableCostKeys.map(resource => (
+                <SelectItem key={resource.key} value={resource.key}>{resource.label}</SelectItem>
               ))}
             </SelectGroup>
           </SelectContent>
@@ -97,7 +96,6 @@ const SingleCost = ({trade, type}: SingleCostProps) => {
             value={trade.value}
             onChange={onChange}
             className="bg-black"
-            // placeholder={String(trade.value)}
           />
         </div>
       </div>
