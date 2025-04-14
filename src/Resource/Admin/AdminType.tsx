@@ -1,4 +1,4 @@
-import CancelIcon from "@mui/icons-material/Cancel";
+import {Trash} from "@mynaui/icons-react";
 import {resourceTypes} from "@/Resource/generated/resourceTypes.ts";
 import {ResourceTypes} from "@/Resource";
 import {Button} from "@/components/ui/button.tsx";
@@ -6,6 +6,7 @@ import {Input} from "@/components/ui/input.tsx";
 import {ChangeEvent, useState} from "react";
 import {useApi} from "@/Resource/hooks/useApi.ts";
 import {AdminController} from "@/Resource/Admin/AdminController.ts";
+import {Badge} from "@/components/ui/Badge.tsx";
 
 export const AdminType = () => {
   const {cloneResourceStore} = AdminController.getInstance()
@@ -16,19 +17,24 @@ export const AdminType = () => {
 
   return (
     <>
-      HandleTypes
+      <p className="text-2xl">Resource types</p>
       <div className="p-4 flex flex-col gap-2">
         {resourceTypes.map((resourceType: ResourceTypes) => (
-          <div key={resourceType}>
-            <p key={resourceType}>
-              {resourceType}
-            </p>
+          <div key={resourceType} className="flex items-center gap-2">
             <Button
+              variant="ghost"
               onClick={() => removeType([resourceType])}
               disabled={usedTypes.includes(resourceType)}
             >
-              <CancelIcon />
+              <Trash />
             </Button>
+            <Badge variant="outline">
+
+            <p key={resourceType} className="mr-2">
+              {resourceType}
+            </p>
+            <p>{cloneResourceStore.getByType(resourceType).length}</p>
+            </Badge>
           </div>
         ))}
         <AddType />

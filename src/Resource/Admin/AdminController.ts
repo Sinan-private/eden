@@ -77,7 +77,6 @@ export class AdminController {
   }
 
   public keyAlreadyExists = (input: string): boolean => {
-    // If it is a new resource it should always check
     const clean = this.cloneResourceStore.allResources
       .filter(({id}) => id !== this.editing?.reference_id)
       .map(({key}) => key)
@@ -93,10 +92,9 @@ export class AdminController {
     : undefined
 
   public resourceReferences = (key: ResourceKeys) => this.cloneResourceStore?.resourceReferences(key)
+
   public removeResource = (id: string) => {
-    console.log(this.cloneResourceStore.allResources.length, this.cloneResourceStore.get(id))
     this.cloneResourceStore.removeResource(id)
-    console.log(this.cloneResourceStore.allResources.length, this.cloneResourceStore.get(id))
     this._updateResources(this.cloneResourceStore.state)
   }
 
@@ -108,10 +106,9 @@ export class AdminController {
       dependencyUpdates.forEach((update) =>
         this.cloneResourceStore.get(update.id).setTo(update)
       )
-      this._updateResources(this.cloneResourceStore.state)
-      return;
+    } else {
+      this.cloneResourceStore.addResource(this.editing!.state)
     }
-    this.cloneResourceStore.addResource(this.editing!.state)
     this._updateResources(this.cloneResourceStore.state)
   }
 
