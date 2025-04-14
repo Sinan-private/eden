@@ -15,16 +15,11 @@ import {AdminController} from "@/Resource/Admin/AdminController.ts";
 import {EditResourceBase} from "@/Resource/Admin/Resource/Edit/EditResourceBase.tsx";
 import {EditResourceValue} from "@/Resource/Admin/Resource/Edit/EditResourceValue.tsx";
 import {EditResourceCost} from "@/Resource/Admin/Resource/Edit/EditResourceCost.tsx";
+import {observer} from "mobx-react";
 
 export const EditResource = () => {
-  const {
-    getResourceForInput,
-    resetEditableResource,
-    onSave,
-    saveDisabled,
-  } = AdminController.getInstance()
+  const {getResourceForInput} = AdminController.getInstance()
   const {resource} = useMemo(getResourceForInput, [getResourceForInput])
-  const disableSave = saveDisabled()
 
   return (
     <AlertDialogContent className="overflow-y-auto max-h-full">
@@ -51,10 +46,22 @@ export const EditResource = () => {
           <EditResourceCost />
         </div>
       </div>
-      <AlertDialogFooter>
-        <AlertDialogCancel onClick={resetEditableResource}>Cancel</AlertDialogCancel>
-        <AlertDialogAction disabled={disableSave} onClick={onSave}>Continue</AlertDialogAction>
-      </AlertDialogFooter>
+      <FormButtons />
     </AlertDialogContent>
   )
 }
+
+const FormButtons = observer(() => {
+  const {
+    resetEditableResource,
+    onSave,
+    saveDisabled,
+  } = AdminController.getInstance()
+  const disableSave = saveDisabled()
+  return (
+    <AlertDialogFooter>
+      <AlertDialogCancel onClick={resetEditableResource}>Cancel</AlertDialogCancel>
+      <AlertDialogAction disabled={disableSave} onClick={onSave}>Continue</AlertDialogAction>
+    </AlertDialogFooter>
+  )
+})
