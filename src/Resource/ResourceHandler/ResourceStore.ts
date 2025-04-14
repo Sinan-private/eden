@@ -47,9 +47,10 @@ export class ResourceStore<K extends string, T extends string> {
     return _resource;
   }
 
-  public removeResource = (key: K) => {
+  public removeResource = (id: string) => {
+    const key = this.get(id).key
     if (!this.isResourceReferenced(key)) {
-      this.resources.delete(key);
+      this.resources.delete(id);
     }
   }
 

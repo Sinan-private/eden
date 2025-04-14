@@ -1,8 +1,10 @@
-import {EditOne} from "@mynaui/icons-react";
+import {EditOne, DotsVertical, Copy, Trash} from "@mynaui/icons-react";
 import {Button} from "@/components/ui/button.tsx";
 import {ResourceKeys, ResourceTypes, TradeChange} from "@/Resource";
 import {Resource} from "@/Resource/ResourceHandler";
 import {AdminController} from "@/Resource/Admin/AdminController.ts";
+import {Popover, PopoverContent, PopoverTrigger} from "@/components/ui/Popover.tsx";
+import {Separator} from "@/components/ui/separator.tsx";
 
 type AdminResourcesProps = {
   resource: Resource<ResourceKeys, ResourceTypes>
@@ -10,7 +12,11 @@ type AdminResourcesProps = {
 
 export const AdminResource = ({resource}: AdminResourcesProps) => {
   const max = resource.max !== Infinity ? resource.max : undefined;
-  const {editResource} = AdminController.getInstance();
+  const {editResource, cloneResource, resourceReferences, removeResource} = AdminController.getInstance();
+  const onEdit = () => editResource(resource.id);
+  const onClone = () => cloneResource(resource.id);
+  const references = resourceReferences(resource.key);
+  const canDelete = !references?.length
 
   return (
     <>
@@ -25,13 +31,46 @@ export const AdminResource = ({resource}: AdminResourcesProps) => {
                 : <p>{resource.value}</p>
               }
               <> {/* Here was an AlertDialogTrigger*/}
-                <Button
-                  variant="ghost"
-                  className="p-1.5 absolute top-0 right-0 text-gray-500 hover:text-gray-200"
-                  onClick={() => editResource(resource.id)}
-                >
-                  <EditOne size={16}/>
-                </Button>
+                <Popover>
+                  <PopoverTrigger asChild>
+                    <Button
+                      variant="ghost"
+                      className="p-1.5 absolute top-0 right-0 text-gray-500 hover:text-gray-200"
+                    >
+                      <DotsVertical/>
+                    </Button>
+                  </PopoverTrigger>
+                  <PopoverContent className="flex flex-col">
+                    <Button
+                      variant="ghost"
+                      className="justify-start"
+                      onClick={onEdit}
+                    >
+                      <EditOne size={16}/>
+                      Edit
+                    </Button>
+                    <Button
+                      variant="ghost"
+                      // disabled
+                      onClick={onClone}
+                      className="justify-start"
+                    >
+                      <Copy size={16}/>
+                      Clone
+                    </Button>
+                    <Separator className="my-2" />
+                    <Button
+                      variant="ghost"
+                      disabled={!canDelete}
+                      onClick={() => removeResource(resource.id)}
+                      className="justify-start"
+                    >
+                      <Trash size={16}/>
+                      Delete
+                    </Button>
+
+                  </PopoverContent>
+                </Popover>
               </>
             </div>
           </div>

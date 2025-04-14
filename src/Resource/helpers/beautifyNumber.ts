@@ -27,6 +27,7 @@ function nFormatter(num: number, digits: number) {
     {value: 1e18, symbol: "E"}
   ];
   const regexp = /\.0+$|(?<=\.[0-9]*[1-9])0+$/;
+  // @ts-ignore
   const item = lookup.findLast(item => num >= item.value);
   return item ? (num / item.value).toFixed(digits).replace(regexp, "").concat(item.symbol) : "0";
 }

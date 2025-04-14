@@ -40,6 +40,12 @@ export class AdminController {
   public onCloseAdminPanel = () => this.showAdminPanel = false;
   public onToggleAdminPanel = () => this.showAdminPanel = !this.showAdminPanel;
 
+  public cloneResource = (id: string) => {
+    this.editing = new Resource(this.cloneResourceStore.get(id).state);
+    this.isExistingResource = false;
+    this.showResourceEdit = true;
+  }
+
   // When adding a new resource
   public createResource = (raw_resource?: ResourceCloneProps<ResourceKeys, ResourceTypes>) => {
     const _raw_resource = {
@@ -71,6 +77,7 @@ export class AdminController {
   }
 
   public keyAlreadyExists = (input: string): boolean => {
+    // If it is a new resource it should always check
     const clean = this.cloneResourceStore.allResources
       .filter(({id}) => id !== this.editing?.reference_id)
       .map(({key}) => key)
@@ -84,6 +91,14 @@ export class AdminController {
   private _getOriginal = () => this.editing
     ? this.cloneResourceStore.get(this.editing.reference_id)
     : undefined
+
+  public resourceReferences = (key: ResourceKeys) => this.cloneResourceStore?.resourceReferences(key)
+  public removeResource = (id: string) => {
+    console.log(this.cloneResourceStore.allResources.length, this.cloneResourceStore.get(id))
+    this.cloneResourceStore.removeResource(id)
+    console.log(this.cloneResourceStore.allResources.length, this.cloneResourceStore.get(id))
+    this._updateResources(this.cloneResourceStore.state)
+  }
 
   public onSave = () => {
     if (this.isExistingResource) {
