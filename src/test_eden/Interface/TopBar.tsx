@@ -21,6 +21,7 @@ import {
   Thermometer,
   SignalCircle,
 } from "@mynaui/icons-react";
+import {Box} from "@/components/ui";
 
 
 
@@ -56,8 +57,7 @@ const Center = () => {
   return (
     <TooltipProvider>
       <div className="mt-2 z-50 pointer-events-auto">
-        <div className="flex relative bg-accent rounded-md border-cyan-900 border-2">
-
+        <Box className="flex relative py-1">
           <div className="flex py-1 pl-3 pr-5 gap-8" style={{width: 380}}>
             <UIStack tooltip={(<SlavePreview/>)} Icon={(<BrandGitlab />)}
                      value={slaveAmount}/>
@@ -81,7 +81,7 @@ const Center = () => {
           </div>
           {/*</Box>*/}
           {/*</Box>*/}
-        </div>
+        </Box>
       </div>
     </TooltipProvider>
   )

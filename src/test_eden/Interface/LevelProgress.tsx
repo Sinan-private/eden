@@ -57,7 +57,10 @@ export const LevelProgress = (
         <p className="text-sm text-muted-foreground">{label || resource.label}</p>
         <p>{resource.beautify.value} / {level.value}</p>
       </div>
-      <Progress value={percentage} color={percentage < 100 ? "error" : "info"}/>
+      <Progress
+        value={percentage}
+        // color={percentage < 100 ? "red" : "blue"}
+      />
     </>
   )
 }

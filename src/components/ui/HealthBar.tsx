@@ -1,7 +1,6 @@
 "use client"
 
 import * as React from "react"
-import * as ProgressPrimitive from "@radix-ui/react-progress"
 
 export interface HealthBarProps extends Omit<ProgressProps, 'color' | 'value'> {
   thresholds?: HealthProps['thresholds'];
@@ -13,7 +12,7 @@ import {Progress, ProgressProps} from "@/components/ui/progress.tsx";
 import {HealthCalculation, HealthProps} from "@/components/Constructors/HealthCalculation.ts";
 
 export const HealthBar = React.forwardRef<
-  React.ElementRef<typeof ProgressPrimitive.Root>,
+  React.ElementRef<typeof Progress>,
   HealthBarProps
 >(({ className, value, thresholds, color = 'default', ...props }, ref) => {
   const status = new HealthCalculation({thresholds, color, value})
@@ -33,6 +32,6 @@ export const HealthBar = React.forwardRef<
 })
 const Segment = ({position}: {position: number}) => {
   return (
-    <div className="absolute bg-black h-full w-0.5 top-0" style={{left: position + '%'}} />
+    <div className="absolute bg-black/70 h-full w-0.5 top-0" style={{left: position + '%'}} />
   )
 }

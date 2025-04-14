@@ -1,5 +1,3 @@
-// import {StatusColor} from "../types";
-// import {colorMapper, rangeMapper} from "./mappers";
 import {ProgressProps} from "@/components/ui/progress.tsx";
 
 type StatusColor = ProgressProps['color']
@@ -17,8 +15,8 @@ export type HealthProps = {
   // percentageValue?: number; // To directly set a value to the bar. Between 0 and 100
   value?: HealthValueProps | number | null; // If a number is provided this is expected to be a percentage between 0 and 100
   // Instead a range can be passed to dynamically calculate the bar percentage.
-  // A value must be provided in the object, the 'from' defaults to 0, the "to" defaults to 100
-  // {value: 15, from: 10, to: 20} -> I have 15, the range is between 10 and 20, meaning 50%. The actual values are still shown in Details
+  // A value must be provided in the object, the 'min' defaults to 0, the "max" defaults to 100
+  // {value: 15, min: 10, max: 20} -> I have 15, the range is between 10 and 20, meaning 50%. The actual values are still shown in Details
   color?: StatusColor | StatusColor[]; // Either a color for the whole Bar, or an array for each segment, where the color decision is made within the Bar component.
   // Remember that an array of colors expects 1 color more than the provided number of segments. 1 segment creates 2 parts.
 }
@@ -26,11 +24,9 @@ export type HealthProps = {
 export class HealthCalculation {
   public readonly value: number;
   public readonly thresholds: number[];
-  public readonly isOverkill: boolean;
   public readonly minThreshold: number;
   public readonly maxThreshold: number;
   public readonly color: StatusColor;
-  public readonly statusColor: StatusColor;
 
   constructor(props: HealthProps) {
     const value = getHealth(props.value, DEFAULT_VALUE);
@@ -45,7 +41,6 @@ export class HealthCalculation {
     this.color = getStatusColor(value, thresholds, props.color);
     this.minThreshold = thresholds[0] || 0;
     this.maxThreshold = thresholds[thresholds.length - 1] || 100;
-    this.isOverkill = value >= this.maxThreshold;
     this.value = value;
     this.thresholds = thresholdsToRender;
     if (hasWrongColorLength(props.color, thresholds)) {
@@ -114,7 +109,6 @@ const findIndexInThreshold = (thresholds: number[], value = 0) => {
     }
   }
   // If the value is greater than or equal to the last threshold, return the pre-last index since 100 is added for percentage
-  // Todo: This is probably not gonna work for other values than percentages. So needs update. In general a smart way for percentage
   return t.length - 2;
 }
 
