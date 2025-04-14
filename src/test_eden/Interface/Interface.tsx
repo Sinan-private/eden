@@ -11,6 +11,7 @@ import {observer} from "mobx-react";
 import {BehemothManager} from "./BehemothManager.tsx";
 import {PlayerManager} from "./PlayerManager.tsx";
 import {Button} from "@/components/ui/button.tsx";
+import {EarthContent} from "@/test_eden/Interface/EarthContent.tsx";
 
 const HEADER_HEIGHT = 60;
 export const FOOTER_HEIGHT = 80;
@@ -31,7 +32,7 @@ export const Interface = () => {
       </SideBarExtension>
       <Spacer/>
       <Right>
-        {/*<SlaveManager/>*/}
+        <EarthContent />
       </Right>
       <Footer>
         <FooterButtons/>

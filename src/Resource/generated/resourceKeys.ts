@@ -62,5 +62,6 @@ export const resourceKeys = [
   "ghoul_speed_secondary_skill",
   "earth_pollution",
   "earth_fascism",
-  "human_virtue"
+  "human_virtue",
+  "human_influence"
 ] as const;

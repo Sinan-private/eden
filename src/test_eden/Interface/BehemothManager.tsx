@@ -1,9 +1,9 @@
 import {observer} from "mobx-react";
 import {Button} from "@/components/ui/button.tsx";
 import {useGame} from "../context/game.context.ts";
-import {Card} from "./Card.ts";
 import {LevelGain, LevelProgress} from "./LevelProgress.tsx";
 import {BEHEMOTH_STAMINA_PER_SLAVE, BEHEMOTH_STAMINA_PER_WASTED_SLAVE} from "../constants/constants.ts";
+import {Box} from "@/components/ui";
 
 export const BehemothManager = observer(() => {
   const {behemoth, slaves, resources} = useGame();
@@ -15,7 +15,7 @@ export const BehemothManager = observer(() => {
   const staminaIcon = resources.getByKey('behemoth_stamina').icon;
   return (
     <div className="p-2">
-      <Card>
+      <Box>
         <div className="flex">
           <div style={{flex: "0 1 200px"}}>
             <div id="Behemoth level up costs">
@@ -55,7 +55,7 @@ export const BehemothManager = observer(() => {
           {BEHEMOTH_STAMINA_PER_SLAVE}
         </button>
         </div>
-      </Card>
+      </Box>
     </div>
   )
 })

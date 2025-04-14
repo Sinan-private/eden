@@ -1,8 +1,8 @@
 import {observer} from "mobx-react";
-import {Card} from "./Card.ts";
 import {useGame} from "../context/game.context.ts";
 import {LevelGain, LevelProgress} from "./LevelProgress.tsx";
 import {Button} from "@/components/ui/button.tsx";
+import {Box} from "@/components/ui";
 
 export const PlayerManager = observer(() => {
   const {level} = useGame().player;
@@ -13,7 +13,7 @@ export const PlayerManager = observer(() => {
   } = level;
   return (
     <div className="p-2">
-      <Card>
+      <Box>
         <div className="flex">
           <div style={{flex: '0 1 200px'}}>
             <div id="Behemoth level up costs">
@@ -46,7 +46,7 @@ export const PlayerManager = observer(() => {
           </Button>
         </div>
 
-      </Card>
+      </Box>
     </div>
   )
 })
