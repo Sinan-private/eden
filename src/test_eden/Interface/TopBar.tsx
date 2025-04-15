@@ -223,11 +223,11 @@ const PlayContainer = styled('div')`
     display: flex;
     justify-content: center;
     align-items: center;
-    top: -8px;
+    top: -5px;
     left: 50%;
     transform: translateX(-50%);
-    width: 40px;
-    height: 40px;
+    width: 50px;
+    height: 50px;
     border-radius: 50%;
     border: 1px solid ${grey_blue};
     //border: 1px solid #6d8793;

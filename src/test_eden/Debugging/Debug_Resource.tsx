@@ -1,7 +1,7 @@
 import {observer} from "mobx-react";
-import {ResourceClass} from "../../Resource";
-import {Box, Button, Typography} from "@mui/material";
+import {ResourceClass} from "@/Resource";
 import styled from "styled-components";
+import {Button} from "@/components/ui";
 
 export const Debug_ResourceGroup = styled.div`
     display: flex;
@@ -33,15 +33,14 @@ export const Debug_Resource = observer((
   const onDecrement = () => updateValueBy(-decrementBy)
 
   return (
-    <Box display="flex" gap={2} justifyContent="space-between"
-         sx={{fontFamily: 'monospace', fontSize: '12px', color: '#79ae79'}}>
-      <Button onClick={onDecrement} sx={{minWidth: 30, color: 'white'}}>-</Button>
+    <div className="flex justify-between gap-2 font-mono text-[12px] text-teal-200">
+      <Button variant="ghost" onClick={onDecrement} className="min-w8 hover:bg-cyan-950">-</Button>
       <div>
-        <Typography fontSize={10}>{label}</Typography>
-        <Typography>{beautifyValues ? beautify.value : value.toFixed(4)}</Typography>
+        <p className="text-[10px]">{label}</p>
+        <p>{beautifyValues ? beautify.value : value.toFixed(4)}</p>
       </div>
-      <Button onClick={onIncrement} sx={{minWidth: 30, color: 'white'}}>+</Button>
-    </Box>
+      <Button variant="ghost" onClick={onIncrement} className="min-w8 hover:bg-cyan-950">+</Button>
+    </div>
   )
 })
 
@@ -61,17 +60,16 @@ export const Debug_CustomResource = observer((
     onIncrement,
     onDecrement,
   }: Debug_CustomResourceProps) => (
-  <Box display="flex" gap={2} justifyContent="space-between"
-       sx={{fontFamily: 'monospace', fontSize: '12px', color: '#79ae79'}}>
+  <div className="flex justify-between gap-2 font-mono text-[12px] text-teal-200">
     {onDecrement &&
-      <Button onClick={() => onDecrement()} sx={{minWidth: 30}}>-</Button>
+      <Button variant="ghost" onClick={() => onDecrement()} className="min-w-8 hover:bg-cyan-950">-</Button>
     }
     <div style={{flexGrow: 1}}>
-      <Typography fontSize={10}>{label}</Typography>
-      <Typography>{beautifyValues ? value.toFixed() : value.toFixed(4)}</Typography>
+      <p className="text-[10px]">{label}</p>
+      <p>{beautifyValues ? value.toFixed() : value.toFixed(4)}</p>
     </div>
     {onIncrement &&
-      <Button onClick={() => onIncrement()} sx={{minWidth: 30}}>+</Button>
+      <Button variant="ghost" onClick={() => onIncrement()} className="min-w8 hover:bg-cyan-950">+</Button>
     }
-  </Box>
+  </div>
 ))

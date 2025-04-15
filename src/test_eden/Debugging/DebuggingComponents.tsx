@@ -1,68 +1,43 @@
 import {useState} from "react";
 import styled from "styled-components";
-import {Stack, Switch, Typography} from "@mui/material";
 import {Debug_Behemoth} from "./Debug_Behemoth.tsx";
 import {Debug_SlaveManagement} from "./Debug_SlaveManagement.tsx";
 import {BEAUTIFY_DEBUG, DEBUG} from "../constants/constants.ts";
+import {Label, Switch} from "@/components/ui";
 
 export const DebuggingComponents = () => {
   const [beautifyValues, setBeautifyValues] = useState(BEAUTIFY_DEBUG)
   const [show, setShow] = useState(DEBUG)
-  const onSwitch = () => {
-    setBeautifyValues(!beautifyValues)
-  }
+  const onSwitch = () => setBeautifyValues(!beautifyValues)
 
   return (
-    <Container>
-      <Stack sx={{
-        position: 'relative',
-        pointerEvents: 'initial',
-        zIndex: 1000,
-        width: 200,
-        maxWidth: '20%',
-      }}>
-        <Stack
-          direction="row"
-          alignItems="center"
-        >
-          <Switch onChange={() => setShow(!show)} checked={show}/>
-          <Typography>Debug</Typography>
-        </Stack>
+    <div className="fixed top-0 left-0 w-full h-full pointer-events-none z-[5000] p-4">
+      <div className="relative pointer-events-auto z-[1000] w-[200] max-w-[20%] flex flex-col gap-2">
+        <div className="flex items-center space-x-2">
+          <Switch id="debug-mode" checked={show} onCheckedChange={() => setShow(!show)}/>
+          <Label htmlFor="debug-mode">Debug</Label>
+        </div>
         {show &&
-          <Stack
-            direction="row"
-            alignItems="center"
-          >
-            <Switch onChange={onSwitch} checked={beautifyValues}/>
-            <Typography>Beautify values</Typography>
-          </Stack>
+          <div className="flex items-center space-x-2">
+            <Switch id="beautify" onCheckedChange={onSwitch} checked={beautifyValues}/>
+            <Label htmlFor="beautify">Beautify values</Label>
+          </div>
         }
-      </Stack>
+      </div>
       {show &&
         <Child>
-            <Debug_Behemoth beautifyValues={beautifyValues}/>
-            <Debug_SlaveManagement beautifyValues={beautifyValues}/>
+          <Debug_Behemoth beautifyValues={beautifyValues}/>
+          <Debug_SlaveManagement beautifyValues={beautifyValues}/>
         </Child>
       }
-    </Container>
+    </div>
   )
 }
-
-const Container = styled.div`
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    pointer-events: none;
-    z-index: 5000;
-`;
 
 const Child = styled.div`
     pointer-events: initial;
     z-index: 1000;
     padding: 30px 100px;
-     height: calc(100% - 60px);
-     overflow: auto;
+    height: calc(100% - 60px);
+    overflow: auto;
 `
-

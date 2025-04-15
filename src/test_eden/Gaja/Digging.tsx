@@ -1,9 +1,8 @@
 import {observer} from "mobx-react";
 import {useGame} from "../context/game.context.ts";
-import {useMemo} from "react";
+import React, {useMemo} from "react";
 import {Box} from "@mui/material";
 import mana_dirty from "../../Resource/assets/icons/mana_dirty.png";
-import styled from "styled-components";
 
 const SPOTS_DIVIDER = 25;
 
@@ -18,7 +17,7 @@ export const Digging = observer(() => {
       return [key, x, y, size]
     })
     return (
-      <Box sx={{position: 'relative', zIndex: 10000}}>
+      <Box sx={{position: 'relative', zIndex: 100}}>
         {spotList.map(([i, x, y, size]) => (
           <Box key={i} sx={{
             position: 'absolute',
@@ -39,7 +38,7 @@ export const Digging = observer(() => {
   return (
     <Box sx={{
       position: 'absolute',
-      left: 0,
+      left: 30,
       top: '50%',
       width: '100%',
       transform: 'translateY(-50%)',
@@ -56,12 +55,9 @@ export const Digging = observer(() => {
       }}>
         {spots}
       </Box>
-
       <Tunnel $digging_depth={digging_depth.state.value}>
-
         <Acid $flushing_depth={flushing_depth.state.value}/>
       </Tunnel>
-
     </Box>
   )
 })
@@ -80,21 +76,13 @@ const getRandomCoordinateList = (max: number) => {
 }
 const randomCoordinates = getRandomCoordinateList(200);
 
-const Tunnel = styled.div.attrs<{ $digging_depth: number }>(props => ({
-  style: {
-    width: props.$digging_depth + '%',
-  },
-}))`position: relative;
-    height: 50px;
-    background-Color: #000000b3;
-    transition: width 0.3s linear`
+const Tunnel = ({ $digging_depth, children }:{ $digging_depth: number; children: React.ReactNode }) => (
+  <div id="Tunnel" className="relative h-12 bg-zinc-950 transition" style={{width: $digging_depth + '%'}}>
+    {children}
+  </div>
+)
 
-const Acid = styled.div.attrs<{ $flushing_depth: number }>(props => ({
-  style: {
-    height: props.$flushing_depth + '%'
-  },
-}))`position: absolute;
-    left: 0;
-    bottom: 0;
-    background-color: green;
-    width: 100%;`
+const Acid = ({$flushing_depth}: { $flushing_depth: number }) => (
+  <div id="Acid" className="absolute left-0 bottom-0 bg-lime-600/80 w-full" style={{height: $flushing_depth + '%'}} />
+)
+

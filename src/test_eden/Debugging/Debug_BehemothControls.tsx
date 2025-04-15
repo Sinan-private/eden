@@ -1,13 +1,11 @@
-import {Button, Divider, Stack} from "@mui/material";
+import {useEffect} from "react";
+import {observer} from "mobx-react";
 import styled from "styled-components";
 import {useGame} from "../context/game.context.ts";
-import {observer} from "mobx-react";
-import {useTick} from "../../Resource/context/tick.context.ts";
-import {useEffect} from "react";
+import {Button} from "@/components/ui";
 
 export const Debug_BehemothControls = observer(() => {
   const {behemoth} = useGame();
-  const {isActive} = useTick();
   const onToggleClimbing = behemoth.movement_requested ? behemoth.stopClimbing : behemoth.startClimbing
   const onToggleDigging = behemoth.digging_requested ? behemoth.stopDigging : behemoth.startDigging
   const onToggleFlushing = behemoth.flushing_requested ? behemoth.stopFlushing : behemoth.startFlushing
@@ -20,18 +18,29 @@ export const Debug_BehemothControls = observer(() => {
 
   return (
     <StyledGameControls>
-      <Stack direction="row">
-        <Button disabled={!behemoth.movement_requested && !behemoth.can_start_moving} onClick={onToggleClimbing} color={isActive ? undefined : 'error'}>
+      <div className="flex">
+        <Button
+          disabled={!behemoth.movement_requested && !behemoth.can_start_moving}
+          onClick={onToggleClimbing}
+          variant="outline"
+        >
           {behemoth.movement_requested ? 'Stop climbing' : 'Start climbing'}
         </Button>
-        <Divider orientation="vertical" flexItem />
-        <Button disabled={!behemoth.can_dig} onClick={onToggleDigging} color={isActive ? undefined : 'error'}>
+        <Button
+          disabled={!behemoth.can_dig}
+          onClick={onToggleDigging}
+          variant="outline"
+        >
           {behemoth.digging_requested ? 'Stop digging' : 'Start digging'}
         </Button>
-        <Button disabled={!behemoth.can_flush} onClick={onToggleFlushing} color={isActive ? undefined : 'error'}>
+        <Button
+          disabled={!behemoth.can_flush}
+          onClick={onToggleFlushing}
+          variant="outline"
+        >
           {behemoth.flushing_requested ? 'Stop flushing' : 'Start flushing'}
         </Button>
-      </Stack>
+      </div>
     </StyledGameControls>
   )
 })

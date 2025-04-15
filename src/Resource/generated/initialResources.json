@@ -889,7 +889,7 @@
   },
   {
     "key": "human_virtue",
-    "value": -60,
+    "value": -50,
     "min": -100,
     "max": 100,
     "label": "Human virtue",

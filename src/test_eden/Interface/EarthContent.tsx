@@ -16,7 +16,7 @@ export const EarthContent = observer(() => {
       <Box className="min-w-[240px] flex flex-col gap-4" variant="default">
         <div className="w-full">
           <p className="mb-1 text-sm">Slaves ({slaveCurrent})</p>
-          <HealthBar value={{value: slaveCurrent, max: slaveMax}}/>
+          <HealthBar value={{value: slaveCurrent, max: slaveMax}} className="h-1" />
         </div>
         <div className="w-full">
           <p className="mb-1 text-sm">Influence</p>

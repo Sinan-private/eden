@@ -183,6 +183,7 @@ export class BehemothClass {
       stamina,
       acid,
       stopClimbing,
+      _resourceStore,
     } = this
     const {getByKey} = this._resourceStore
     if (accelerating) {
@@ -202,7 +203,9 @@ export class BehemothClass {
       stamina.updateValueBy(STAMINA_REGEN)
     }
     if (should_dig) {
-      digging_depth.updateValueBy(game.slaves.arwa / 2)
+      const pollutionFactor = 0.1 + _resourceStore.getByKey('earth_pollution').value / 100
+      console.log(pollutionFactor)
+      digging_depth.updateValueBy((game.slaves.arwa / 2 ) * pollutionFactor)
     }
     if (is_flushing) {
       stamina.updateValueBy(STAMINA_REGEN_ON_FLUSHING)

@@ -1,8 +1,6 @@
 import {useGame} from "../context/game.context.ts";
-import {Box} from "@mui/material";
 import {Debug_Resource, Debug_ResourceGroup} from "./Debug_Resource.tsx";
-
-import {Debug_Box} from "./Debug_Box.tsx";
+import {Box} from "@/components/ui";
 
 export const Debug_Behemoth = ({beautifyValues}: { beautifyValues: boolean }) => {
   const {behemoth, resources} = useGame()
@@ -14,9 +12,9 @@ export const Debug_Behemoth = ({beautifyValues}: { beautifyValues: boolean }) =>
 
   return (
     <>
-      <Box sx={{fontFamily: 'monospace', fontSize: '12px', color: '#79ae79'}}>
-        <Box display="flex" gap={2}>
-          <Debug_Box>
+      <div className="font-mono text-[12px]">
+        <div className="flex gap-2">
+          <Box>
             <Debug_ResourceGroup>
               <Debug_Resource resource={climb_speed} beautifyValues={beautifyValues}/>
               <Debug_Resource resource={climb_height} beautifyValues={beautifyValues}/>
@@ -24,9 +22,9 @@ export const Debug_Behemoth = ({beautifyValues}: { beautifyValues: boolean }) =>
               <Debug_Resource resource={flushing_depth} beautifyValues={beautifyValues}/>
               <Debug_Resource resource={drying_delay} beautifyValues={beautifyValues}/>
             </Debug_ResourceGroup>
-          </Debug_Box>
-          <Debug_Box>
-            <Box display="flex" gap={2}>
+          </Box>
+          <Box>
+            <div className="flex gap-2">
               <Debug_ResourceGroup>
                 {liquid_mana.map((resource) => (
                   <Debug_Resource key={resource.id} resource={resource} beautifyValues={beautifyValues}/>
@@ -47,10 +45,10 @@ export const Debug_Behemoth = ({beautifyValues}: { beautifyValues: boolean }) =>
                   <Debug_Resource key={resource.id} resource={resource} beautifyValues={beautifyValues}/>
                 ))}
               </Debug_ResourceGroup>
-            </Box>
-          </Debug_Box>
-        </Box>
-      </Box>
+            </div>
+          </Box>
+        </div>
+      </div>
     </>
   )
 }

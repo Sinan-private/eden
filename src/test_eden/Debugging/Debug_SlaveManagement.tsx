@@ -1,19 +1,24 @@
 import {useGame} from "../context/game.context.ts";
-import {Box, Button, Stack} from "@mui/material";
 import {Debug_CustomResource, Debug_Resource, Debug_ResourceGroup} from "./Debug_Resource.tsx";
 
-import {Debug_Box} from "./Debug_Box.tsx";
+import {Box, Button as RawButton} from "@/components/ui";
+
+const Button = ({onClick, children}: {onClick(): void; children: string}) => (
+  <RawButton onClick={() => onClick()} className="w-[100px]" variant="outline">
+    {children}
+  </RawButton>
+)
 
 export const Debug_SlaveManagement = ({beautifyValues}: { beautifyValues: boolean }) => {
   const {slaves} = useGame();
   return (
     <>
-      <Box display="flex" gap={2}>
-        <Debug_Box>
+      <div className="flex gap-2">
+        <Box>
           <Debug_ResourceGroup>
             <Debug_Resource resource={slaves.slaves_bound} beautifyValues={beautifyValues} incrementBy={1}
                             decrementBy={1}/>
-            <Stack direction="row" justifyContent="space-between">
+            <div className="flex justify-between">
 
               <Debug_CustomResource
                 label="Rebirth"
@@ -22,34 +27,38 @@ export const Debug_SlaveManagement = ({beautifyValues}: { beautifyValues: boolea
                 beautifyValues={beautifyValues}
                 value={slaves.slaves_in_rebirth.value}
               />
-              <Button onClick={slaves.resurrect} sx={{width: 100}}>Resurrect</Button>
-            </Stack>
-            <Stack direction="row" justifyContent="space-between">
+              <Button onClick={slaves.resurrect}>Resurrect</Button>
+            </div>
+            <div className="flex justify-between">
               <Debug_Resource resource={slaves.slaves_roaming} beautifyValues={beautifyValues} incrementBy={1}
                               decrementBy={1}/>
-              <Button onClick={slaves.revive} sx={{width: 100}}>Revive</Button>
-            </Stack>
-            <Stack direction="row" justifyContent="space-between">
+              <Button onClick={slaves.revive}>Revive</Button>
+            </div>
+            <div  className="flex justify-between">
               <Debug_Resource resource={slaves.slaves_enslaved} beautifyValues={beautifyValues} incrementBy={1}
                               decrementBy={1}/>
-              <Button onClick={slaves.enslave} sx={{width: 100}}>Enslave</Button>
-            </Stack>
-            <Stack direction="row" justifyContent="space-between">
+              <Button onClick={slaves.enslave}>Enslave</Button>
+            </div>
+            <div  className="flex justify-between">
               <Debug_Resource resource={slaves.slaves_wasted} beautifyValues={beautifyValues} incrementBy={1}
                               decrementBy={1}/>
-              <Button onClick={slaves.waste} sx={{width: 100}}>Waste</Button>
-            </Stack>
-            <Stack direction="row" justifyContent="space-between">
+              <Button onClick={slaves.waste}>Waste</Button>
+            </div>
+            <div  className="flex justify-between">
               <Debug_Resource resource={slaves.slaves_consumed} beautifyValues={beautifyValues} incrementBy={1}
                               decrementBy={1}/>
-              <Button onClick={slaves.consume} sx={{width: 100}}>Consume</Button>
-            </Stack>
+              <Button onClick={slaves.consume}>Consume</Button>
+            </div>
           </Debug_ResourceGroup>
-        </Debug_Box>
-        <Debug_Box>
+        </Box>
+        <Box>
           <Debug_ResourceGroup>
-            <Debug_Resource resource={slaves.slave_health} beautifyValues={beautifyValues} incrementBy={20}
-                            decrementBy={20}/>
+            <Debug_Resource
+              resource={slaves.slave_health}
+              beautifyValues={beautifyValues}
+              incrementBy={20}
+              decrementBy={20}
+            />
 
             <Debug_CustomResource
               label="Unassigned"
@@ -85,8 +94,8 @@ export const Debug_SlaveManagement = ({beautifyValues}: { beautifyValues: boolea
               value={slaves.ghoul}
             />
           </Debug_ResourceGroup>
-        </Debug_Box>
-      </Box>
+        </Box>
+      </div>
     </>
   )
 }
