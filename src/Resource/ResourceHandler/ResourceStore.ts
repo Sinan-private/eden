@@ -2,8 +2,10 @@ import {makeAutoObservable} from 'mobx'
 import {Resource, ResourceState, ResourceUpdateProps} from "./index.ts";
 import {ResourceTrade, Trade} from "./Trade.ts";
 import {LevelUpdate, ResourceCostUpdate, ResourceTypeRaw, TradeChange} from "./genericTypes.ts";
+import {id} from "@/Resource/helpers/id.ts";
 
 export class ResourceStore<K extends string, T extends string> {
+  public id: string = id();
   public resources: Map<string, Resource<K, T>> = new Map();
   // This is the one that gets edited when the user wants to add a new resource
   public newResource: Resource<K, T>;

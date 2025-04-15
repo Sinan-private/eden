@@ -165,6 +165,7 @@ export class BehemothClass {
 
   public turnUpdate = (game: Game) => {
     const {
+      should_move,
       is_flushing,
       stopped_flushing_mana,
       is_moving,
@@ -186,6 +187,9 @@ export class BehemothClass {
       _resourceStore,
     } = this
     const {getByKey} = this._resourceStore
+    if (should_move) {
+      game.mana.resetSessionDiggingMana()
+    }
     if (accelerating) {
       climb_speed.updateValueBy(0.2)
     }
@@ -204,7 +208,6 @@ export class BehemothClass {
     }
     if (should_dig) {
       const pollutionFactor = 0.1 + _resourceStore.getByKey('earth_pollution').value / 100
-      console.log(pollutionFactor)
       digging_depth.updateValueBy((game.slaves.arwa / 2 ) * pollutionFactor)
     }
     if (is_flushing) {

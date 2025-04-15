@@ -6,6 +6,7 @@ import {useApi} from "@/Resource/hooks/useApi.ts";
 import {useComponentMount} from "@/Resource/hooks";
 import {ResourceStore} from "@/Resource/ResourceHandler/ResourceStore.ts";
 import {AdminController} from "@/Resource/Admin/AdminController.ts";
+import {GameClass} from "@/test_eden/Classes/GameClass.ts";
 
 function App() {
   const {fetchResources} = useApi();
@@ -18,7 +19,9 @@ function App() {
     const resourceStore = new ResourceStore(rawState, 'resource.context') as ResourceStoreClass;
     resourceRef.current = resourceStore;
     setLoaded(true);
+    console.log('App', resourceStore.id)
     AdminController.getInstance(resourceStore)
+    GameClass.getInstance(resourceStore)
   })
 
   useEffect(() => {

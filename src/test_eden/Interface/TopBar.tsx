@@ -181,7 +181,7 @@ type UIStackProps = {
 const UIStack = ({tooltip, Icon, value, children}: UIStackProps) => (
   <Tooltip delayDuration={200}>
     <TooltipTrigger asChild>
-      <div className="flex gap-1">
+      <div className="flex gap-1 items-center">
         {Icon &&
           <div>{Icon}</div>
         }

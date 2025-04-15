@@ -1,18 +1,17 @@
 import {useState} from "react";
 import styled from "styled-components";
-import {observer} from "mobx-react";
 import {useGame} from "../context/game.context.ts";
 import image from '../../assets/images/seemless_trunk.png';
 import {useAnimationSubscription} from "../../Resource";
 import {Branches} from "./Branches.tsx";
 import {CLIMBING_SPEED_COEFFICIENT} from "../constants/constants.ts";
-import {Digging} from "./Digging.tsx";
+import {Digging} from "./Digging/Digging.tsx";
 import {Behemoth} from "./Behemoth.tsx";
 
 const BACKGROUND_IMAGE_HEIGHT = 600;
 const BACKGROUND_IMAGE_WIDTH = 571;
 
-export const Gaja = observer(() => {
+export const Gaja = () => {
   const {getByKey} = useGame().resources
   const climbing_speed = getByKey('behemoth_climb_speed').value
   const [displacement, setDisplacement] = useState(0);
@@ -35,7 +34,7 @@ export const Gaja = observer(() => {
       <Digging/>
     </Tree>
   )
-})
+}
 
 
 const Tree = styled('div')`
