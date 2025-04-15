@@ -1,5 +1,5 @@
 import {ResourceStoreClass} from "@/Resource";
-import {HarvestRenderClass} from "@/test_eden/Gaja/HarvestRenderClass.ts";
+import {HarvestRenderClass} from "@/test_eden/Gaja/Digging/HarvestRenderClass.ts";
 
 declare global {
   interface Window {

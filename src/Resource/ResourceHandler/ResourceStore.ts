@@ -10,7 +10,7 @@ export class ResourceStore<K extends string, T extends string> {
   // This is the one that gets edited when the user wants to add a new resource
   public newResource: Resource<K, T>;
 
-  constructor(initialResources: ResourceUpdateProps<K, T>[], public caller: string) {
+  constructor(initialResources: ResourceUpdateProps<K, T>[], public caller?: string) {
     this.initializeResources(initialResources);
     this.newResource = new Resource({key: '' as K})
     makeAutoObservable(this);
