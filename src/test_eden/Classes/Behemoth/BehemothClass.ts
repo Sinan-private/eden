@@ -47,18 +47,21 @@ export class BehemothClass {
       this.flushing_requested = true;
       this._has_flushed = true;
       if (this.currentHarvest) return; // guard against double-start
-      console.log('startFlushing')
+      // console.log('startFlushing')
+      this.resetSessionDiggingMana()
       this.currentHarvest = new HarvestRenderClass(this._resourceStore);
     }
   }
   public stopFlushing = () => {
+    if (!this.flushing_requested) return;
     this.flushing_requested = false;
     if (!this.currentHarvest) return;
-    console.log('stopFlushing')
+    // console.log('stopFlushing')
 
+    this.currentHarvest.stopFlushing()
     this.pastHarvests.push(this.currentHarvest);
     this.currentHarvest = null;
-    console.log(this.pastHarvests)
+    // console.log(this.pastHarvests)
   }
 
   public startClimbing = () => {
@@ -98,6 +101,15 @@ export class BehemothClass {
     this._resourceStore
       .trade([{key: 'slaves_enslaved', value: 1}], [{key: 'behemoth_stamina', value: BEHEMOTH_STAMINA_PER_SLAVE}])
       .tradeIfPossible()
+  }
+
+  public resetSessionDiggingMana = () => {
+    const {getByType} = this._resourceStore
+    console.log('me stopping')
+    const toClear = getByType('liquid_mana')
+    toClear.forEach(mana => {
+      mana.resetSession()
+    })
   }
 
   get decelerating() {
@@ -234,7 +246,7 @@ export class BehemothClass {
       this._resourceStore.getByKey('upstream_height').updateValueBy(10)
     }
     if (stopped_flushing_mana) {
-      game.mana.resetSessionDiggingMana()
+      // game.mana.resetSessionDiggingMana()
       flushing_depth.updateValueBy(-1)
     }
     if (is_mana_starting_to_dry) {

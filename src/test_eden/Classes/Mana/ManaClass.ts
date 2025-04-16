@@ -51,20 +51,6 @@ export class ManaClass {
     return this._resourceStore.getTypeSum(type)
   }
 
-  private _diggingMana = () => {
-    const {getByType} = this._resourceStore
-    return getByType('liquid_mana').concat(getByType('dirty_mana'))
-  }
-
-  public resetSessionDiggingMana = () => {
-    const {getByType} = this._resourceStore
-    console.log('me stopping')
-    const toClear = getByType('liquid_mana')
-    toClear.forEach(mana => {
-      mana.resetSession()
-    })
-  }
-
   public resetDiggingMana = () => {
     const {getByType} = this._resourceStore
     const toClear = getByType('liquid_mana').concat(getByType('dirty_mana'))

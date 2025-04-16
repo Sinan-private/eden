@@ -15,16 +15,22 @@ import {id} from "@/Resource/helpers/id.ts";
 //  - Meaning one image will always show the highest possible image and the rest fills the gaps
 //  - Note: While images are broken down (on harvest) the should respct the original position
 
-type DirtyManaImage = {
+type DirtyManaImageCreation = {
   image: string;
   value: number;
 }
+
+type DirtyManaImage = {
+  position: number;
+  id: string;
+} & DirtyManaImageCreation
 
 
 export class HarvestRenderClass {
   public id: string = id()
   private available_mana: number = 0;
   public mana_images: DirtyManaImage[] = []
+
   constructor(
     private readonly _resourceStore: ResourceStoreClass,
     // private readonly _behemoth: BehemothClass
@@ -33,26 +39,28 @@ export class HarvestRenderClass {
     console.log('HarvestRenderClass', _resourceStore.id)
     makeAutoObservable(this)
   }
+
+  public stopFlushing = () => {
+    this.mana_images = getManaImageValues(this.available_mana)
+  }
+
   public turnUpdate = (): void => {
     const liquid_mana = this._resourceStore.getTypeSessionSum('liquid_mana')
-    // console.log(this._resourceStore.getByKey('liquid_mana_level_1').value)
-    console.log(this._resourceStore.id)
     if (!liquid_mana) {
       return
     }
-    console.log(liquid_mana, this.available_mana)
+    // console.log(liquid_mana, this.available_mana)
     this.available_mana = liquid_mana
-    // console.log('me', this.id)
   }
 }
 
-const images: DirtyManaImage[] = [
+const images: DirtyManaImageCreation[] = [
   {
-    image: mana_for_harvest_1,
+    image: mana_for_harvest_5,
     value: 1,
   },
   {
-    image: mana_for_harvest_2,
+    image: mana_for_harvest_4,
     value: 5,
   },
   {
@@ -60,11 +68,11 @@ const images: DirtyManaImage[] = [
     value: 15,
   },
   {
-    image: mana_for_harvest_4,
+    image: mana_for_harvest_2,
     value: 25,
   },
   {
-    image: mana_for_harvest_5,
+    image: mana_for_harvest_1,
     value: 50,
   },
 ]
@@ -76,17 +84,26 @@ function getManaImageValues(dirtyMana: number): DirtyManaImage[] {
   // Step 1: Add one image with the highest possible value
   const firstValue = images.find(({value}) => dirtyMana >= value);
   if (!firstValue) return result;
-
-  result.push(firstValue);
+  const position = Math.floor(Math.random() * 100);
+  result.push({
+    ...firstValue,
+    position,
+    id: id(),
+  });
   dirtyMana -= firstValue.value;
 
   // Step 2: Fill the rest randomly while deducting
   while (dirtyMana > 0) {
     const possible = images.filter(({value}) => value <= dirtyMana);
     if (possible.length === 0) break;
+    const position = Math.floor(Math.random() * 100);
 
     const randomValue = possible[Math.floor(Math.random() * possible.length)];
-    result.push(randomValue);
+    result.push({
+      ...randomValue,
+      position,
+      id: id(),
+    });
     dirtyMana -= randomValue.value;
   }
 
