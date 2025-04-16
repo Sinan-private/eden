@@ -8,7 +8,6 @@ export class ManaClass {
   private _finding_chance_level_3: number = 1/300
   private _finding_chance_level_4: number = 1/4000
   private _finding_chance_level_5: number = 1/50000
-  private _session_digging_mana: number = 0
   private random: RandomResourceUpdate;
   constructor(private _resourceStore: ResourceStoreClass) {
     this.random = new RandomResourceUpdate(_resourceStore);
@@ -19,9 +18,6 @@ export class ManaClass {
     const {getByKey} = this._resourceStore
     const digging_depth = this._resourceStore.getByKey("behemoth_digging_depth").value;
     const power = (digging_depth / 10) * FLUSHING_SPEED
-    const level1_raise = this.random.chance(this._finding_chance_level_1, power);
-    const level2_raise = this.random.chance(this._finding_chance_level_2, power);
-    this._session_digging_mana += (level1_raise + level2_raise);
     getByKey('liquid_mana_level_1').updateValueBy(this.random.chance(this._finding_chance_level_1, power))
     getByKey('liquid_mana_level_2').updateValueBy(this.random.chance(this._finding_chance_level_2, power))
     getByKey('liquid_mana_level_3').updateValueBy(this.random.chance(this._finding_chance_level_3, power))
@@ -36,13 +32,13 @@ export class ManaClass {
   }
 
   public produceRawMana = (slaves: number) => {
-    const power = (slaves / 2) * HARVEST_SPEED
+    const power = (slaves / 4) * HARVEST_SPEED
     const randomLevel = this.random.levelConversion('dirty_mana', 'raw_mana').key
     this._resourceStore.produce(randomLevel, power)
   }
 
   public produceCleanMana = (slaves: number) => {
-    const power = CRAFTING_SPEED * (slaves / 3)
+    const power = CRAFTING_SPEED * (slaves / 6)
     const randomLevel = this.random.levelConversion('raw_mana', 'mana').key
     this._resourceStore.produce(randomLevel, power)
   }
@@ -55,14 +51,22 @@ export class ManaClass {
     return this._resourceStore.getTypeSum(type)
   }
 
-  public resetSessionDiggingMana = () =>
-    this._session_digging_mana = 0
+  public resetSessionDiggingMana = () => {
+    const {getByType} = this._resourceStore
+    const toClear = getByType('liquid_mana').concat(getByType('dirty_mana'))
+    toClear.forEach(liquid_mana => {
+      liquid_mana.setValueTo(0)
+      liquid_mana.resetSession()
+    })
+    // getByType('liquid_mana').forEach(liquid_mana => liquid_mana.setValueTo(0))
+    // getByType('dirty_mana').forEach(dirty_mana => dirty_mana.setValueTo(0))
+  }
 
   get mana_count() {
     return this._resourceStore.getTypeSum('mana')
   }
 
   get flushed_mana_sum() {
-    return this._session_digging_mana
+    return 10
   }
 }

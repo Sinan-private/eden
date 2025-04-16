@@ -24,6 +24,10 @@ export class Resource<K extends string, T extends string> {
   public cost: ResourceCostUpdate<K, T> | null;
   public revealedAt: ResourceCostUpdate<K, T> | null;
   public iconName: string = 'empty';
+  public lifetimeEarned = 0;
+  public lifetimeSpent = 0;
+  public sessionEarned = 0;
+  public sessionSpent = 0;
 
   constructor(
     {
@@ -52,7 +56,7 @@ export class Resource<K extends string, T extends string> {
     makeAutoObservable(this)
   }
 
-  public readonly updateBy = (update: UpdateProps<K, T>): Resource<K, T> => {
+  public readonly updateBy = (update: UpdateProps<K, T>) => {
     // This is a little complex to update constraints first before updating the value
     // This respects that the new value might be different after e.g. the max value raised.
     const constraints = {
@@ -61,28 +65,37 @@ export class Resource<K extends string, T extends string> {
       value: this.value,
     }
     const newValue = (update.value || 0) + this.value;
-    return Object.assign(this, constraints).setValueTo(newValue);
+    Object.assign(this, constraints).setValueTo(newValue);
   }
 
   public readonly setToMin = () => this.setValueTo(this.min)
 
-  public readonly updateValueBy = (value: number): Resource<K, T> => {
-    this.value = this.respectConstraints(this.value + value)
-    return this;
-  }
+  public readonly updateValueBy = (value: number): void =>
+    this.setValueTo(this.value + value)
 
-  public readonly setTo = (update: UpdateProps<K, T> & { key?: K }): Resource<K, T> => {
+  public readonly setTo = (update: UpdateProps<K, T> & { key?: K }): void => {
     // I want to be able to set every value here
     const {
       value = this.value,
       ...rest
     } = update;
-    return Object.assign(this, rest).setValueTo(value);
+    Object.assign(this, rest).setValueTo(value);
   }
 
-  public readonly setValueTo = (value: number): Resource<K, T> => {
+  public readonly setValueTo = (value: number): void => {
+    const newValue = this.respectConstraints(value);
+    const delta = newValue - this.value;
+    if (delta === 0) {
+      return
+    }
+    if (delta < 0) {
+      this.lifetimeSpent += delta;
+      this.sessionSpent += delta;
+    } else {
+      this.lifetimeEarned += delta;
+      this.sessionEarned += delta;
+    }
     this.value = this.respectConstraints(value)
-    return this
   };
 
   public readonly respectConstraints = (value: number): number =>
@@ -92,9 +105,9 @@ export class Resource<K extends string, T extends string> {
         ? this.min
         : value
 
-  public updateCost = (changeKey: 'give' | 'gain', {key, value}: TradeChange<K, T>) => {
+  public updateCost = (changeKey: 'give' | 'gain', {key, value}: TradeChange<K, T>): void => {
     if (!this.cost) {
-      return null
+      return
     }
     const updatedCost = toJS(this.cost)[changeKey].map(resource => resource.key === key
       ? ({...resource, value})
@@ -108,7 +121,7 @@ export class Resource<K extends string, T extends string> {
     })
   }
 
-  public addCost = (changeKey: 'give' | 'gain', extraCost: TradeChange<K, T>) => {
+  public addCost = (changeKey: 'give' | 'gain', extraCost: TradeChange<K, T>): void => {
     const cost = this.cost || {give: [], gain: []};
     this.setTo({
       cost: {
@@ -118,9 +131,9 @@ export class Resource<K extends string, T extends string> {
     })
   }
 
-  public removeCost = (changeKey: 'give' | 'gain', resourceKey: ResourceKeys) => {
+  public removeCost = (changeKey: 'give' | 'gain', resourceKey: ResourceKeys): void => {
     if (!this.cost) {
-      return null
+      return
     }
     const updatedCost = toJS(this.cost)[changeKey].filter(({key}) => key !== resourceKey)
     this.setTo({
@@ -138,6 +151,11 @@ export class Resource<K extends string, T extends string> {
     ...this.state,
     reference_id: this.id,
   })
+
+  public resetSession = ()=> {
+    this.sessionEarned = 0;
+    this.sessionSpent = 0;
+  }
 
   get percentage() {
     return this.value / this.max * 100

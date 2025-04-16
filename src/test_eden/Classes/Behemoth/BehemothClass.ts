@@ -50,14 +50,14 @@ export class BehemothClass {
 
   public startClimbing = () => {
     if (!this.digging_requested) {
-      const {getByKey, getByType} = this._resourceStore
+      const {getByKey} = this._resourceStore
       this.digging_depth.setValueTo(0)
       this.movement_requested = true;
       this._has_flushed = false;
       getByKey('behemoth_flushing_depth').setValueTo(0) // This needs to reset to a previous state
       getByKey('behemoth_drying_delay').setValueTo(10) // This needs to reset to a previous state
-      getByType('liquid_mana').forEach(liquid_mana => liquid_mana.setValueTo(0))
-      getByType('dirty_mana').forEach(dirty_mana => dirty_mana.setValueTo(0))
+      // getByType('liquid_mana').forEach(liquid_mana => liquid_mana.setValueTo(0))
+      // getByType('dirty_mana').forEach(dirty_mana => dirty_mana.setValueTo(0))
     }
   }
   public stopClimbing = () =>

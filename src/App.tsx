@@ -1,13 +1,14 @@
-import {AdminResourceProvider, ResourceStoreClass} from "./Resource";
+import {AdminResourceProvider, ResourceKeys, ResourceStoreClass, ResourceTypes} from "./Resource";
 import {Game} from "./test_eden/Game.tsx";
 import {GameProvider} from "./test_eden/context/game.context.ts";
 import {MutableRefObject, useEffect, useRef, useState} from "react";
 import {useApi} from "@/Resource/hooks/useApi.ts";
 import {useComponentMount} from "@/Resource/hooks";
-import {ResourceStore} from "@/Resource/ResourceHandler/ResourceStore.ts";
 import {AdminController} from "@/Resource/Admin/AdminController.ts";
 import {GameClass} from "@/test_eden/Classes/GameClass.ts";
+import {createSingletonResourceStore} from "@/Resource/ResourceHandler/createSingletonResourceStore.ts";
 
+const GlobalStore = createSingletonResourceStore<ResourceKeys, ResourceTypes>()
 function App() {
   const {fetchResources} = useApi();
   const [loaded, setLoaded] = useState(false);
@@ -16,10 +17,10 @@ function App() {
 
   useComponentMount(async () => {
     const rawState = await fetchResources();
-    const resourceStore = new ResourceStore(rawState, 'resource.context') as ResourceStoreClass;
+    // const resourceStore = new ResourceStore(rawState, 'resource.context') as ResourceStoreClass;
+    const resourceStore = GlobalStore.getInstance(rawState)
     resourceRef.current = resourceStore;
     setLoaded(true);
-    console.log('App', resourceStore.id)
     AdminController.getInstance(resourceStore)
     GameClass.getInstance(resourceStore)
   })

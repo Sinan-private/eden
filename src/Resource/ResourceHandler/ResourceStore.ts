@@ -6,12 +6,12 @@ import {id} from "@/Resource/helpers/id.ts";
 
 export class ResourceStore<K extends string, T extends string> {
   public id: string = id();
-  public resources: Map<string, Resource<K, T>> = new Map();
+  public resources: Map<string, Resource<K, T>>;
   // This is the one that gets edited when the user wants to add a new resource
   public newResource: Resource<K, T>;
 
   constructor(initialResources: ResourceUpdateProps<K, T>[], public caller?: string) {
-    this.initializeResources(initialResources);
+    this.resources = this.initializeResources(initialResources);
     this.newResource = new Resource({key: '' as K})
     makeAutoObservable(this);
   }
@@ -36,10 +36,12 @@ export class ResourceStore<K extends string, T extends string> {
   }
 
   public initializeResources(resources: ResourceUpdateProps<K, T>[]) {
-    resources.forEach((resource) => {
-      const initialResource = new Resource(resource);
-      this.resources.set(initialResource.id, initialResource);
+    const fullResources: [string, Resource<K, T>][] = resources.map((resource) => {
+      const full = new Resource(resource);
+      return [full.id, full]
+      // this.resources.set(initialResource.id, initialResource);
     });
+    return new Map(fullResources)
   }
 
 
@@ -170,6 +172,11 @@ export class ResourceStore<K extends string, T extends string> {
   public getTypeSum = (type: T) => {
     const resources = this.getByType(type)
     return resources.reduce((sum, {value}) => (sum + value), 0)
+  }
+
+  public getTypeSessionSum = (type: T) => {
+    const resources = this.getByType(type)
+    return resources.reduce((sum, {sessionEarned}) => (sum + sessionEarned), 0)
   }
 
   private _levelToTradeConversion = (to_check: LevelUpdate<K, T>['gain']): TradeChange<K, T>[] =>

@@ -320,7 +320,7 @@
   },
   {
     "key": "behemoth_climb_height",
-    "value": 1300,
+    "value": 2300,
     "min": 0,
     "max": null,
     "label": "Climb Height",
