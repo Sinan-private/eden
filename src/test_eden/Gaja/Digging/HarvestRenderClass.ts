@@ -29,19 +29,19 @@ export class HarvestRenderClass {
     private readonly _resourceStore: ResourceStoreClass,
     // private readonly _behemoth: BehemothClass
   ) {
-    // console.log(!_behemoth.is_flushing_mana, _resourceStore.getTypeSum('dirty_mana'))
+    // console.log(!_behemoth.is_flushing_mana, _resourceStore.getTypeSum('liquid_mana'))
     console.log('HarvestRenderClass', _resourceStore.id)
     makeAutoObservable(this)
   }
   public turnUpdate = (): void => {
-    const dirty_mana = this._resourceStore.getTypeSessionSum('dirty_mana')
-    // console.log(this._resourceStore.getByKey('dirty_mana_level_1').value)
+    const liquid_mana = this._resourceStore.getTypeSessionSum('liquid_mana')
+    // console.log(this._resourceStore.getByKey('liquid_mana_level_1').value)
     console.log(this._resourceStore.id)
-    if (!dirty_mana) {
+    if (!liquid_mana) {
       return
     }
-    console.log(dirty_mana, this.available_mana)
-    this.available_mana = dirty_mana
+    console.log(liquid_mana, this.available_mana)
+    this.available_mana = liquid_mana
     // console.log('me', this.id)
   }
 }

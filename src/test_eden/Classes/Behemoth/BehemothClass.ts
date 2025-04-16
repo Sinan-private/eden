@@ -10,6 +10,7 @@ import {staminaDrain} from "../../constants/gameRules.ts";
 import {Game} from "../../context/game.context.ts";
 import {LevelClass} from "../LevelClass.ts";
 import {levels} from "./levels.ts";
+import {HarvestRenderClass} from "@/test_eden/Gaja/Digging/HarvestRenderClass.ts";
 
 export class BehemothClass {
   public level: LevelClass;
@@ -25,6 +26,8 @@ export class BehemothClass {
   public flushing_depth: ResourceClass;
   public stamina: ResourceClass;
   public drying_delay: ResourceClass;
+  currentHarvest: HarvestRenderClass | null = null;
+  pastHarvests: HarvestRenderClass[] = [];
 
   constructor(private _resourceStore: ResourceStoreClass) {
     this.level = new LevelClass(_resourceStore, levels)
@@ -40,13 +43,23 @@ export class BehemothClass {
   }
 
   public startFlushing = () => {
-    if (this.can_flush) {
+    if (this.can_flush && !this.flushing_requested) {
       this.flushing_requested = true;
       this._has_flushed = true;
+      if (this.currentHarvest) return; // guard against double-start
+      console.log('startFlushing')
+      this.currentHarvest = new HarvestRenderClass(this._resourceStore);
     }
   }
-  public stopFlushing = () =>
+  public stopFlushing = () => {
     this.flushing_requested = false;
+    if (!this.currentHarvest) return;
+    console.log('stopFlushing')
+
+    this.pastHarvests.push(this.currentHarvest);
+    this.currentHarvest = null;
+    console.log(this.pastHarvests)
+  }
 
   public startClimbing = () => {
     if (!this.digging_requested) {
@@ -56,8 +69,8 @@ export class BehemothClass {
       this._has_flushed = false;
       getByKey('behemoth_flushing_depth').setValueTo(0) // This needs to reset to a previous state
       getByKey('behemoth_drying_delay').setValueTo(10) // This needs to reset to a previous state
-      // getByType('liquid_mana').forEach(liquid_mana => liquid_mana.setValueTo(0))
-      // getByType('dirty_mana').forEach(dirty_mana => dirty_mana.setValueTo(0))
+      if (!this.pastHarvests.length) return;
+      this.pastHarvests = [];
     }
   }
   public stopClimbing = () =>
@@ -188,7 +201,7 @@ export class BehemothClass {
     } = this
     const {getByKey} = this._resourceStore
     if (should_move) {
-      game.mana.resetSessionDiggingMana()
+      game.mana.resetDiggingMana()
     }
     if (accelerating) {
       climb_speed.updateValueBy(0.2)
@@ -217,9 +230,11 @@ export class BehemothClass {
     }
     if (is_flushing_mana) {
       game.mana.produceLiquidMana()
+      this.currentHarvest?.turnUpdate()
       this._resourceStore.getByKey('upstream_height').updateValueBy(10)
     }
     if (stopped_flushing_mana) {
+      game.mana.resetSessionDiggingMana()
       flushing_depth.updateValueBy(-1)
     }
     if (is_mana_starting_to_dry) {

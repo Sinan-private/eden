@@ -8,16 +8,19 @@ import {observer} from "mobx-react";
 
 export const Tunnel = observer(({$digging_depth}: { $digging_depth: number }) => {
   const {behemoth, mana, resources} = useGame()
-  const {harvestRender} = GameClass.getInstance()
-  const {digging_depth} = behemoth
-  const mana_to_harvest = mana.getManaCount('dirty_mana');
+  const {digging_depth, pastHarvests, currentHarvest} = behemoth
+  // const {harvestRender} = GameClass.getInstance()
+  // const mana_to_harvest = mana.getManaCount('dirty_mana');
+  // Todo each time I am flushing an instance of the harvest is created and "closed" the moment the flushing stops.
+  // console.log(currentHarvest?.id, pastHarvests)
+
   // const imageList = useMemo(() => {
   //   return getManaImageValues(mana_to_harvest)
   // }, [mana_to_harvest]);
   // console.log(imageList)
   // const x = useRef(new HarvestRenderClass(resources, behemoth)).current
 
-  useTurnSubscription(harvestRender.turnUpdate)
+  // useTurnSubscription(harvestRender.turnUpdate)
   return (
     <div id="Tunnel" className="relative h-12 bg-zinc-950 transition overflow-hidden"
          style={{width: $digging_depth + '%'}}>
