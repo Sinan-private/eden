@@ -1,7 +1,7 @@
 import {makeAutoObservable} from "mobx";
 import {ResourceClass, ResourceStoreClass} from "../../../Resource";
 import {
-  AUTO_CLIMB, BEHEMOTH_STAMINA_PER_SLAVE,
+  BEHEMOTH_STAMINA_PER_SLAVE,
   BEHEMOTH_STAMINA_PER_WASTED_SLAVE,
   STAMINA_REGEN,
   STAMINA_REGEN_ON_FLUSHING
@@ -10,16 +10,14 @@ import {staminaDrain} from "../../constants/gameRules.ts";
 import {Game} from "../../context/game.context.ts";
 import {LevelClass} from "../LevelClass.ts";
 import {levels} from "./levels.ts";
-import {HarvestRenderClass} from "@/test_eden/Gaja/Digging/HarvestRenderClass.ts";
 import {GameBaseProps} from "@/Resource/ResourceHandler/specificTypes.ts";
 import {GameState} from "@/test_eden/Classes/GameState.ts";
 
 export class BehemothClass {
   public level: LevelClass;
-  public movement_requested: boolean = AUTO_CLIMB;
-  public digging_requested: boolean = false;
+  // public movement_requested: boolean = AUTO_CLIMB; // move to GameState?
+  // public digging_requested: boolean = false;
   // public flushing_requested: boolean = false;
-  private _has_flushed: boolean = false;
   public climb_height: ResourceClass;
   public climb_speed: ResourceClass;
   public hp: ResourceClass;
@@ -30,70 +28,43 @@ export class BehemothClass {
   public drying_delay: ResourceClass;
   private readonly _resourceStore: ResourceStoreClass;
   private readonly _gameState: GameState;
-  currentHarvest: HarvestRenderClass | null = null;
-  pastHarvests: HarvestRenderClass[] = [];
+  // currentHarvest: HarvestRenderClass | null = null;
+  // pastHarvests: HarvestRenderClass[] = [];
 
   constructor({_resourceStore, _gameState}: GameBaseProps) {
     this._resourceStore = _resourceStore;
     this._gameState = _gameState;
     this.level = new LevelClass(_resourceStore, levels)
     this.hp = _resourceStore.getByKey('behemoth_hp')
+    this.stamina = _resourceStore.getByKey('behemoth_stamina')
     this.acid = _resourceStore.getByKey('behemoth_acid')
     this.climb_height = _resourceStore.getByKey('behemoth_climb_height')
     this.climb_speed = _resourceStore.getByKey('behemoth_climb_speed')
     this.digging_depth = _resourceStore.getByKey('behemoth_digging_depth')
     this.flushing_depth = _resourceStore.getByKey('behemoth_flushing_depth')
-    this.stamina = _resourceStore.getByKey('behemoth_stamina')
     this.drying_delay = _resourceStore.getByKey('behemoth_drying_delay')
     makeAutoObservable(this)
   }
 
   public startFlushing = () => {
     if (this.can_flush && !this._gameState.mana_flushing) {
-      this._gameState.mana_flushing = true;
-      // this.flushing_requested = true;
-      this._has_flushed = true;
-      if (this.currentHarvest) return; // guard against double-start
-      // console.log('startFlushing')
-      this.resetSessionDiggingMana()
-      this.currentHarvest = new HarvestRenderClass(this._resourceStore);
+      this._gameState.startManaFlushing()
     }
   }
   public stopFlushing = () => {
-    if (!this._gameState.mana_flushing) return;
-    // this.flushing_requested = false;
-    this._gameState.mana_flushing = false;
-    if (!this.currentHarvest) return;
-    // console.log('stopFlushing')
-
-    this.currentHarvest.stopFlushing()
-    this.pastHarvests.push(this.currentHarvest);
-    this.currentHarvest = null;
-    // console.log(this.pastHarvests)
+    this._gameState.stopManaFlushing()
   }
 
   public startClimbing = () => {
-    if (!this.digging_requested) {
-      const {getByKey} = this._resourceStore
-      this.digging_depth.setValueTo(0)
-      this.movement_requested = true;
-      this._has_flushed = false;
-      getByKey('behemoth_flushing_depth').setValueTo(0) // This needs to reset to a previous state
-      getByKey('behemoth_drying_delay').setValueTo(10) // This needs to reset to a previous state
-      if (!this.pastHarvests.length) return;
-      this.pastHarvests = [];
-    }
+    this._gameState.startClimbing()
   }
   public stopClimbing = () =>
-    this.movement_requested = false;
+    this._gameState.stopClimbing();
 
-  public startDigging = () => {
-    if (this.can_dig) {
-      this.digging_requested = true;
-    }
-  }
+  public startDigging = () =>
+      this._gameState.startManaDigging()
   public stopDigging = () =>
-    this.digging_requested = false;
+    this._gameState.stopManaDigging()
 
   public manaToAcid = () =>
     this._resourceStore
@@ -111,17 +82,8 @@ export class BehemothClass {
       .tradeIfPossible()
   }
 
-  public resetSessionDiggingMana = () => {
-    const {getByType} = this._resourceStore
-    console.log('me stopping')
-    const toClear = getByType('liquid_mana')
-    toClear.forEach(mana => {
-      mana.resetSession()
-    })
-  }
-
   get decelerating() {
-    return !this.movement_requested && !!this.climb_speed.value;
+    return !this._gameState.movement_requested && !!this.climb_speed.value;
   }
 
   get accelerating() {
@@ -132,28 +94,32 @@ export class BehemothClass {
     return !!this.climb_speed.value // || this.movement_requested;
   }
 
+  get movement_requested() {
+    return this._gameState.movement_requested
+  }
+
   get should_move() {
-    return this.movement_requested && !this.should_stop_moving
+    return this._gameState.movement_requested && !this.should_stop_moving
   }
 
   get should_stop_moving() {
-    return this.stamina.value < 1 || !this.movement_requested;
+    return this.stamina.value < 1 || !this._gameState.movement_requested;
   }
 
   get can_start_moving() {
-    return !this.digging_requested && !this._gameState.mana_flushing && this.stamina.value >= 30
+    return !this._gameState.mana_digging && !this._gameState.mana_flushing && this.stamina.value >= 30
   }
 
   get should_dig() {
-    return this.digging_requested
+    return this._gameState.mana_digging
   }
 
   get can_flush() {
-    return !this.is_moving && !this.digging_requested && !!this.digging_depth
+    return !this.is_moving && !this._gameState.mana_digging && !!this.digging_depth
   }
 
   get can_dig() {
-    return !this.is_moving && !this._has_flushed && !this.is_flushing
+    return this._gameState.can_dig
   }
 
   get can_harvest() {
@@ -250,7 +216,7 @@ export class BehemothClass {
     }
     if (is_flushing_mana) {
       game.mana.produceLiquidMana()
-      this.currentHarvest?.turnUpdate()
+      this._gameState.currentHarvest?.turnUpdate()
       this._resourceStore.getByKey('upstream_height').updateValueBy(10)
     }
     if (stopped_flushing_mana) {

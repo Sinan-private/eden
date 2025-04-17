@@ -6,7 +6,7 @@ import {AUTO_COLLECT_MANA} from "../../constants/constants.ts";
 
 export class ArwaClass extends FactionClass {
   public collecting_requested: boolean = AUTO_COLLECT_MANA;
-  constructor(gameClasses: GameBaseClasses) {
+  constructor(private gameClasses: GameBaseClasses) {
     super(gameClasses)
     const {getByKey} = this.resources;
     this.image = image;
@@ -22,16 +22,13 @@ export class ArwaClass extends FactionClass {
     this.skill_speed_secondary = getByKey('arwa_speed_secondary_skill');
   }
 
-  get is_collecting() {
-    return this.collecting_requested
-      && !this.behemoth.is_flushing_mana
-      && !this.behemoth.is_moving
-      && !!this.resources.getTypeSum('dirty_mana')
+  get mana_harvesting() {
+    return this.gameClasses.gameState.mana_harvesting
   }
 
   public turnUpdate = (game: Game) => {
     const {mana, slaves} = game
-    if (this.is_collecting) {
+    if (this.mana_harvesting) {
       mana.produceRawMana(slaves.arwa)
     }
   }

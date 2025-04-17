@@ -3,12 +3,9 @@ import {Acid} from "@/test_eden/Gaja/Digging/Acid.tsx";
 import {observer} from "mobx-react";
 
 export const Tunnel = observer(({$digging_depth}: { $digging_depth: number }) => {
-  const {behemoth, resources} = useGame()
-  const {pastHarvests} = behemoth
-  const images = pastHarvests.flatMap(({getManaImages}) => getManaImages())
-  const x = images.map(a => a.value)
-  // console.log(x)
-  // console.log(resources.getByKey('dirty_mana_level_1').sessionSpent)
+  const {gameState} = useGame()
+  const {renderHarvest} = gameState
+  const renderImages = renderHarvest();
   return (
     <div
       id="Tunnel"
@@ -16,7 +13,7 @@ export const Tunnel = observer(({$digging_depth}: { $digging_depth: number }) =>
       style={{width: $digging_depth + '%', transition: 'width 0.5s ease'}}
     >
       <Acid/>
-      {images.map(image => (
+      {renderImages.map(image => (
         <img
           key={image.id}
           src={image.image}

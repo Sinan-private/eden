@@ -36,7 +36,7 @@ export class HarvestRenderClass {
     private available_mana = 0
   ) {
     if (available_mana >= 1) {
-      this.getManaImages()
+      this.stopFlushing()
     }
     makeAutoObservable(this)
   }
@@ -61,43 +61,45 @@ export class HarvestRenderClass {
     //  !!This is not a clean setup. One master component should handle the harvest!!
     if (!this.mana_images.length) return []
     const [raw_first, ...rest] = this.mana_images
-    console.log(this.mana_images.map(({value}) => value))
-    console.log(raw_first.value, this.harvested_mana)
-    const first = new HarvestRenderClass(this._resourceStore, raw_first.value - this.harvested_mana)
-    return [first, ...rest]
+    // console.log(this.mana_images.map(({value}) => value))
+    // console.log(raw_first.value, this.harvested_mana)
+    // const first = new HarvestRenderClass(this._resourceStore, raw_first.value - this.harvested_mana).getManaImages()
+    return [raw_first, ...rest]
   }
 }
 
 const images: DirtyManaImageCreation[] = [
   {
-    image: mana_for_harvest_5,
-    value: 1,
-  },
-  {
-    image: mana_for_harvest_4,
-    value: 5,
-  },
-  {
-    image: mana_for_harvest_3,
-    value: 15,
+    image: mana_for_harvest_1,
+    value: 50,
   },
   {
     image: mana_for_harvest_2,
     value: 25,
   },
   {
-    image: mana_for_harvest_1,
-    value: 50,
+    image: mana_for_harvest_3,
+    value: 15,
+  },
+  {
+    image: mana_for_harvest_4,
+    value: 5,
+  },
+  {
+    image: mana_for_harvest_5,
+    value: 1,
   },
 ]
 
 function getManaImageValues(dirtyMana: number): DirtyManaImage[] {
+  console.log('Mana to turn', dirtyMana)
   // const imageValues = [50, 25, 15, 5, 1];
   const result: DirtyManaImage[] = [];
 
   // Step 1: Add one image with the highest possible value
   const firstValue = images.find(({value}) => dirtyMana >= value);
   if (!firstValue) return result;
+  console.log('first', firstValue.value)
   const position = Math.floor(Math.random() * 100);
   result.push({
     ...firstValue,

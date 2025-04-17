@@ -98,7 +98,6 @@ export class ResourceStore<K extends string, T extends string> {
     }
   }
 
-
   public getByType = (type?: T): Resource<K, T>[] => {
     if (!type?.length) {
       return this.allResources

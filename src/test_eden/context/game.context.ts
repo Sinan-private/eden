@@ -17,12 +17,11 @@ const useGameBase = (resources?: ResourceStoreClass) => {
     throw new Error("ResourceStore is required but was not provided.");
   }
   const tick = useTick();
-  const gameState = useMemo(() => new GameState(), []);
+  const gameState = useMemo(() => new GameState(resources), [resources]);
   const gameBaseProps: GameBaseProps = useMemo(() => ({
     _resourceStore: resources,
     _gameState: gameState,
   }), [gameState, resources]);
-  console.log(gameBaseProps._gameState.mana_flushing)
   const player = useMemo(() => new PlayerClass(gameBaseProps), [gameBaseProps]);
   const slaves = useMemo(() => new SlaveClass(gameBaseProps), [gameBaseProps]);
   const mana = useMemo(() => new ManaClass(gameBaseProps), [gameBaseProps])
