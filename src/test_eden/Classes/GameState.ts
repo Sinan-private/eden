@@ -4,6 +4,10 @@ import {id} from "@/Resource/helpers/id.ts";
 import {ResourceStoreClass} from "@/Resource";
 import {AUTO_CLIMB, AUTO_COLLECT_MANA} from "@/test_eden/constants/constants.ts";
 
+// My goal is to create the HarvestRenderer in here. The current setup sucks
+
+const harvestRender = new HarvestRenderClass();
+
 export class GameState {
   public id: string = id()
   private _behemoth_climbing: boolean = false
@@ -11,24 +15,39 @@ export class GameState {
   private _mana_flushing: boolean = false
   private _has_flushed: boolean = false
   private _mana_drying: boolean = false
-  private _harvested_mana: number = 0
+  private _rendered_mana: number = 0
+  private _session_liquid_mana: number = 0;
+  private _session_raw_mana: number = 0;
   // private _mana_harvesting: boolean = false
   public collecting_requested: boolean = AUTO_COLLECT_MANA;
   public movement_requested: boolean = AUTO_CLIMB; // move to GameState?
-  currentHarvest: HarvestRenderClass | null = null;
+  private _currentHarvest: number = 0;
+  currentHarvest: HarvestRenderClass = harvestRender;
   pastHarvests: HarvestRenderClass[] = [];
 
   constructor(private _resourceStore: ResourceStoreClass) {
     makeAutoObservable(this)
   }
 
+  // public updateSessionLiquidMana = () => {
+  //   const a = this._resourceStore.getTypeSum('liquid_mana')
+  // //   reset all of them each turn?
+  // }
+
+  public produceRawMana = () => {
+    const raw_mana = this._resourceStore.getTypeSum('raw_mana')
+    this.currentHarvest.harvestMana(raw_mana - this._session_raw_mana)
+    this._session_raw_mana = raw_mana;
+  }
+
   public renderHarvest = () => {
-    const images = this.pastHarvests.flatMap(({getManaImages}) => getManaImages());
+    // const images = this.pastHarvests.flatMap(({getManaImages}) => getManaImages());
+    const images = this.currentHarvest?.mana_images || []
     if (!images.length) return []
     const [raw_first, ...rest] = images
     // console.log(this.mana_images.map(({value}) => value))
     // console.log(raw_first.value, this.harvested_mana)
-    const first = new HarvestRenderClass(this._resourceStore, raw_first.value - this._harvested_mana).getManaImages()
+    // const first = new HarvestRenderClass(this._resourceStore, raw_first.value - this._harvested_mana).getManaImages()
     return [raw_first, ...rest]
   }
 
@@ -42,6 +61,7 @@ export class GameState {
       getByKey('behemoth_drying_delay').setValueTo(10) // This needs to reset to a previous state
       if (!this.pastHarvests.length) return;
       this.pastHarvests = [];
+      this.currentHarvest.reset();
     }
   }
   public stopClimbing = () =>
@@ -52,11 +72,9 @@ export class GameState {
     if (this._mana_flushing) return;
     this._mana_flushing = true
     this._has_flushed = true;
-    // console.log('startFlushing')
+    console.log('startFlushing')
     if (this.currentHarvest) return; // guard against double-start
     this.resetSessionDiggingMana()
-    this.currentHarvest = new HarvestRenderClass(this._resourceStore);
-
   }
 
   public stopManaFlushing = () => {
@@ -64,9 +82,11 @@ export class GameState {
     this._mana_flushing = false
     if (!this.currentHarvest) return;
     // console.log('stopFlushing')
-    this.currentHarvest.stopFlushing()
-    this.pastHarvests.push(this.currentHarvest);
-    this.currentHarvest = null;
+    const mana_sum = this._resourceStore.getTypeSum('dirty_mana') + this._resourceStore.getTypeSum('liquid_mana')
+    const images = mana_sum - this._rendered_mana
+    this.currentHarvest.createImages(images)
+    this._rendered_mana = mana_sum
+    // this.pastHarvests.push(this.currentHarvest);
   }
 
   public resetSessionDiggingMana = () => {

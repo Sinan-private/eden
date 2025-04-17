@@ -6,6 +6,7 @@ export const Tunnel = observer(({$digging_depth}: { $digging_depth: number }) =>
   const {gameState} = useGame()
   const {renderHarvest} = gameState
   const renderImages = renderHarvest();
+
   return (
     <div
       id="Tunnel"

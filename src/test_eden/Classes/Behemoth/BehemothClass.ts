@@ -216,7 +216,7 @@ export class BehemothClass {
     }
     if (is_flushing_mana) {
       game.mana.produceLiquidMana()
-      this._gameState.currentHarvest?.turnUpdate()
+      // this._gameState.updateSessionLiquidMana()
       this._resourceStore.getByKey('upstream_height').updateValueBy(10)
     }
     if (stopped_flushing_mana) {

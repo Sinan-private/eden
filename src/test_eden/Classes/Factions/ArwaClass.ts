@@ -30,6 +30,7 @@ export class ArwaClass extends FactionClass {
     const {mana, slaves} = game
     if (this.mana_harvesting) {
       mana.produceRawMana(slaves.arwa)
+      this.gameClasses.gameState.produceRawMana()
     }
   }
 }
