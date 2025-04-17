@@ -1,8 +1,12 @@
 import {ResourceClass, ResourceStoreClass} from "../../Resource";
+import {GameBaseProps} from "@/Resource/ResourceHandler/specificTypes.ts";
 
 export class UpstreamClass {
   private _height: ResourceClass;
-  constructor(private _resourceStore: ResourceStoreClass) {
+  private _resourceStore: ResourceStoreClass
+
+  constructor({_resourceStore}: GameBaseProps) {
+    this._resourceStore = _resourceStore;
     this._height = _resourceStore.getByKey('upstream_height')
   }
   get height() {

@@ -13,7 +13,7 @@ function App() {
   const {fetchResources} = useApi();
   const [loaded, setLoaded] = useState(false);
   const resourceRef = useRef<ResourceStoreClass | null>(null) as MutableRefObject<ResourceStoreClass | null>;
-  const resourceStore = resourceRef.current as ResourceStoreClass;
+  const _resourceStore = resourceRef.current as ResourceStoreClass;
 
   useComponentMount(async () => {
     const rawState = await fetchResources();
@@ -38,9 +38,9 @@ function App() {
     <>
       <AdminResourceProvider initialState={{
         admin: {buttonPosition: "bottom-right"},
-        resourceStore
+        resourceStore: _resourceStore
       }}>
-        <GameProvider initialState={resourceStore}>
+        <GameProvider initialState={_resourceStore}>
           <Game/>
         </GameProvider>
       </AdminResourceProvider>

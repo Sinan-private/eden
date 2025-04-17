@@ -3,8 +3,7 @@ import {SLAVES_INITIALLY_ARWA, SLAVES_INITIALLY_MARID} from "../../constants/con
 import {randomChances} from "../../helpers/randomChances.ts";
 import {makeAutoObservable} from "mobx";
 import {FactionKeys} from "../Factions/FactionClass.ts";
-
-// type FactionKeys = Pick<keyof SlaveClass, 'ifrit' | 'marid' | 'arwa' | 'ghoul'>
+import {GameBaseProps} from "@/Resource/ResourceHandler/specificTypes.ts";
 
 // The slave
 // - limit -> This is the total maximum of slaves that the player can have at a time
@@ -34,8 +33,10 @@ export class SlaveClass {
   public arwa: number = SLAVES_INITIALLY_ARWA;
   public ghoul: number = 0;
   public slave_health: ResourceClass;
+  private _resourceStore: ResourceStoreClass;
 
-  constructor(private _resourceStore: ResourceStoreClass) {
+  constructor({_resourceStore}: GameBaseProps) {
+    this._resourceStore = _resourceStore;
     this.limit = _resourceStore.getByKey('slaves_limit')
     this.slaves_bound = _resourceStore.getByKey('slaves_bound')
     this.slaves_in_rebirth =  _resourceStore.getByKey('slaves_in_rebirth')

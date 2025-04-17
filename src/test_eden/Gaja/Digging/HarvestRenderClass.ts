@@ -28,15 +28,16 @@ type DirtyManaImage = {
 
 export class HarvestRenderClass {
   public id: string = id()
-  private available_mana: number = 0;
+  private harvested_mana: number = 0;
   public mana_images: DirtyManaImage[] = []
 
   constructor(
     private readonly _resourceStore: ResourceStoreClass,
-    // private readonly _behemoth: BehemothClass
+    private available_mana = 0
   ) {
-    // console.log(!_behemoth.is_flushing_mana, _resourceStore.getTypeSum('liquid_mana'))
-    console.log('HarvestRenderClass', _resourceStore.id)
+    if (available_mana >= 1) {
+      this.getManaImages()
+    }
     makeAutoObservable(this)
   }
 
@@ -45,12 +46,25 @@ export class HarvestRenderClass {
   }
 
   public turnUpdate = (): void => {
-    const liquid_mana = this._resourceStore.getTypeSessionSum('liquid_mana')
-    if (!liquid_mana) {
+    const dirty_mana = this._resourceStore.getTypeSessionSum('dirty_mana')
+    if (!dirty_mana) {
       return
     }
-    // console.log(liquid_mana, this.available_mana)
-    this.available_mana = liquid_mana
+    this.available_mana = dirty_mana
+  }
+
+  public getManaImages = () => {
+    // Todo I want the first in the list to get deconstructed.
+    //  Meaning I want to return the list but replace the first entry with an instance of this constructor
+    //  set to the remaining value. Meaning it recreates while it is harvested
+    //  ---> Shit. The harvesting is done by Arwa I think.
+    //  !!This is not a clean setup. One master component should handle the harvest!!
+    if (!this.mana_images.length) return []
+    const [raw_first, ...rest] = this.mana_images
+    console.log(this.mana_images.map(({value}) => value))
+    console.log(raw_first.value, this.harvested_mana)
+    const first = new HarvestRenderClass(this._resourceStore, raw_first.value - this.harvested_mana)
+    return [first, ...rest]
   }
 }
 

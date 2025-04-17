@@ -11,12 +11,14 @@ import {Game} from "../../context/game.context.ts";
 import {LevelClass} from "../LevelClass.ts";
 import {levels} from "./levels.ts";
 import {HarvestRenderClass} from "@/test_eden/Gaja/Digging/HarvestRenderClass.ts";
+import {GameBaseProps} from "@/Resource/ResourceHandler/specificTypes.ts";
+import {GameState} from "@/test_eden/Classes/GameState.ts";
 
 export class BehemothClass {
   public level: LevelClass;
   public movement_requested: boolean = AUTO_CLIMB;
   public digging_requested: boolean = false;
-  public flushing_requested: boolean = false;
+  // public flushing_requested: boolean = false;
   private _has_flushed: boolean = false;
   public climb_height: ResourceClass;
   public climb_speed: ResourceClass;
@@ -26,10 +28,14 @@ export class BehemothClass {
   public flushing_depth: ResourceClass;
   public stamina: ResourceClass;
   public drying_delay: ResourceClass;
+  private readonly _resourceStore: ResourceStoreClass;
+  private readonly _gameState: GameState;
   currentHarvest: HarvestRenderClass | null = null;
   pastHarvests: HarvestRenderClass[] = [];
 
-  constructor(private _resourceStore: ResourceStoreClass) {
+  constructor({_resourceStore, _gameState}: GameBaseProps) {
+    this._resourceStore = _resourceStore;
+    this._gameState = _gameState;
     this.level = new LevelClass(_resourceStore, levels)
     this.hp = _resourceStore.getByKey('behemoth_hp')
     this.acid = _resourceStore.getByKey('behemoth_acid')
@@ -43,8 +49,9 @@ export class BehemothClass {
   }
 
   public startFlushing = () => {
-    if (this.can_flush && !this.flushing_requested) {
-      this.flushing_requested = true;
+    if (this.can_flush && !this._gameState.mana_flushing) {
+      this._gameState.mana_flushing = true;
+      // this.flushing_requested = true;
       this._has_flushed = true;
       if (this.currentHarvest) return; // guard against double-start
       // console.log('startFlushing')
@@ -53,8 +60,9 @@ export class BehemothClass {
     }
   }
   public stopFlushing = () => {
-    if (!this.flushing_requested) return;
-    this.flushing_requested = false;
+    if (!this._gameState.mana_flushing) return;
+    // this.flushing_requested = false;
+    this._gameState.mana_flushing = false;
     if (!this.currentHarvest) return;
     // console.log('stopFlushing')
 
@@ -133,7 +141,7 @@ export class BehemothClass {
   }
 
   get can_start_moving() {
-    return !this.digging_requested && !this.flushing_requested && this.stamina.value >= 30
+    return !this.digging_requested && !this._gameState.mana_flushing && this.stamina.value >= 30
   }
 
   get should_dig() {
@@ -165,7 +173,7 @@ export class BehemothClass {
   }
 
   get is_flushing() {
-    return this.flushing_requested && this.acid.value >= 1
+    return this._gameState.mana_flushing && this.acid.value >= 1
   }
 
   get is_flushing_mana() {

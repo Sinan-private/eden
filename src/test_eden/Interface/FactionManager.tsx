@@ -33,12 +33,12 @@ export const FactionManager = () => {
               <Progress
                 className="h-1 rounded-none"
                 value={active ? loyalty.value : 0}
-                color={active ? "warning" : "default"}
+                color={active ? "yellow" : "default"}
               />
               <Progress
                 className="h-1 rounded-none"
                 value={active ? influence.value : 0}
-                color={active ? "error" : "default"}
+                color={active ? "red" : "default"}
               />
             </div>
           </div>

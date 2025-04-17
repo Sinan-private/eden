@@ -5,10 +5,10 @@ import {useGame} from "../context/game.context.ts";
 import {Button} from "@/components/ui";
 
 export const Debug_BehemothControls = observer(() => {
-  const {behemoth} = useGame();
+  const {behemoth, gameState} = useGame();
   const onToggleClimbing = behemoth.movement_requested ? behemoth.stopClimbing : behemoth.startClimbing
   const onToggleDigging = behemoth.digging_requested ? behemoth.stopDigging : behemoth.startDigging
-  const onToggleFlushing = behemoth.flushing_requested ? behemoth.stopFlushing : behemoth.startFlushing
+  const onToggleFlushing = gameState.mana_flushing ? behemoth.stopFlushing : behemoth.startFlushing
 
   useEffect(() => {
     if (!behemoth.can_flush) {
@@ -38,7 +38,7 @@ export const Debug_BehemothControls = observer(() => {
           onClick={onToggleFlushing}
           variant="outline"
         >
-          {behemoth.flushing_requested ? 'Stop flushing' : 'Start flushing'}
+          {gameState.mana_flushing ? 'Stop flushing' : 'Start flushing'}
         </Button>
       </div>
     </StyledGameControls>
