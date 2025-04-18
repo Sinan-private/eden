@@ -22,7 +22,7 @@ export class AdminController {
   constructor(
     originalResourceStore: ResourceStoreClass
   ) {
-    this.cloneResourceStore = originalResourceStore.clone();
+    this.cloneResourceStore = originalResourceStore.clone('admin');
     makeAutoObservable(this)
   }
 

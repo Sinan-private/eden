@@ -7,17 +7,14 @@ import {id} from "@/Resource/helpers/id.ts";
 export class ResourceStore<K extends string, T extends string> {
   public id: string = id();
   public resources: Map<string, Resource<K, T>>;
-  // This is the one that gets edited when the user wants to add a new resource
-  public newResource: Resource<K, T>;
 
-  constructor(initialResources: ResourceUpdateProps<K, T>[], public caller?: string) {
+  constructor(initialResources: ResourceUpdateProps<K, T>[], public caller = 'original') {
     this.resources = this.initializeResources(initialResources);
-    this.newResource = new Resource({key: '' as K})
     makeAutoObservable(this);
   }
 
-  public clone = () =>
-    new ResourceStore(this.allResources.map(resource => resource.clone()), 'admin')
+  public clone = (caller = 'clone') =>
+    new ResourceStore(this.allResources.map(resource => resource.clone()), caller)
 
   public get = (id: string) => {
     return this.resources.get(id)!

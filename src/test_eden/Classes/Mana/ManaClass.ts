@@ -2,6 +2,7 @@ import {ResourceStoreClass, ResourceTypes} from "../../../Resource";
 import {CRAFTING_SPEED, DRYING_SPEED, FLUSHING_SPEED, HARVEST_SPEED} from "../../constants/constants.ts";
 import {RandomResourceUpdate} from "../RandomResourceUpdate.ts";
 import {GameBaseProps} from "@/Resource/ResourceHandler/specificTypes.ts";
+import {GameState} from "@/test_eden/Classes/GameState.ts";
 
 export class ManaClass {
   private _finding_chance_level_1: number = 1
@@ -11,9 +12,11 @@ export class ManaClass {
   private _finding_chance_level_5: number = 1/50000
   private random: RandomResourceUpdate;
   private readonly _resourceStore: ResourceStoreClass
-  constructor({_resourceStore}: GameBaseProps) {
+  private readonly _gameState: GameState
+  constructor({_resourceStore, _gameState}: GameBaseProps) {
     this.random = new RandomResourceUpdate(_resourceStore);
     this._resourceStore = _resourceStore;
+    this._gameState = _gameState;
   }
 
   // This comes from flushing. Nothing more is needed to do than just flushing
@@ -55,12 +58,7 @@ export class ManaClass {
   }
 
   public resetDiggingMana = () => {
-    const {getByType} = this._resourceStore
-    const toClear = getByType('liquid_mana').concat(getByType('dirty_mana'))
-    toClear.forEach(mana => {
-      mana.setValueTo(0)
-      mana.resetSession()
-    })
+    this._gameState.resetDiggingMana();
   }
 
   get mana_count() {

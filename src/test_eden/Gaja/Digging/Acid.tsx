@@ -1,9 +1,11 @@
 import {useGame} from "@/test_eden/context/game.context.ts";
 import mana_sparkle from "@/assets/animation/mana-sparkle.gif";
 
+const MAX_HEIGHT = 450
+
 export const Acid = () => {
   const {behemoth, mana} = useGame()
-  const flushed_sum = mana.flushed_mana_sum <= 450 ? mana.flushed_mana_sum : 450;
+  const flushed_sum = mana.flushed_mana_sum <= MAX_HEIGHT ? mana.flushed_mana_sum : MAX_HEIGHT;
   const {flushing_depth} = behemoth
   return (
     <div
@@ -12,7 +14,6 @@ export const Acid = () => {
       style={{
         height: flushing_depth.state.value + '%',
         opacity: flushing_depth.state.value / 100,
-        // background: 'linear-gradient(0deg,rgba(13, 148, 136, 1) 0%, rgba(125, 211, 252, 1) 50%, rgba(240, 249, 255, 1) 100%)'
       }}
     >
       <div
