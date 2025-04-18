@@ -68,6 +68,6 @@ export class ManaClass {
   }
 
   get flushed_mana_sum() {
-    return 10
+    return this._resourceStore.getTypeSessionSum('liquid_mana')
   }
 }

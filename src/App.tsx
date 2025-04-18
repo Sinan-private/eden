@@ -5,7 +5,6 @@ import {MutableRefObject, useEffect, useRef, useState} from "react";
 import {useApi} from "@/Resource/hooks/useApi.ts";
 import {useComponentMount} from "@/Resource/hooks";
 import {AdminController} from "@/Resource/Admin/AdminController.ts";
-import {GameClass} from "@/test_eden/Classes/GameClass.ts";
 import {createSingletonResourceStore} from "@/Resource/ResourceHandler/createSingletonResourceStore.ts";
 
 const GlobalStore = createSingletonResourceStore<ResourceKeys, ResourceTypes>()
@@ -17,12 +16,10 @@ function App() {
 
   useComponentMount(async () => {
     const rawState = await fetchResources();
-    // const resourceStore = new ResourceStore(rawState, 'resource.context') as ResourceStoreClass;
     const resourceStore = GlobalStore.getInstance(rawState)
     resourceRef.current = resourceStore;
     setLoaded(true);
     AdminController.getInstance(resourceStore)
-    GameClass.getInstance(resourceStore)
   })
 
   useEffect(() => {
