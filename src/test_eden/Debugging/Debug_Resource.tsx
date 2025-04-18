@@ -2,6 +2,7 @@ import {observer} from "mobx-react";
 import {ResourceClass} from "@/Resource";
 import styled from "styled-components";
 import {Button} from "@/components/ui";
+import {Container} from "@/components/ui/Box.tsx";
 
 export const Debug_ResourceGroup = styled.div`
     display: flex;
@@ -60,7 +61,7 @@ export const Debug_CustomResource = observer((
     onIncrement,
     onDecrement,
   }: Debug_CustomResourceProps) => (
-  <div className="flex justify-between gap-2 font-mono text-[12px] text-teal-200">
+  <Container >
     {onDecrement &&
       <Button variant="ghost" onClick={() => onDecrement()} className="min-w-8 hover:bg-cyan-950">-</Button>
     }
@@ -71,5 +72,6 @@ export const Debug_CustomResource = observer((
     {onIncrement &&
       <Button variant="ghost" onClick={() => onIncrement()} className="min-w8 hover:bg-cyan-950">+</Button>
     }
-  </div>
+  </Container>
 ))
+

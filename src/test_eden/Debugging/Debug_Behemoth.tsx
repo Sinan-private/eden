@@ -1,6 +1,7 @@
 import {useGame} from "../context/game.context.ts";
 import {Debug_Resource, Debug_ResourceGroup} from "./Debug_Resource.tsx";
 import {Box} from "@/components/ui";
+import {Container} from "@/components/ui/Box.tsx";
 
 export const Debug_Behemoth = ({beautifyValues}: { beautifyValues: boolean }) => {
   const {behemoth, resources} = useGame()
@@ -11,9 +12,7 @@ export const Debug_Behemoth = ({beautifyValues}: { beautifyValues: boolean }) =>
   const clean_mana = resources.getByType("mana")
 
   return (
-    <>
-      <div className="font-mono text-[12px]">
-        <div className="flex gap-2">
+    <Container>
           <Box>
             <Debug_ResourceGroup>
               <Debug_Resource resource={climb_speed} beautifyValues={beautifyValues}/>
@@ -47,9 +46,7 @@ export const Debug_Behemoth = ({beautifyValues}: { beautifyValues: boolean }) =>
               </Debug_ResourceGroup>
             </div>
           </Box>
-        </div>
-      </div>
-    </>
+    </Container>
   )
 }
 

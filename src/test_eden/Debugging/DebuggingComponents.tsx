@@ -4,6 +4,7 @@ import {Debug_Behemoth} from "./Debug_Behemoth.tsx";
 import {Debug_SlaveManagement} from "./Debug_SlaveManagement.tsx";
 import {BEAUTIFY_DEBUG, DEBUG} from "../constants/constants.ts";
 import {Label, Switch} from "@/components/ui";
+import {Debug_Earth} from "@/test_eden/Debugging/Debug_Earth.tsx";
 
 export const DebuggingComponents = () => {
   const [beautifyValues, setBeautifyValues] = useState(BEAUTIFY_DEBUG)
@@ -25,16 +26,19 @@ export const DebuggingComponents = () => {
         }
       </div>
       {show &&
-        <Child>
+        <div className="flex flex-wrap gap-2 pointer-events-auto overflow-y-auto h-full">
           <Debug_Behemoth beautifyValues={beautifyValues}/>
           <Debug_SlaveManagement beautifyValues={beautifyValues}/>
-        </Child>
+          <Debug_Earth beautifyValues={beautifyValues}/>
+        </div>
       }
     </div>
   )
 }
 
 const Child = styled.div`
+    display: flex;
+    flex-wrap: wrap;
     pointer-events: initial;
     z-index: 1000;
     padding: 30px 100px;

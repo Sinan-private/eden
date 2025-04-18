@@ -2,6 +2,7 @@ import {observer} from "mobx-react";
 import {Box} from "@/components/ui";
 import {HealthBar} from "@/components/ui/HealthBar.tsx";
 import {useGame} from "@/test_eden/context/game.context.ts";
+import {SegmentedBar} from "@/components/ui/SegmentedBar.tsx";
 
 export const EarthContent = observer(() => {
   const {resources, slaves} = useGame();
@@ -20,16 +21,16 @@ export const EarthContent = observer(() => {
         </div>
         <div className="w-full">
           <p className="mb-1 text-sm">Influence</p>
-          <HealthBar value={influence}/>
+          <SegmentedBar value={influence.state}/>
         </div>
         <div className="w-full">
           <p className="mb-1 text-sm">Pollution</p>
-          <HealthBar value={pollution}/>
+          <HealthBar value={pollution.state}/>
         </div>
         <div className="w-full">
           <p className="mb-1 text-sm">Virtue</p>
           <HealthBar
-            value={virtue}
+            value={virtue.state}
             color={["red", "yellow", "green", "blue"]}
             thresholds={[20, 50, 80]}
           />

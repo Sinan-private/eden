@@ -28,7 +28,7 @@ export class ArwaClass extends FactionClass {
 
   public turnUpdate = (game: Game) => {
     const {mana, slaves} = game
-    if (this.mana_harvesting) {
+    if (this.mana_harvesting && this.collecting_requested) {
       mana.produceRawMana(slaves.arwa)
       this.gameClasses.gameState.produceRawMana()
     }

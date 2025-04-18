@@ -2,6 +2,7 @@ import {useGame} from "../context/game.context.ts";
 import {Debug_CustomResource, Debug_Resource, Debug_ResourceGroup} from "./Debug_Resource.tsx";
 
 import {Box, Button as RawButton} from "@/components/ui";
+import {Container} from "@/components/ui/Box.tsx";
 
 const Button = ({onClick, children}: {onClick(): void; children: string}) => (
   <RawButton onClick={() => onClick()} className="w-[100px]" variant="outline">
@@ -12,8 +13,7 @@ const Button = ({onClick, children}: {onClick(): void; children: string}) => (
 export const Debug_SlaveManagement = ({beautifyValues}: { beautifyValues: boolean }) => {
   const {slaves} = useGame();
   return (
-    <>
-      <div className="flex gap-2">
+    <Container>
         <Box>
           <Debug_ResourceGroup>
             <Debug_Resource resource={slaves.slaves_bound} beautifyValues={beautifyValues} incrementBy={1}
@@ -95,7 +95,6 @@ export const Debug_SlaveManagement = ({beautifyValues}: { beautifyValues: boolea
             />
           </Debug_ResourceGroup>
         </Box>
-      </div>
-    </>
+    </Container>
   )
 }

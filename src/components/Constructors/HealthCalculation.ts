@@ -1,4 +1,5 @@
 import {ProgressProps} from "@/components/ui/progress.tsx";
+import {makeAutoObservable} from "mobx";
 
 type StatusColor = ProgressProps['color']
 
@@ -46,6 +47,7 @@ export class HealthCalculation {
     if (hasWrongColorLength(props.color, thresholds)) {
       console.error(`When providing an array of colors, it needs to be one shorter then the array of thresholds. You provided thresholds: ${thresholds}; color: ${props.color}`)
     }
+    makeAutoObservable(this)
   }
 
   public readonly getValueFromList = <T>(list: T[], thresholds = this.thresholds, value = this.value) =>
