@@ -206,8 +206,10 @@ export class BehemothClass {
       stamina.updateValueBy(STAMINA_REGEN)
     }
     if (should_dig) {
+      const increasingDensity = ( 101 - digging_depth.value ) / 100
       const pollutionFactor = 0.1 + _resourceStore.getByKey('earth_pollution').value / 100
-      digging_depth.updateValueBy((game.slaves.arwa / 2 ) * pollutionFactor)
+      const power = (game.slaves.arwa / 2 ) * pollutionFactor * increasingDensity
+      digging_depth.updateValueBy(power)
     }
     if (is_flushing) {
       stamina.updateValueBy(STAMINA_REGEN_ON_FLUSHING)
@@ -216,12 +218,13 @@ export class BehemothClass {
     }
     if (is_flushing_mana) {
       game.mana.produceLiquidMana()
-      // this._gameState.updateSessionLiquidMana()
       this._resourceStore.getByKey('upstream_height').updateValueBy(10)
     }
     if (stopped_flushing_mana) {
-      // game.mana.resetSessionDiggingMana()
-      flushing_depth.updateValueBy(-1)
+      flushing_depth.updateValueBy(-2)
+      if (this._gameState.mana_flushing) {
+        this._gameState.stopManaFlushing()
+      }
     }
     if (is_mana_starting_to_dry) {
       getByKey('behemoth_drying_delay').updateValueBy(-1)

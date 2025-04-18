@@ -16,14 +16,12 @@ export class GameState {
   private _has_flushed: boolean = false
   private _mana_drying: boolean = false
   private _rendered_mana: number = 0
-  private _session_liquid_mana: number = 0;
   private _session_raw_mana: number = 0;
   // private _mana_harvesting: boolean = false
   public collecting_requested: boolean = AUTO_COLLECT_MANA;
   public movement_requested: boolean = AUTO_CLIMB; // move to GameState?
-  private _currentHarvest: number = 0;
   currentHarvest: HarvestRenderClass = harvestRender;
-  pastHarvests: HarvestRenderClass[] = [];
+  // pastHarvests: HarvestRenderClass[] = [];
 
   constructor(private _resourceStore: ResourceStoreClass) {
     makeAutoObservable(this)
@@ -35,20 +33,13 @@ export class GameState {
   // }
 
   public produceRawMana = () => {
-    const raw_mana = this._resourceStore.getTypeSum('raw_mana')
+    const raw_mana = this._resourceStore.getTypeSessionSum('raw_mana')
     this.currentHarvest.harvestMana(raw_mana - this._session_raw_mana)
     this._session_raw_mana = raw_mana;
   }
 
   public renderHarvest = () => {
-    // const images = this.pastHarvests.flatMap(({getManaImages}) => getManaImages());
-    const images = this.currentHarvest?.mana_images || []
-    if (!images.length) return []
-    const [raw_first, ...rest] = images
-    // console.log(this.mana_images.map(({value}) => value))
-    // console.log(raw_first.value, this.harvested_mana)
-    // const first = new HarvestRenderClass(this._resourceStore, raw_first.value - this._harvested_mana).getManaImages()
-    return [raw_first, ...rest]
+    return this.currentHarvest?.mana_images || []
   }
 
   public startClimbing = () => {
@@ -59,9 +50,7 @@ export class GameState {
       getByKey('behemoth_digging_depth').setValueTo(0)
       getByKey('behemoth_flushing_depth').setValueTo(0) // This needs to reset to a previous state
       getByKey('behemoth_drying_delay').setValueTo(10) // This needs to reset to a previous state
-      if (!this.pastHarvests.length) return;
-      this.pastHarvests = [];
-      this.currentHarvest.reset();
+      this.resetDiggingMana()
     }
   }
   public stopClimbing = () =>
@@ -70,28 +59,39 @@ export class GameState {
 
   public startManaFlushing = () => {
     if (this._mana_flushing) return;
+    console.log('startFlushing')
     this._mana_flushing = true
     this._has_flushed = true;
-    console.log('startFlushing')
     if (this.currentHarvest) return; // guard against double-start
     this.resetSessionDiggingMana()
   }
 
   public stopManaFlushing = () => {
     if (!this._mana_flushing) return;
+    console.log('stopFlushing')
     this._mana_flushing = false
     if (!this.currentHarvest) return;
-    // console.log('stopFlushing')
-    const mana_sum = this._resourceStore.getTypeSum('dirty_mana') + this._resourceStore.getTypeSum('liquid_mana')
+    const mana_sum = this._resourceStore.getTypeSessionSum('liquid_mana') //+ this._resourceStore.getTypeSum('liquid_mana')
     const images = mana_sum - this._rendered_mana
     this.currentHarvest.createImages(images)
     this._rendered_mana = mana_sum
-    // this.pastHarvests.push(this.currentHarvest);
   }
 
   public resetSessionDiggingMana = () => {
     const {getByType} = this._resourceStore
     getByType('dirty_mana').forEach(mana => {
+      mana.resetSession()
+    })
+  }
+
+  public resetDiggingMana = () => {
+    const {getByType} = this._resourceStore
+    this.currentHarvest.reset()
+    this._rendered_mana = 0
+    this._session_raw_mana = 0
+    const toClear = getByType('liquid_mana').concat(getByType('dirty_mana'))
+    toClear.forEach(mana => {
+      mana.setValueTo(0)
       mana.resetSession()
     })
   }
@@ -108,7 +108,6 @@ export class GameState {
     const notFlushing = !this.mana_flushing;
     const notMoving = !this.is_moving;
     const hasDirtyMana = !!this._resourceStore.getTypeSum('dirty_mana');
-
     return this.collecting_requested && notFlushing && notMoving && hasDirtyMana;
     // return this._mana_harvesting
   }

@@ -6,13 +6,8 @@ import mana_for_harvest_4 from "@/assets/images/Mana-for-harvest4.png";
 import mana_for_harvest_5 from "@/assets/images/Mana-for-harvest5.png";
 import {id} from "@/Resource/helpers/id.ts";
 
-// Todo: What I actually want
-//  - As long as mana is flushed the value here raises.
-//  - As soon as the flushing stops the images are created
-//  - When flushing is restarted the number raises again and if it stops the new images are concatenated
-//  - When harvesting starts the first image is broken into pieces the same way images are initially created
-//  - Meaning one image will always show the highest possible image and the rest fills the gaps
-//  - Note: While images are broken down (on harvest) the should respct the original position
+const POSITION_RANDOMNESS_ON_DESTRUCT = 5;
+const MAX_X_POSITION = 90;
 
 type DirtyManaImageCreation = {
   image: string;
@@ -20,7 +15,8 @@ type DirtyManaImageCreation = {
 }
 
 type DirtyManaImage = {
-  position: number;
+  xPosition: number;
+  yPosition: 'top' | 'bottom';
   id: string;
 } & DirtyManaImageCreation
 
@@ -30,52 +26,48 @@ export class HarvestRenderClass {
   public mana_images: DirtyManaImage[] = []
   private _harvestAccumulator = 0;
 
-  constructor(
-  ) {
+  constructor() {
     makeAutoObservable(this)
   }
 
   public harvestMana = (amount: number) => {
     this._harvestAccumulator += amount;
     let safety = 50;
-    // console.log(this._harvestAccumulator)
     if (this._harvestAccumulator < 1) {
       return
     }
-    const calculated_image_sum = Object.values(this.mana_images).reduce((a, {value}) => a + value, 0);
-    console.log(calculated_image_sum)
 
-    while (this._harvestAccumulator > 0 && this.mana_images.length > 0 && safety > 0) {
+    while (this._harvestAccumulator >= 0 && this.mana_images.length > 0 && safety > 0) {
       const img = this.mana_images[0];
-      safety --
+      safety--
+      const isImageRemoved = this._harvestAccumulator >= img.value;
+      const isImageDeconstructed = !isImageRemoved;
 
-    //     console.log(this._harvestAccumulator)
-      if (this._harvestAccumulator >= img.value) {
-        // console.log('remove image', img.value)
+      if (isImageRemoved) {
         this._harvestAccumulator -= img.value;
         this.mana_images.shift();
-      } else {
-
-        const remaining = img.value - this._harvestAccumulator;
-        const newImages = getManaImageValues(remaining, img.position, 20)
-        // console.log('deconstruct image', img.value);
+      }
+      if (isImageDeconstructed) {
+        const remaining = img.value - Math.floor(this._harvestAccumulator);
+        // This is the most relevant part. If an image with a value of 15 is reduced by 2 it will generate new images for 13 Mana
+        // And place them close to the deconstructed mana crystal
+        const newImages = getManaImageValues(remaining, img, POSITION_RANDOMNESS_ON_DESTRUCT)
         this.mana_images.shift();
-        this.mana_images.push(...newImages)
-        // console.log(remaining);
-        // console.log(newImages, this.mana_images);
-        // img.value -= this._harvestAccumulator;
-        this._harvestAccumulator = 0;
+        this.mana_images.unshift(...newImages)
+        this._harvestAccumulator -= Math.floor(this._harvestAccumulator);
       }
     }
   }
 
-  public createImages = (available_mana: number, position?: number) => {
-    console.log('stop flushing', available_mana)
-    this.mana_images = getManaImageValues(Math.ceil(available_mana), position)
+  public createImages = (available_mana: number) => {
+    const images = getManaImageValues(Math.ceil(available_mana))
+    this.mana_images.push(...images)
   }
 
-  public reset = () =>
+  public reset = () => {
+    this._harvestAccumulator = 0;
     this.mana_images = [];
+  }
 }
 
 const images: DirtyManaImageCreation[] = [
@@ -103,31 +95,11 @@ const images: DirtyManaImageCreation[] = [
 
 function getManaImageValues(
   dirtyMana: number,
-  position?: number,
-  positionRandomiser = 0,
+  image?: DirtyManaImage,
+  positionRandomizer = 0,
 ): DirtyManaImage[] {
-  // const imageValues = [50, 25, 15, 5, 1];
   const result: DirtyManaImage[] = [];
-  const randomisedPosition = () => {
-    const randomizedPosition = position
-      ? position + Math.random() * positionRandomiser - positionRandomiser / 2
-      : Math.random() * 100
-    return randomizedPosition < 0
-      ? 0
-      : randomizedPosition > 100
-        ? 100
-        : randomizedPosition;
-  }
-
-  // Step 1: Add one image with the highest possible value
-  // const firstValue = images.find(({value}) => dirtyMana >= value);
-  // if (!firstValue) return result;
-  // result.push({
-  //   ...firstValue,
-  //   position,
-  //   id: id(),
-  // });
-  // dirtyMana -= firstValue.value;
+  // const first = getBiggestPossibleFirst(dirtyMana, position)
 
   // Step 2: Fill the rest randomly while deducting
   while (dirtyMana > 0) {
@@ -135,13 +107,49 @@ function getManaImageValues(
     if (possible.length === 0) break;
 
     const randomValue = possible[Math.floor(Math.random() * possible.length)];
+    const xPosition = randomisedPosition(image?.xPosition, positionRandomizer);
+    const yPosition = image?.yPosition ? image.yPosition : Math.random() > 0.5 ? 'top' : 'bottom';
     result.push({
       ...randomValue,
-      position: randomisedPosition(),
+      xPosition,
+      yPosition,
       id: id(),
     });
     dirtyMana -= randomValue.value;
   }
 
   return result;
+}
+
+// const getBiggestPossibleFirst = (
+//   dirtyMana: number,
+//   position?: number,
+// ) => {
+// // Step 1: Add one image with the highest possible value
+//
+//   const result: DirtyManaImage[] = [];
+//
+//   const firstValue = images.find(({value}) => dirtyMana >= value);
+//   if (!firstValue) return result;
+//   result.push({
+//     ...firstValue,
+//     position: randomisedPosition(position),
+//     id: id(),
+//   });
+//   dirtyMana -= firstValue.value;
+//   return result
+// }
+
+const randomisedPosition = (
+  position?: number,
+  positionRandomizer = 0,
+) => {
+  const randomizedPosition = position
+    ? position + Math.random() * positionRandomizer - positionRandomizer / 2
+    : Math.random() * MAX_X_POSITION
+  return randomizedPosition < 0
+    ? 0
+    : randomizedPosition > MAX_X_POSITION
+      ? MAX_X_POSITION
+      : randomizedPosition;
 }

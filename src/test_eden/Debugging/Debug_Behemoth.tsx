@@ -17,7 +17,7 @@ export const Debug_Behemoth = ({beautifyValues}: { beautifyValues: boolean }) =>
           <Box>
             <Debug_ResourceGroup>
               <Debug_Resource resource={climb_speed} beautifyValues={beautifyValues}/>
-              <Debug_Resource resource={climb_height} beautifyValues={beautifyValues}/>
+              <Debug_Resource resource={climb_height} beautifyValues={beautifyValues} incrementBy={500}/>
               <Debug_Resource resource={digging_depth} beautifyValues={beautifyValues}/>
               <Debug_Resource resource={flushing_depth} beautifyValues={beautifyValues}/>
               <Debug_Resource resource={drying_delay} beautifyValues={beautifyValues}/>

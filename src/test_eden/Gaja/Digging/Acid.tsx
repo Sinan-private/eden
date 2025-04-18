@@ -8,9 +8,10 @@ export const Acid = () => {
   return (
     <div
       id="Acid"
-      className="absolute left-0 bottom-0 bg-teal-600/80 w-full overflow-hidden"
+      className="absolute left-0 bottom-0 bg-teal-600 w-full overflow-hidden"
       style={{
         height: flushing_depth.state.value + '%',
+        opacity: flushing_depth.state.value / 100,
         // background: 'linear-gradient(0deg,rgba(13, 148, 136, 1) 0%, rgba(125, 211, 252, 1) 50%, rgba(240, 249, 255, 1) 100%)'
       }}
     >
