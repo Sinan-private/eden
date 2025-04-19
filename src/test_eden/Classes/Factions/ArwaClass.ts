@@ -26,11 +26,18 @@ export class ArwaClass extends FactionClass {
     return this.gameClasses.gameState.mana_harvesting
   }
 
+  get is_influencing() {
+    return true
+  }
+
   public turnUpdate = (game: Game) => {
     const {mana, slaves} = game
     if (this.mana_harvesting && this.collecting_requested) {
       mana.produceRawMana(slaves.arwa)
       this.gameClasses.gameState.produceRawMana()
+    }
+    if (this.is_influencing) {
+      this.resources.getByKey('human_influence').updateValueBy(0.1)
     }
   }
 }

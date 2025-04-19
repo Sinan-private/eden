@@ -2,24 +2,27 @@ import {ResourceClass} from "@/Resource";
 import {HealthCalculation} from "@/components/Constructors/HealthCalculation.ts";
 
 export class SegmentedPower {
+  public thresholds: number[]
+
   constructor(
     private resource: ResourceClass,
     public segments: number
   ) {
+    this.thresholds = this._getThresholds()
   }
 
   public getStatus = () => {
-    const thresholds = this._getThresholds()
+    const thresholds = this.thresholds
     return new HealthCalculation({...this.resource.state, thresholds})
   }
+
   public spendPoints = (amount: number, onSuccess?: () => boolean) => {
     if (this.can_spend < amount) return
     const cost = this.step * amount
-    if(onSuccess) {
+    if (onSuccess) {
       const success = onSuccess()
       if (success) {
-
-      this.resource.updateValueBy(-cost)
+        this.resource.updateValueBy(-cost)
       }
     }
   }
@@ -45,7 +48,17 @@ export class SegmentedPower {
     return this.achieved_thresholds.index
   }
 
+  get value() {
+    return this.resource.value
+  }
+
+  get status() {
+    return {
+      value: this.resource.value,
+      thresholds: this.thresholds,
+    }
+  }
   get state() {
-    return {}
+    return this.resource.state
   }
 }

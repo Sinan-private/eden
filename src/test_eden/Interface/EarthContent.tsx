@@ -7,7 +7,8 @@ import {SegmentedBar} from "@/components/ui/SegmentedBar.tsx";
 export const EarthContent = observer(() => {
   const {resources, slaves, gameState} = useGame();
   const {getByKey} = resources;
-  const influence = getByKey('human_influence');
+  const influence = gameState.influence
+  // const influence = getByKey('human_influence');
   const pollution = getByKey('earth_pollution');
   const virtue = getByKey('human_virtue');
   const slaveCurrent = slaves.slaves_enslaved.value
@@ -23,7 +24,6 @@ export const EarthContent = observer(() => {
     const onSuccess = () => virtue.updateValueBy(30)
     gameState.influence.spendPoints(2, onSuccess)
   }
-  console.log(influence_points)
   return (
     <div className="flex justify-end pr-4">
       <Box className="min-w-[240px] flex flex-col gap-4" variant="default">
@@ -31,19 +31,19 @@ export const EarthContent = observer(() => {
           <p className="mb-1 text-sm">Slaves ({slaveCurrent})</p>
           <HealthBar value={{value: slaveCurrent, max: slaveMax}} className="h-1"/>
         </div>
-        <div className="w-full">
+        <div className="w-full -mb-4">
           <p className="mb-1 text-sm">Influence</p>
-          <SegmentedBar value={influence.state} thresholds={[33, 66]}/>
+          <SegmentedBar {...influence.status} />
         </div>
-        <div className="w-full">
-          <p className="mb-1 text-sm">Pollution</p>
+        <div className="w-full -mb-6">
+          <p className="mb-1 text-sm relative top-4">Pollution</p>
           <div className="flex items-center gap-2">
             <HealthBar value={pollution.state}/>
             <Button size="sm" variant="ghost" onClick={onRaisePollution} disabled={influence_points < 1}>+</Button>
           </div>
         </div>
         <div className="w-full">
-          <p className="mb-1 text-sm">Virtue</p>
+          <p className="mb-1 text-sm relative top-4">Virtue</p>
           <div className="flex items-center gap-2">
             <HealthBar
               value={virtue.state}
@@ -52,7 +52,7 @@ export const EarthContent = observer(() => {
             />
             <Button size="sm" variant="ghost" onClick={onRaiseVirtue} disabled={influence_points < 2}>+</Button>
           </div>
-          <div className="flex justify-between text-xs text-gray-500 mt-1 mr-10">
+          <div className="flex justify-between text-xs text-gray-500 -mt-3 mr-10">
             <p>good</p>
             <p>neutral</p>
             <p>evil</p>

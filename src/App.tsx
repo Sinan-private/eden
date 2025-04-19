@@ -1,7 +1,7 @@
 import {AdminResourceProvider, ResourceKeys, ResourceStoreClass, ResourceTypes} from "./Resource";
 import {Game} from "./test_eden/Game.tsx";
 import {GameProvider} from "./test_eden/context/game.context.ts";
-import {MutableRefObject, useEffect, useRef, useState} from "react";
+import {MutableRefObject, useRef, useState} from "react";
 import {useApi} from "@/Resource/hooks/useApi.ts";
 import {useComponentMount} from "@/Resource/hooks";
 import {AdminController} from "@/Resource/Admin/AdminController.ts";
@@ -21,11 +21,6 @@ function App() {
     setLoaded(true);
     AdminController.getInstance(resourceStore)
   })
-
-  useEffect(() => {
-    const root = window.document.documentElement
-    root.classList.add("dark")
-  }, []);
 
   if (!loaded) {
     return null
