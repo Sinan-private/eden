@@ -4,6 +4,7 @@ import {id} from "@/Resource/helpers/id.ts";
 import {AUTO_CLIMB, AUTO_COLLECT_MANA} from "@/test_eden/constants/constants.ts";
 import {SegmentedPower} from "@/test_eden/Classes/SegmentedPower.ts";
 import {ResourceStore} from "@/Resource/ResourceHandler/ResourceStore.ts";
+import {FactionKeys} from "@/test_eden/Classes/Factions/FactionClass.ts";
 
 // My goal is to create the HarvestRenderer in here. The current setup sucks
 
@@ -142,6 +143,15 @@ export class GameState<K extends string, T extends string> {
     if (this._mana_digging) {
       this._mana_digging = false
     }
+  }
+
+  public assignSlave = (faction: FactionKeys, amount = 1) => {
+
+  }
+
+  public assignToFaction = (faction: FactionKeys, amount = 1) => {
+    const maxPossible = amount <= this.unassigned_slaves ? amount : this.unassigned_slaves;
+    this[faction] += maxPossible
   }
 
   get mana_flushing() {

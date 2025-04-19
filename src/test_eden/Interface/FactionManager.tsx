@@ -1,14 +1,15 @@
 import styled from "styled-components";
 import {Progress} from "@/components/ui/progress.tsx";
 import {useGame} from "../context/game.context.ts";
+import {FactionKeys} from "@/test_eden/Classes/Factions/FactionClass.ts";
 
 export const FactionManager = () => {
   const {factions, slaves} = useGame();
   const all = Object.values(factions);
-
+  const addSlave = (faction: FactionKeys) => slaves.assignToFaction(faction)
   return (
     <div className="flex, flex-col, justify-between gap-2">
-      {all.map(({image, visible, active, loyalty, influence, progress, setActive, addSlave, faction, assigned_slaves}) => (
+      {all.map(({image, visible, active, loyalty, influence, progress, setActive, faction}) => (
         <div id={'Faction Button ' + faction} key={image} style={{display: visible ? 'flex' : 'none'}}>
           <div>
             <div className="relative" style={{width: 70, height: 70, zIndex: 2}}>
@@ -23,7 +24,7 @@ export const FactionManager = () => {
                 }}
               />
               <BottomLeft id="Faction button bottom left">
-                {assigned_slaves}
+                {slaves[faction]}
               </BottomLeft>
               {active &&
                 <VerticalProgress value={progress.value}/>
@@ -43,7 +44,7 @@ export const FactionManager = () => {
             </div>
           </div>
           <button
-            onClick={addSlave}
+            onClick={() => addSlave(faction)}
             disabled={!slaves.can_assign || !active}
             style={{
               position: 'relative',

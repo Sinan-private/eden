@@ -9,6 +9,8 @@ import {ManaClass} from "@/test_eden/Classes/Mana/ManaClass.ts";
 import {BehemothClass} from "@/test_eden/Classes/Behemoth/BehemothClass.ts";
 import {UpstreamClass} from "@/test_eden/Classes/UpstreamClass.ts";
 import {GameBaseProps} from "@/Resource/ResourceHandler/specificTypes.ts";
+import {ArwaClass, GhoulClass, IfritClass, MaridClass} from "@/test_eden/Classes/Factions";
+import {GameBaseClasses} from "@/test_eden/context/game.context.ts";
 
 
 export interface GameCreationProps<K extends string, T extends string> {
@@ -24,6 +26,11 @@ export class GameClass<K extends string, T extends string> {
   public mana: ManaClass
   public behemoth: BehemothClass
   public upstream: UpstreamClass
+  public faction_ifrit: IfritClass
+  public faction_marid: MaridClass
+  public faction_arwa: ArwaClass
+  public faction_ghoul: GhoulClass
+
   constructor(initialGame: GameCreationProps<K, T>) {
     this.resources = createSingletonResourceStore<K, T>().getInstance(initialGame.resources)
     this.gameState = new GameState(this.resources)
@@ -37,5 +44,18 @@ export class GameClass<K extends string, T extends string> {
     this.behemoth = new BehemothClass(baseProps)
     this.upstream = new UpstreamClass(baseProps)
     console.log(this)
+    const factionProps: GameBaseClasses = {
+      gameState: this.gameState,
+      resources: this.resources,
+      slaves: this.slaves,
+      mana: this.mana,
+      behemoth: this.behemoth,
+      upstream: this.upstream,
+      player: this.player,
+    }
+    this.faction_arwa = new ArwaClass(factionProps)
+    this.faction_marid = new MaridClass(factionProps)
+    this.faction_ifrit = new IfritClass(factionProps)
+    this.faction_ghoul = new GhoulClass(factionProps)
   }
 }

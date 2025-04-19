@@ -23,7 +23,7 @@ export class FactionClass {
   public mana: ManaClass;
   public behemoth: BehemothClass;
   public upstream: UpstreamClass;
-  constructor(private _gameClasses: GameBaseClasses) {
+  constructor(_gameClasses: GameBaseClasses) {
     this.resources = _gameClasses.resources
     this.slaves = _gameClasses.slaves
     this.mana = _gameClasses.mana
@@ -36,10 +36,4 @@ export class FactionClass {
 
   public setActive = () => this.active = true;
   public setVisible = () => this.visible = true;
-  public addSlave = () => this._gameClasses.slaves.assignToFaction(this.faction);
-
-  get assigned_slaves() {
-    return this.slaves[this.faction];
-  }
-
 }

@@ -16,7 +16,7 @@ import {game} from "@/test_eden/context/createSingletonGame.ts";
 const useGameBase = () => {
 
   const tick = useTick();
-  const {gameState, resources, player, slaves, mana, behemoth, upstream} = game()
+  const {gameState, resources, player, slaves, mana, behemoth, upstream, faction_ghoul, faction_arwa, faction_marid, faction_ifrit} = game()
   const gameBaseProps: GameBaseProps = useMemo(() => ({
     _resourceStore: resources,
     _gameState: gameState,
@@ -26,20 +26,20 @@ const useGameBase = () => {
   // const mana = useMemo(() => new ManaClass(gameBaseProps), [gameBaseProps])
   // const behemoth = useMemo(() => new BehemothClass(gameBaseProps), [gameBaseProps]);
   // const upstream = useMemo(() => new UpstreamClass(gameBaseProps), [gameBaseProps]);
-  const gameClasses: GameBaseClasses = useMemo(() => ({
-    gameState,
-    resources,
-    slaves,
-    mana,
-    behemoth,
-    upstream,
-    player,
-  }), [player, behemoth, mana, resources, slaves, upstream, gameState])
-  const factionIfrit = useMemo(() => new IfritClass(gameClasses), [gameClasses])
-  const factionArwa = useMemo(() => new ArwaClass(gameClasses), [gameClasses])
-  const factionGhoul = useMemo(() => new GhoulClass(gameClasses), [gameClasses])
-  const factionMarid = useMemo(() => new MaridClass(gameClasses), [gameClasses])
-  const interfaceClass = useMemo(() => new InterfaceController(gameClasses), [gameClasses])
+  // const gameClasses: GameBaseClasses = useMemo(() => ({
+  //   gameState,
+  //   resources,
+  //   slaves,
+  //   mana,
+  //   behemoth,
+  //   upstream,
+  //   player,
+  // }), [player, behemoth, mana, resources, slaves, upstream, gameState])
+  // const factionIfrit = useMemo(() => new IfritClass(gameClasses), [gameClasses])
+  // const factionArwa = useMemo(() => new ArwaClass(gameClasses), [gameClasses])
+  // const factionGhoul = useMemo(() => new GhoulClass(gameClasses), [gameClasses])
+  // const factionMarid = useMemo(() => new MaridClass(gameClasses), [gameClasses])
+  const interfaceClass = useMemo(() => new InterfaceController(), [])
 
   const gameObject: Game = {
     ...tick,
@@ -52,17 +52,17 @@ const useGameBase = () => {
     upstream,
     player,
     factions: {
-      factionMarid,
-      factionIfrit,
-      factionGhoul,
-      factionArwa,
+      factionMarid: faction_marid,
+      factionIfrit: faction_ifrit,
+      factionGhoul: faction_ghoul,
+      factionArwa: faction_arwa,
     }
   };
   useTurnSubscription(slaves.turnUpdate);
   useTurnSubscription(upstream.turnUpdate);
   useTurnSubscription(() => behemoth.turnUpdate(gameObject));
-  useTurnSubscription(() => factionMarid.turnUpdate(gameObject));
-  useTurnSubscription(() => factionArwa.turnUpdate(gameObject));
+  useTurnSubscription(() => faction_marid.turnUpdate(gameObject));
+  useTurnSubscription(() => faction_arwa.turnUpdate(gameObject));
 
   return gameObject
 }

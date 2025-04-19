@@ -7,7 +7,7 @@ import {AUTO_CRAFT, AUTO_SLAVE_HUNT, SLAVE_CREATION} from "../../constants/const
 export class MaridClass extends FactionClass {
   public crafting_requested: boolean = AUTO_CRAFT;
   public hunting_requested: boolean = AUTO_SLAVE_HUNT;
-  constructor(gameClasses: GameBaseClasses) {
+  constructor(private gameClasses: GameBaseClasses) {
     super(gameClasses)
     const {getByKey} = this.resources;
     this.faction = 'marid';
@@ -23,13 +23,14 @@ export class MaridClass extends FactionClass {
   }
 
   get is_hunting(): boolean {
+    const slaves_roaming = this.gameClasses.resources.getByKey('slaves_roaming').value >= 1
     return this.hunting_requested
-      && this.slaves.slaves_roaming.value >= 1
+      && slaves_roaming
   }
 
   get has_slave_caught() {
     const progress_done = this.resources.getByKey('marid_progress').is_max
-    const can_enslave = this.slaves.can_enslave;
+    const can_enslave = !!this.resources.getByKey('slaves_roaming').value
     return progress_done && can_enslave;
   }
 
