@@ -5,11 +5,11 @@ import chains from "../../assets/images/chains.png";
 
 export const SlaveManager = observer(() => {
   const SIZE = 280
-  const {slaves, factions} = useGame();
-  const slaveHunterImage = factions.factionMarid.image;
-  const demonsImage = factions.factionIfrit.image;
-  const guardsImage = factions.factionGhoul.image;
-  const mindBendersImage = factions.factionArwa.image;
+  const {slaves, faction_marid, faction_ghoul, faction_arwa, faction_ifrit} = useGame();
+  const slaveHunterImage = faction_marid.image;
+  const demonsImage = faction_ifrit.image;
+  const guardsImage = faction_ghoul.image;
+  const mindBendersImage = faction_arwa.image;
   const {unassigned_slaves, assignToFaction, arwa, marid} = slaves;
   return (
     <div className="relative" style={{width: SIZE, height: SIZE}}>

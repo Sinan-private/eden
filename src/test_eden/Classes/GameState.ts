@@ -145,15 +145,6 @@ export class GameState<K extends string, T extends string> {
     }
   }
 
-  public assignSlave = (faction: FactionKeys, amount = 1) => {
-
-  }
-
-  public assignToFaction = (faction: FactionKeys, amount = 1) => {
-    const maxPossible = amount <= this.unassigned_slaves ? amount : this.unassigned_slaves;
-    this[faction] += maxPossible
-  }
-
   get mana_flushing() {
     return this._mana_flushing
   }

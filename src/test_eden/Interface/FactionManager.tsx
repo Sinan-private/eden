@@ -4,8 +4,9 @@ import {useGame} from "../context/game.context.ts";
 import {FactionKeys} from "@/test_eden/Classes/Factions/FactionClass.ts";
 
 export const FactionManager = () => {
-  const {factions, slaves} = useGame();
-  const all = Object.values(factions);
+  const {faction_marid, faction_ghoul, faction_arwa, faction_ifrit, slaves} = useGame();
+  // const all = Object.values(factions);
+  const all = [faction_marid, faction_ghoul, faction_arwa, faction_ifrit]
   const addSlave = (faction: FactionKeys) => slaves.assignToFaction(faction)
   return (
     <div className="flex, flex-col, justify-between gap-2">

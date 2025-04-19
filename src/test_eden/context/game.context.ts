@@ -10,61 +10,30 @@ import {Tick, useTick} from "@/Resource/context/tick.context.ts";
 import {InterfaceController} from "../Interface/InterfaceController.ts";
 import {PlayerClass} from "../Classes/Player/PlayerClass.ts";
 import {GameState} from "@/test_eden/Classes/GameState.ts";
-import {GameBaseProps} from "@/Resource/ResourceHandler/specificTypes.ts";
 import {game} from "@/test_eden/context/createSingletonGame.ts";
 
 const useGameBase = () => {
 
   const tick = useTick();
-  const {gameState, resources, player, slaves, mana, behemoth, upstream, faction_ghoul, faction_arwa, faction_marid, faction_ifrit} = game()
-  const gameBaseProps: GameBaseProps = useMemo(() => ({
-    _resourceStore: resources,
-    _gameState: gameState,
-  }), [gameState, resources]);
-  // const player = useMemo(() => new PlayerClass(gameBaseProps), [gameBaseProps]);
-  // const slaves = useMemo(() => new SlaveClass(gameBaseProps), [gameBaseProps]);
-  // const mana = useMemo(() => new ManaClass(gameBaseProps), [gameBaseProps])
-  // const behemoth = useMemo(() => new BehemothClass(gameBaseProps), [gameBaseProps]);
-  // const upstream = useMemo(() => new UpstreamClass(gameBaseProps), [gameBaseProps]);
-  // const gameClasses: GameBaseClasses = useMemo(() => ({
-  //   gameState,
-  //   resources,
-  //   slaves,
-  //   mana,
-  //   behemoth,
-  //   upstream,
-  //   player,
-  // }), [player, behemoth, mana, resources, slaves, upstream, gameState])
-  // const factionIfrit = useMemo(() => new IfritClass(gameClasses), [gameClasses])
-  // const factionArwa = useMemo(() => new ArwaClass(gameClasses), [gameClasses])
-  // const factionGhoul = useMemo(() => new GhoulClass(gameClasses), [gameClasses])
-  // const factionMarid = useMemo(() => new MaridClass(gameClasses), [gameClasses])
-  const interfaceClass = useMemo(() => new InterfaceController(), [])
-
-  const gameObject: Game = {
-    ...tick,
-    gameState,
-    ui: interfaceClass,
-    resources,
-    behemoth,
+  const _game = game();
+  const {
     slaves,
-    mana,
-    upstream,
-    player,
-    factions: {
-      factionMarid: faction_marid,
-      factionIfrit: faction_ifrit,
-      factionGhoul: faction_ghoul,
-      factionArwa: faction_arwa,
-    }
-  };
+    behemoth, upstream,
+    faction_arwa,
+    faction_marid,
+  } = _game
+
   useTurnSubscription(slaves.turnUpdate);
   useTurnSubscription(upstream.turnUpdate);
-  useTurnSubscription(() => behemoth.turnUpdate(gameObject));
-  useTurnSubscription(() => faction_marid.turnUpdate(gameObject));
-  useTurnSubscription(() => faction_arwa.turnUpdate(gameObject));
+  useTurnSubscription(() => behemoth.turnUpdate(_game));
+  useTurnSubscription(() => faction_marid.turnUpdate(_game));
+  useTurnSubscription(() => faction_arwa.turnUpdate(_game));
 
-  return gameObject
+  return {
+    ...tick,
+    ..._game,
+    ui: new InterfaceController()
+  }
 }
 
 const useGameContainer = createContainer(useGameBase);
@@ -79,16 +48,16 @@ export type GameBaseClasses = {
   upstream: UpstreamClass;
   mana: ManaClass;
   player: PlayerClass;
+
 };
 
 type FactionClasses = {
-  factionIfrit: IfritClass;
-  factionMarid: MaridClass;
-  factionArwa: ArwaClass;
-  factionGhoul: GhoulClass;
+  faction_ifrit: IfritClass;
+  faction_marid: MaridClass;
+  faction_arwa: ArwaClass;
+  faction_ghoul: GhoulClass;
 }
 
 export type Game = {
-  factions: FactionClasses;
   ui: InterfaceController
-} & GameBaseClasses & Tick;
+} & GameBaseClasses & Tick & FactionClasses;
