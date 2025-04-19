@@ -6,6 +6,7 @@ export interface HealthBarProps extends Omit<ProgressProps, 'color' | 'value'> {
   thresholds?: HealthProps['thresholds'];
   color?: HealthProps['color'];
   value?: HealthProps['value'];
+  children?: React.ReactNode;
 }
 
 import {Progress, ProgressProps} from "@/components/ui/progress.tsx";
@@ -14,7 +15,7 @@ import {HealthCalculation, HealthProps} from "@/components/Constructors/HealthCa
 export const HealthBar = React.forwardRef<
   React.ElementRef<typeof Progress>,
   HealthBarProps
->(({ className, value, thresholds, color = 'default', ...props }, ref) => {
+>(({ children, className, value, thresholds, color = 'default', ...props }, ref) => {
   const status = new HealthCalculation({thresholds, color, value})
   return (
     <Progress
@@ -24,6 +25,7 @@ export const HealthBar = React.forwardRef<
       color={status.color}
       {...props}
     >
+      {children}
       {status.thresholds.map((threshold) => (
         <Segment key={threshold} position={threshold} />
       ))}
@@ -32,6 +34,6 @@ export const HealthBar = React.forwardRef<
 })
 const Segment = ({position}: {position: number}) => {
   return (
-    <div className="absolute bg-black/70 h-full w-0.5 top-0" style={{left: position + '%'}} />
+    <div className="absolute bg-black/70 h-full w-0.5 top-0 z-10" style={{left: position + '%'}} />
   )
 }

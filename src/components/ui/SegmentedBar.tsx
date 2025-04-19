@@ -1,37 +1,33 @@
 "use client"
 
 import * as React from "react"
-
-export interface SegmentedBarProps extends Omit<ProgressProps, 'color' | 'value'> {
-  thresholds?: HealthProps['thresholds'];
-  color?: HealthProps['color'];
-  value?: HealthProps['value'];
-}
-
-import {Progress, ProgressProps} from "@/components/ui/progress.tsx";
-import {HealthCalculation, HealthProps} from "@/components/Constructors/HealthCalculation.ts";
+import * as ProgressPrimitive from "@radix-ui/react-progress";
+import {Progress} from "@/components/ui/progress.tsx";
+import {HealthCalculation} from "@/components/Constructors/HealthCalculation.ts";
+import {HealthBar, HealthBarProps} from "@/components/ui/HealthBar.tsx";
+import {barClasses} from "@/components/ui/constants.ts";
+import {cn} from "@/lib/utils.ts";
 
 export const SegmentedBar = React.forwardRef<
   React.ElementRef<typeof Progress>,
-  SegmentedBarProps
+  HealthBarProps
 >(({ className, value, thresholds, color = 'default', ...props }, ref) => {
   const status = new HealthCalculation({thresholds, color, value})
+  const bar_color = barClasses[status.color!]
   return (
-    <Progress
+    <HealthBar
       ref={ref}
       className={className}
-      value={status.value}
+      value={status.achieved_thresholds.value}
       color={status.color}
+      thresholds={status.thresholds}
       {...props}
     >
-      {status.thresholds.map((threshold) => (
-        <Segment key={threshold} position={threshold} />
-      ))}
-    </Progress>
+      <ProgressPrimitive.Indicator
+        className={cn("opacity-30 absolute left-0 top-0 h-full w-full flex-1 transition-all bg-gray-50/30", bar_color)}
+        color={status.color}
+        style={{ transform: `translateX(-${100 - (status.value || 0)}%)` }}
+      />
+    </HealthBar>
   )
 })
-const Segment = ({position}: {position: number}) => {
-  return (
-    <div className="absolute bg-black/70 h-full w-0.5 top-0" style={{left: position + '%'}} />
-  )
-}

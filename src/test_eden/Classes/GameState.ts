@@ -1,10 +1,12 @@
 import {HarvestRenderClass} from "@/test_eden/Gaja/Digging/HarvestRenderClass.ts";
 import {makeAutoObservable} from "mobx";
 import {id} from "@/Resource/helpers/id.ts";
-import {ResourceStoreClass} from "@/Resource";
+import {ResourceKeys, ResourceStoreClass} from "@/Resource";
 import {AUTO_CLIMB, AUTO_COLLECT_MANA} from "@/test_eden/constants/constants.ts";
+import {SegmentedPower} from "@/test_eden/Classes/SegmentedPower.ts";
 
 // My goal is to create the HarvestRenderer in here. The current setup sucks
+
 
 const harvestRender = new HarvestRenderClass();
 
@@ -20,17 +22,19 @@ export class GameState {
   // private _mana_harvesting: boolean = false
   public collecting_requested: boolean = AUTO_COLLECT_MANA;
   public movement_requested: boolean = AUTO_CLIMB; // move to GameState?
+  public influence: SegmentedPower;
   currentHarvest: HarvestRenderClass = harvestRender;
   // pastHarvests: HarvestRenderClass[] = [];
 
   constructor(private _resourceStore: ResourceStoreClass) {
+    this.influence = this._getSegmentedPower('human_influence', 3)
     makeAutoObservable(this)
   }
 
-  // public updateSessionLiquidMana = () => {
-  //   const a = this._resourceStore.getTypeSum('liquid_mana')
-  // //   reset all of them each turn?
-  // }
+  private _getSegmentedPower = (key: ResourceKeys, segments: number) => {
+    const resource = this._resourceStore.getByKey(key)
+    return new SegmentedPower(resource, segments)
+  }
 
   public produceRawMana = () => {
     const raw_mana = this._resourceStore.getTypeSessionSum('raw_mana')

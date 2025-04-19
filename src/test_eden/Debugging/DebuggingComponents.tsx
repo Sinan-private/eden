@@ -1,5 +1,4 @@
 import {useState} from "react";
-import styled from "styled-components";
 import {Debug_Behemoth} from "./Debug_Behemoth.tsx";
 import {Debug_SlaveManagement} from "./Debug_SlaveManagement.tsx";
 import {BEAUTIFY_DEBUG, DEBUG} from "../constants/constants.ts";
@@ -26,7 +25,7 @@ export const DebuggingComponents = () => {
         }
       </div>
       {show &&
-        <div className="flex flex-wrap gap-2 pointer-events-auto overflow-y-auto h-full">
+        <div className="flex flex-wrap gap-2 overflow-y-auto h-full">
           <Debug_Behemoth beautifyValues={beautifyValues}/>
           <Debug_SlaveManagement beautifyValues={beautifyValues}/>
           <Debug_Earth beautifyValues={beautifyValues}/>
@@ -35,13 +34,3 @@ export const DebuggingComponents = () => {
     </div>
   )
 }
-
-const Child = styled.div`
-    display: flex;
-    flex-wrap: wrap;
-    pointer-events: initial;
-    z-index: 1000;
-    padding: 30px 100px;
-    height: calc(100% - 60px);
-    overflow: auto;
-`

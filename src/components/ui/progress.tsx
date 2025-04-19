@@ -2,35 +2,13 @@
 
 import * as React from "react"
 import * as ProgressPrimitive from "@radix-ui/react-progress"
+import {cn} from "@/lib/utils"
+import {barClasses, bgClasses} from "@/components/ui/constants.ts";
 
 export interface ProgressProps extends React.ComponentPropsWithoutRef<typeof ProgressPrimitive.Root> {
   color?: "green" | "yellow" | "red" | "blue" | "default";
   children?: React.ReactNode;
 }
-
-import { cn } from "@/lib/utils"
-
-const barClasses = {
-  green: "bg-emerald-600",
-  yellow: "bg-amber-500",
-  red: "bg-rose-600",
-  blue: "bg-sky-500",
-  default: "bg-gray-50",
-};
-
-const bgClasses = {
-  green: "bg-emerald-950",
-  yellow: "bg-amber-950",
-  red: "bg-rose-950",
-  blue: "bg-sky-950",
-  default: "bg-primary/20",
-};
-
-export const PROGRESS_COLORS = {
-  bar: barClasses,
-  background: bgClasses,
-}
-
 
 const Progress = React.forwardRef<
   React.ElementRef<typeof ProgressPrimitive.Root>,

@@ -28,7 +28,7 @@ export interface BoxProps
 
 export const Box = ({ className, variant, ...props }: BoxProps) =>  {
   return (
-    <div className={cn(boxVariants({ variant }), className)} {...props} />
+    <div className={cn(boxVariants({ variant }), className, "pointer-events-auto")} {...props} />
   )
 }
 

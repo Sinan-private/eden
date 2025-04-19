@@ -70,7 +70,7 @@ export class Resource<K extends string, T extends string> {
 
   public readonly setToMin = () => this.setValueTo(this.min)
 
-  public readonly updateValueBy = (value: number): void =>
+  public readonly updateValueBy = (value: number): boolean =>
     this.setValueTo(this.value + value)
 
   public readonly setTo = (update: UpdateProps<K, T> & { key?: K }): void => {
@@ -82,11 +82,11 @@ export class Resource<K extends string, T extends string> {
     Object.assign(this, rest).setValueTo(value);
   }
 
-  public readonly setValueTo = (value: number): void => {
+  public readonly setValueTo = (value: number): boolean => {
     const newValue = this.respectConstraints(value);
     const delta = newValue - this.value;
     if (delta === 0) {
-      return
+      return false
     }
     if (delta < 0) {
       this.lifetimeSpent += delta;
@@ -96,6 +96,7 @@ export class Resource<K extends string, T extends string> {
       this.sessionEarned += delta;
     }
     this.value = this.respectConstraints(value)
+    return true
   };
 
   public readonly respectConstraints = (value: number): number =>

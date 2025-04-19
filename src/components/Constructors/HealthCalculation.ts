@@ -1,5 +1,4 @@
 import {ProgressProps} from "@/components/ui/progress.tsx";
-import {makeAutoObservable} from "mobx";
 
 type StatusColor = ProgressProps['color']
 
@@ -28,6 +27,7 @@ export class HealthCalculation {
   public readonly minThreshold: number;
   public readonly maxThreshold: number;
   public readonly color: StatusColor;
+  public achieved_thresholds: {index: number, value: number};
 
   constructor(props: HealthProps) {
     const value = getHealth(props.value, DEFAULT_VALUE);
@@ -44,10 +44,21 @@ export class HealthCalculation {
     this.maxThreshold = thresholds[thresholds.length - 1] || 100;
     this.value = value;
     this.thresholds = thresholdsToRender;
+    this.achieved_thresholds = this.getAchievedThresholds()
     if (hasWrongColorLength(props.color, thresholds)) {
       console.error(`When providing an array of colors, it needs to be one shorter then the array of thresholds. You provided thresholds: ${thresholds}; color: ${props.color}`)
     }
-    makeAutoObservable(this)
+  }
+
+  private getAchievedThresholds = () => {
+    const thresholds = this.thresholds.concat([0, 100]).sort(ascending)
+    return thresholds.reduce((result, current, i) => {
+      if (this.value >= current) {
+        result.index = i
+        result.value = current
+      }
+      return result
+    }, {} as {index: number, value: number})
   }
 
   public readonly getValueFromList = <T>(list: T[], thresholds = this.thresholds, value = this.value) =>
