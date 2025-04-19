@@ -296,7 +296,7 @@
   },
   {
     "key": "clean_mana_level_1",
-    "value": 250,
+    "value": 253,
     "min": 0,
     "max": null,
     "label": "Mana level 1",

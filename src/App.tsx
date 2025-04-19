@@ -6,17 +6,19 @@ import {useApi} from "@/Resource/hooks/useApi.ts";
 import {useComponentMount} from "@/Resource/hooks";
 import {AdminController} from "@/Resource/Admin/AdminController.ts";
 import {createSingletonResourceStore} from "@/Resource/ResourceHandler/createSingletonResourceStore.ts";
+import {createSingletonGame} from "@/test_eden/context/createSingletonGame.ts";
+
+function App() {
 
 const GlobalStore = createSingletonResourceStore<ResourceKeys, ResourceTypes>()
-function App() {
   const {fetchResources} = useApi();
   const [loaded, setLoaded] = useState(false);
   const resourceRef = useRef<ResourceStoreClass | null>(null) as MutableRefObject<ResourceStoreClass | null>;
   const _resourceStore = resourceRef.current as ResourceStoreClass;
-
   useComponentMount(async () => {
-    const rawState = await fetchResources();
-    const resourceStore = GlobalStore.getInstance(rawState)
+    const rawResources = await fetchResources();
+    createSingletonGame<ResourceKeys, ResourceTypes>().getInstance({resources: rawResources})
+    const resourceStore = GlobalStore.getInstance(rawResources) // This could already be called empty. Just leaving the rawResources in for safety
     resourceRef.current = resourceStore;
     setLoaded(true);
     AdminController.getInstance(resourceStore)

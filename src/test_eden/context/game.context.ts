@@ -11,22 +11,21 @@ import {InterfaceController} from "../Interface/InterfaceController.ts";
 import {PlayerClass} from "../Classes/Player/PlayerClass.ts";
 import {GameState} from "@/test_eden/Classes/GameState.ts";
 import {GameBaseProps} from "@/Resource/ResourceHandler/specificTypes.ts";
+import {game} from "@/test_eden/context/createSingletonGame.ts";
 
-const useGameBase = (resources?: ResourceStoreClass) => {
-  if (!resources) {
-    throw new Error("ResourceStore is required but was not provided.");
-  }
+const useGameBase = () => {
+
   const tick = useTick();
-  const gameState = useMemo(() => new GameState(resources), [resources]);
+  const {gameState, resources, player, slaves, mana, behemoth, upstream} = game()
   const gameBaseProps: GameBaseProps = useMemo(() => ({
     _resourceStore: resources,
     _gameState: gameState,
   }), [gameState, resources]);
-  const player = useMemo(() => new PlayerClass(gameBaseProps), [gameBaseProps]);
-  const slaves = useMemo(() => new SlaveClass(gameBaseProps), [gameBaseProps]);
-  const mana = useMemo(() => new ManaClass(gameBaseProps), [gameBaseProps])
-  const behemoth = useMemo(() => new BehemothClass(gameBaseProps), [gameBaseProps]);
-  const upstream = useMemo(() => new UpstreamClass(gameBaseProps), [gameBaseProps]);
+  // const player = useMemo(() => new PlayerClass(gameBaseProps), [gameBaseProps]);
+  // const slaves = useMemo(() => new SlaveClass(gameBaseProps), [gameBaseProps]);
+  // const mana = useMemo(() => new ManaClass(gameBaseProps), [gameBaseProps])
+  // const behemoth = useMemo(() => new BehemothClass(gameBaseProps), [gameBaseProps]);
+  // const upstream = useMemo(() => new UpstreamClass(gameBaseProps), [gameBaseProps]);
   const gameClasses: GameBaseClasses = useMemo(() => ({
     gameState,
     resources,
@@ -42,7 +41,7 @@ const useGameBase = (resources?: ResourceStoreClass) => {
   const factionMarid = useMemo(() => new MaridClass(gameClasses), [gameClasses])
   const interfaceClass = useMemo(() => new InterfaceController(gameClasses), [gameClasses])
 
-  const game: Game = {
+  const gameObject: Game = {
     ...tick,
     gameState,
     ui: interfaceClass,
@@ -61,11 +60,11 @@ const useGameBase = (resources?: ResourceStoreClass) => {
   };
   useTurnSubscription(slaves.turnUpdate);
   useTurnSubscription(upstream.turnUpdate);
-  useTurnSubscription(() => behemoth.turnUpdate(game));
-  useTurnSubscription(() => factionMarid.turnUpdate(game));
-  useTurnSubscription(() => factionArwa.turnUpdate(game));
+  useTurnSubscription(() => behemoth.turnUpdate(gameObject));
+  useTurnSubscription(() => factionMarid.turnUpdate(gameObject));
+  useTurnSubscription(() => factionArwa.turnUpdate(gameObject));
 
-  return game
+  return gameObject
 }
 
 const useGameContainer = createContainer(useGameBase);

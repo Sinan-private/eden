@@ -1,11 +1,11 @@
-import {ResourceClass} from "@/Resource";
 import {HealthCalculation} from "@/components/Constructors/HealthCalculation.ts";
+import {Resource} from "@/Resource/ResourceHandler";
 
-export class SegmentedPower {
+export class SegmentedPower<K extends string, T extends string> {
   public thresholds: number[]
 
   constructor(
-    private resource: ResourceClass,
+    private resource: Resource<K, T>,
     public segments: number
   ) {
     this.thresholds = this._getThresholds()
