@@ -1,11 +1,11 @@
-import {useTick} from "@/Resource/context/tick.context.ts";
 import behemoth_animated from "../../assets/images/Behemoth_animated.gif";
 import behemoth_image from "../../assets/images/Behemoth.png";
 import {game} from "@/test_eden/Classes/Game";
+import {observer} from "mobx-react";
 
-export const Behemoth = () => {
-  const {getByKey} = game().resources;
-  const {isActive} = useTick();
+export const Behemoth = observer(() => {
+  const {resources, tick: {isActive}} = game();
+  const {getByKey} = resources;
   const speed = getByKey('behemoth_climb_speed').value;
   const src = speed && isActive ? behemoth_animated : behemoth_image;
   return (
@@ -19,4 +19,4 @@ export const Behemoth = () => {
     </div>
     </>
   )
-}
+})

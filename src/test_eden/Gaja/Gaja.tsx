@@ -7,14 +7,21 @@ import {CLIMBING_SPEED_COEFFICIENT} from "../constants/constants.ts";
 import {Digging} from "./Digging/Digging.tsx";
 import {Behemoth} from "./Behemoth.tsx";
 import {game} from "@/test_eden/Classes/Game";
+import {useComponentMount} from "@/Resource/hooks";
 
 const BACKGROUND_IMAGE_HEIGHT = 600;
 const BACKGROUND_IMAGE_WIDTH = 571;
 
 export const Gaja = () => {
+  const {subscribe, subscribeToTurn} = game().tick
   const {getByKey} = game().resources
   const climbing_speed = getByKey('behemoth_climb_speed').value
   const [displacement, setDisplacement] = useState(0);
+  useComponentMount(() => {
+
+  // subscribe((c) => console.log('tick', c))
+  subscribeToTurn((c) => console.log('turn', c))
+  })
   useAnimationSubscription(() => {
     if (climbing_speed) {
       const newPosition = (displacement + climbing_speed * CLIMBING_SPEED_COEFFICIENT)

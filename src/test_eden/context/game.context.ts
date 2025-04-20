@@ -15,11 +15,11 @@ const useGameBase = () => {
     faction_marid,
   } = _game
 
-  useTurnSubscription(slaves.turnUpdate);
-  useTurnSubscription(upstream.turnUpdate);
-  useTurnSubscription(() => behemoth.turnUpdate(_game));
-  useTurnSubscription(() => faction_marid.turnUpdate(_game));
-  useTurnSubscription(() => faction_arwa.turnUpdate(_game));
+  // useTurnSubscription(slaves.turnUpdate);
+  // useTurnSubscription(upstream.turnUpdate);
+  // useTurnSubscription(() => behemoth.turnUpdate(_game));
+  // useTurnSubscription(() => faction_marid.turnUpdate(_game));
+  // useTurnSubscription(() => faction_arwa.turnUpdate(_game));
 
   return {
     ...tick,

@@ -17,8 +17,14 @@ import {ArwaClass, GhoulClass, IfritClass, MaridClass} from "@/test_eden/Classes
 import {GameBaseClasses} from "@/test_eden/Classes/Game/gameTypes.ts";
 import {InterfaceController} from "@/test_eden/Interface/InterfaceController.ts";
 import {AdminController} from "@/Resource/Admin/AdminController.ts";
+import {makeAutoObservable} from "mobx";
+import {Tick} from "@/Resource/context/Tick.ts";
 
 // Here all the logic of the game is bundled into a single class that can be imported everywhere
+
+const TICKS_PER_SECOND = 40
+const TICKS_PER_TURN = 5
+
 
 export interface GameCreationProps {
   resources: ResourceUpdateProps<ResourceKeys, ResourceTypes>[]
@@ -26,6 +32,8 @@ export interface GameCreationProps {
 
 export class GameClass {
   public id: string = id();
+  private tickInterval: number | null = null;
+  public tick_index: number = 0;
   public resources: ResourceStoreClass
   public admin: AdminController
   public gameState: GameState
@@ -39,6 +47,7 @@ export class GameClass {
   public faction_arwa: ArwaClass
   public faction_ghoul: GhoulClass
   public interface: InterfaceController
+  public tick: Tick = new Tick()
 
   constructor(initialGame: GameCreationProps) {
     this.interface = new InterfaceController();
@@ -67,5 +76,16 @@ export class GameClass {
     this.faction_marid = new MaridClass(factionProps)
     this.faction_ifrit = new IfritClass(factionProps)
     this.faction_ghoul = new GhoulClass(factionProps)
+    makeAutoObservable(this)
+  }
+
+  turn() {
+    console.log('turn')
+    this.slaves.turnUpdate()
+    this.upstream.turnUpdate()
+    this.behemoth.turnUpdate(this)
+    this.faction_marid.turnUpdate(this)
+    this.faction_arwa.turnUpdate(this)
+
   }
 }

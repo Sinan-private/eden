@@ -1,7 +1,6 @@
 import {useMemo} from "react";
 import {observer} from "mobx-react";
 import styled from "styled-components";
-import {useTurnSubscription} from "@/Resource";
 import {grey_blue} from "@/constants/colors.ts";
 import {Button} from "@/components/ui/button.tsx";
 import {
@@ -79,8 +78,6 @@ const Center = observer(() => {
               <p>Stamina</p>
             </UIStack>
           </div>
-          {/*</Box>*/}
-          {/*</Box>*/}
         </Box>
       </div>
     </TooltipProvider>
@@ -199,12 +196,12 @@ const UIStack = observer(({tooltip, Icon, value, children}: UIStackProps) => (
   </Tooltip>
 ))
 
-const PlayButton = () => {
+const PlayButton = observer(() => {
   const {
     isActive,
     start,
     stop,
-  } = useTurnSubscription();
+  } = game().tick;
   const onClick = isActive ? stop : start;
   return (
     <PlayContainer onClick={onClick}>
@@ -214,7 +211,7 @@ const PlayButton = () => {
       }
     </PlayContainer>
   )
-}
+})
 
 
 const PlayContainer = styled('div')`
