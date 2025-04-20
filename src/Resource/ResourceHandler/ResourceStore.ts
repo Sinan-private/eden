@@ -3,6 +3,7 @@ import {Resource, ResourceState, ResourceUpdateProps} from "./index.ts";
 import {ResourceTrade, Trade} from "./Trade.ts";
 import {LevelUpdate, ResourceCostUpdate, ResourceTypeRaw, TradeChange} from "./genericTypes.ts";
 import {id} from "@/Resource/helpers/id.ts";
+import {unique} from "@/Resource/helpers/array.ts";
 
 export class ResourceStore<K extends string, T extends string> {
   public id: string = id();
@@ -101,6 +102,19 @@ export class ResourceStore<K extends string, T extends string> {
     }
     return this.allResources
       .filter(resource => resource.type === type)
+  }
+
+  public getTypes = (): T[] => {
+    return this.allResources.map(({type}) => type)
+      .filter(unique)
+      .filter(type => !!type.length)
+  }
+
+  public getResourcesByType = () => {
+    return this.getTypes().map(type => ({
+      type,
+      resources: this.getByType(type),
+    }))
   }
 
   public groupByType = () => {
