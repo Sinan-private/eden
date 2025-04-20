@@ -1,7 +1,7 @@
 import {useMemo, useRef} from "react";
 import {observer} from "mobx-react";
 import styled from "styled-components";
-import {useTurnSubscription} from "../../Resource";
+import {useTurnSubscription} from "@/Resource";
 import {BranchClass} from "./BranchClass.ts";
 import {game} from "@/test_eden/Classes/Game";
 

@@ -1,7 +1,10 @@
+import {DotsVerticalCircle} from "@mynaui/icons-react";
 import {AdminPanel} from "./AdminPanel.tsx";
-import styled from "styled-components";
 import {AdminController} from "@/Resource/Admin/AdminController.ts";
 import {observer} from "mobx-react";
+import {Button, Separator, Switch} from "@/components/ui";
+import {Popover, PopoverContent, PopoverTrigger} from "@/components/ui/Popover.tsx";
+import {DebuggingComponents} from "@/Resource/Admin/Debugging/custom/DebuggingComponents.tsx";
 
 export type ResourceAdminProps = {
   buttonPosition?: "top-left" | "top-right" | "bottom-right" | "bottom-left";
@@ -14,21 +17,63 @@ export const ResourceAdmin = observer(({buttonPosition = 'top-right'}: ResourceA
     <div style={{position: 'absolute', top: 0, left: 0, height: "100vh", width: "100vw", pointerEvents: "none"}}>
       <div style={{pointerEvents: "initial"}}>
         {showAdminPanel && <AdminPanel/>}
-        <ToggleButton buttonPosition={buttonPosition} />
+        <ToggleButton buttonPosition={buttonPosition}/>
       </div>
     </div>
   )
 })
 
-const ToggleButton = ({buttonPosition}: ResourceAdminProps) => {
-  const {onToggleAdminPanel} = AdminController.getInstance();
+const ToggleButton = observer(({buttonPosition}: ResourceAdminProps) => {
+  const {
+    showAdminPanel,
+    showDebugPanel,
+    showDebugPanelBeautifiedValues,
+    onToggleAdminPanel,
+    onToggleDebugPanel,
+    onToggleDebugPanelBeautifiedValues
+  } = AdminController.getInstance();
 
   return (
-    <StylesGameControl style={positions[buttonPosition!]}>
-      <button onClick={onToggleAdminPanel}>Admin</button>
-    </StylesGameControl>
+    <>
+      <Popover>
+        <PopoverTrigger asChild>
+          <Button
+            size="icon"
+            variant="ghost"
+            className="fixed"
+            style={positions[buttonPosition!]}
+          >
+            <DotsVerticalCircle className="w-6 h-6"/>
+          </Button>
+        </PopoverTrigger>
+        <PopoverContent className="w-80 bg-black/80">
+          <div className="flex flex-col py-4 gap-2">
+            <p className="mb-1 text-muted-foreground">Debug resources</p>
+            <div className="flex items-center gap-4">
+              <Switch checked={showDebugPanel} onCheckedChange={onToggleDebugPanel}/>
+              <p>Debug</p>
+            </div>
+            <div className="flex items-center gap-4 pl-2">
+              <Switch
+                disabled={!showDebugPanel}
+                checked={showDebugPanelBeautifiedValues}
+                onCheckedChange={onToggleDebugPanelBeautifiedValues}
+              />
+              Beautify values
+            </div>
+            <Separator className="my-4"/>
+            <p className="mb-1 text-muted-foreground">Admin</p>
+            <div className="flex items-center gap-4">
+              <Switch checked={showAdminPanel} onCheckedChange={onToggleAdminPanel}/>
+              Admin Panel
+            </div>
+          </div>
+        </PopoverContent>
+      </Popover>
+      <DebuggingComponents/>
+    </>
   )
-}
+})
 
 const positions = {
   "top-left": {
@@ -48,16 +93,3 @@ const positions = {
     right: 20
   },
 }
-
-const StylesGameControl = styled.div`
-    position: fixed;
-    display: flex;
-    min-height: 40px;
-    z-index: 1200;
-
-    div {
-        display: flex;
-        align-items: center;
-        gap: 8px;
-    }
-`;

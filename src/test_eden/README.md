@@ -9,3 +9,10 @@ eating up everything alive.
 - You try to gain influence in the human world to lower virtue and to spend on extras, e.g. Fascism
 - Under special circumstances, you can declare Fascism for some time. This will give you a huge boost in slaves and pollution
 - You trade mana and slaves as main currencies
+
+
+Todos
+- I want a general debugging ui as well as a nicely integrated admin ui
+  - To do so I just group all resources by their type and render them as inputs
+- In addition, I want to flag resources with "controlled: true" just to indicate that they are not meant to be updated directly
+- Those resources should offer a slightly different way to update and trigger a warning when updated from an outside

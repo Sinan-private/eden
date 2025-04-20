@@ -2,7 +2,6 @@ import {observer} from "mobx-react";
 import {Gaja} from "./Gaja/Gaja.tsx";
 import upstream_image from '../assets/images/upstream.gif';
 import {Background} from "./Background.tsx";
-import {DebuggingComponents} from "./Debugging/DebuggingComponents.tsx";
 import {Interface} from "./Interface/Interface.tsx";
 import {game} from "@/test_eden/Classes/Game/createSingletonGame.ts";
 import {GameClass} from "@/test_eden/Classes/Game/GameClass.ts";
@@ -23,7 +22,6 @@ export const Game = () => {
       <Gaja/>
       <Upstream/>
       <Interface/>
-      <DebuggingComponents/>
     </Screen>
   )
 }

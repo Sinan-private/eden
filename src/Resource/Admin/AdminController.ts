@@ -18,6 +18,8 @@ export class AdminController {
   public isExistingResource: boolean = false;
   public showAdminPanel: boolean = false;
   public showResourceEdit: boolean = false;
+  public showDebugPanel: boolean = false;
+  public showDebugPanelBeautifiedValues: boolean = false;
 
   constructor(
     originalResourceStore: ResourceStoreClass
@@ -60,6 +62,8 @@ export class AdminController {
   }
   public onCloseAdminPanel = () => this.showAdminPanel = false;
   public onToggleAdminPanel = () => this.showAdminPanel = !this.showAdminPanel;
+  public onToggleDebugPanel = () => {this.showDebugPanel = !this.showDebugPanel};
+  public onToggleDebugPanelBeautifiedValues = () => {this.showDebugPanelBeautifiedValues = !this.showDebugPanelBeautifiedValues};
 
   public cloneResource = (id: string) => {
     this.editing = new Resource(this.cloneResourceStore.get(id).state);

@@ -23,7 +23,9 @@ export const Tunnel = observer(({$digging_depth}: { $digging_depth: number }) =>
           className={cn(
             "absolute h-7 transform -translate-x-1/2",
             yPosition === 'top' ? 'top-0 bottom-auto rotate-180' : 'bottom-0 top-auto'
-          )} style={{left: xPosition + '%'}}
+          )}
+          style={{left: xPosition + '%'}}
+          alt="mana image"
         />
       ))}
       <Acid />
