@@ -5,13 +5,13 @@ import {TopBar} from "./TopBar.tsx";
 import styled from "styled-components";
 import {FooterButtons} from "./FooterButtons.tsx";
 import {SidebarContent} from "./SidebarContent.tsx";
-import {useGame} from "../context/game.context.ts";
 import {InterfaceActiveLeft} from "./InterfaceController.ts";
 import {observer} from "mobx-react";
 import {BehemothManager} from "./BehemothManager.tsx";
 import {PlayerManager} from "./PlayerManager.tsx";
 import {Button} from "@/components/ui/button.tsx";
 import {EarthContent} from "@/test_eden/Interface/EarthContent.tsx";
+import {game} from "@/test_eden/context/createSingletonGame.ts";
 
 const HEADER_HEIGHT = 60;
 export const FOOTER_HEIGHT = 80;
@@ -43,7 +43,7 @@ export const Interface = () => {
 }
 
 const SidebarExtension = observer(() => {
-  const {selectionActiveLeft} = useGame().ui;
+  const {selectionActiveLeft} = game().interface;
   const sidebarContent: Record<Exclude<InterfaceActiveLeft, null>, React.ReactNode> = {
     faction: (<FactionMain/>),
     player: (<PlayerManager/>),
@@ -53,7 +53,7 @@ const SidebarExtension = observer(() => {
 })
 
 const FactionMain = observer(() => {
-  const {produce} = useGame().resources
+  const {produce} = game().resources
   const testProduce = () => produce('raw_mana_level_1', 0.35)
   // const testProduce = () => get('dirty_mana_level_1').updateValueBy(0.2)
   return (

@@ -2,21 +2,23 @@ import {Box} from "@mui/material";
 import styled from "styled-components";
 import {Gaja} from "./Gaja/Gaja.tsx";
 import upstream_image from '../assets/images/upstream.gif';
-import {Game as GameType, useGame} from "./context/game.context.ts";
 import {Background} from "./Background.tsx";
 import {DebuggingComponents} from "./Debugging/DebuggingComponents.tsx";
 import {Interface} from "./Interface/Interface.tsx";
+import {game} from "@/test_eden/context/createSingletonGame.ts";
+import {observer} from "mobx-react";
+import {GameClass} from "@/test_eden/context/GameClass.ts";
 
 const IMAGE_HEIGHT = 400
 
 declare global {
   interface Window {
-    game: GameType;
+    game: GameClass;
   }
 }
 
 export const Game = () => {
-  window.game = useGame();
+  window.game = game();
   // Test trade
   // game.resources.trade([{key: 'dirty_mana_level_1', value: 1}], [{key: 'raw_mana_level_1', value: 1}], 0.2).tradeIfPossible()
   return (
@@ -41,8 +43,8 @@ const Screen = styled('div')`
     overflow: hidden;
 `
 
-const Upstream = () => {
-  const {upstream, behemoth} = useGame();
+const Upstream = observer(() => {
+  const {upstream, behemoth} = game();
   const position = IMAGE_HEIGHT - (behemoth.climb_height.value - upstream.height.value);
   return position < -300
     ? null
@@ -64,7 +66,7 @@ const Upstream = () => {
         }}/>
       </UpstreamContainer>
     )
-}
+})
 
 const UpstreamContainer = styled(Box).attrs<{ $position: number }>((props) => ({
   style: {

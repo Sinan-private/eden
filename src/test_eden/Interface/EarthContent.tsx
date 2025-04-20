@@ -1,11 +1,11 @@
 import {observer} from "mobx-react";
 import {Box, Button} from "@/components/ui";
 import {HealthBar} from "@/components/ui/HealthBar.tsx";
-import {useGame} from "@/test_eden/context/game.context.ts";
 import {SegmentedBar} from "@/components/ui/SegmentedBar.tsx";
+import {game} from "@/test_eden/context/createSingletonGame.ts";
 
 export const EarthContent = observer(() => {
-  const {resources, slaves, gameState} = useGame();
+  const {resources, slaves, gameState} = game();
   const {getByKey} = resources;
   const influence = gameState.influence
   // const influence = getByKey('human_influence');

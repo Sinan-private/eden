@@ -1,15 +1,15 @@
 import styled from "styled-components";
 import {observer} from "mobx-react";
-import {useGame} from "../context/game.context.ts";
 import {useMemo, useRef} from "react";
 import {useTurnSubscription} from "../../Resource";
 import {BranchClass} from "./BranchClass.ts";
+import {game} from "@/test_eden/context/createSingletonGame.ts";
 
 const WIDTH = 800;
 
 export const Branches = observer(({displacement}: { displacement: number }) => {
   const branchClass = useRef<BranchClass>(new BranchClass(7)).current
-  const {climb_speed} = useGame().behemoth;
+  const {climb_speed} = game().behemoth;
   useTurnSubscription(() => {
     if (climb_speed.value) {
       branchClass?.turnUpdate(displacement)

@@ -1,18 +1,18 @@
 import {useState} from "react";
 import styled from "styled-components";
-import {useGame} from "../context/game.context.ts";
 import image from '../../assets/images/seemless_trunk.png';
 import {useAnimationSubscription} from "../../Resource";
 import {Branches} from "./Branches.tsx";
 import {CLIMBING_SPEED_COEFFICIENT} from "../constants/constants.ts";
 import {Digging} from "./Digging/Digging.tsx";
 import {Behemoth} from "./Behemoth.tsx";
+import {game} from "@/test_eden/context/createSingletonGame.ts";
 
 const BACKGROUND_IMAGE_HEIGHT = 600;
 const BACKGROUND_IMAGE_WIDTH = 571;
 
 export const Gaja = () => {
-  const {getByKey} = useGame().resources
+  const {getByKey} = game().resources
   const climbing_speed = getByKey('behemoth_climb_speed').value
   const [displacement, setDisplacement] = useState(0);
   useAnimationSubscription(() => {

@@ -1,10 +1,11 @@
-import {useGame} from "@/test_eden/context/game.context.ts";
 import mana_sparkle from "@/assets/animation/mana-sparkle.gif";
+import {game} from "@/test_eden/context/createSingletonGame.ts";
+import {observer} from "mobx-react";
 
 const MAX_HEIGHT = 450
 
-export const Acid = () => {
-  const {behemoth, mana} = useGame()
+export const Acid = observer(() => {
+  const {behemoth, mana} = game()
   const flushed_sum = mana.flushed_mana_sum <= MAX_HEIGHT ? mana.flushed_mana_sum : MAX_HEIGHT;
   const {flushing_depth} = behemoth
   return (
@@ -29,4 +30,4 @@ export const Acid = () => {
       />
     </div>
   )
-}
+})

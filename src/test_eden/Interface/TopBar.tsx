@@ -1,7 +1,6 @@
 import {useMemo} from "react";
 import {observer} from "mobx-react";
 import styled from "styled-components";
-import {useGame} from "../context/game.context.ts";
 import {useTurnSubscription} from "@/Resource";
 import {grey_blue} from "@/constants/colors.ts";
 import {Button} from "@/components/ui/button.tsx";
@@ -22,6 +21,7 @@ import {
   SignalCircle,
 } from "@mynaui/icons-react";
 import {Box} from "@/components/ui";
+import {game} from "@/test_eden/context/createSingletonGame.ts";
 
 
 
@@ -45,8 +45,8 @@ export const TopBar = () => {
   )
 }
 
-const Center = () => {
-  const {slaves, behemoth, mana, upstream, resources} = useGame();
+const Center = observer(() => {
+  const {slaves, behemoth, mana, upstream, resources} = game();
   const {slaves_enslaved, unassigned_slaves} = slaves;
   const slaveAmount = `${unassigned_slaves.toFixed()} / ${slaves_enslaved.beautify.value}`;
   const manaAmount = `${Math.floor(mana.mana_count)} (${Math.floor(resources.getTypeSum('raw_mana'))})`;
@@ -85,7 +85,7 @@ const Center = () => {
       </div>
     </TooltipProvider>
   )
-}
+})
 
 const BehemothPreview = observer(() => {
 
@@ -97,7 +97,7 @@ const BehemothPreview = observer(() => {
 })
 
 const BehemothAcid = observer(() => {
-  const {manaToAcid} = useGame().behemoth;
+  const {manaToAcid} = game().behemoth;
 
   return (
     <div className="p-2">
@@ -106,7 +106,7 @@ const BehemothAcid = observer(() => {
   )
 })
 const BehemothStamina = observer(() => {
-  const {consumeWastedSlave} = useGame().behemoth;
+  const {consumeWastedSlave} = game().behemoth;
 
   return (
     <div className="p-2">
@@ -115,7 +115,7 @@ const BehemothStamina = observer(() => {
   )
 })
 const SlavePreview = observer(() => {
-  const {slaves} = useGame();
+  const {slaves} = game();
   const slaveView = useMemo(() => {
     const list: [number, string][] = [
       [slaves.unassigned_slaves, 'Unassigned'],
@@ -145,7 +145,7 @@ const SlavePreview = observer(() => {
 
 
 const ManaPreview = observer(() => {
-  const {resources} = useGame();
+  const {resources} = game();
   const manaView = useMemo(() => {
     const raw_mana = resources.getTypeSum('raw_mana')
     const list = resources.getByType('mana')
@@ -178,7 +178,7 @@ type UIStackProps = {
   children?: React.ReactNode;
 }
 
-const UIStack = ({tooltip, Icon, value, children}: UIStackProps) => (
+const UIStack = observer(({tooltip, Icon, value, children}: UIStackProps) => (
   <Tooltip delayDuration={200}>
     <TooltipTrigger asChild>
       <div className="flex gap-1 items-center">
@@ -197,7 +197,7 @@ const UIStack = ({tooltip, Icon, value, children}: UIStackProps) => (
       {tooltip}
     </TooltipContent>
   </Tooltip>
-)
+))
 
 const PlayButton = () => {
   const {

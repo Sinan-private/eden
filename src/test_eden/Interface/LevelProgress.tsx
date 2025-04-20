@@ -1,12 +1,13 @@
 import {TradeChange} from "../../Resource";
-import {useGame} from "../context/game.context.ts";
 import {Progress} from "@/components/ui/progress.tsx";
+import {game} from "@/test_eden/context/createSingletonGame.ts";
+import {observer} from "mobx-react";
 
 type LevelGainProps = {
   gain: TradeChange
 }
 export const LevelGain = ({gain}: LevelGainProps) => {
-  const {getByKey} = useGame().resources;
+  const {getByKey} = game().resources;
   const {label, icon} = getByKey(gain.key)
 
   return (
@@ -28,7 +29,7 @@ export const LevelGain = ({gain}: LevelGainProps) => {
     </div>
   )
 }
-const LevelGainDetail = ({label, value}: { label: string; value: number }) => (
+const LevelGainDetail = observer(({label, value}: { label: string; value: number }) => (
   <div className="justify-center mr-1 mt-1">
     <p className="text-center relative w-full" style={{top: 8}}>
       {label}
@@ -38,7 +39,7 @@ const LevelGainDetail = ({label, value}: { label: string; value: number }) => (
       {value}
     </span>
   </div>
-)
+))
 type LevelProgressProps = {
   level: TradeChange;
   label?: string;
@@ -48,7 +49,7 @@ export const LevelProgress = (
     level,
     label,
   }: LevelProgressProps) => {
-  const {getByKey, percentageOf} = useGame().resources;
+  const {getByKey, percentageOf} = game().resources;
   const resource = getByKey(level.key);
   const percentage = percentageOf(Math.floor(resource.value), level.value!)
   return (

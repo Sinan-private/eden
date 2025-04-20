@@ -1,11 +1,11 @@
 import {useEffect} from "react";
 import {observer} from "mobx-react";
 import styled from "styled-components";
-import {useGame} from "../context/game.context.ts";
 import {Button} from "@/components/ui";
+import {game} from "@/test_eden/context/createSingletonGame.ts";
 
 export const Debug_BehemothControls = observer(() => {
-  const {behemoth, gameState} = useGame();
+  const {behemoth, gameState} = game();
   const onToggleClimbing = behemoth.movement_requested ? behemoth.stopClimbing : behemoth.startClimbing
   const onToggleDigging = gameState.mana_digging ? behemoth.stopDigging : behemoth.startDigging
   const onToggleFlushing = gameState.mana_flushing ? behemoth.stopFlushing : behemoth.startFlushing

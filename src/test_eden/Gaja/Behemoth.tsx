@@ -1,11 +1,11 @@
-import {useGame} from "../context/game.context.ts";
 import {useTick} from "../../Resource/context/tick.context.ts";
 import behemoth_animated from "../../assets/images/Behemoth_animated.gif";
 import behemoth_image from "../../assets/images/Behemoth.png";
 import styled from "styled-components";
+import {game} from "@/test_eden/context/createSingletonGame.ts";
 
 export const Behemoth = () => {
-  const {getByKey} = useGame().resources;
+  const {getByKey} = game().resources;
   const {isActive} = useTick();
   const speed = getByKey('behemoth_climb_speed').value;
   const src = speed && isActive ? behemoth_animated : behemoth_image;

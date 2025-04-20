@@ -3,15 +3,14 @@ import {makeAutoObservable} from "mobx";
 import {id} from "@/Resource/helpers/id.ts";
 import {AUTO_CLIMB, AUTO_COLLECT_MANA} from "@/test_eden/constants/constants.ts";
 import {SegmentedPower} from "@/test_eden/Classes/SegmentedPower.ts";
-import {ResourceStore} from "@/Resource/ResourceHandler/ResourceStore.ts";
-import {FactionKeys} from "@/test_eden/Classes/Factions/FactionClass.ts";
+import {ResourceKeys, ResourceStoreClass} from "@/Resource";
 
 // My goal is to create the HarvestRenderer in here. The current setup sucks
 
 
 const harvestRender = new HarvestRenderClass();
 
-export class GameState<K extends string, T extends string> {
+export class GameState {
   public id: string = id()
   private _behemoth_climbing: boolean = false
   private _mana_digging: boolean = false
@@ -23,16 +22,16 @@ export class GameState<K extends string, T extends string> {
   // private _mana_harvesting: boolean = false
   public collecting_requested: boolean = AUTO_COLLECT_MANA;
   public movement_requested: boolean = AUTO_CLIMB; // move to GameState?
-  public influence: SegmentedPower<K, T>;
+  public influence: SegmentedPower;
   currentHarvest: HarvestRenderClass = harvestRender;
   // pastHarvests: HarvestRenderClass[] = [];
 
-  constructor(private _resourceStore: ResourceStore<K, T>) {
+  constructor(private _resourceStore: ResourceStoreClass) {
     this.influence = this._getSegmentedPower('human_influence', 3)
     makeAutoObservable(this)
   }
 
-  private _getSegmentedPower = (key: K, segments: number) => {
+  private _getSegmentedPower = (key: ResourceKeys, segments: number) => {
     const resource = this._resourceStore.getByKey(key)
     return new SegmentedPower(resource, segments)
   }

@@ -1,15 +1,15 @@
 import {GameClass, GameCreationProps} from "@/test_eden/context/GameClass.ts";
 
-let instance: GameClass<any, any> | null = null;
-export function createSingletonGame<K extends string, T extends string>() {
+let instance: GameClass | null = null;
+export function createSingletonGame() {
 
   return {
-    getInstance(initialGame?: GameCreationProps<K, T>): GameClass<K, T> {
+    getInstance(initialGame?: GameCreationProps): GameClass {
       if (!instance) {
         if (!initialGame) throw new Error("First call must provide initial resources");
         instance = new GameClass(initialGame);
       }
-      return instance as GameClass<K, T>;
+      return instance as GameClass;
     },
     resetInstance() {
       instance = null;

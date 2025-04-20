@@ -1,6 +1,5 @@
 import {id} from "@/Resource/helpers/id.ts";
 import {ResourceUpdateProps} from "@/Resource/ResourceHandler";
-import {ResourceStore} from "@/Resource/ResourceHandler/ResourceStore.ts";
 import {createSingletonResourceStore} from "@/Resource/ResourceHandler/createSingletonResourceStore.ts";
 import {GameState} from "@/test_eden/Classes/GameState.ts";
 import {PlayerClass} from "@/test_eden/Classes/Player/PlayerClass.ts";
@@ -8,19 +7,26 @@ import {SlaveClass} from "@/test_eden/Classes/Slaves/SlaveClass.ts";
 import {ManaClass} from "@/test_eden/Classes/Mana/ManaClass.ts";
 import {BehemothClass} from "@/test_eden/Classes/Behemoth/BehemothClass.ts";
 import {UpstreamClass} from "@/test_eden/Classes/UpstreamClass.ts";
-import {GameBaseProps} from "@/Resource/ResourceHandler/specificTypes.ts";
+import {
+  GameBaseProps,
+  ResourceKeys,
+  ResourceStoreClass,
+  ResourceTypes
+} from "@/Resource/ResourceHandler/specificTypes.ts";
 import {ArwaClass, GhoulClass, IfritClass, MaridClass} from "@/test_eden/Classes/Factions";
-import {GameBaseClasses} from "@/test_eden/context/game.context.ts";
+
+import {GameBaseClasses} from "@/test_eden/context/gameTypes.ts";
+import {InterfaceController} from "@/test_eden/Interface/InterfaceController.ts";
 
 
-export interface GameCreationProps<K extends string, T extends string> {
-  resources: ResourceUpdateProps<K, T>[]
+export interface GameCreationProps {
+  resources: ResourceUpdateProps<ResourceKeys, ResourceTypes>[]
 }
 
-export class GameClass<K extends string, T extends string> {
+export class GameClass {
   public id: string = id();
-  public resources: ResourceStore<K, T>
-  public gameState: GameState<K, T>
+  public resources: ResourceStoreClass
+  public gameState: GameState
   public player: PlayerClass
   public slaves: SlaveClass
   public mana: ManaClass
@@ -30,12 +36,14 @@ export class GameClass<K extends string, T extends string> {
   public faction_marid: MaridClass
   public faction_arwa: ArwaClass
   public faction_ghoul: GhoulClass
+  public interface: InterfaceController
 
-  constructor(initialGame: GameCreationProps<K, T>) {
-    this.resources = createSingletonResourceStore<K, T>().getInstance(initialGame.resources)
+  constructor(initialGame: GameCreationProps) {
+    this.interface = new InterfaceController();
+    this.resources = createSingletonResourceStore<ResourceKeys, ResourceTypes>().getInstance(initialGame.resources)
     this.gameState = new GameState(this.resources)
     const baseProps: GameBaseProps = {
-      _resourceStore: this.resources as any,
+      _resourceStore: this.resources,
       _gameState: this.gameState,
     }
     this.player = new PlayerClass(baseProps)

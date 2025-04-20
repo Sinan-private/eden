@@ -1,11 +1,11 @@
 import {observer} from "mobx-react";
 import {cn} from "@/lib/utils.ts";
-import {useGame} from "@/test_eden/context/game.context.ts";
 import {Acid} from "@/test_eden/Gaja/Digging/Acid.tsx";
 import tunnelEdges from "../../../assets/images/Tunnel.png"
+import {game} from "@/test_eden/context/createSingletonGame.ts";
 
 export const Tunnel = observer(({$digging_depth}: { $digging_depth: number }) => {
-  const {gameState} = useGame()
+  const {gameState} = game()
   const {renderHarvest} = gameState
   const renderImages = renderHarvest();
   // I want to blend in the mana

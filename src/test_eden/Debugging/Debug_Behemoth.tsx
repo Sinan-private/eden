@@ -1,10 +1,10 @@
-import {useGame} from "../context/game.context.ts";
 import {Debug_Resource, Debug_ResourceGroup} from "./Debug_Resource.tsx";
 import {Box} from "@/components/ui";
 import {Container} from "@/components/ui/Box.tsx";
+import {game} from "@/test_eden/context/createSingletonGame.ts";
 
 export const Debug_Behemoth = ({beautifyValues}: { beautifyValues: boolean }) => {
-  const {behemoth, resources} = useGame()
+  const {behemoth, resources} = game()
   const {digging_depth, flushing_depth, drying_delay, climb_height, climb_speed} = behemoth
   const liquid_mana = resources.getByType("liquid_mana")
   const dirty_mana = resources.getByType("dirty_mana")

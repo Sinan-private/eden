@@ -1,5 +1,5 @@
 import {makeAutoObservable} from "mobx";
-import {ResourceClass, ResourceStoreClass} from "../../../Resource";
+import {ResourceClass, ResourceStoreClass} from "@/Resource";
 import {
   BEHEMOTH_STAMINA_PER_SLAVE,
   BEHEMOTH_STAMINA_PER_WASTED_SLAVE,
@@ -7,11 +7,11 @@ import {
   STAMINA_REGEN_ON_FLUSHING
 } from "../../constants/constants.ts";
 import {staminaDrain} from "../../constants/gameRules.ts";
-import {Game} from "../../context/game.context.ts";
 import {LevelClass} from "../LevelClass.ts";
 import {levels} from "./levels.ts";
 import {GameBaseProps} from "@/Resource/ResourceHandler/specificTypes.ts";
 import {GameState} from "@/test_eden/Classes/GameState.ts";
+import {GameClass} from "@/test_eden/context/GameClass.ts";
 
 export class BehemothClass {
   public level: LevelClass;
@@ -162,7 +162,7 @@ export class BehemothClass {
     return !this.is_moving && !this.is_flushing
   }
 
-  public turnUpdate = (game: Game) => {
+  public turnUpdate = (game: GameClass) => {
     const {
       should_move,
       is_flushing,

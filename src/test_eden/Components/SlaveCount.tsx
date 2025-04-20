@@ -1,8 +1,8 @@
 import {Box, CircularProgress, CircularProgressProps, Typography} from "@mui/material";
-import {useGame} from "../context/game.context.ts";
+import {game} from "@/test_eden/context/createSingletonGame.ts";
 
 export const SlaveCount = ({size = 40}: {size?: number}) => {
-  const {slaves_enslaved, slave_health} = useGame().slaves
+  const {slaves_enslaved, slave_health} = game().slaves
   return (
     <CircularProgressWithLabel value={slave_health.value} label={slaves_enslaved.state.value} size={size} />
   )

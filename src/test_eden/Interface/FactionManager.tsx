@@ -1,10 +1,10 @@
 import styled from "styled-components";
 import {Progress} from "@/components/ui/progress.tsx";
-import {useGame} from "../context/game.context.ts";
 import {FactionKeys} from "@/test_eden/Classes/Factions/FactionClass.ts";
+import {game} from "@/test_eden/context/createSingletonGame.ts";
 
 export const FactionManager = () => {
-  const {faction_marid, faction_ghoul, faction_arwa, faction_ifrit, slaves} = useGame();
+  const {faction_marid, faction_ghoul, faction_arwa, faction_ifrit, slaves} = game();
   // const all = Object.values(factions);
   const all = [faction_marid, faction_ghoul, faction_arwa, faction_ifrit]
   const addSlave = (faction: FactionKeys) => slaves.assignToFaction(faction)

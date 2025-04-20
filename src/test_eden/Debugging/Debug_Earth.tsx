@@ -1,9 +1,9 @@
 import {Box, Container} from "@/components/ui/Box.tsx";
 import {Debug_Resource, Debug_ResourceGroup} from "@/test_eden/Debugging/Debug_Resource.tsx";
-import {useGame} from "@/test_eden/context/game.context.ts";
+import {game} from "@/test_eden/context/createSingletonGame.ts";
 
 export const Debug_Earth = ({beautifyValues}: { beautifyValues: boolean }) => {
-  const {resources} = useGame();
+  const {resources} = game();
   const influence = resources.getByKey("human_influence");
   const pollution = resources.getByKey("earth_pollution");
   const virtue = resources.getByKey("human_virtue");

@@ -1,11 +1,11 @@
 import styled from "styled-components";
 import {observer} from "mobx-react";
-import {useGame} from "../context/game.context.ts";
 import chains from "../../assets/images/chains.png";
+import {game} from "@/test_eden/context/createSingletonGame.ts";
 
 export const SlaveManager = observer(() => {
   const SIZE = 280
-  const {slaves, faction_marid, faction_ghoul, faction_arwa, faction_ifrit} = useGame();
+  const {slaves, faction_marid, faction_ghoul, faction_arwa, faction_ifrit} = game();
   const slaveHunterImage = faction_marid.image;
   const demonsImage = faction_ifrit.image;
   const guardsImage = faction_ghoul.image;

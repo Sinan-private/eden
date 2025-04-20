@@ -1,7 +1,8 @@
 import image from '../../../assets/images/Faction4.png';
 import {FactionClass} from "./FactionClass.ts";
-import {Game, GameBaseClasses} from "../../context/game.context.ts";
 import {AUTO_COLLECT_MANA} from "../../constants/constants.ts";
+import {GameBaseClasses} from "@/test_eden/context/gameTypes.ts";
+import {GameClass} from "@/test_eden/context/GameClass.ts";
 
 
 export class ArwaClass extends FactionClass {
@@ -30,7 +31,7 @@ export class ArwaClass extends FactionClass {
     return true
   }
 
-  public turnUpdate = (game: Game) => {
+  public turnUpdate = (game: GameClass) => {
     const {mana, slaves} = game
     if (this.mana_harvesting && this.collecting_requested) {
       mana.produceRawMana(slaves.arwa)

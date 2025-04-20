@@ -1,12 +1,12 @@
 import {observer} from "mobx-react";
-import {useGame} from "../context/game.context.ts";
 import {InterfaceActiveLeft} from "./InterfaceController.ts";
 import React from "react";
 import {FactionManager} from "./FactionManager.tsx";
 import {ValueDisplay} from "./ValueDisplay.tsx";
+import {game} from "@/test_eden/context/createSingletonGame.ts";
 
 export const SidebarContent = observer(() => {
-  const {selectionActiveLeft} = useGame().ui;
+  const {selectionActiveLeft} = game().interface;
   const sidebarContent: Record<Exclude<InterfaceActiveLeft, null>, React.ReactNode> = {
     faction: (<FactionManager/>),
     player: (<PlayerSettings/>),
@@ -23,7 +23,7 @@ const PlayerSettings = () => {
   )
 }
 const BehemothSettings = () => {
-  const {hp, acid, stamina} = useGame().behemoth;
+  const {hp, acid, stamina} = game().behemoth;
   return (
     <div className="flex flex-col gap-2">
       Behemoth Settings

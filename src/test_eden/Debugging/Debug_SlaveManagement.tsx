@@ -1,8 +1,8 @@
-import {useGame} from "../context/game.context.ts";
 import {Debug_CustomResource, Debug_Resource, Debug_ResourceGroup} from "./Debug_Resource.tsx";
 
 import {Box, Button as RawButton} from "@/components/ui";
 import {Container} from "@/components/ui/Box.tsx";
+import {game} from "@/test_eden/context/createSingletonGame.ts";
 
 const Button = ({onClick, children}: {onClick(): void; children: string}) => (
   <RawButton onClick={() => onClick()} className="w-[100px]" variant="outline">
@@ -11,7 +11,7 @@ const Button = ({onClick, children}: {onClick(): void; children: string}) => (
 )
 
 export const Debug_SlaveManagement = ({beautifyValues}: { beautifyValues: boolean }) => {
-  const {slaves} = useGame();
+  const {slaves} = game();
   return (
     <Container>
         <Box>

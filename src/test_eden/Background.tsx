@@ -1,9 +1,10 @@
 import styled from "styled-components";
 import background from '../assets/images/hell_background.jpg'
-import {useGame} from "./context/game.context.ts";
+import {game} from "@/test_eden/context/createSingletonGame.ts";
+import {observer} from "mobx-react";
 
-export const Background = () => {
-  const {danger} = useGame().upstream
+export const Background = observer(() => {
+  const {danger} = game().upstream
   const distort = danger;
   const distortionStrength = distort / 100;
   const hueRotation = distort * 1.95;
@@ -18,7 +19,7 @@ export const Background = () => {
       <Blood style={{transform: `translateY(${bloodPosition}%)`, opacity: 0.5 + distortionStrength}} />
     </>
   )
-}
+})
 
 const Frame = styled.div`
     position: fixed;

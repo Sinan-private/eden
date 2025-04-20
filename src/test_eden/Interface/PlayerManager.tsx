@@ -1,11 +1,11 @@
 import {observer} from "mobx-react";
-import {useGame} from "../context/game.context.ts";
 import {LevelGain, LevelProgress} from "./LevelProgress.tsx";
 import {Button} from "@/components/ui/button.tsx";
 import {Box} from "@/components/ui";
+import {game} from "@/test_eden/context/createSingletonGame.ts";
 
 export const PlayerManager = observer(() => {
-  const {level} = useGame().player;
+  const {level} = game().player;
   const {
     level_requirements,
     levelUp,

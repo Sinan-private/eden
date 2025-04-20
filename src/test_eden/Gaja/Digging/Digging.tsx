@@ -1,9 +1,9 @@
-import {useGame} from "../../context/game.context.ts";
 import {Box} from "@mui/material";
 import {Tunnel} from "@/test_eden/Gaja/Digging/Tunnel.tsx";
+import {game} from "@/test_eden/context/createSingletonGame.ts";
 
 export const Digging = () => {
-  const {behemoth} = useGame()
+  const {behemoth} = game()
   const {digging_depth} = behemoth
   if (behemoth.is_moving) {
     return null

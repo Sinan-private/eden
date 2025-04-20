@@ -2,8 +2,8 @@ import {observer} from "mobx-react";
 import behemoth_icon from '../../assets/images/behemoth_icon.png'
 import factions_icon from '../../assets/images/factions.png'
 import player_icon from '../../assets/images/Player_stats.png'
-import {useGame} from "../context/game.context.ts";
 import {InterfaceActiveLeft} from "./InterfaceController.ts";
+import {game} from "@/test_eden/context/createSingletonGame.ts";
 
 const BUTTON_SIZE = 50;
 const IMAGE_SIZE = BUTTON_SIZE * 0.8
@@ -25,7 +25,7 @@ type FooterButtonProps = {
 }
 
 const FooterButton = observer(({image, selection_key}: FooterButtonProps) => {
-  const {selectActiveLeft, isActive} = useGame().ui
+  const {selectActiveLeft, isActive} = game().interface
   const onSelect = () => selectActiveLeft(selection_key)
   return (
     <div className={`relative flex align-middle justify-center border-2 border-cyan-900 transition hover:bg-cyan-950 ${isActive(selection_key) ? 'bg-cyan-900' : ''}`}
