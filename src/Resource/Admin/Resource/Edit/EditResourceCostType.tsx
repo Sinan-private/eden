@@ -1,4 +1,3 @@
-import {AdminController} from "@/Resource/Admin/AdminController.ts";
 import {ChangeEvent} from "react";
 import {DeleteButton} from "@/components/ui/DeleteButton.tsx";
 import {Input} from "@/components/ui/input.tsx";
@@ -13,6 +12,7 @@ import {
   SelectTrigger,
   SelectValue
 } from "@/components/ui/select.tsx";
+import {game} from "@/test_eden/Classes/Game";
 
 type SingleTradeProps = {
   trade: ResourceCostUpdate<ResourceKeys, ResourceTypes>;
@@ -37,7 +37,7 @@ export const EditResourceCostType = ({trade, type}: SingleTradeProps) => {
 }
 
 const AddCost = ({type}: { type: SingleTradeProps['type'] }) => {
-  const {editing, availableCostKeys} = AdminController.getInstance();
+  const {editing, availableCostKeys} = game().admin;
   const onSelect = (key: ResourceKeys) =>
     editing?.addCost(type, {key, value: 1})
 
@@ -71,7 +71,7 @@ type SingleCostProps = {
   type: keyof ResourceCostUpdate<ResourceKeys, ResourceTypes>
 }
 const SingleCost = ({trade, type}: SingleCostProps) => {
-  const {cloneResourceStore, editing} = AdminController.getInstance()
+  const {cloneResourceStore, editing} = game().admin;
   const {getByKey} = cloneResourceStore
   const resource = getByKey(trade.key) || {};
   const onChange = (e: ChangeEvent<HTMLInputElement>) => {

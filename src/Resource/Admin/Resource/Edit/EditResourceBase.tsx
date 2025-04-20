@@ -1,4 +1,3 @@
-import {AdminController} from "@/Resource/Admin/AdminController.ts";
 import {useMemo} from "react";
 import {
   Input,
@@ -13,9 +12,10 @@ import {
 } from "@/components/ui";
 import {resourceTypes} from "@/Resource/generated/resourceTypes.ts";
 import {observer} from "mobx-react";
+import {game} from "@/test_eden/Classes/Game";
 
 export const EditResourceBase = observer(() => {
-  const {keyAlreadyExists, getResourceForInput} = AdminController.getInstance()
+  const {keyAlreadyExists, getResourceForInput} = game().admin
   const {
     setLabel,
     setKey,

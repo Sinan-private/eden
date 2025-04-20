@@ -3,11 +3,11 @@ import {Button} from "@/components/ui/button.tsx";
 import {X} from "@mynaui/icons-react";
 import {Tabs, TabsContent, TabsList, TabsTrigger} from "@/components/ui/tabs.tsx";
 import {AdminResourceOverview} from "@/Resource/Admin/Resource/AdminResourceOverview.tsx";
-import {AdminController} from "@/Resource/Admin/AdminController.ts";
 import {AdminType} from "@/Resource/Admin/AdminType.tsx";
+import {game} from "@/test_eden/Classes/Game";
 
 export const AdminPanel = () => {
-  const {onCloseAdminPanel} = AdminController.getInstance();
+  const {onCloseAdminPanel} = game().admin;
 
   return (
     <>

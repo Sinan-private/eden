@@ -2,9 +2,9 @@ import {EditOne, DotsVertical, Copy, Trash} from "@mynaui/icons-react";
 import {Button} from "@/components/ui/button.tsx";
 import {ResourceKeys, ResourceTypes, TradeChange} from "@/Resource";
 import {Resource} from "@/Resource/ResourceHandler";
-import {AdminController} from "@/Resource/Admin/AdminController.ts";
 import {Popover, PopoverContent, PopoverTrigger} from "@/components/ui/Popover.tsx";
 import {Separator} from "@/components/ui/separator.tsx";
+import {game} from "@/test_eden/Classes/Game";
 
 type AdminResourcesProps = {
   resource: Resource<ResourceKeys, ResourceTypes>
@@ -12,7 +12,7 @@ type AdminResourcesProps = {
 
 export const AdminResource = ({resource}: AdminResourcesProps) => {
   const max = resource.max !== Infinity ? resource.max : undefined;
-  const {editResource, cloneResource, resourceReferences, removeResource} = AdminController.getInstance();
+  const {editResource, cloneResource, resourceReferences, removeResource} = game().admin;
   const onEdit = () => editResource(resource.id);
   const onClone = () => cloneResource(resource.id);
   const references = resourceReferences(resource.key);
@@ -98,7 +98,7 @@ type CostViewProps = {
 
 
 const CostView = ({trade}: CostViewProps) => {
-  const {getByKey} = AdminController.getInstance().cloneResourceStore;
+  const {getByKey} = game().admin.cloneResourceStore;
   const resource = getByKey(trade.key)
   return (
     <div className="flex items-center gap-1">

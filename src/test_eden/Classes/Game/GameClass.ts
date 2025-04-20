@@ -1,7 +1,7 @@
 import {id} from "@/Resource/helpers/id.ts";
 import {ResourceUpdateProps} from "@/Resource/ResourceHandler";
 import {createSingletonResourceStore} from "@/Resource/ResourceHandler/createSingletonResourceStore.ts";
-import {GameState} from "@/test_eden/Classes/GameState.ts";
+import {GameState} from "@/test_eden/Classes/Game/GameState.ts";
 import {PlayerClass} from "@/test_eden/Classes/Player/PlayerClass.ts";
 import {SlaveClass} from "@/test_eden/Classes/Slaves/SlaveClass.ts";
 import {ManaClass} from "@/test_eden/Classes/Mana/ManaClass.ts";
@@ -16,6 +16,7 @@ import {
 import {ArwaClass, GhoulClass, IfritClass, MaridClass} from "@/test_eden/Classes/Factions";
 import {GameBaseClasses} from "@/test_eden/Classes/Game/gameTypes.ts";
 import {InterfaceController} from "@/test_eden/Interface/InterfaceController.ts";
+import {AdminController} from "@/Resource/Admin/AdminController.ts";
 
 // Here all the logic of the game is bundled into a single class that can be imported everywhere
 
@@ -26,6 +27,7 @@ export interface GameCreationProps {
 export class GameClass {
   public id: string = id();
   public resources: ResourceStoreClass
+  public admin: AdminController
   public gameState: GameState
   public player: PlayerClass
   public slaves: SlaveClass
@@ -41,6 +43,7 @@ export class GameClass {
   constructor(initialGame: GameCreationProps) {
     this.interface = new InterfaceController();
     this.resources = createSingletonResourceStore<ResourceKeys, ResourceTypes>().getInstance(initialGame.resources)
+    this.admin = AdminController.getInstance(this.resources)
     this.gameState = new GameState(this.resources)
     const baseProps: GameBaseProps = {
       _resourceStore: this.resources,

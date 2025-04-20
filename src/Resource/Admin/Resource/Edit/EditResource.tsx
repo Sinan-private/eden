@@ -11,14 +11,14 @@ import {
   Button,
   Separator,
 } from "@/components/ui";
-import {AdminController} from "@/Resource/Admin/AdminController.ts";
 import {EditResourceBase} from "@/Resource/Admin/Resource/Edit/EditResourceBase.tsx";
 import {EditResourceValue} from "@/Resource/Admin/Resource/Edit/EditResourceValue.tsx";
 import {EditResourceCost} from "@/Resource/Admin/Resource/Edit/EditResourceCost.tsx";
 import {observer} from "mobx-react";
+import {game} from "@/test_eden/Classes/Game";
 
 export const EditResource = () => {
-  const {getResourceForInput} = AdminController.getInstance()
+  const {getResourceForInput} = game().admin
   const {resource} = useMemo(getResourceForInput, [getResourceForInput])
 
   return (
@@ -56,7 +56,7 @@ const FormButtons = observer(() => {
     resetEditableResource,
     onSave,
     saveDisabled,
-  } = AdminController.getInstance()
+  } = game().admin
   const disableSave = saveDisabled()
   return (
     <AlertDialogFooter>

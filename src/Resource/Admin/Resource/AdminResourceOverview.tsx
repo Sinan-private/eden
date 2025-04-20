@@ -4,11 +4,11 @@ import {observer} from "mobx-react";
 import {AlertDialog} from "@/components/ui/alert-dialog.tsx";
 import {AdminResource} from "@/Resource/Admin/Resource/AdminResource.tsx";
 import {EditResource} from "@/Resource/Admin/Resource/Edit/EditResource.tsx";
-import {AdminController} from "@/Resource/Admin/AdminController.ts";
 import {AddButton} from "@/components/ui/AddButton.tsx";
+import {game} from "@/test_eden/Classes/Game";
 
 export const AdminResourceOverview = observer(() => {
-  const {cloneResourceStore: resources, showResourceEdit, canEdit} = AdminController.getInstance()
+  const {cloneResourceStore: resources, showResourceEdit, canEdit} = game().admin
   const {groupByType} = resources;
   const types = groupByType()
   return (
@@ -37,7 +37,7 @@ type ResourceTypeProps = {
 }
 
 const ResourceType = observer(({type, resources}: ResourceTypeProps) => {
-  const {createResource} = AdminController.getInstance()
+  const {createResource} = game().admin
   const _type = typeToLabel(type)
 
   return (

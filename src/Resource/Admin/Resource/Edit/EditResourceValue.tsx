@@ -1,10 +1,10 @@
 import {observer} from "mobx-react";
-import {AdminController} from "@/Resource/Admin/AdminController.ts";
 import {useMemo} from "react";
 import {Input, Label, Switch} from "@/components/ui";
+import {game} from "@/test_eden/Classes/Game";
 
 export const EditResourceValue = observer(() => {
-  const {getResourceForInput} = AdminController.getInstance()
+  const {getResourceForInput} = game().admin
   const {
     setValue,
     onInputMin,

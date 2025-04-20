@@ -2,7 +2,7 @@ import {ResourceStoreClass, ResourceTypes} from "../../../Resource";
 import {CRAFTING_SPEED, DRYING_SPEED, FLUSHING_SPEED, HARVEST_SPEED} from "../../constants/constants.ts";
 import {RandomResourceUpdate} from "../RandomResourceUpdate.ts";
 import {GameBaseProps} from "@/Resource/ResourceHandler/specificTypes.ts";
-import {GameState} from "@/test_eden/Classes/GameState.ts";
+import {GameState} from "@/test_eden/Classes/Game/GameState.ts";
 
 export class ManaClass {
   private _finding_chance_level_1: number = 1

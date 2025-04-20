@@ -1,11 +1,11 @@
 import {useMemo} from "react";
-import {AdminController} from "@/Resource/Admin/AdminController.ts";
 import {Button, DeleteButton} from "@/components/ui";
 import {EditResourceCostType} from "@/Resource/Admin/Resource/Edit/EditResourceCostType.tsx";
 import {observer} from "mobx-react";
+import {game} from "@/test_eden/Classes/Game";
 
 export const EditResourceCost = observer(() => {
-  const {getResourceForInput, editing} = AdminController.getInstance()
+  const {getResourceForInput, editing} = game().admin
   const {addCost, resource} = useMemo(getResourceForInput, [getResourceForInput])
   const removeCost = () => editing?.setTo({cost: null})
 

@@ -1,4 +1,4 @@
-import {GameState} from "@/test_eden/Classes/GameState.ts";
+import {GameState} from "@/test_eden/Classes/Game/GameState.ts";
 import {ResourceStoreClass} from "@/Resource";
 import {BehemothClass} from "@/test_eden/Classes/Behemoth/BehemothClass.ts";
 import {SlaveClass} from "@/test_eden/Classes/Slaves/SlaveClass.ts";

@@ -1,10 +1,10 @@
 import React, {useMemo} from "react";
 import {observer} from "mobx-react";
 import {X} from "@mynaui/icons-react";
-import {AdminController} from "@/Resource/Admin/AdminController.ts";
 import {DebuggingResources} from "@/Resource/Admin/Debugging/DebuggingResources.tsx";
 import {Button} from "@/components/ui";
 import {Tabs, TabsContent, TabsList, TabsTrigger} from "@/components/ui/tabs.tsx";
+import {game} from "@/test_eden/Classes/Game";
 
 type DebugginOverlayProps = {
   customComponents?: {label: string, component: React.ReactNode}[]
@@ -14,7 +14,7 @@ export const DebugginOverlay = observer(({customComponents}: DebugginOverlayProp
   const {
     showDebugPanel,
     onToggleDebugPanel
-  } = AdminController.getInstance();
+  } = game().admin;
   const toRender = useMemo(() => {
     if (!showDebugPanel) {
       return null

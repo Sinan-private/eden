@@ -3,6 +3,7 @@ import {ResourceClass} from "@/Resource";
 import styled from "styled-components";
 import {Button} from "@/components/ui";
 import {Container} from "@/components/ui/Box.tsx";
+import {game} from "@/test_eden/Classes/Game";
 
 export const Debug_ResourceGroup = styled.div`
     display: flex;
@@ -12,14 +13,12 @@ export const Debug_ResourceGroup = styled.div`
 
 type Debug_ResourceProps = {
   resource: ResourceClass;
-  beautifyValues: boolean;
   incrementBy?: number;
   decrementBy?: number;
 }
 
 export const Debug_Resource = observer((
   {
-    beautifyValues,
     incrementBy = 10,
     decrementBy = 10,
     resource:
@@ -30,6 +29,7 @@ export const Debug_Resource = observer((
         updateValueBy
       }
   }: Debug_ResourceProps) => {
+  const {showDebugPanelBeautifiedValues} = game().admin
   const onIncrement = () => updateValueBy(incrementBy)
   const onDecrement = () => updateValueBy(-decrementBy)
 
@@ -38,7 +38,7 @@ export const Debug_Resource = observer((
       <Button variant="ghost" onClick={onDecrement} className="min-w8 hover:bg-cyan-950">-</Button>
       <div>
         <p className="text-[10px]">{label}</p>
-        <p>{beautifyValues ? beautify.value : value.toFixed(4)}</p>
+        <p>{showDebugPanelBeautifiedValues ? beautify.value : value.toFixed(4)}</p>
       </div>
       <Button variant="ghost" onClick={onIncrement} className="min-w8 hover:bg-cyan-950">+</Button>
     </div>
@@ -49,29 +49,29 @@ type Debug_CustomResourceProps = {
   label: string;
   onIncrement?(): void;
   onDecrement?(): void;
-  beautifyValues: boolean;
   value: number;
 }
 
 export const Debug_CustomResource = observer((
   {
-    beautifyValues,
     label,
     value,
     onIncrement,
     onDecrement,
-  }: Debug_CustomResourceProps) => (
-  <Container >
-    {onDecrement &&
-      <Button variant="ghost" onClick={() => onDecrement()} className="min-w-8 hover:bg-cyan-950">-</Button>
-    }
-    <div style={{flexGrow: 1}}>
-      <p className="text-[10px]">{label}</p>
-      <p>{beautifyValues ? value.toFixed() : value.toFixed(4)}</p>
-    </div>
-    {onIncrement &&
-      <Button variant="ghost" onClick={() => onIncrement()} className="min-w8 hover:bg-cyan-950">+</Button>
-    }
-  </Container>
-))
-
+  }: Debug_CustomResourceProps) => {
+  const {showDebugPanelBeautifiedValues} = game().admin
+  return (
+    <Container >
+      {onDecrement &&
+        <Button variant="ghost" onClick={() => onDecrement()} className="min-w-8 hover:bg-cyan-950">-</Button>
+      }
+      <div style={{flexGrow: 1}}>
+        <p className="text-[10px]">{label}</p>
+        <p>{showDebugPanelBeautifiedValues ? value.toFixed() : value.toFixed(4)}</p>
+      </div>
+      {onIncrement &&
+        <Button variant="ghost" onClick={() => onIncrement()} className="min-w8 hover:bg-cyan-950">+</Button>
+      }
+    </Container>
+  )
+})

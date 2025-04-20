@@ -5,11 +5,11 @@ import {Button} from "@/components/ui/button.tsx";
 import {Input} from "@/components/ui/input.tsx";
 import {ChangeEvent, useState} from "react";
 import {useApi} from "@/Resource/hooks/useApi.ts";
-import {AdminController} from "@/Resource/Admin/AdminController.ts";
 import {Badge} from "@/components/ui/Badge.tsx";
+import {game} from "@/test_eden/Classes/Game";
 
 export const AdminType = () => {
-  const {cloneResourceStore} = AdminController.getInstance()
+  const {cloneResourceStore} = game().admin
   const {removeType} = useApi()
 
   const usedTypes = cloneResourceStore.getByType().map(({type}) => type);

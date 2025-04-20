@@ -1,18 +1,18 @@
 import {observer} from "mobx-react";
 import {DotsVerticalCircle} from "@mynaui/icons-react";
 import {AdminPanel} from "./AdminPanel.tsx";
-import {AdminController} from "@/Resource/Admin/AdminController.ts";
 import {Button, Separator, Switch} from "@/components/ui";
 import {Popover, PopoverContent, PopoverTrigger} from "@/components/ui/Popover.tsx";
 import {DebuggingComponents} from "@/test_eden/debug/custom/DebuggingComponents.tsx";
 import {DebugginOverlay} from "@/Resource/Admin/Debugging/DebugginOverlay.tsx";
+import {game} from "@/test_eden/Classes/Game";
 
 export type ResourceAdminProps = {
   buttonPosition?: "top-left" | "top-right" | "bottom-right" | "bottom-left";
 }
 
 export const ResourceAdmin = observer(({buttonPosition = 'top-right'}: ResourceAdminProps) => {
-  const {showAdminPanel} = AdminController.getInstance();
+  const {showAdminPanel} = game().admin;
 
   return (
     <div style={{position: 'absolute', top: 0, left: 0, height: "100vh", width: "100vw", pointerEvents: "none"}}>
@@ -33,7 +33,7 @@ const ToggleButton = observer(({buttonPosition}: ResourceAdminProps) => {
     onToggleAdminPanel,
     onToggleDebugPanel,
     onToggleDebugPanelBeautifiedValues
-  } = AdminController.getInstance();
+  } = game().admin;
 
   return (
     <>
@@ -42,7 +42,7 @@ const ToggleButton = observer(({buttonPosition}: ResourceAdminProps) => {
           <Button
             size="icon"
             variant="ghost"
-            className="fixed"
+            className="fixed z-[9000]"
             style={positions[buttonPosition!]}
           >
             <DotsVerticalCircle className="w-6 h-6"/>
