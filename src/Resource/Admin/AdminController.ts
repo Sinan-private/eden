@@ -4,6 +4,7 @@ import {AdminResourceController} from "@/Resource/Admin/AdminResourceController.
 import {ResourceCloneProps} from "@/Resource/ResourceHandler/genericTypes.ts";
 import {Resource} from "@/Resource/ResourceHandler";
 import {areObjectsEqual} from "@/Resource/context/admin/equalityChecks.ts";
+import {DEBUG} from "@/test_eden/constants/constants.ts";
 
 declare global {
   interface Window {
@@ -18,7 +19,7 @@ export class AdminController {
   public isExistingResource: boolean = false;
   public showAdminPanel: boolean = false;
   public showResourceEdit: boolean = false;
-  public showDebugPanel: boolean = false;
+  public showDebugPanel: boolean = DEBUG;
   public showDebugPanelBeautifiedValues: boolean = false;
 
   constructor(

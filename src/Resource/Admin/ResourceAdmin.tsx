@@ -1,10 +1,11 @@
+import {observer} from "mobx-react";
 import {DotsVerticalCircle} from "@mynaui/icons-react";
 import {AdminPanel} from "./AdminPanel.tsx";
 import {AdminController} from "@/Resource/Admin/AdminController.ts";
-import {observer} from "mobx-react";
 import {Button, Separator, Switch} from "@/components/ui";
 import {Popover, PopoverContent, PopoverTrigger} from "@/components/ui/Popover.tsx";
-import {DebuggingComponents} from "@/Resource/Admin/Debugging/custom/DebuggingComponents.tsx";
+import {DebuggingComponents} from "@/test_eden/debug/custom/DebuggingComponents.tsx";
+import {DebugginOverlay} from "@/Resource/Admin/Debugging/DebugginOverlay.tsx";
 
 export type ResourceAdminProps = {
   buttonPosition?: "top-left" | "top-right" | "bottom-right" | "bottom-left";
@@ -19,6 +20,7 @@ export const ResourceAdmin = observer(({buttonPosition = 'top-right'}: ResourceA
         {showAdminPanel && <AdminPanel/>}
         <ToggleButton buttonPosition={buttonPosition}/>
       </div>
+      <DebugginOverlay customComponents={[{label: 'Slave actions', component: (<DebuggingComponents />)}]} />
     </div>
   )
 })
@@ -70,7 +72,6 @@ const ToggleButton = observer(({buttonPosition}: ResourceAdminProps) => {
           </div>
         </PopoverContent>
       </Popover>
-      <DebuggingComponents/>
     </>
   )
 })

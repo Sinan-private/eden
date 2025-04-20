@@ -1,4 +1,5 @@
 import {ProgressProps} from "@/components/ui/progress.tsx";
+import {ascending, unique} from "@/Resource/helpers/array.ts";
 
 type StatusColor = ProgressProps['color']
 
@@ -74,8 +75,6 @@ const hasWrongColorLength = (color: HealthProps['color'], thresholds: number[]) 
 
 
 const toNumber = (segment: number | HealthValueProps): number => getHealth(segment, -1);
-const unique = (value: number, index: number, array: number[]) => array.indexOf(value) === index;
-const ascending = (a: number, b: number) => a - b;
 
 const getStatusColor = (
   value: number,
