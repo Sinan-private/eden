@@ -11,7 +11,7 @@ import {LevelClass} from "../LevelClass.ts";
 import {levels} from "./levels.ts";
 import {GameBaseProps} from "@/Resource/ResourceHandler/specificTypes.ts";
 import {GameState} from "@/test_eden/Classes/GameState.ts";
-import {GameClass} from "@/test_eden/context/GameClass.ts";
+import {GameClass} from "@/test_eden/Classes/Game/GameClass.ts";
 
 export class BehemothClass {
   public level: LevelClass;

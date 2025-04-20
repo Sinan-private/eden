@@ -14,10 +14,10 @@ import {
   ResourceTypes
 } from "@/Resource/ResourceHandler/specificTypes.ts";
 import {ArwaClass, GhoulClass, IfritClass, MaridClass} from "@/test_eden/Classes/Factions";
-
-import {GameBaseClasses} from "@/test_eden/context/gameTypes.ts";
+import {GameBaseClasses} from "@/test_eden/Classes/Game/gameTypes.ts";
 import {InterfaceController} from "@/test_eden/Interface/InterfaceController.ts";
 
+// Here all the logic of the game is bundled into a single class that can be imported everywhere
 
 export interface GameCreationProps {
   resources: ResourceUpdateProps<ResourceKeys, ResourceTypes>[]
@@ -51,7 +51,6 @@ export class GameClass {
     this.mana = new ManaClass(baseProps)
     this.behemoth = new BehemothClass(baseProps)
     this.upstream = new UpstreamClass(baseProps)
-    console.log(this)
     const factionProps: GameBaseClasses = {
       gameState: this.gameState,
       resources: this.resources,

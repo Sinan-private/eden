@@ -1,8 +1,7 @@
 import {useEffect} from "react";
 import {observer} from "mobx-react";
-import styled from "styled-components";
 import {Button} from "@/components/ui";
-import {game} from "@/test_eden/context/createSingletonGame.ts";
+import {game} from "@/test_eden/Classes/Game";
 
 export const Debug_BehemothControls = observer(() => {
   const {behemoth, gameState} = game();
@@ -17,7 +16,7 @@ export const Debug_BehemothControls = observer(() => {
   }, [behemoth]);
 
   return (
-    <StyledGameControls>
+    <div className="relative bottom-0 left-1/2 -translate-x-1/2 py-2 px-3 z-[100]">
       <div className="flex">
         <Button
           disabled={!behemoth.movement_requested && !behemoth.can_start_moving}
@@ -41,16 +40,6 @@ export const Debug_BehemothControls = observer(() => {
           {gameState.mana_flushing ? 'Stop flushing' : 'Start flushing'}
         </Button>
       </div>
-    </StyledGameControls>
+    </div>
   )
 })
-
-const StyledGameControls = styled.div`
-    position: relative;
-    bottom: 0;
-    left: 50%;
-    transform: translateX(-50%);
-    //border: 1px solid red;
-    padding: 8px 12px;
-    z-index: 100;
-`

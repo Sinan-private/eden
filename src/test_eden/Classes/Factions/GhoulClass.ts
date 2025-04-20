@@ -1,7 +1,7 @@
 import image from '../../../assets/images/Faction3.png';
 import {FactionClass} from "./FactionClass.ts";
 
-import {GameBaseClasses} from "@/test_eden/context/gameTypes.ts";
+import {GameBaseClasses} from "@/test_eden/Classes/Game/gameTypes.ts";
 
 
 export class GhoulClass extends FactionClass {

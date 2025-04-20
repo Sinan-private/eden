@@ -1,7 +1,7 @@
-import {TradeChange} from "../../Resource";
-import {Progress} from "@/components/ui/progress.tsx";
-import {game} from "@/test_eden/context/createSingletonGame.ts";
 import {observer} from "mobx-react";
+import {TradeChange} from "@/Resource";
+import {Progress} from "@/components/ui/progress.tsx";
+import {game} from "@/test_eden/Classes/Game";
 
 type LevelGainProps = {
   gain: TradeChange

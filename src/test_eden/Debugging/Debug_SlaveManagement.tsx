@@ -1,8 +1,7 @@
 import {Debug_CustomResource, Debug_Resource, Debug_ResourceGroup} from "./Debug_Resource.tsx";
-
 import {Box, Button as RawButton} from "@/components/ui";
 import {Container} from "@/components/ui/Box.tsx";
-import {game} from "@/test_eden/context/createSingletonGame.ts";
+import {game} from "@/test_eden/Classes/Game";
 
 const Button = ({onClick, children}: {onClick(): void; children: string}) => (
   <RawButton onClick={() => onClick()} className="w-[100px]" variant="outline">

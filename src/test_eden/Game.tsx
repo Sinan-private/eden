@@ -5,9 +5,9 @@ import upstream_image from '../assets/images/upstream.gif';
 import {Background} from "./Background.tsx";
 import {DebuggingComponents} from "./Debugging/DebuggingComponents.tsx";
 import {Interface} from "./Interface/Interface.tsx";
-import {game} from "@/test_eden/context/createSingletonGame.ts";
+import {game} from "@/test_eden/Classes/Game/createSingletonGame.ts";
 import {observer} from "mobx-react";
-import {GameClass} from "@/test_eden/context/GameClass.ts";
+import {GameClass} from "@/test_eden/Classes/Game/GameClass.ts";
 
 const IMAGE_HEIGHT = 400
 

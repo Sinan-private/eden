@@ -1,7 +1,7 @@
 import image from '../../../assets/images/Faction1.png';
 import {FactionClass} from "./FactionClass.ts";
 
-import {GameBaseClasses} from "@/test_eden/context/gameTypes.ts";
+import {GameBaseClasses} from "@/test_eden/Classes/Game/gameTypes.ts";
 
 // This is the one with the demon image
 export class IfritClass extends FactionClass {

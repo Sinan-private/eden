@@ -1,7 +1,7 @@
 import {Debug_Resource, Debug_ResourceGroup} from "./Debug_Resource.tsx";
 import {Box} from "@/components/ui";
 import {Container} from "@/components/ui/Box.tsx";
-import {game} from "@/test_eden/context/createSingletonGame.ts";
+import {game} from "@/test_eden/Classes/Game";
 
 export const Debug_Behemoth = ({beautifyValues}: { beautifyValues: boolean }) => {
   const {behemoth, resources} = game()

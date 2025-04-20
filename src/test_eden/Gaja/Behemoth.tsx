@@ -1,8 +1,7 @@
-import {useTick} from "../../Resource/context/tick.context.ts";
+import {useTick} from "@/Resource/context/tick.context.ts";
 import behemoth_animated from "../../assets/images/Behemoth_animated.gif";
 import behemoth_image from "../../assets/images/Behemoth.png";
-import styled from "styled-components";
-import {game} from "@/test_eden/context/createSingletonGame.ts";
+import {game} from "@/test_eden/Classes/Game";
 
 export const Behemoth = () => {
   const {getByKey} = game().resources;
@@ -10,28 +9,14 @@ export const Behemoth = () => {
   const speed = getByKey('behemoth_climb_speed').value;
   const src = speed && isActive ? behemoth_animated : behemoth_image;
   return (
-    <StyledBehemoth>
-      <Image src={src} alt={src} />
-    </StyledBehemoth>
+    <>
+
+    <div
+      id="Behemoth"
+      className="absolute top-1/2 -left-5 w-10 h-[100px] z-10  flex flex-col justify-center items-center -translate-y-1/2 "
+    >
+      <img className="max-w-none w-[170px] -rotate-90" src={src} alt={src} />
+    </div>
+    </>
   )
 }
-const StyledBehemoth = styled('div')`
-    position: absolute;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    top: 50%;
-    left: -20px;
-    transform: translateY(-50%);
-    width: 40px;
-    height: 100px;
-    //background: #66756f;
-    z-index: 10;
-`
-
-const Image = styled.img`
-    transform: rotate(-90deg);
-    width: 170px;
-    max-width: none;
-`

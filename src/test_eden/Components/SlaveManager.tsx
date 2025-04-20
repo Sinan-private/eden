@@ -1,7 +1,7 @@
-import styled from "styled-components";
 import {observer} from "mobx-react";
+import styled from "styled-components";
 import chains from "../../assets/images/chains.png";
-import {game} from "@/test_eden/context/createSingletonGame.ts";
+import {game} from "@/test_eden/Classes/Game";
 
 export const SlaveManager = observer(() => {
   const SIZE = 280

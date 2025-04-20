@@ -6,7 +6,7 @@ import {Branches} from "./Branches.tsx";
 import {CLIMBING_SPEED_COEFFICIENT} from "../constants/constants.ts";
 import {Digging} from "./Digging/Digging.tsx";
 import {Behemoth} from "./Behemoth.tsx";
-import {game} from "@/test_eden/context/createSingletonGame.ts";
+import {game} from "@/test_eden/Classes/Game";
 
 const BACKGROUND_IMAGE_HEIGHT = 600;
 const BACKGROUND_IMAGE_WIDTH = 571;
@@ -26,9 +26,7 @@ export const Gaja = () => {
 
   return (
     <Tree>
-      <Trunk>
-        <TrunkBackground $displacement={prop}/>
-      </Trunk>
+      <Trunk displacement={prop} />
       <Branches displacement={displacement}/>
       <Behemoth/>
       <Digging/>
@@ -55,17 +53,10 @@ const Tree = styled('div')`
     }
 `
 
-const Trunk = styled('div')`
-    position: relative;
-    width: 100%;
-    height: 600px;
-`
-
-const TrunkBackground = styled.div.attrs<{ $displacement: number }>(props => ({
-  style: {
-    transform: `translateY(${props.$displacement}px)`
-  },
-}))`position: relative;
-    width: ${BACKGROUND_IMAGE_WIDTH}px;
-    height: 3000px;
-    background-image: url("${image}");`
+const Trunk = ({ displacement }: { displacement: number }) => {
+  return (
+    <div className="relative w-full h-[600px]">
+      <div className={`w-[${BACKGROUND_IMAGE_WIDTH}px] h-[3000px]`} style={{transform: `translateY(${displacement}px)`, backgroundImage: `url(${image})`}} />
+    </div>
+  )
+}

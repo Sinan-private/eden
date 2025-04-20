@@ -3,7 +3,7 @@ import behemoth_icon from '../../assets/images/behemoth_icon.png'
 import factions_icon from '../../assets/images/factions.png'
 import player_icon from '../../assets/images/Player_stats.png'
 import {InterfaceActiveLeft} from "./InterfaceController.ts";
-import {game} from "@/test_eden/context/createSingletonGame.ts";
+import {game} from "@/test_eden/Classes/Game";
 
 const BUTTON_SIZE = 50;
 const IMAGE_SIZE = BUTTON_SIZE * 0.8

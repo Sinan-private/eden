@@ -1,6 +1,6 @@
 import {Box, Container} from "@/components/ui/Box.tsx";
 import {Debug_Resource, Debug_ResourceGroup} from "@/test_eden/Debugging/Debug_Resource.tsx";
-import {game} from "@/test_eden/context/createSingletonGame.ts";
+import {game} from "@/test_eden/Classes/Game";
 
 export const Debug_Earth = ({beautifyValues}: { beautifyValues: boolean }) => {
   const {resources} = game();

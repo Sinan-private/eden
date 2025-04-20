@@ -3,7 +3,7 @@ import {SlaveClass} from "../Slaves/SlaveClass.ts";
 import {BehemothClass} from "../Behemoth/BehemothClass.ts";
 import {ManaClass} from "../Mana/ManaClass.ts";
 import {UpstreamClass} from "../UpstreamClass.ts";
-import {GameBaseClasses} from "@/test_eden/context/gameTypes.ts";
+import {GameBaseClasses} from "@/test_eden/Classes/Game/gameTypes.ts";
 
 export type FactionKeys = 'ifrit' | 'marid' | 'arwa' | 'ghoul'
 

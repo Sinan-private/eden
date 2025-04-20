@@ -3,7 +3,7 @@ import {Button} from "@/components/ui/button.tsx";
 import {LevelGain, LevelProgress} from "./LevelProgress.tsx";
 import {BEHEMOTH_STAMINA_PER_SLAVE, BEHEMOTH_STAMINA_PER_WASTED_SLAVE} from "../constants/constants.ts";
 import {Box} from "@/components/ui";
-import {game} from "@/test_eden/context/createSingletonGame.ts";
+import {game} from "@/test_eden/Classes/Game";
 
 export const BehemothManager = observer(() => {
   const {behemoth, slaves, resources} = game();

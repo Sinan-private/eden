@@ -1,7 +1,7 @@
 import {createContainer} from "unstated-next";
 import {useTurnSubscription} from "@/Resource";
 import {useTick} from "@/Resource/context/tick.context.ts";
-import {game} from "@/test_eden/context/createSingletonGame.ts";
+import {game} from "@/test_eden/Classes/Game/createSingletonGame.ts";
 
 // Todo -> This now only works as a singleton to handle the turnSubscription and can be removed?
 

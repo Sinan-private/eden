@@ -21,7 +21,7 @@ import {
   SignalCircle,
 } from "@mynaui/icons-react";
 import {Box} from "@/components/ui";
-import {game} from "@/test_eden/context/createSingletonGame.ts";
+import {game} from "@/test_eden/Classes/Game";
 
 
 

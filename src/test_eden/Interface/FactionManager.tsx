@@ -1,7 +1,6 @@
-import styled from "styled-components";
 import {Progress} from "@/components/ui/progress.tsx";
 import {FactionKeys} from "@/test_eden/Classes/Factions/FactionClass.ts";
-import {game} from "@/test_eden/context/createSingletonGame.ts";
+import {game} from "@/test_eden/Classes/Game";
 
 export const FactionManager = () => {
   const {faction_marid, faction_ghoul, faction_arwa, faction_ifrit, slaves} = game();
@@ -24,9 +23,9 @@ export const FactionManager = () => {
                   filter: active ? '' : 'saturate(0) brightness(0.2) contrast(0.8)'
                 }}
               />
-              <BottomLeft id="Faction button bottom left">
+              <div id="Faction button bottom left" className="absolute bottom-0 left-0 bg-black/70 px-1 text-xs">
                 {slaves[faction]}
-              </BottomLeft>
+              </div>
               {active &&
                 <VerticalProgress value={progress.value}/>
               }
@@ -64,33 +63,7 @@ export const FactionManager = () => {
 const VerticalProgress = ({value = 50}: { value?: number }) => {
   return (
     <div id="custom progress" className="h-full absolute" style={{width: 4, background: '#ffffff21', bottom: 0, right: 0}}>
-      <VerticalBar $height={value}/>
+      <div className="absolute bottom-0 right-0 w-full bg-white" style={{height: value}}/>
     </div>
   )
 }
-
-const VerticalBar = styled.div.attrs<{ $height: number }>(props => ({
-  style: {
-    height: props.$height + '%'
-  }
-}))`
-    position: absolute;
-    bottom: 0;
-    right: 0;
-    width: 100%;
-    background-color: white;
-`
-
-const BottomLeft = styled.div`
-    position: absolute;
-    bottom: 0;
-    left: 0;
-    background-color: rgba(0, 0, 0, 0.69);
-    padding: 0 4px;
-    font-size: 14px;
-    //text-shadow:
-    //        1px 1px 0 #000,
-    //        -1px 1px 0 #000,
-    //        -1px -1px 0 #000,
-    //        1px -1px 0 #000;
-`;

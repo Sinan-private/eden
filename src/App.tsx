@@ -1,24 +1,12 @@
 import {AdminResourceProvider} from "./Resource";
 import {Game} from "./test_eden/Game.tsx";
 import {GameProvider} from "./test_eden/context/game.context.ts";
-import {useState} from "react";
-import {useApi} from "@/Resource/hooks/useApi.ts";
-import {useComponentMount} from "@/Resource/hooks";
-import {AdminController} from "@/Resource/Admin/AdminController.ts";
-import {createSingletonGame} from "@/test_eden/context/createSingletonGame.ts";
+import {useGameInitializer} from "@/test_eden/Classes/Game/useGameInitializer.ts";
 
 function App() {
-  const {fetchResources} = useApi();
-  const [loaded, setLoaded] = useState(false);
-  useComponentMount(async () => {
-    const rawResources = await fetchResources();
-    const _resourceStore = createSingletonGame().getInstance({resources: rawResources})
-    setLoaded(true);
-    AdminController.getInstance(_resourceStore.resources)
-  })
-
-  if (!loaded) {
-    return null
+  const gameReady = useGameInitializer();
+  if (!gameReady) {
+    return null;
   }
 
   return (

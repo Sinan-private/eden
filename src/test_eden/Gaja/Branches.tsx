@@ -1,9 +1,9 @@
-import styled from "styled-components";
-import {observer} from "mobx-react";
 import {useMemo, useRef} from "react";
+import {observer} from "mobx-react";
+import styled from "styled-components";
 import {useTurnSubscription} from "../../Resource";
 import {BranchClass} from "./BranchClass.ts";
-import {game} from "@/test_eden/context/createSingletonGame.ts";
+import {game} from "@/test_eden/Classes/Game";
 
 const WIDTH = 800;
 

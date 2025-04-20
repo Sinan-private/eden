@@ -1,17 +1,16 @@
 import React from "react";
+import {observer} from "mobx-react";
+import styled from "styled-components";
 import {Debug_BehemothControls} from "../Debugging/Debug_BehemothControls.tsx";
 import {TopBar} from "./TopBar.tsx";
-// import {SlaveManager} from "../Components/SlaveManager.tsx";
-import styled from "styled-components";
 import {FooterButtons} from "./FooterButtons.tsx";
 import {SidebarContent} from "./SidebarContent.tsx";
 import {InterfaceActiveLeft} from "./InterfaceController.ts";
-import {observer} from "mobx-react";
 import {BehemothManager} from "./BehemothManager.tsx";
 import {PlayerManager} from "./PlayerManager.tsx";
 import {Button} from "@/components/ui/button.tsx";
 import {EarthContent} from "@/test_eden/Interface/EarthContent.tsx";
-import {game} from "@/test_eden/context/createSingletonGame.ts";
+import {game} from "@/test_eden/Classes/Game";
 
 const HEADER_HEIGHT = 60;
 export const FOOTER_HEIGHT = 80;

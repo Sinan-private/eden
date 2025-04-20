@@ -1,7 +1,7 @@
 import styled from "styled-components";
 import background from '../assets/images/hell_background.jpg'
-import {game} from "@/test_eden/context/createSingletonGame.ts";
 import {observer} from "mobx-react";
+import {game} from "@/test_eden/Classes/Game";
 
 export const Background = observer(() => {
   const {danger} = game().upstream

@@ -2,27 +2,26 @@ import {observer} from "mobx-react";
 import {Box, Button} from "@/components/ui";
 import {HealthBar} from "@/components/ui/HealthBar.tsx";
 import {SegmentedBar} from "@/components/ui/SegmentedBar.tsx";
-import {game} from "@/test_eden/context/createSingletonGame.ts";
+import {game} from "@/test_eden/Classes/Game";
 
 export const EarthContent = observer(() => {
   const {resources, slaves, gameState} = game();
   const {getByKey} = resources;
   const influence = gameState.influence
-  // const influence = getByKey('human_influence');
   const pollution = getByKey('earth_pollution');
   const virtue = getByKey('human_virtue');
   const slaveCurrent = slaves.slaves_enslaved.value
   const slaveMax = slaveCurrent + slaves.slaves_roaming.value
-  const influence_points = gameState.influence.can_spend
+  const influence_points = influence.can_spend
   const onRaisePollution = () => {
     const pollution = resources.getByKey('earth_pollution')
     const onSuccess = () => pollution.updateValueBy(30)
-    gameState.influence.spendPoints(1, onSuccess)
+    influence.spendPoints(1, onSuccess)
   }
   const onRaiseVirtue = () => {
     const virtue = resources.getByKey('human_virtue')
     const onSuccess = () => virtue.updateValueBy(30)
-    gameState.influence.spendPoints(2, onSuccess)
+    influence.spendPoints(2, onSuccess)
   }
   return (
     <div className="flex justify-end pr-4">
