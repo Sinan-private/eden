@@ -12,7 +12,7 @@ import {
 } from "@/GameController/components/ui";
 import {resourceTypes} from "@/GameController/Resource/generated/resourceTypes.ts";
 import {observer} from "mobx-react";
-import {game} from "@/test_eden/Classes/Game";
+import {game} from "@/Game/Classes/Game";
 
 export const EditResourceBase = observer(() => {
   const {keyAlreadyExists, getResourceForInput} = game().admin

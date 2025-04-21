@@ -2,7 +2,7 @@ import {useMemo} from "react";
 import {Button, DeleteButton} from "@/GameController/components/ui";
 import {EditResourceCostType} from "@/GameController/Resource/Admin/Resource/Edit/EditResourceCostType.tsx";
 import {observer} from "mobx-react";
-import {game} from "@/test_eden/Classes/Game";
+import {game} from "@/Game/Classes/Game";
 
 export const EditResourceCost = observer(() => {
   const {getResourceForInput, editing} = game().admin

@@ -4,7 +4,7 @@ import {AdminResourceController} from "@/GameController/Resource/Admin/AdminReso
 import {ResourceCloneProps} from "@/GameController/Resource/ResourceHandler/genericTypes.ts";
 import {Resource} from "@/GameController/Resource/ResourceHandler";
 import {areObjectsEqual} from "@/GameController/Resource/Admin/equalityChecks.ts";
-import {DEBUG} from "@/test_eden/constants/constants.ts";
+import {DEBUG} from "@/Game/constants/constants.ts";
 
 declare global {
   interface Window {

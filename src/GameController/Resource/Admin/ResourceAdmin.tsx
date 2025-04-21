@@ -3,9 +3,9 @@ import {DotsVerticalCircle} from "@mynaui/icons-react";
 import {AdminPanel} from "./AdminPanel.tsx";
 import {Button, Separator, Switch} from "@/GameController/components/ui";
 import {Popover, PopoverContent, PopoverTrigger} from "@/GameController/components/ui/Popover.tsx";
-import {DebuggingComponents} from "@/test_eden/debug/custom/DebuggingComponents.tsx";
+import {DebuggingComponents} from "@/Game/debug/custom/DebuggingComponents.tsx";
 import {DebugginOverlay} from "@/GameController/Resource/Admin/Debugging/DebugginOverlay.tsx";
-import {game} from "@/test_eden/Classes/Game";
+import {game} from "@/Game/Classes/Game";
 
 export type ResourceAdminProps = {
   buttonPosition?: "top-left" | "top-right" | "bottom-right" | "bottom-left";

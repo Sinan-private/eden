@@ -1,5 +1,5 @@
-import {Game} from "./test_eden/Game.tsx";
-import {useGameInitializer} from "@/test_eden/Classes/Game/useGameInitializer.ts";
+import {Game} from "@/Game/Game.tsx";
+import {useGameInitializer} from "@/Game/Classes/Game/useGameInitializer.ts";
 import {ResourceAdmin} from "@/GameController/Resource/Admin/ResourceAdmin.tsx";
 
 function App() {

@@ -1,7 +1,7 @@
 import {observer} from "mobx-react";
 import {useMemo} from "react";
 import {Input, Label, Switch} from "@/GameController/components/ui";
-import {game} from "@/test_eden/Classes/Game";
+import {game} from "@/Game/Classes/Game";
 
 export const EditResourceValue = observer(() => {
   const {getResourceForInput} = game().admin

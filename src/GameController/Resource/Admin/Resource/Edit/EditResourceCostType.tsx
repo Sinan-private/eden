@@ -12,7 +12,7 @@ import {
   SelectTrigger,
   SelectValue
 } from "@/GameController/components/ui/select.tsx";
-import {game} from "@/test_eden/Classes/Game";
+import {game} from "@/Game/Classes/Game";
 
 type SingleTradeProps = {
   trade: ResourceCostUpdate<ResourceKeys, ResourceTypes>;

@@ -3,7 +3,7 @@ import {resourceTypes} from "../generated/resourceTypes.ts";
 import {Resource} from "./Resource.ts";
 import {ResourceStore} from "./ResourceStore.ts";
 import {LevelUpdate as GenericLevelUpdate} from "./genericTypes.ts";
-import {GameState} from "@/test_eden/Classes/Game/GameState.ts";
+import {GameState} from "@/Game/Classes/Game/GameState.ts";
 
 export type ResourceTypes = typeof resourceTypes[number];
 export type ResourceKeys = typeof resourceKeys[number];

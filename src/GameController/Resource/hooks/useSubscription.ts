@@ -1,5 +1,5 @@
 import {useEffect, useRef} from "react";
-import {game} from "@/test_eden/Classes/Game";
+import {game} from "@/Game/Classes/Game";
 import {id} from "@/GameController/Resource/helpers/id.ts";
 
 export const useTickSubscription = (

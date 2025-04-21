@@ -1,0 +1,21 @@
+import image from '../../../assets/images/Faction3.png';
+import {FactionClass} from "./FactionClass.ts";
+
+import {GameBaseClasses} from "@/Game/Classes/Game/gameTypes.ts";
+
+
+export class GhoulClass extends FactionClass {
+  constructor(gameClasses: GameBaseClasses) {
+    super(gameClasses)
+    const {getByKey} = this.resources;
+    this.image = image;
+    this.visible = true;
+    this.faction = 'ghoul';
+    this.loyalty = getByKey('ghoul_loyalty');
+    this.influence = getByKey('ghoul_influence');
+    this.progress = getByKey('ghoul_progress');
+    this.level = getByKey('ghoul_level');
+    this.skill_speed_primary = getByKey('ghoul_speed_primary_skill');
+    this.skill_speed_secondary = getByKey('ghoul_speed_secondary_skill');
+  }
+}

@@ -3,7 +3,7 @@ import {X} from "@mynaui/icons-react";
 import {Tabs, TabsContent, TabsList, TabsTrigger} from "@/GameController/components/ui/tabs.tsx";
 import {AdminResourceOverview} from "@/GameController/Resource/Admin/Resource/AdminResourceOverview.tsx";
 import {AdminType} from "@/GameController/Resource/Admin/AdminType.tsx";
-import {game} from "@/test_eden/Classes/Game";
+import {game} from "@/Game/Classes/Game";
 
 export const AdminPanel = () => {
   const {onCloseAdminPanel} = game().admin;

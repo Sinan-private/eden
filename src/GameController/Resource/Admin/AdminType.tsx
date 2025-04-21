@@ -6,7 +6,7 @@ import {Input} from "@/GameController/components/ui/input.tsx";
 import {ChangeEvent, useState} from "react";
 import {useApi} from "@/GameController/Resource/hooks/useApi.ts";
 import {Badge} from "@/GameController/components/ui/Badge.tsx";
-import {game} from "@/test_eden/Classes/Game";
+import {game} from "@/Game/Classes/Game";
 
 export const AdminType = () => {
   const {cloneResourceStore} = game().admin
