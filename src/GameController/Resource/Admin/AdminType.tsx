@@ -1,25 +1,25 @@
+import {ChangeEvent, useState} from "react";
 import {Trash} from "@mynaui/icons-react";
-import {resourceTypes} from "@/GameController/Resource/generated/resourceTypes.ts";
+import {game} from "@/Game";
 import {ResourceTypes} from "@/GameController/Resource";
 import {Button} from "@/GameController/components/ui/button.tsx";
 import {Input} from "@/GameController/components/ui/input.tsx";
-import {ChangeEvent, useState} from "react";
 import {useApi} from "@/GameController/Resource/hooks/useApi.ts";
 import {Badge} from "@/GameController/components/ui/Badge.tsx";
-import {game} from "@/Game/Classes/Game";
 
 export const AdminType = () => {
-  const {cloneResourceStore} = game().admin
+  const {admin, resources: {getTypes}} = game()
+  const {cloneResourceStore} = admin
   const {removeType} = useApi()
 
   const usedTypes = cloneResourceStore.getByType().map(({type}) => type);
-  // const write__removeType = (a: any) => {}
+  const types = getTypes()
 
   return (
     <>
       <p className="text-2xl">Resource types</p>
       <div className="p-4 flex flex-col gap-2">
-        {resourceTypes.map((resourceType: ResourceTypes) => (
+        {types.map((resourceType: ResourceTypes) => (
           <div key={resourceType} className="flex items-center gap-2">
             <Button
               variant="ghost"

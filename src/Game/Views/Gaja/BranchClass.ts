@@ -1,9 +1,9 @@
 import {makeAutoObservable} from "mobx";
-import branch_image1 from "../../assets/images/Branch3.png";
-import branch_image2 from "../../assets/images/Branch4.png";
-import branch_image3 from "../../assets/images/Branch5.png";
-import branch_image7 from "../../assets/images/Branch7.png";
-import {randomRange} from "../helpers/randomRange.ts";
+import branch_image1 from "../../../assets/images/Branch3.png";
+import branch_image2 from "../../../assets/images/Branch4.png";
+import branch_image3 from "../../../assets/images/Branch5.png";
+import branch_image7 from "../../../assets/images/Branch7.png";
+import {randomRange} from "../../helpers/randomRange.ts";
 
 // Todo the MIN_DISTANCE_TO_REMOVE is unnecessarily high. The calculation for removal does not
 //  include the z index yet

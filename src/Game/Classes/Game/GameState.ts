@@ -1,4 +1,4 @@
-import {HarvestRenderClass} from "@/Game/Gaja/Digging/HarvestRenderClass.ts";
+import {HarvestRenderClass} from "@/Game/Views/Gaja/Digging/HarvestRenderClass.ts";
 import {makeAutoObservable} from "mobx";
 import {id} from "@/GameController/Resource/helpers/id.ts";
 import {AUTO_CLIMB, AUTO_COLLECT_MANA} from "@/Game/constants/constants.ts";

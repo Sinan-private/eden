@@ -1,9 +1,9 @@
 import {Button} from "@/GameController/components/ui/button.tsx";
 import {X} from "@mynaui/icons-react";
-import {Tabs, TabsContent, TabsList, TabsTrigger} from "@/GameController/components/ui/tabs.tsx";
+import {game} from "@/Game";
+import {Tabs, TabsContent, TabsList, TabsTrigger} from "@/GameController/components";
 import {AdminResourceOverview} from "@/GameController/Resource/Admin/Resource/AdminResourceOverview.tsx";
 import {AdminType} from "@/GameController/Resource/Admin/AdminType.tsx";
-import {game} from "@/Game/Classes/Game";
 
 export const AdminPanel = () => {
   const {onCloseAdminPanel} = game().admin;

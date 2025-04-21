@@ -117,13 +117,6 @@ export class ResourceStore<K extends string, T extends string> {
     }))
   }
 
-  public groupByType = () => {
-    return groupedByType(this.allResources).map(resourceGroup => ({
-      type: resourceGroup[0].type,
-      resources: resourceGroup
-    }));
-  }
-
   public produce = (key: K, amount?: number) => {
     if (!amount) {
       return
@@ -204,18 +197,6 @@ export class ResourceStore<K extends string, T extends string> {
   }
 
 }
-
-const groupedByType = <K extends string, T extends string>(resources: Resource<K, T>[]): Resource<K, T>[][] => Object.values(
-  resources.reduce((acc, item) => {
-    // Initialize the group if it doesn't exist
-    if (!acc[item.type]) {
-      acc[item.type] = [];
-    }
-    // Add the current item to the group
-    acc[item.type].push(item);
-    return acc;
-  }, {} as Record<string, Resource<K, T>[]>)
-);
 
 const resourceReferences = <K extends string, T extends string>(
   key: K,

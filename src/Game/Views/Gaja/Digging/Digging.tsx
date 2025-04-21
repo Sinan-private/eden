@@ -1,4 +1,4 @@
-import {Tunnel} from "@/Game/Gaja/Digging/Tunnel.tsx";
+import {Tunnel} from "@/Game/Views/Gaja/Digging/Tunnel.tsx";
 import {game} from "@/Game/Classes/Game";
 
 export const Digging = () => {

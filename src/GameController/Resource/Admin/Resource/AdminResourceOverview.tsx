@@ -9,8 +9,8 @@ import {game} from "@/Game/Classes/Game";
 
 export const AdminResourceOverview = observer(() => {
   const {cloneResourceStore: resources, showResourceEdit, canEdit} = game().admin
-  const {groupByType} = resources;
-  const types = groupByType()
+  const {getResourcesByType} = resources;
+  const types = getResourcesByType()
   return (
     <AlertDialog open={showResourceEdit}>
       <h3 className="mb-6">Starting Resources</h3>
