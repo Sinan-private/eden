@@ -22,18 +22,12 @@ import {Tick} from "@/Resource/context/Tick.ts";
 
 // Here all the logic of the game is bundled into a single class that can be imported everywhere
 
-const TICKS_PER_SECOND = 40
-const TICKS_PER_TURN = 5
-
-
 export interface GameCreationProps {
   resources: ResourceUpdateProps<ResourceKeys, ResourceTypes>[]
 }
 
 export class GameClass {
   public id: string = id();
-  private tickInterval: number | null = null;
-  public tick_index: number = 0;
   public resources: ResourceStoreClass
   public admin: AdminController
   public gameState: GameState
@@ -76,11 +70,11 @@ export class GameClass {
     this.faction_marid = new MaridClass(factionProps)
     this.faction_ifrit = new IfritClass(factionProps)
     this.faction_ghoul = new GhoulClass(factionProps)
+    this.tick.subscribeToTurn(this.turn, this.id)
     makeAutoObservable(this)
   }
 
-  turn() {
-    console.log('turn')
+  private turn = () => {
     this.slaves.turnUpdate()
     this.upstream.turnUpdate()
     this.behemoth.turnUpdate(this)

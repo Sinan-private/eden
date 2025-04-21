@@ -1,22 +1,27 @@
 import {makeAutoObservable} from "mobx";
 import {id} from "@/Resource/helpers/id.ts";
 
-const TICKS_PER_SECOND = 4
-const TICKS_PER_TURN = 5
+const TICKS_PER_SECOND = 40
+const TICKS_PER_TURN = 20
 
+export type Subscription = {
+  callback: (tick: number) => void;
+  interval: 'tick' | 'turn'
+}
 
 export class Tick {
   id: string = id()
   private tickInterval: NodeJS.Timeout | null = null;
   public tick_index: number = 0;
-  subscribers = new Set<(tick: number) => void>();
+  subscribers = new Map<string, Subscription>();
+
   constructor() {
     makeAutoObservable(this);
   }
 
   public start = () => {
     if (this.tickInterval) return;
-    this.tickInterval = setInterval(() => this.nextTick(), 1000 / TICKS_PER_SECOND); // 1 second per tick
+    this.tickInterval = setInterval(() => this.nextInterval(), 1000 / TICKS_PER_SECOND); // 1 second per tick
   }
 
   public stop = () => {
@@ -26,36 +31,45 @@ export class Tick {
     }
   }
 
-  nextTick() {
-    console.log(Array.from(this.subscribers))
-    const first = this.subscribers.values().next().value;
-    const second = [...this.subscribers][1]
-    console.log(first, second);
-    console.log(first === second);
+  nextInterval() {
     this.tick_index++;
-    this.subscribers.forEach((cb) => cb(this.tick_index));
+    this.nextTick()
+    if (this.isNextTurn()) {
+      this.nextTurn()
+    }
+  }
+
+  nextTick() {
+    this.tick_index++;
+    this.subscribers.forEach(({callback, interval}) => {
+      if (interval === 'tick') {
+        callback(this.tick_index)
+      }
+    })
+  }
+
+  nextTurn() {
+    this.subscribers.forEach(({callback, interval}) => {
+      if (interval === 'turn') {
+        callback(this.tick_index)
+      }
+    });
   }
 
   get isActive() {
     return !!this.tickInterval
   }
 
-
   private isNextTurn = () => {
     return !(this.tick_index % TICKS_PER_TURN)
   }
 
-
-  public subscribe = (callback: (tick: number) => void): () => void => {
-    console.log("Subscribing", callback);
-    this.subscribers.add(callback);
-
-    // return () => {
-    //   console.log("Unsubscribing", callback);
-    //   console.log("Unsubscribing", this.subscribers.delete(callback));
-    //   // this.subscribers.delete(callback);
-    // };
-    this.subscribers.add(callback);
-    return () => this.subscribers.delete(callback); // return unsubscribe
+  public subscribeToTick = (callback: (tick: number) => void, id: string): () => void => {
+    this.subscribers.set(id, {callback, interval: 'tick'});
+    return () => this.subscribers.delete(id); // return unsubscribe
+  }
+  public subscribeToTurn = (callback: (tick: number) => void, id: string): () => void => {
+    this.subscribers.set(id, {callback, interval: 'turn'});
+    return () => this.subscribers.delete(id); // return unsubscribe
   }
 }

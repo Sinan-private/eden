@@ -229,7 +229,7 @@ const PlayContainer = styled('div')`
     border: 1px solid ${grey_blue};
     //border: 1px solid #6d8793;
     background-color: black;
-    z-index: 1000;
+    z-index: 9500;
 `
 
 const Side = styled.div`

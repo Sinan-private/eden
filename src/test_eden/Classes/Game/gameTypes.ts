@@ -7,7 +7,7 @@ import {ManaClass} from "@/test_eden/Classes/Mana/ManaClass.ts";
 import {PlayerClass} from "@/test_eden/Classes/Player/PlayerClass.ts";
 import {ArwaClass, GhoulClass, IfritClass, MaridClass} from "@/test_eden/Classes/Factions";
 import {InterfaceController} from "@/test_eden/Interface/InterfaceController.ts";
-import {Tick} from "@/Resource/context/tick.context.ts";
+import {Tick} from "@/Resource/context/Tick.ts";
 
 export type GameBaseClasses = {
   gameState: GameState;
@@ -27,4 +27,5 @@ type FactionClasses = {
 }
 export type Game = {
   ui: InterfaceController
-} & GameBaseClasses & Tick & FactionClasses;
+  tick: Tick
+} & GameBaseClasses & FactionClasses;

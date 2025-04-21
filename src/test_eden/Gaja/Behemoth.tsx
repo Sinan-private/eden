@@ -2,14 +2,12 @@ import behemoth_animated from "../../assets/images/Behemoth_animated.gif";
 import behemoth_image from "../../assets/images/Behemoth.png";
 import {game} from "@/test_eden/Classes/Game";
 import {observer} from "mobx-react";
-import {useTickSubscription} from "@/Resource/hooks/useTickSubscription.ts";
 
 export const Behemoth = observer(() => {
   const {resources, tick: {isActive}} = game();
   const {getByKey} = resources;
   const speed = getByKey('behemoth_climb_speed').value;
   const src = speed && isActive ? behemoth_animated : behemoth_image;
-  useTickSubscription(() => getByKey('clean_mana_level_1').updateValueBy(-5))
 
   return (
     <>

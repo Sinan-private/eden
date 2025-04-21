@@ -1,7 +1,6 @@
-import {AdminResourceProvider} from "./Resource";
 import {Game} from "./test_eden/Game.tsx";
-import {GameProvider} from "./test_eden/context/game.context.ts";
 import {useGameInitializer} from "@/test_eden/Classes/Game/useGameInitializer.ts";
+import {ResourceAdmin} from "@/Resource/Admin/ResourceAdmin.tsx";
 
 function App() {
   const gameReady = useGameInitializer();
@@ -11,13 +10,8 @@ function App() {
 
   return (
     <>
-      <AdminResourceProvider initialState={{
-        admin: {buttonPosition: "bottom-right"},
-      }}>
-        <GameProvider>
-          <Game/>
-        </GameProvider>
-      </AdminResourceProvider>
+      <Game/>
+      <ResourceAdmin buttonPosition={"bottom-right"}/>
     </>
   )
 }

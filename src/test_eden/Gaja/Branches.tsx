@@ -1,9 +1,9 @@
 import {useMemo, useRef} from "react";
 import {observer} from "mobx-react";
 import styled from "styled-components";
-import {useTurnSubscription} from "@/Resource";
 import {BranchClass} from "./BranchClass.ts";
 import {game} from "@/test_eden/Classes/Game";
+import {useTurnSubscription} from "@/Resource/hooks/useTickSubscription.ts";
 
 const WIDTH = 800;
 
@@ -15,6 +15,11 @@ export const Branches = observer(({displacement}: { displacement: number }) => {
       branchClass?.turnUpdate(displacement)
     }
   })
+  // useTurnSubscription(() => {
+  //   if (climb_speed.value) {
+  //     branchClass?.turnUpdate(displacement)
+  //   }
+  // })
 
   const branchViews = useMemo(() => {
   if (!branchClass) {

@@ -4,17 +4,18 @@ import {Acid} from "@/test_eden/Gaja/Digging/Acid.tsx";
 import tunnelEdges from "../../../assets/images/Tunnel.png"
 import {game} from "@/test_eden/Classes/Game";
 
-export const Tunnel = observer(({$digging_depth}: { $digging_depth: number }) => {
+export const Tunnel = observer(() => {
+  const {behemoth} = game()
+  const {digging_depth} = behemoth
   const {gameState} = game()
   const {renderHarvest} = gameState
   const renderImages = renderHarvest();
-  // I want to blend in the mana
 
   return (
     <div
       id="Tunnel"
       className="relative h-12 bg-zinc-950 overflow-hidden"
-      style={{width: $digging_depth + '%', transition: 'width 0.5s ease'}}
+      style={{width: digging_depth.value + '%', transition: 'width 0.5s ease'}}
     >
       {renderImages.map(({image, id, xPosition, yPosition}) => (
         <img

@@ -3,7 +3,7 @@ import {makeAutoObservable} from "mobx";
 import {AdminResourceController} from "@/Resource/Admin/AdminResourceController.ts";
 import {ResourceCloneProps} from "@/Resource/ResourceHandler/genericTypes.ts";
 import {Resource} from "@/Resource/ResourceHandler";
-import {areObjectsEqual} from "@/Resource/context/admin/equalityChecks.ts";
+import {areObjectsEqual} from "@/Resource/Admin/equalityChecks.ts";
 import {DEBUG} from "@/test_eden/constants/constants.ts";
 
 declare global {

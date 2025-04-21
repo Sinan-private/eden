@@ -1,34 +1,26 @@
 import {useState} from "react";
 import styled from "styled-components";
 import image from '../../assets/images/seemless_trunk.png';
-import {useAnimationSubscription} from "@/Resource";
 import {Branches} from "./Branches.tsx";
 import {CLIMBING_SPEED_COEFFICIENT} from "../constants/constants.ts";
 import {Digging} from "./Digging/Digging.tsx";
 import {Behemoth} from "./Behemoth.tsx";
 import {game} from "@/test_eden/Classes/Game";
-import {useComponentMount} from "@/Resource/hooks";
 import {useTickSubscription} from "@/Resource/hooks/useTickSubscription.ts";
+import {observer} from "mobx-react";
 
 const BACKGROUND_IMAGE_HEIGHT = 600;
 const BACKGROUND_IMAGE_WIDTH = 571;
 
-export const Gaja = () => {
-  const {subscribe} = game().tick
+export const Gaja = observer(() => {
   const {getByKey} = game().resources
-  const climbing_speed = getByKey('behemoth_climb_speed').value
   const [displacement, setDisplacement] = useState(0);
-  console.log("Subscribe function identity:", subscribe);
 
-
-  useTickSubscription(() => getByKey('clean_mana_level_1').updateValueBy(100))
-  useComponentMount(() => {
-    // subscribe((c) => getByKey('clean_mana_level_1').updateValueBy(100))
-  })
-  useAnimationSubscription(() => {
+  useTickSubscription(() => {
+  const climbing_speed = getByKey('behemoth_climb_speed').value
     if (climbing_speed) {
       const newPosition = (displacement + climbing_speed * CLIMBING_SPEED_COEFFICIENT)
-      setDisplacement(newPosition)
+      setDisplacement(() => newPosition)
     }
   })
   const trunkDisplacement = displacement - BACKGROUND_IMAGE_HEIGHT * 3
@@ -42,7 +34,7 @@ export const Gaja = () => {
       <Digging/>
     </Tree>
   )
-}
+})
 
 
 const Tree = styled('div')`
