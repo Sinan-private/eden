@@ -1,30 +1,22 @@
-import {action, IReactionDisposer, makeAutoObservable, reaction, runInAction} from "mobx";
+import {makeAutoObservable} from "mobx";
+import {id} from "@/Resource/helpers/id.ts";
 
 const TICKS_PER_SECOND = 4
 const TICKS_PER_TURN = 5
 
 
 export class Tick {
-  private tickInterval: number | null = null;
+  id: string = id()
+  private tickInterval: NodeJS.Timeout | null = null;
   public tick_index: number = 0;
+  subscribers = new Set<(tick: number) => void>();
   constructor() {
     makeAutoObservable(this);
   }
 
   public start = () => {
-    console.log(this)
-    if (this.tickInterval) return; // already running
-
-    this.tickInterval = window.setInterval(() => {
-      runInAction(() => {
-        // this.tick();
-        if (this.isNextTurn()) {
-          console.log(this.tick_index)
-          // this.turn();
-        }
-        this.tick_index++;
-      });
-    }, 1000 / TICKS_PER_SECOND); // 1 second per tick
+    if (this.tickInterval) return;
+    this.tickInterval = setInterval(() => this.nextTick(), 1000 / TICKS_PER_SECOND); // 1 second per tick
   }
 
   public stop = () => {
@@ -32,6 +24,16 @@ export class Tick {
       clearInterval(this.tickInterval);
       this.tickInterval = null;
     }
+  }
+
+  nextTick() {
+    console.log(Array.from(this.subscribers))
+    const first = this.subscribers.values().next().value;
+    const second = [...this.subscribers][1]
+    console.log(first, second);
+    console.log(first === second);
+    this.tick_index++;
+    this.subscribers.forEach((cb) => cb(this.tick_index));
   }
 
   get isActive() {
@@ -44,20 +46,16 @@ export class Tick {
   }
 
 
-  public subscribe = (callback: (tickIndex: number) => void): IReactionDisposer => {
-    return reaction(
-      () => this.tick_index,
-      (tickIndex) => callback(tickIndex)
-    );
-  }
-  public subscribeToTurn = (callback: (tickIndex: number) => void) => {
-    return reaction(
-      () => this.tick_index,
-      (tickIndex) => {
-        if (this.isNextTurn()) {
-          callback(tickIndex)
-        }
-      }
-    );
+  public subscribe = (callback: (tick: number) => void): () => void => {
+    console.log("Subscribing", callback);
+    this.subscribers.add(callback);
+
+    // return () => {
+    //   console.log("Unsubscribing", callback);
+    //   console.log("Unsubscribing", this.subscribers.delete(callback));
+    //   // this.subscribers.delete(callback);
+    // };
+    this.subscribers.add(callback);
+    return () => this.subscribers.delete(callback); // return unsubscribe
   }
 }

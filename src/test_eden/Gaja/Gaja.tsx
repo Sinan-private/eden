@@ -8,19 +8,22 @@ import {Digging} from "./Digging/Digging.tsx";
 import {Behemoth} from "./Behemoth.tsx";
 import {game} from "@/test_eden/Classes/Game";
 import {useComponentMount} from "@/Resource/hooks";
+import {useTickSubscription} from "@/Resource/hooks/useTickSubscription.ts";
 
 const BACKGROUND_IMAGE_HEIGHT = 600;
 const BACKGROUND_IMAGE_WIDTH = 571;
 
 export const Gaja = () => {
-  const {subscribe, subscribeToTurn} = game().tick
+  const {subscribe} = game().tick
   const {getByKey} = game().resources
   const climbing_speed = getByKey('behemoth_climb_speed').value
   const [displacement, setDisplacement] = useState(0);
-  useComponentMount(() => {
+  console.log("Subscribe function identity:", subscribe);
 
-  // subscribe((c) => console.log('tick', c))
-  subscribeToTurn((c) => console.log('turn', c))
+
+  useTickSubscription(() => getByKey('clean_mana_level_1').updateValueBy(100))
+  useComponentMount(() => {
+    // subscribe((c) => getByKey('clean_mana_level_1').updateValueBy(100))
   })
   useAnimationSubscription(() => {
     if (climbing_speed) {

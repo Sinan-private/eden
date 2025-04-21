@@ -6,7 +6,7 @@ import {game} from "@/test_eden/Classes/Game/createSingletonGame.ts";
 // Todo -> This now only works as a singleton to handle the turnSubscription and can be removed?
 
 const useGameBase = () => {
-  const tick = useTick();
+  // const tick = useTick();
   const _game = game();
   const {
     slaves,
@@ -22,7 +22,7 @@ const useGameBase = () => {
   // useTurnSubscription(() => faction_arwa.turnUpdate(_game));
 
   return {
-    ...tick,
+    // ...tick,
     ..._game,
   }
 }
