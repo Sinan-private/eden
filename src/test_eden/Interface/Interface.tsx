@@ -1,6 +1,5 @@
 import React from "react";
 import {observer} from "mobx-react";
-import styled from "styled-components";
 import {Debug_BehemothControls} from "@/test_eden/debug/custom/Debug_BehemothControls.tsx";
 import {TopBar} from "./TopBar.tsx";
 import {FooterButtons} from "./FooterButtons.tsx";
@@ -31,7 +30,7 @@ export const Interface = () => {
       </SideBarExtension>
       <Spacer/>
       <Right>
-        <EarthContent />
+        <EarthContent/>
       </Right>
       <Footer>
         <FooterButtons/>
@@ -63,47 +62,55 @@ const FactionMain = observer(() => {
   )
 })
 
-const Grid = styled.div`
-    position: fixed;
-    pointer-events: none;
-    top: 0;
-    left: 0;
-    display: grid;
-    height: 100vh;
-    width: 100vw;
-    grid-template-rows: ${HEADER_HEIGHT}px 1fr ${FOOTER_HEIGHT}px;
-    grid-template-columns: 160px 1fr 100px 0.7fr;
-    //border: 1px solid red;
-    z-index: 500;
-    grid-template-areas:
-    "header header header header"
-    "sidebar sidebar_extention spacer main"
-    "footer footer footer footer";
-    & div {
-        pointer-events: initial;
-    }
-`
-const Header = styled.header`
-    grid-area: header;
-    //border: 1px solid #535bf2;
-`
-const SideBar = styled.div`
-    //border: 1px solid #535bf2;
-    grid-area: sidebar;
-    padding: 12px;
-`
-const SideBarExtension = styled.div`
-    //border: 1px solid #535bf2;
-    grid-area: sidebar_extention;
-`
-const Footer = styled.footer`
-    display: flex;
-    //border: 1px solid #535bf2;
-    grid-area: footer;
-`
-const Right = styled.footer`
-    grid-area: main;
-`
-const Spacer = styled.footer`
-    grid-area: spacer;
-`
+const Grid = ({children}: { children: React.ReactNode }) => (
+  <div id="Game Grid" className="
+    fixed top-0 left-0 z-[500]
+    pointer-events-none
+    grid
+    w-screen h-screen
+    *:pointer-events-auto
+  "
+       style={{
+         gridTemplateRows: `${HEADER_HEIGHT}px 1fr ${FOOTER_HEIGHT}px`,
+         gridTemplateColumns: '160px 1fr 100px 0.7fr',
+         gridTemplateAreas: `
+        "header header header header"
+        "sidebar sidebar_extention spacer main"
+        "footer footer footer footer"
+      `,
+       }}
+  >
+    {children}
+  </div>
+)
+
+const Header = ({children}: { children: React.ReactNode }) => (
+  <div style={{gridArea: 'header'}}>
+    {children}
+  </div>
+)
+
+const SideBar = ({children}: { children: React.ReactNode }) => (
+  <div style={{gridArea: 'sidebar'}} className="p-3">
+    {children}
+  </div>
+)
+const SideBarExtension = ({children}: { children: React.ReactNode }) => (
+  <div style={{gridArea: 'sidebar_extention'}}>
+    {children}
+  </div>
+)
+const Footer = ({children}: { children: React.ReactNode }) => (
+  <div style={{gridArea: 'footer'}} className="flex">
+    {children}
+  </div>
+)
+const Right = ({children}: { children: React.ReactNode }) => (
+  <div style={{gridArea: 'main'}}>
+    {children}
+  </div>
+)
+const Spacer = () => (
+  <div style={{gridArea: 'spacer'}}>
+  </div>
+)

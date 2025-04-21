@@ -1,15 +1,15 @@
+import {ReactNode} from "react";
 import {observer} from "mobx-react";
 import {ResourceClass} from "src/Game/Resource";
-import styled from "styled-components";
 import {Button} from "@/Game/components/ui";
 import {Container} from "@/Game/components/ui/Box.tsx";
 import {game} from "@/test_eden/Classes/Game";
 
-export const Debug_ResourceGroup = styled.div`
-    display: flex;
-    flex-direction: column;
-    gap: 8px;
-`
+export const Debug_ResourceGroup = ({children}: {children: ReactNode}) => (
+  <div className="flex flex-col gap-2">
+    {children}
+  </div>
+)
 
 type Debug_ResourceProps = {
   resource: ResourceClass;

@@ -1,5 +1,4 @@
-import {useState} from "react";
-import styled from "styled-components";
+import {ReactNode, useState} from "react";
 import image from '../../assets/images/seemless_trunk.png';
 import {Branches} from "./Branches.tsx";
 import {CLIMBING_SPEED_COEFFICIENT} from "../constants/constants.ts";
@@ -17,7 +16,7 @@ export const Gaja = observer(() => {
   const [displacement, setDisplacement] = useState(0);
 
   useTickSubscription(() => {
-  const climbing_speed = getByKey('behemoth_climb_speed').value
+    const climbing_speed = getByKey('behemoth_climb_speed').value
     if (climbing_speed) {
       const newPosition = (displacement + climbing_speed * CLIMBING_SPEED_COEFFICIENT)
       setDisplacement(() => newPosition)
@@ -28,7 +27,7 @@ export const Gaja = observer(() => {
 
   return (
     <Tree>
-      <Trunk displacement={prop} />
+      <Trunk displacement={prop}/>
       <Branches displacement={displacement}/>
       <Behemoth/>
       <Digging/>
@@ -36,29 +35,21 @@ export const Gaja = observer(() => {
   )
 })
 
+const Tree = ({children}: { children: ReactNode }) => (
+  <div className="
+  fixed top-0 right-0 w-[171px] h-screen z-1
+  xl:w-[571px] lg:w-[457px] md:w-[343px]
+  ">
+    {children}
+  </div>
+)
 
-const Tree = styled('div')`
-    position: fixed;
-    top: 0;
-    right: 0;
-    width: ${BACKGROUND_IMAGE_WIDTH}px;
-    height: 100vh;
-    z-index: 1;
-    @media only screen and (max-width: 1200px) {
-        width: ${BACKGROUND_IMAGE_WIDTH * 0.8}px;
-    }
-    @media only screen and (max-width: 992px) {
-        width: ${BACKGROUND_IMAGE_WIDTH * 0.6}px;
-    }
-    @media only screen and (max-width: 768px) {
-        width: ${BACKGROUND_IMAGE_WIDTH * 0.3}px;
-    }
-`
 
-const Trunk = ({ displacement }: { displacement: number }) => {
+const Trunk = ({displacement}: { displacement: number }) => {
   return (
     <div className="relative w-full h-[600px]">
-      <div className={`w-[${BACKGROUND_IMAGE_WIDTH}px] h-[3000px]`} style={{transform: `translateY(${displacement}px)`, backgroundImage: `url(${image})`}} />
+      <div className={`w-[${BACKGROUND_IMAGE_WIDTH}px] h-[3000px]`}
+           style={{transform: `translateY(${displacement}px)`, backgroundImage: `url(${image})`}}/>
     </div>
   )
 }

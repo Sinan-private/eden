@@ -1,6 +1,5 @@
-import {useMemo} from "react";
+import React, {useMemo} from "react";
 import {observer} from "mobx-react";
-import styled from "styled-components";
 import {Button} from "@/Game/components/ui/button.tsx";
 import {
   Tooltip,
@@ -20,8 +19,7 @@ import {
 } from "@mynaui/icons-react";
 import {Box} from "@/Game/components/ui";
 import {game} from "@/test_eden/Classes/Game";
-
-const grey_blue = 'red'
+import {styled} from "@/Game/components/ui/styled.tsx";
 
 export const TopBar = () => {
   return (
@@ -57,7 +55,7 @@ const Center = observer(() => {
       <div className="mt-2 z-50 pointer-events-auto">
         <Box className="flex relative py-1">
           <div className="flex py-1 pl-3 pr-5 gap-8" style={{width: 380}}>
-            <UIStack tooltip={(<SlavePreview/>)} Icon={(<BrandGitlab />)}
+            <UIStack tooltip={(<SlavePreview/>)} Icon={(<BrandGitlab/>)}
                      value={slaveAmount}/>
             <UIStack tooltip={(<ManaPreview/>)} Icon={(<ShootingStar/>)} value={manaAmount}/>
             <UIStack tooltip="Height" Icon={(<FatArrowUp/>)} value={behemothHeight}/>
@@ -68,11 +66,11 @@ const Center = observer(() => {
               <p>HP</p>
               <p>{behemoth.hp.beautify.value}</p>
             </UIStack>
-            <UIStack tooltip={(<BehemothAcid />)} Icon={(<Thermometer />)}>
+            <UIStack tooltip={(<BehemothAcid/>)} Icon={(<Thermometer/>)}>
               <p>Acid</p>
               <p>{behemoth.acid.beautify.value}</p>
             </UIStack>
-            <UIStack tooltip={(<BehemothStamina/>)} Icon={(<SignalCircle />)}>
+            <UIStack tooltip={(<BehemothStamina/>)} Icon={(<SignalCircle/>)}>
               <p>{behemoth.stamina.beautify.value}</p>
               <p>Stamina</p>
             </UIStack>
@@ -212,30 +210,11 @@ const PlayButton = observer(() => {
   )
 })
 
+const PlayContainer = styled(
+  "absolute -top-2 left-1/2 -translate-x-1/2 cursor-pointer flex justify-center items-center w-14 h-14 rounded-[50%] bg-slate-900",
+  Box
+)
 
-const PlayContainer = styled('div')`
-    position: absolute;
-    cursor: pointer;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    top: -5px;
-    left: 50%;
-    transform: translateX(-50%);
-    width: 50px;
-    height: 50px;
-    border-radius: 50%;
-    border: 1px solid ${grey_blue};
-    //border: 1px solid #6d8793;
-    background-color: black;
-    z-index: 9500;
-`
-
-const Side = styled.div`
-    position: relative;
-    flex: 1 1 auto;
-    height: 30px;
-    pointer-events: none;
-    z-index: -1;
-    //font-size: 12px;
-`;
+const Side = styled(
+  "relative flex-auto h-7 pointer-events-none -z-1"
+)

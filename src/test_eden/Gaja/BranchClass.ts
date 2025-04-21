@@ -13,7 +13,7 @@ const MIN_DISTANCE_TO_REMOVE = 3000
 const BRANCH_AMOUNT = 15
 const PARALLAX_INTENSITY = 12
 
-type BranchState = {
+export type BranchState = {
   image: string;
   z: number;
   x: number;

@@ -1,4 +1,3 @@
-import styled from "styled-components";
 import {Button} from "@/Game/components/ui/button.tsx";
 import {X} from "@mynaui/icons-react";
 import {Tabs, TabsContent, TabsList, TabsTrigger} from "@/Game/components/ui/tabs.tsx";
@@ -11,7 +10,7 @@ export const AdminPanel = () => {
 
   return (
     <>
-      <StyledContainer id="Admin Panel BG">
+      <div id="Admin Panel BG" className="fixed left-0 top-0 min-w-screen/60 bg-black z-[1000]">
         <div className="absolute" style={{top: 10, right: 10}}>
           <Button variant="outline" onClick={onCloseAdminPanel} style={{zIndex: 100}}>
             <X/>
@@ -19,7 +18,7 @@ export const AdminPanel = () => {
 
         </div>
 
-        <Content>
+        <div className="h-screen overflow-y-auto">
           <Tabs defaultValue="resources" className="w-full">
             <TabsList>
               <TabsTrigger value="resources">Resources</TabsTrigger>
@@ -30,24 +29,9 @@ export const AdminPanel = () => {
               <TabsContent value="types"><AdminType /></TabsContent>
             </div>
           </Tabs>
-        </Content>
+        </div>
 
-      </StyledContainer>
+      </div>
     </>
   )
 }
-
-const StyledContainer = styled.div`
-    position: fixed;
-    left: 0;
-    top: 0;
-    min-width: 60vw;
-    background-color: #09090b;
-    //box-shadow: 10px 0 74px 0 #22183887;
-    z-index: 1000;
-`
-const Content = styled.div`
-    height: 100vh;
-    overflow: auto;
-
-`

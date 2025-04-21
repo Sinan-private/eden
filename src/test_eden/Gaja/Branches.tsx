@@ -1,11 +1,10 @@
 import {useMemo, useRef} from "react";
 import {observer} from "mobx-react";
-import styled from "styled-components";
-import {BranchClass} from "./BranchClass.ts";
+import {BranchClass, BranchState} from "./BranchClass.ts";
 import {game} from "@/test_eden/Classes/Game";
 import {useTurnSubscription} from "@/Game/Resource/hooks/useTickSubscription.ts";
 
-const WIDTH = 800;
+// const WIDTH = 800;
 
 export const Branches = observer(({displacement}: { displacement: number }) => {
   const branchClass = useRef<BranchClass>(new BranchClass(7)).current
@@ -15,27 +14,21 @@ export const Branches = observer(({displacement}: { displacement: number }) => {
       branchClass?.turnUpdate(displacement)
     }
   })
-  // useTurnSubscription(() => {
-  //   if (climb_speed.value) {
-  //     branchClass?.turnUpdate(displacement)
-  //   }
-  // })
 
   const branchViews = useMemo(() => {
   if (!branchClass) {
     return null
   }
+  const getPosition = (x: number, i: number) =>
+    `translate(${x}px, ${branchClass.getPosition(i, displacement)}px)`
+
     return (
       <>
-        {branchClass.branches.map(({image, z, x}, i) => (
+        {branchClass.branches.map((branch, i) => (
           <Branch
             key={i}
-            src={image}
-            style={{
-              filter: `blur(${z*1.5}px) brightness(${1 - z / 10}) hue-rotate(${z*10}deg)`,
-              transform: `translate(${x}px, ${branchClass.getPosition(i, displacement)}px)`,
-              zIndex: -1 - z,
-            }}
+            branch={branch}
+            position={getPosition(branch.x, i)}
           />
         ))}
       </>
@@ -44,24 +37,30 @@ export const Branches = observer(({displacement}: { displacement: number }) => {
   }, [branchClass, displacement])
   return (branchViews)
 })
-const Branch = styled('img')`
-    position: absolute;
-    top: 0;
-    right: ${WIDTH * 0.5}px;
-    width: ${WIDTH}px;
-    height: 400px;
-    object-fit: contain;
-    z-index: -1;
-    @media only screen and (max-width: 1200px) {
-        right: ${WIDTH * 0.5}px;
-        width: ${WIDTH * 0.8}px;
-    }
-    @media only screen and (max-width: 992px) {
-        right: ${WIDTH * 0.4}px;
-        width: ${WIDTH * 0.7}px;
-    }
-    @media only screen and (max-width: 768px) {
-        right: ${WIDTH * 0.3}px;
-        width: ${WIDTH * 0.6}px;
-    }
-`
+
+type BranchProps = {
+  branch: BranchState;
+  position: string;
+}
+
+const Branch = ({
+  branch: {image, z},
+  position
+}: BranchProps) => (
+  <img
+    src={image}
+    className={`
+    absolute top-0 z-[-1] object-contain h-[400px]
+    w-[800px] right-[350px]
+    xl:w-[640px] xl:right-[500px]
+    lg:w-[560px] lg:right-[500px]
+    md:w-[480px] md:right-[400px]
+    `}
+    style={{
+      filter: `blur(${z*1.5}px) brightness(${1 - z / 10}) hue-rotate(${z*10}deg)`,
+      transform: position,
+      zIndex: -1 - z,
+    }}
+    alt={image}
+  />
+)
