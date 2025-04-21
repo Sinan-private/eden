@@ -1,9 +1,9 @@
-import {ResourceClass, ResourceKeys, ResourceState, ResourceStoreClass, ResourceTypes} from "@/Resource";
+import {ResourceClass, ResourceKeys, ResourceState, ResourceStoreClass, ResourceTypes} from "@/Game/Resource";
 import {makeAutoObservable} from "mobx";
-import {AdminResourceController} from "@/Resource/Admin/AdminResourceController.ts";
-import {ResourceCloneProps} from "@/Resource/ResourceHandler/genericTypes.ts";
-import {Resource} from "@/Resource/ResourceHandler";
-import {areObjectsEqual} from "@/Resource/Admin/equalityChecks.ts";
+import {AdminResourceController} from "@/Game/Resource/Admin/AdminResourceController.ts";
+import {ResourceCloneProps} from "@/Game/Resource/ResourceHandler/genericTypes.ts";
+import {Resource} from "@/Game/Resource/ResourceHandler";
+import {areObjectsEqual} from "@/Game/Resource/Admin/equalityChecks.ts";
 import {DEBUG} from "@/test_eden/constants/constants.ts";
 
 declare global {

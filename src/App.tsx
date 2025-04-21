@@ -1,6 +1,6 @@
 import {Game} from "./test_eden/Game.tsx";
 import {useGameInitializer} from "@/test_eden/Classes/Game/useGameInitializer.ts";
-import {ResourceAdmin} from "@/Resource/Admin/ResourceAdmin.tsx";
+import {ResourceAdmin} from "@/Game/Resource/Admin/ResourceAdmin.tsx";
 
 function App() {
   const gameReady = useGameInitializer();

@@ -1,8 +1,8 @@
 import {ChangeEvent} from "react";
 import {DeleteButton} from "@/components/ui/DeleteButton.tsx";
 import {Input} from "@/components/ui/input.tsx";
-import {ResourceKeys, ResourceTypes, TradeChange} from "@/Resource";
-import {ResourceCostUpdate} from "@/Resource/ResourceHandler/genericTypes.ts";
+import {ResourceKeys, ResourceTypes, TradeChange} from "@/Game/Resource";
+import {ResourceCostUpdate} from "@/Game/Resource/ResourceHandler/genericTypes.ts";
 import {
   Select,
   SelectContent,

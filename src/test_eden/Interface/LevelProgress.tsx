@@ -1,5 +1,5 @@
 import {observer} from "mobx-react";
-import {TradeChange} from "@/Resource";
+import {TradeChange} from "src/Game/Resource";
 import {Progress} from "@/components/ui/progress.tsx";
 import {game} from "@/test_eden/Classes/Game";
 

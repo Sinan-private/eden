@@ -1,5 +1,5 @@
 import fs from 'fs';
-import path from 'path';
+import path from 'src/Game/Resource/server/path.js';
 import {PATH} from './path.js';
 import {fileURLToPath} from "url";
 

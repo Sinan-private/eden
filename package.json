@@ -10,7 +10,7 @@
     "lint": "eslint .",
     "preview": "vite preview",
     "frontend": "vite",
-    "backend": "node src/Resource/server/server.js",
+    "backend": "node src/Game/Resource/server/server.js",
     "start": "npm run backend & npm run frontend"
   },
   "dependencies": {

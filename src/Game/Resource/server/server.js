@@ -1,7 +1,7 @@
 import express from 'express';
 import bodyParser from 'body-parser';
 import cors from 'cors';
-import path from 'path';
+import path from 'src/Game/Resource/server/path.js';
 import {PATH} from './path.js';
 import { fileURLToPath } from 'url'; // Required for ES module to handle __dirname
 import fs from 'fs';

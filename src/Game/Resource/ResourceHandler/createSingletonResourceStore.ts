@@ -1,5 +1,5 @@
-import {ResourceStore} from "@/Resource/ResourceHandler/ResourceStore.ts";
-import {ResourceUpdateProps} from "@/Resource/ResourceHandler/genericTypes.ts";
+import {ResourceStore} from "@/Game/Resource/ResourceHandler/ResourceStore.ts";
+import {ResourceUpdateProps} from "@/Game/Resource/ResourceHandler/genericTypes.ts";
 
 let instance: ResourceStore<any, any> | null = null;
 export function createSingletonResourceStore<K extends string, T extends string>() {

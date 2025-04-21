@@ -1,5 +1,5 @@
-import {ResourceKeys, ResourceState, ResourceTypes} from "@/Resource";
-import {Resource} from "@/Resource/ResourceHandler";
+import {ResourceKeys, ResourceState, ResourceTypes} from "@/Game/Resource";
+import {Resource} from "@/Game/Resource/ResourceHandler";
 
 export const areObjectsEqual = <K extends string>(obj1: ResourceState, obj2?: Partial<ResourceState>): boolean => {
   if (obj1 === obj2) return true;

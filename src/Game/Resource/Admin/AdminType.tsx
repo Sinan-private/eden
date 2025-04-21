@@ -1,10 +1,10 @@
 import {Trash} from "@mynaui/icons-react";
-import {resourceTypes} from "@/Resource/generated/resourceTypes.ts";
-import {ResourceTypes} from "@/Resource";
+import {resourceTypes} from "@/Game/Resource/generated/resourceTypes.ts";
+import {ResourceTypes} from "@/Game/Resource";
 import {Button} from "@/components/ui/button.tsx";
 import {Input} from "@/components/ui/input.tsx";
 import {ChangeEvent, useState} from "react";
-import {useApi} from "@/Resource/hooks/useApi.ts";
+import {useApi} from "@/Game/Resource/hooks/useApi.ts";
 import {Badge} from "@/components/ui/Badge.tsx";
 import {game} from "@/test_eden/Classes/Game";
 

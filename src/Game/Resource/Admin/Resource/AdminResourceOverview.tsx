@@ -1,9 +1,9 @@
-import {ResourceKeys, ResourceTypes} from "@/Resource";
-import {Resource} from "@/Resource/ResourceHandler";
+import {ResourceKeys, ResourceTypes} from "@/Game/Resource";
+import {Resource} from "@/Game/Resource/ResourceHandler";
 import {observer} from "mobx-react";
 import {AlertDialog} from "@/components/ui/alert-dialog.tsx";
-import {AdminResource} from "@/Resource/Admin/Resource/AdminResource.tsx";
-import {EditResource} from "@/Resource/Admin/Resource/Edit/EditResource.tsx";
+import {AdminResource} from "@/Game/Resource/Admin/Resource/AdminResource.tsx";
+import {EditResource} from "@/Game/Resource/Admin/Resource/Edit/EditResource.tsx";
 import {AddButton} from "@/components/ui/AddButton.tsx";
 import {game} from "@/test_eden/Classes/Game";
 

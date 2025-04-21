@@ -1,6 +1,6 @@
-import {id} from "@/Resource/helpers/id.ts";
-import {ResourceUpdateProps} from "@/Resource/ResourceHandler";
-import {createSingletonResourceStore} from "@/Resource/ResourceHandler/createSingletonResourceStore.ts";
+import {id} from "@/Game/Resource/helpers/id.ts";
+import {ResourceUpdateProps} from "@/Game/Resource/ResourceHandler";
+import {createSingletonResourceStore} from "@/Game/Resource/ResourceHandler/createSingletonResourceStore.ts";
 import {GameState} from "@/test_eden/Classes/Game/GameState.ts";
 import {PlayerClass} from "@/test_eden/Classes/Player/PlayerClass.ts";
 import {SlaveClass} from "@/test_eden/Classes/Slaves/SlaveClass.ts";
@@ -12,13 +12,13 @@ import {
   ResourceKeys,
   ResourceStoreClass,
   ResourceTypes
-} from "@/Resource/ResourceHandler/specificTypes.ts";
+} from "@/Game/Resource/ResourceHandler/specificTypes.ts";
 import {ArwaClass, GhoulClass, IfritClass, MaridClass} from "@/test_eden/Classes/Factions";
 import {GameBaseClasses} from "@/test_eden/Classes/Game/gameTypes.ts";
 import {InterfaceController} from "@/test_eden/Interface/InterfaceController.ts";
-import {AdminController} from "@/Resource/Admin/AdminController.ts";
+import {AdminController} from "@/Game/Resource/Admin/AdminController.ts";
 import {makeAutoObservable} from "mobx";
-import {Tick} from "@/Resource/context/Tick.ts";
+import {Tick} from "@/Game/Resource/context/Tick.ts";
 
 // Here all the logic of the game is bundled into a single class that can be imported everywhere
 

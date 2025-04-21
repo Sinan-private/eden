@@ -11,9 +11,9 @@ import {
   Button,
   Separator,
 } from "@/components/ui";
-import {EditResourceBase} from "@/Resource/Admin/Resource/Edit/EditResourceBase.tsx";
-import {EditResourceValue} from "@/Resource/Admin/Resource/Edit/EditResourceValue.tsx";
-import {EditResourceCost} from "@/Resource/Admin/Resource/Edit/EditResourceCost.tsx";
+import {EditResourceBase} from "@/Game/Resource/Admin/Resource/Edit/EditResourceBase.tsx";
+import {EditResourceValue} from "@/Game/Resource/Admin/Resource/Edit/EditResourceValue.tsx";
+import {EditResourceCost} from "@/Game/Resource/Admin/Resource/Edit/EditResourceCost.tsx";
 import {observer} from "mobx-react";
 import {game} from "@/test_eden/Classes/Game";
 

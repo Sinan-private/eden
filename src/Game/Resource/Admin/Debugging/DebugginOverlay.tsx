@@ -1,7 +1,7 @@
 import React, {useMemo} from "react";
 import {observer} from "mobx-react";
 import {X} from "@mynaui/icons-react";
-import {DebuggingResources} from "@/Resource/Admin/Debugging/DebuggingResources.tsx";
+import {DebuggingResources} from "@/Game/Resource/Admin/Debugging/DebuggingResources.tsx";
 import {Button} from "@/components/ui";
 import {Tabs, TabsContent, TabsList, TabsTrigger} from "@/components/ui/tabs.tsx";
 import {game} from "@/test_eden/Classes/Game";

@@ -2,8 +2,8 @@ import {makeAutoObservable} from 'mobx'
 import {Resource, ResourceState, ResourceUpdateProps} from "./index.ts";
 import {ResourceTrade, Trade} from "./Trade.ts";
 import {LevelUpdate, ResourceCostUpdate, ResourceTypeRaw, TradeChange} from "./genericTypes.ts";
-import {id} from "@/Resource/helpers/id.ts";
-import {unique} from "@/Resource/helpers/array.ts";
+import {id} from "@/Game/Resource/helpers/id.ts";
+import {unique} from "@/Game/Resource/helpers/array.ts";
 
 export class ResourceStore<K extends string, T extends string> {
   public id: string = id();

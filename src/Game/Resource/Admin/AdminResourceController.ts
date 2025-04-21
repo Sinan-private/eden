@@ -1,5 +1,5 @@
 import {ChangeEvent} from "react";
-import {ResourceClass, ResourceKeys, ResourceTypes} from "@/Resource";
+import {ResourceClass, ResourceKeys, ResourceTypes} from "@/Game/Resource";
 import {makeAutoObservable} from "mobx";
 
 type Event = ChangeEvent<HTMLInputElement>;

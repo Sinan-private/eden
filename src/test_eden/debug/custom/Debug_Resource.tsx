@@ -1,5 +1,5 @@
 import {observer} from "mobx-react";
-import {ResourceClass} from "@/Resource";
+import {ResourceClass} from "src/Game/Resource";
 import styled from "styled-components";
 import {Button} from "@/components/ui";
 import {Container} from "@/components/ui/Box.tsx";

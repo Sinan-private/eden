@@ -6,7 +6,7 @@ import {CLIMBING_SPEED_COEFFICIENT} from "../constants/constants.ts";
 import {Digging} from "./Digging/Digging.tsx";
 import {Behemoth} from "./Behemoth.tsx";
 import {game} from "@/test_eden/Classes/Game";
-import {useTickSubscription} from "@/Resource/hooks/useTickSubscription.ts";
+import {useTickSubscription} from "@/Game/Resource/hooks/useTickSubscription.ts";
 import {observer} from "mobx-react";
 
 const BACKGROUND_IMAGE_HEIGHT = 600;

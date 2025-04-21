@@ -3,7 +3,7 @@ import {observer} from "mobx-react";
 import styled from "styled-components";
 import {BranchClass} from "./BranchClass.ts";
 import {game} from "@/test_eden/Classes/Game";
-import {useTurnSubscription} from "@/Resource/hooks/useTickSubscription.ts";
+import {useTurnSubscription} from "@/Game/Resource/hooks/useTickSubscription.ts";
 
 const WIDTH = 800;
 

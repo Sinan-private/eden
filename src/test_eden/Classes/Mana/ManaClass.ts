@@ -1,7 +1,7 @@
-import {ResourceStoreClass, ResourceTypes} from "../../../Resource";
+import {ResourceStoreClass, ResourceTypes} from "../../../Game/Resource";
 import {CRAFTING_SPEED, DRYING_SPEED, FLUSHING_SPEED, HARVEST_SPEED} from "../../constants/constants.ts";
 import {RandomResourceUpdate} from "../RandomResourceUpdate.ts";
-import {GameBaseProps} from "@/Resource/ResourceHandler/specificTypes.ts";
+import {GameBaseProps} from "@/Game/Resource/ResourceHandler/specificTypes.ts";
 import {GameState} from "@/test_eden/Classes/Game/GameState.ts";
 
 export class ManaClass {

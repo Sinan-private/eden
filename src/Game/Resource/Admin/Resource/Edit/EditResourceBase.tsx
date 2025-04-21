@@ -10,7 +10,7 @@ import {
   SelectTrigger,
   SelectValue
 } from "@/components/ui";
-import {resourceTypes} from "@/Resource/generated/resourceTypes.ts";
+import {resourceTypes} from "@/Game/Resource/generated/resourceTypes.ts";
 import {observer} from "mobx-react";
 import {game} from "@/test_eden/Classes/Game";
 

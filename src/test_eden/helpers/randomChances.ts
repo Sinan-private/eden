@@ -1,5 +1,5 @@
 import {getWinnerIndex} from "./mapMultiply";
-import {ResourceClass, ResourceKeys} from "../../Resource";
+import {ResourceClass, ResourceKeys} from "../../Game/Resource";
 
 // Todo This needs to be cleaned. Possibly a class because I love classes
 

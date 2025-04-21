@@ -1,6 +1,6 @@
 import {useEffect, useRef} from "react";
 import {game} from "@/test_eden/Classes/Game";
-import {id} from "@/Resource/helpers/id.ts";
+import {id} from "@/Game/Resource/helpers/id.ts";
 
 export const useTickSubscription = (
   callback: (tick: number) => void,

@@ -1,5 +1,5 @@
 import {makeAutoObservable} from "mobx";
-import {id} from "@/Resource/helpers/id.ts";
+import {id} from "@/Game/Resource/helpers/id.ts";
 
 const TICKS_PER_SECOND = 40
 const TICKS_PER_TURN = 20
