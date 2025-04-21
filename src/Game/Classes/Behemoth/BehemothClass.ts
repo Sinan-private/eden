@@ -11,7 +11,8 @@ import {LevelClass} from "../LevelClass.ts";
 import {levels} from "./levels.ts";
 import {GameBaseProps} from "@/GameController/Resource/ResourceHandler/specificTypes.ts";
 import {GameState} from "@/Game/Classes/Game/GameState.ts";
-import {GameClass} from "@/Game/Classes/Game/GameClass.ts";
+import {GameClass} from "@/Game/Classes/GameClass.ts";
+
 
 export class BehemothClass {
   public level: LevelClass;

@@ -24,3 +24,4 @@ export {Switch} from "@/GameController/components/ui/switch.tsx";
 export {DeleteButton} from "@/GameController/components/ui/DeleteButton.tsx";
 export {Box} from "@/GameController/components/ui/Box.tsx";
 export {Progress} from "@/GameController/components/ui/progress.tsx";
+export {Badge} from "@/GameController/components";

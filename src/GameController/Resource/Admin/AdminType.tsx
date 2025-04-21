@@ -2,10 +2,8 @@ import {ChangeEvent, useState} from "react";
 import {Trash} from "@mynaui/icons-react";
 import {game} from "@/Game";
 import {ResourceTypes} from "@/GameController/Resource";
-import {Button} from "@/GameController/components/ui/button.tsx";
-import {Input} from "@/GameController/components/ui/input.tsx";
+import {Button, Input, Badge} from "@/GameController/components/ui";
 import {useApi} from "@/GameController/Resource/hooks/useApi.ts";
-import {Badge} from "@/GameController/components/ui/Badge.tsx";
 
 export const AdminType = () => {
   const {admin, resources: {getTypes}} = game()

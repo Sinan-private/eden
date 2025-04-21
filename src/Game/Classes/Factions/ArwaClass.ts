@@ -2,7 +2,8 @@ import image from '../../../assets/images/Faction4.png';
 import {FactionClass} from "./FactionClass.ts";
 import {AUTO_COLLECT_MANA} from "../../constants/constants.ts";
 import {GameBaseClasses} from "@/Game/Classes/Game/gameTypes.ts";
-import {GameClass} from "@/Game/Classes/Game/GameClass.ts";
+import {GameClass} from "@/Game/Classes/GameClass.ts";
+
 
 
 export class ArwaClass extends FactionClass {
