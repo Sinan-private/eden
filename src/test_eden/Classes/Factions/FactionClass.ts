@@ -1,4 +1,4 @@
-import {ResourceClass, ResourceStoreClass} from "src/Game/Resource";
+import {ResourceClass, ResourceStoreClass} from "@/GameController/Resource";
 import {SlaveClass} from "../Slaves/SlaveClass.ts";
 import {BehemothClass} from "../Behemoth/BehemothClass.ts";
 import {ManaClass} from "../Mana/ManaClass.ts";

@@ -1,5 +1,5 @@
-import {HealthCalculation} from "@/Game/components/Constructors/HealthCalculation.ts";
-import {ResourceClass} from "src/Game/Resource";
+import {HealthCalculation} from "@/GameController/components/Constructors/HealthCalculation.ts";
+import {ResourceClass} from "@/GameController/Resource";
 
 export class SegmentedPower {
   public thresholds: number[]

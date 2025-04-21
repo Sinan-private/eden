@@ -1,4 +1,4 @@
-import {LevelUpdate, ResourceStoreClass} from "@/Game/Resource/ResourceHandler/specificTypes.ts";
+import {LevelUpdate, ResourceStoreClass} from "@/GameController/Resource/ResourceHandler/specificTypes.ts";
 
 type Level = `level_${ 1 | 2 | 3 | 4 | 5 }`;
 export type Levels = {

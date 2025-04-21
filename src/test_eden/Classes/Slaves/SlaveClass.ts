@@ -1,9 +1,9 @@
-import {ResourceClass, ResourceStoreClass} from "../../../Game/Resource";
+import {ResourceClass, ResourceStoreClass} from "@/GameController/Resource";
 import {SLAVES_INITIALLY_ARWA, SLAVES_INITIALLY_MARID} from "../../constants/constants.ts";
 import {randomChances} from "../../helpers/randomChances.ts";
 import {makeAutoObservable} from "mobx";
 import {FactionKeys} from "../Factions/FactionClass.ts";
-import {GameBaseProps} from "@/Game/Resource/ResourceHandler/specificTypes.ts";
+import {GameBaseProps} from "@/GameController/Resource/ResourceHandler/specificTypes.ts";
 
 // The slave
 // - limit -> This is the total maximum of slaves that the player can have at a time

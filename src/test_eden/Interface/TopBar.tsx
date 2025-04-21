@@ -1,12 +1,12 @@
 import React, {useMemo} from "react";
 import {observer} from "mobx-react";
-import {Button} from "@/Game/components/ui/button.tsx";
+import {Button} from "@/GameController/components/ui/button.tsx";
 import {
   Tooltip,
   TooltipContent,
   TooltipProvider,
   TooltipTrigger,
-} from "@/Game/components/ui/tooltip"
+} from "@/GameController/components/ui/tooltip"
 import {
   Play,
   Pause,
@@ -17,9 +17,9 @@ import {
   Thermometer,
   SignalCircle,
 } from "@mynaui/icons-react";
-import {Box} from "@/Game/components/ui";
+import {Box} from "@/GameController/components/ui";
 import {game} from "@/test_eden/Classes/Game";
-import {styled} from "@/Game/components/ui/styled.tsx";
+import {styled} from "@/GameController/components/ui/styled.tsx";
 
 export const TopBar = () => {
   return (

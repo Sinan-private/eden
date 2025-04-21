@@ -7,7 +7,7 @@ import {SidebarContent} from "./SidebarContent.tsx";
 import {InterfaceActiveLeft} from "./InterfaceController.ts";
 import {BehemothManager} from "./BehemothManager.tsx";
 import {PlayerManager} from "./PlayerManager.tsx";
-import {Button} from "@/Game/components/ui/button.tsx";
+import {Button} from "@/GameController/components/ui/button.tsx";
 import {EarthContent} from "@/test_eden/Interface/EarthContent.tsx";
 import {game} from "@/test_eden/Classes/Game";
 
@@ -75,7 +75,7 @@ const Grid = ({children}: { children: React.ReactNode }) => (
          gridTemplateColumns: '160px 1fr 100px 0.7fr',
          gridTemplateAreas: `
         "header header header header"
-        "sidebar sidebar_extention spacer main"
+        "sidebar sidebar_extension spacer main"
         "footer footer footer footer"
       `,
        }}
@@ -96,7 +96,7 @@ const SideBar = ({children}: { children: React.ReactNode }) => (
   </div>
 )
 const SideBarExtension = ({children}: { children: React.ReactNode }) => (
-  <div style={{gridArea: 'sidebar_extention'}}>
+  <div style={{gridArea: 'sidebar_extension'}}>
     {children}
   </div>
 )

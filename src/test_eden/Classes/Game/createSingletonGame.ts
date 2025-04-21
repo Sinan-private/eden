@@ -1,6 +1,6 @@
 import { GameClass, GameCreationProps } from "@/test_eden/Classes/Game/GameClass.ts";
 
-// This is only making sure that there is always only 1 Game object.
+// This is only making sure that there is always only 1 GameController object.
 // This object is stored in the window object to enable hot reloading without any issues
 
 const globalKey = "__singleton_game_instance__";

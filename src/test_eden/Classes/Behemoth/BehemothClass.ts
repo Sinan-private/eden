@@ -1,5 +1,5 @@
 import {makeAutoObservable} from "mobx";
-import {ResourceClass, ResourceStoreClass} from "src/Game/Resource";
+import {ResourceClass, ResourceStoreClass} from "@/GameController/Resource";
 import {
   BEHEMOTH_STAMINA_PER_SLAVE,
   BEHEMOTH_STAMINA_PER_WASTED_SLAVE,
@@ -9,7 +9,7 @@ import {
 import {staminaDrain} from "../../constants/gameRules.ts";
 import {LevelClass} from "../LevelClass.ts";
 import {levels} from "./levels.ts";
-import {GameBaseProps} from "@/Game/Resource/ResourceHandler/specificTypes.ts";
+import {GameBaseProps} from "@/GameController/Resource/ResourceHandler/specificTypes.ts";
 import {GameState} from "@/test_eden/Classes/Game/GameState.ts";
 import {GameClass} from "@/test_eden/Classes/Game/GameClass.ts";
 

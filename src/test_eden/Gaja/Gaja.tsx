@@ -1,12 +1,12 @@
 import {ReactNode, useState} from "react";
+import {observer} from "mobx-react";
 import image from '../../assets/images/seemless_trunk.png';
+import {game} from "@/test_eden/Classes/Game";
+import {useTickSubscription} from "@/GameController/Resource";
 import {Branches} from "./Branches.tsx";
 import {CLIMBING_SPEED_COEFFICIENT} from "../constants/constants.ts";
 import {Digging} from "./Digging/Digging.tsx";
 import {Behemoth} from "./Behemoth.tsx";
-import {game} from "@/test_eden/Classes/Game";
-import {useTickSubscription} from "@/Game/Resource/hooks/useTickSubscription.ts";
-import {observer} from "mobx-react";
 
 const BACKGROUND_IMAGE_HEIGHT = 600;
 const BACKGROUND_IMAGE_WIDTH = 571;

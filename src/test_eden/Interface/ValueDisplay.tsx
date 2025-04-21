@@ -1,6 +1,6 @@
 import {observer} from "mobx-react";
-import {ResourceClass} from "src/Game/Resource";
-import {Progress} from "@/Game/components/ui/progress.tsx";
+import {ResourceClass} from "@/GameController/Resource";
+import {Progress} from "@/GameController/components/ui/progress.tsx";
 
 type ValueDisplayProps = {
   resource: ResourceClass;

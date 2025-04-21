@@ -1,9 +1,9 @@
 import {HarvestRenderClass} from "@/test_eden/Gaja/Digging/HarvestRenderClass.ts";
 import {makeAutoObservable} from "mobx";
-import {id} from "@/Game/Resource/helpers/id.ts";
+import {id} from "@/GameController/Resource/helpers/id.ts";
 import {AUTO_CLIMB, AUTO_COLLECT_MANA} from "@/test_eden/constants/constants.ts";
 import {SegmentedPower} from "@/test_eden/Classes/SegmentedPower.ts";
-import {ResourceKeys, ResourceStoreClass} from "src/Game/Resource";
+import {ResourceKeys, ResourceStoreClass} from "@/GameController/Resource";
 
 // My goal is to create the HarvestRenderer in here. The current setup sucks
 

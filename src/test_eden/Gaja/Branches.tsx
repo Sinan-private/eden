@@ -2,7 +2,7 @@ import {useMemo, useRef} from "react";
 import {observer} from "mobx-react";
 import {BranchClass, BranchState} from "./BranchClass.ts";
 import {game} from "@/test_eden/Classes/Game";
-import {useTurnSubscription} from "@/Game/Resource/hooks/useTickSubscription.ts";
+import {useTurnSubscription} from "@/GameController/Resource/hooks/useSubscription.ts";
 
 // const WIDTH = 800;
 

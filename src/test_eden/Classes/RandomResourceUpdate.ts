@@ -1,4 +1,4 @@
-import {ResourceStoreClass, ResourceTypes} from "../../Game/Resource";
+import {ResourceStoreClass, ResourceTypes} from "@/GameController/Resource";
 
 export class RandomResourceUpdate {
   constructor(

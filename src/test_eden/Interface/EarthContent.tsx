@@ -1,7 +1,7 @@
 import {observer} from "mobx-react";
-import {Box, Button} from "@/Game/components/ui";
-import {HealthBar} from "@/Game/components/ui/HealthBar.tsx";
-import {SegmentedBar} from "@/Game/components/ui/SegmentedBar.tsx";
+import {Box, Button} from "@/GameController/components/ui";
+import {HealthBar} from "@/GameController/components/ui/HealthBar.tsx";
+import {SegmentedBar} from "@/GameController/components/ui/SegmentedBar.tsx";
 import {game} from "@/test_eden/Classes/Game";
 
 export const EarthContent = observer(() => {

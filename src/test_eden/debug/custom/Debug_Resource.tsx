@@ -1,8 +1,8 @@
 import {ReactNode} from "react";
 import {observer} from "mobx-react";
-import {ResourceClass} from "src/Game/Resource";
-import {Button} from "@/Game/components/ui";
-import {Container} from "@/Game/components/ui/Box.tsx";
+import {ResourceClass} from "@/GameController/Resource";
+import {Button} from "@/GameController/components/ui";
+import {Container} from "@/GameController/components/ui/Box.tsx";
 import {game} from "@/test_eden/Classes/Game";
 
 export const Debug_ResourceGroup = ({children}: {children: ReactNode}) => (
