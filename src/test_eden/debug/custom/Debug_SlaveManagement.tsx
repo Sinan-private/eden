@@ -1,6 +1,6 @@
 import {Debug_CustomResource, Debug_Resource, Debug_ResourceGroup} from "./Debug_Resource.tsx";
-import {Box, Button} from "@/components/ui";
-import {Container} from "@/components/ui/Box.tsx";
+import {Box, Button} from "@/Game/components/ui";
+import {Container} from "@/Game/components/ui/Box.tsx";
 import {game} from "@/test_eden/Classes/Game";
 
 export const Debug_SlaveManagement = () => {

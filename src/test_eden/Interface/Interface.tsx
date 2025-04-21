@@ -8,7 +8,7 @@ import {SidebarContent} from "./SidebarContent.tsx";
 import {InterfaceActiveLeft} from "./InterfaceController.ts";
 import {BehemothManager} from "./BehemothManager.tsx";
 import {PlayerManager} from "./PlayerManager.tsx";
-import {Button} from "@/components/ui/button.tsx";
+import {Button} from "@/Game/components/ui/button.tsx";
 import {EarthContent} from "@/test_eden/Interface/EarthContent.tsx";
 import {game} from "@/test_eden/Classes/Game";
 

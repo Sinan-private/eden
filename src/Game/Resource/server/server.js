@@ -1,14 +1,14 @@
 import express from 'express';
 import bodyParser from 'body-parser';
 import cors from 'cors';
-import path from 'src/Game/Resource/server/path.js';
-import {PATH} from './path.js';
 import { fileURLToPath } from 'url'; // Required for ES module to handle __dirname
+import path from './path.js';
+import {PATH} from './path.js';
 import fs from 'fs';
 import {writeKeys} from "./writeKeys.js";
 import {writeTypes} from "./writeTypes.js";
 import {removeType} from "./removeType.js";
-
+console.log('test')
 // Serve static frontend files
 // For ES modules, __dirname isn't available, so we calculate it using the following code
 const __filename = fileURLToPath(import.meta.url);
@@ -25,6 +25,8 @@ const resourcesFilePath = path.join(__dirname, PATH + 'initialResources.json');
 
 // Get all resources
 app.get('/resources', (req, res) => {
+console.log(resourcesFilePath);
+  console.log(req, res)
   fs.readFile(resourcesFilePath, 'utf8', (err, data) => {
     if (err) {
       return res.status(500).json({ message: 'Error reading resources file', error: err });

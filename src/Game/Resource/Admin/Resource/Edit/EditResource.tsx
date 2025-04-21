@@ -10,7 +10,7 @@ import {
   AlertDialogTitle,
   Button,
   Separator,
-} from "@/components/ui";
+} from "@/Game/components/ui";
 import {EditResourceBase} from "@/Game/Resource/Admin/Resource/Edit/EditResourceBase.tsx";
 import {EditResourceValue} from "@/Game/Resource/Admin/Resource/Edit/EditResourceValue.tsx";
 import {EditResourceCost} from "@/Game/Resource/Admin/Resource/Edit/EditResourceCost.tsx";

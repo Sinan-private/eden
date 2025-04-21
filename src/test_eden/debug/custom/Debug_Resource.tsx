@@ -1,8 +1,8 @@
 import {observer} from "mobx-react";
 import {ResourceClass} from "src/Game/Resource";
 import styled from "styled-components";
-import {Button} from "@/components/ui";
-import {Container} from "@/components/ui/Box.tsx";
+import {Button} from "@/Game/components/ui";
+import {Container} from "@/Game/components/ui/Box.tsx";
 import {game} from "@/test_eden/Classes/Game";
 
 export const Debug_ResourceGroup = styled.div`

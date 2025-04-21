@@ -9,8 +9,8 @@ export interface HealthBarProps extends Omit<ProgressProps, 'color' | 'value'> {
   children?: React.ReactNode;
 }
 
-import {Progress, ProgressProps} from "@/components/ui/progress.tsx";
-import {HealthCalculation, HealthProps} from "@/components/Constructors/HealthCalculation.ts";
+import {Progress, ProgressProps} from "@/Game/components/ui/progress.tsx";
+import {HealthCalculation, HealthProps} from "@/Game/components/Constructors/HealthCalculation.ts";
 
 export const HealthBar = React.forwardRef<
   React.ElementRef<typeof Progress>,

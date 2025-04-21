@@ -1,5 +1,5 @@
 import {Trash} from "@mynaui/icons-react";
-import {Button, ButtonProps} from "@/components/ui/button.tsx";
+import {Button, ButtonProps} from "@/Game/components/ui/button.tsx";
 
 export const DeleteButton = ({className, ...props}: ButtonProps) => (
   <Button

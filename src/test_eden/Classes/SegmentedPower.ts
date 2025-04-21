@@ -1,4 +1,4 @@
-import {HealthCalculation} from "@/components/Constructors/HealthCalculation.ts";
+import {HealthCalculation} from "@/Game/components/Constructors/HealthCalculation.ts";
 import {ResourceClass} from "src/Game/Resource";
 
 export class SegmentedPower {

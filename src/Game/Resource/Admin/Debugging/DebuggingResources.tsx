@@ -1,6 +1,6 @@
 import {game} from "@/test_eden/Classes/Game";
 import {Debug_Resource, Debug_ResourceGroup} from "@/test_eden/debug/custom/Debug_Resource.tsx";
-import {Box} from "@/components/ui";
+import {Box} from "@/Game/components/ui";
 
 export const DebuggingResources = () => {
   const {resources} = game()

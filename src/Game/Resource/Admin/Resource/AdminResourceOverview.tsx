@@ -1,10 +1,10 @@
 import {ResourceKeys, ResourceTypes} from "@/Game/Resource";
 import {Resource} from "@/Game/Resource/ResourceHandler";
 import {observer} from "mobx-react";
-import {AlertDialog} from "@/components/ui/alert-dialog.tsx";
+import {AlertDialog} from "@/Game/components/ui/alert-dialog.tsx";
 import {AdminResource} from "@/Game/Resource/Admin/Resource/AdminResource.tsx";
 import {EditResource} from "@/Game/Resource/Admin/Resource/Edit/EditResource.tsx";
-import {AddButton} from "@/components/ui/AddButton.tsx";
+import {AddButton} from "@/Game/components/ui/AddButton.tsx";
 import {game} from "@/test_eden/Classes/Game";
 
 export const AdminResourceOverview = observer(() => {

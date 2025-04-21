@@ -1,9 +1,9 @@
 import {EditOne, DotsVertical, Copy, Trash} from "@mynaui/icons-react";
-import {Button} from "@/components/ui/button.tsx";
+import {Button} from "@/Game/components/ui/button.tsx";
 import {ResourceKeys, ResourceTypes, TradeChange} from "@/Game/Resource";
 import {Resource} from "@/Game/Resource/ResourceHandler";
-import {Popover, PopoverContent, PopoverTrigger} from "@/components/ui/Popover.tsx";
-import {Separator} from "@/components/ui/separator.tsx";
+import {Popover, PopoverContent, PopoverTrigger} from "@/Game/components/ui/Popover.tsx";
+import {Separator} from "@/Game/components/ui/separator.tsx";
 import {game} from "@/test_eden/Classes/Game";
 
 type AdminResourcesProps = {

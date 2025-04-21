@@ -1,5 +1,5 @@
 import {useMemo} from "react";
-import {Button, DeleteButton} from "@/components/ui";
+import {Button, DeleteButton} from "@/Game/components/ui";
 import {EditResourceCostType} from "@/Game/Resource/Admin/Resource/Edit/EditResourceCostType.tsx";
 import {observer} from "mobx-react";
 import {game} from "@/test_eden/Classes/Game";

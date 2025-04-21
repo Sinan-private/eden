@@ -1,7 +1,7 @@
 import {observer} from "mobx-react";
 import {LevelGain, LevelProgress} from "./LevelProgress.tsx";
-import {Button} from "@/components/ui/button.tsx";
-import {Box} from "@/components/ui";
+import {Button} from "@/Game/components/ui/button.tsx";
+import {Box} from "@/Game/components/ui";
 import {game} from "@/test_eden/Classes/Game";
 
 export const PlayerManager = observer(() => {

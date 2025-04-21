@@ -2,10 +2,10 @@
 
 import * as React from "react"
 import * as ProgressPrimitive from "@radix-ui/react-progress";
-import {Progress} from "@/components/ui/progress.tsx";
-import {HealthCalculation} from "@/components/Constructors/HealthCalculation.ts";
-import {HealthBar, HealthBarProps} from "@/components/ui/HealthBar.tsx";
-import {barClasses} from "@/components/ui/constants.ts";
+import {Progress} from "@/Game/components/ui/progress.tsx";
+import {HealthCalculation} from "@/Game/components/Constructors/HealthCalculation.ts";
+import {HealthBar, HealthBarProps} from "@/Game/components/ui/HealthBar.tsx";
+import {barClasses} from "@/Game/components/ui/constants.ts";
 import {cn} from "@/lib/utils.ts";
 
 export const SegmentedBar = React.forwardRef<

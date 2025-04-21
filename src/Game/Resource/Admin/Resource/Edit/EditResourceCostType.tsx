@@ -1,6 +1,6 @@
 import {ChangeEvent} from "react";
-import {DeleteButton} from "@/components/ui/DeleteButton.tsx";
-import {Input} from "@/components/ui/input.tsx";
+import {DeleteButton} from "@/Game/components/ui/DeleteButton.tsx";
+import {Input} from "@/Game/components/ui/input.tsx";
 import {ResourceKeys, ResourceTypes, TradeChange} from "@/Game/Resource";
 import {ResourceCostUpdate} from "@/Game/Resource/ResourceHandler/genericTypes.ts";
 import {
@@ -11,7 +11,7 @@ import {
   SelectLabel,
   SelectTrigger,
   SelectValue
-} from "@/components/ui/select.tsx";
+} from "@/Game/components/ui/select.tsx";
 import {game} from "@/test_eden/Classes/Game";
 
 type SingleTradeProps = {

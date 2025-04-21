@@ -1,11 +1,11 @@
 import {Trash} from "@mynaui/icons-react";
 import {resourceTypes} from "@/Game/Resource/generated/resourceTypes.ts";
 import {ResourceTypes} from "@/Game/Resource";
-import {Button} from "@/components/ui/button.tsx";
-import {Input} from "@/components/ui/input.tsx";
+import {Button} from "@/Game/components/ui/button.tsx";
+import {Input} from "@/Game/components/ui/input.tsx";
 import {ChangeEvent, useState} from "react";
 import {useApi} from "@/Game/Resource/hooks/useApi.ts";
-import {Badge} from "@/components/ui/Badge.tsx";
+import {Badge} from "@/Game/components/ui/Badge.tsx";
 import {game} from "@/test_eden/Classes/Game";
 
 export const AdminType = () => {

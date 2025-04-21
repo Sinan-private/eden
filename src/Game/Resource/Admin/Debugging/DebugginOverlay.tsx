@@ -2,8 +2,8 @@ import React, {useMemo} from "react";
 import {observer} from "mobx-react";
 import {X} from "@mynaui/icons-react";
 import {DebuggingResources} from "@/Game/Resource/Admin/Debugging/DebuggingResources.tsx";
-import {Button} from "@/components/ui";
-import {Tabs, TabsContent, TabsList, TabsTrigger} from "@/components/ui/tabs.tsx";
+import {Button} from "@/Game/components/ui";
+import {Tabs, TabsContent, TabsList, TabsTrigger} from "@/Game/components/ui/tabs.tsx";
 import {game} from "@/test_eden/Classes/Game";
 
 type DebugginOverlayProps = {

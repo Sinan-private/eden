@@ -1,4 +1,4 @@
-import {Box, Container} from "@/components/ui/Box.tsx";
+import {Box, Container} from "@/Game/components/ui/Box.tsx";
 import {Debug_Resource, Debug_ResourceGroup} from "@/test_eden/debug/custom/Debug_Resource.tsx";
 import {game} from "@/test_eden/Classes/Game";
 

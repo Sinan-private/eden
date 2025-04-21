@@ -1,4 +1,4 @@
-import {ProgressProps} from "@/components/ui/progress.tsx";
+import {ProgressProps} from "@/Game/components/ui/progress.tsx";
 import {ascending, unique} from "@/Game/Resource/helpers/array.ts";
 
 type StatusColor = ProgressProps['color']

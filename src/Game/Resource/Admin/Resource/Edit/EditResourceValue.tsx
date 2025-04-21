@@ -1,6 +1,6 @@
 import {observer} from "mobx-react";
 import {useMemo} from "react";
-import {Input, Label, Switch} from "@/components/ui";
+import {Input, Label, Switch} from "@/Game/components/ui";
 import {game} from "@/test_eden/Classes/Game";
 
 export const EditResourceValue = observer(() => {

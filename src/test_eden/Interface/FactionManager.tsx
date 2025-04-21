@@ -1,4 +1,4 @@
-import {Progress} from "@/components/ui/progress.tsx";
+import {Progress} from "@/Game/components/ui/progress.tsx";
 import {FactionKeys} from "@/test_eden/Classes/Factions/FactionClass.ts";
 import {game} from "@/test_eden/Classes/Game";
 

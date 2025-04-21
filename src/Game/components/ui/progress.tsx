@@ -2,8 +2,8 @@
 
 import * as React from "react"
 import * as ProgressPrimitive from "@radix-ui/react-progress"
-import {cn} from "@/lib/utils"
-import {barClasses, bgClasses} from "@/components/ui/constants.ts";
+import {cn} from "@/lib/utils.ts"
+import {barClasses, bgClasses} from "@/Game/components/ui/constants.ts";
 
 export interface ProgressProps extends React.ComponentPropsWithoutRef<typeof ProgressPrimitive.Root> {
   color?: "green" | "yellow" | "red" | "blue" | "default";

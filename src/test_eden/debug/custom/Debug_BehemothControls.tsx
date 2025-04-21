@@ -1,6 +1,6 @@
 import {useEffect} from "react";
 import {observer} from "mobx-react";
-import {Button} from "@/components/ui";
+import {Button} from "@/Game/components/ui";
 import {game} from "@/test_eden/Classes/Game";
 
 export const Debug_BehemothControls = observer(() => {

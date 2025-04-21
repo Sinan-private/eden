@@ -1,8 +1,8 @@
 import {observer} from "mobx-react";
 import {DotsVerticalCircle} from "@mynaui/icons-react";
 import {AdminPanel} from "./AdminPanel.tsx";
-import {Button, Separator, Switch} from "@/components/ui";
-import {Popover, PopoverContent, PopoverTrigger} from "@/components/ui/Popover.tsx";
+import {Button, Separator, Switch} from "@/Game/components/ui";
+import {Popover, PopoverContent, PopoverTrigger} from "@/Game/components/ui/Popover.tsx";
 import {DebuggingComponents} from "@/test_eden/debug/custom/DebuggingComponents.tsx";
 import {DebugginOverlay} from "@/Game/Resource/Admin/Debugging/DebugginOverlay.tsx";
 import {game} from "@/test_eden/Classes/Game";
