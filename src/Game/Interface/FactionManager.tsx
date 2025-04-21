@@ -1,6 +1,6 @@
-import {Progress} from "@/GameController/components/ui/progress.tsx";
+import {game} from "@/Game";
+import {Progress} from "@/GameController/components";
 import {FactionKeys} from "@/Game/Classes/Factions/FactionClass.ts";
-import {game} from "@/Game/Classes/Game";
 
 export const FactionManager = () => {
   const {faction_marid, faction_ghoul, faction_arwa, faction_ifrit, slaves} = game();

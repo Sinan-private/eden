@@ -1,9 +1,9 @@
 import React from "react";
 import {observer} from "mobx-react";
-import {InterfaceActiveLeft} from "./InterfaceController.ts";
+import {game} from "@/Game";
 import {FactionManager} from "./FactionManager.tsx";
 import {ValueDisplay} from "./ValueDisplay.tsx";
-import {game} from "@/Game/Classes/Game";
+import {InterfaceActiveLeft} from "./InterfaceController.ts";
 
 export const SidebarContent = observer(() => {
   const {selectionActiveLeft} = game().interface;

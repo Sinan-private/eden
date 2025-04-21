@@ -18,3 +18,5 @@ export function createSingletonResourceStore<K extends string, T extends string>
   };
 }
 
+export const resourceStore = <K extends string, T extends string>(initialResources?: ResourceUpdateProps<K, T>[]) =>
+  createSingletonResourceStore<K, T>().getInstance(initialResources);

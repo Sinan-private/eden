@@ -1,7 +1,7 @@
 import {ReactNode, useState} from "react";
 import {observer} from "mobx-react";
+import {useTickSubscription} from "@/GameController";
 import {game} from "@/Game";
-import {useTickSubscription} from "@/GameController/Resource";
 import {Branches} from "./Branches.tsx";
 import {Digging} from "./Digging/Digging.tsx";
 import {Behemoth} from "./Behemoth.tsx";

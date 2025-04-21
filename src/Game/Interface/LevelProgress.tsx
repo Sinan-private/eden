@@ -1,7 +1,7 @@
 import {observer} from "mobx-react";
-import {TradeChange} from "@/GameController/Resource";
+import {game} from "@/Game";
 import {Progress} from "@/GameController/components/ui/progress.tsx";
-import {game} from "@/Game/Classes/Game";
+import {TradeChange} from "@/GameController/Resource";
 
 type LevelGainProps = {
   gain: TradeChange
@@ -49,7 +49,7 @@ export const LevelProgress = (
     level,
     label,
   }: LevelProgressProps) => {
-  const {getByKey, percentageOf} = game().resources;
+  const {getByKey} = game().resources;
   const resource = getByKey(level.key);
   const percentage = percentageOf(Math.floor(resource.value), level.value!)
   return (
@@ -64,4 +64,11 @@ export const LevelProgress = (
       />
     </>
   )
+}
+
+const percentageOf = (value: number, max: number) => {
+  const percentage = value / (max || 1) * 100
+  return percentage <= 100
+    ? percentage
+    : 100;
 }

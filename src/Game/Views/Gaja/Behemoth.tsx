@@ -1,7 +1,7 @@
+import {observer} from "mobx-react";
+import {game} from "@/Game";
 import behemoth_animated from "../../../assets/images/Behemoth_animated.gif";
 import behemoth_image from "../../../assets/images/Behemoth.png";
-import {game} from "@/Game/Classes/Game";
-import {observer} from "mobx-react";
 
 export const Behemoth = observer(() => {
   const {resources, tick: {isActive}} = game();

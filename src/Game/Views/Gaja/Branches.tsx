@@ -1,10 +1,7 @@
 import {useMemo, useRef} from "react";
 import {observer} from "mobx-react";
+import {game, useTurnSubscription} from "@/Game";
 import {BranchClass, BranchState} from "./BranchClass.ts";
-import {game} from "@/Game/Classes/Game";
-import {useTurnSubscription} from "@/GameController/Resource/hooks/useSubscription.ts";
-
-// const WIDTH = 800;
 
 export const Branches = observer(({displacement}: { displacement: number }) => {
   const branchClass = useRef<BranchClass>(new BranchClass(7)).current

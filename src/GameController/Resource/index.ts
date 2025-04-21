@@ -4,6 +4,5 @@ export type {ResourceClass} from "./ResourceHandler/specificTypes.ts";
 export type {ResourceState} from "./ResourceHandler/specificTypes.ts";
 export type {ResourceStoreClass} from "./ResourceHandler/specificTypes.ts";
 export type {TradeChange} from "./ResourceHandler/specificTypes.ts";
-export {useTickSubscription, useTurnSubscription} from "@/GameController/Resource/hooks/useSubscription.ts";
 // import icons from "@/GameController/Resource/assets/icons/icons.ts";
 // export const icons

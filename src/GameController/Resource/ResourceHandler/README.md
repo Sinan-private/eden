@@ -13,7 +13,7 @@ The `Resource` class represents a game resource with properties such as value, c
 
 ### Properties
 - **id**: Unique identifier for the resource.
-- **key**: Key representing the resource type (e.g., `"mana"`).
+- **key**: Key representing the unique resource for human usage (e.g., `"mana"`).
 - **value**: Current value of the resource.
 - **min**: Minimum allowable value for the resource.
 - **max**: Maximum allowable value for the resource.

@@ -1,5 +1,5 @@
 import {observer} from "mobx-react";
-import {game} from "@/Game/Classes/Game";
+import {game} from "@/Game";
 import background from '../../assets/images/hell_background.jpg'
 
 export const Background = observer(() => {

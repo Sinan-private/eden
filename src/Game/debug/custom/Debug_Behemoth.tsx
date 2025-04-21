@@ -1,7 +1,7 @@
-import {Debug_Resource, Debug_ResourceGroup} from "./Debug_Resource.tsx";
+import {game} from "@/Game";
 import {Box} from "@/GameController/components/ui";
-import {Container} from "@/GameController/components/ui/Box.tsx";
-import {game} from "@/Game/Classes/Game";
+import {Debug_Resource, Debug_ResourceGroup} from "./Debug_Resource.tsx";
+import {Container} from "@/Game/debug/custom/styles.tsx";
 
 export const Debug_Behemoth = () => {
   const {behemoth, resources} = game()

@@ -1,4 +1,4 @@
-import {game, GameClass} from "@/Game/index.ts";
+import {game, GameClass} from "@/Game";
 import {Gaja} from "@/Game/Views/Gaja/Gaja.tsx";
 import {Background} from "./Views/Background.tsx";
 import {Interface} from "./Interface/Interface.tsx";

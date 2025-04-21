@@ -1,9 +1,7 @@
-import {ChangeEvent} from "react";
-import {DeleteButton} from "@/GameController/components/ui/DeleteButton.tsx";
-import {Input} from "@/GameController/components/ui/input.tsx";
-import {ResourceKeys, ResourceTypes, TradeChange} from "@/GameController/Resource";
-import {ResourceCostUpdate} from "@/GameController/Resource/ResourceHandler/genericTypes.ts";
+import {game} from "@/Game";
 import {
+  Input,
+  DeleteButton,
   Select,
   SelectContent,
   SelectGroup,
@@ -11,8 +9,10 @@ import {
   SelectLabel,
   SelectTrigger,
   SelectValue
-} from "@/GameController/components/ui/select.tsx";
-import {game} from "@/Game/Classes/Game";
+} from "@/GameController/components";
+import {ChangeEvent} from "react";
+import {ResourceCostUpdate} from "@/GameController/Resource/ResourceHandler/genericTypes.ts";
+import {ResourceKeys, ResourceTypes, TradeChange} from "@/GameController/Resource";
 
 type SingleTradeProps = {
   trade: ResourceCostUpdate<ResourceKeys, ResourceTypes>;

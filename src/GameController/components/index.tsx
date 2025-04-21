@@ -37,7 +37,12 @@ export {
 export {Separator} from "@/GameController/components/ui";
 export {Switch} from "@/GameController/components/ui";
 export { Tabs, TabsList, TabsTrigger, TabsContent } from "@/GameController/components/ui/tabs.tsx";
-export {Tooltip} from "@/GameController/components/ui/tooltip.tsx";
+export {
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+} from "@/GameController/components/ui/tooltip.tsx";
 
 export type {HealthProps} from "@/GameController/components/Constructors/HealthCalculation.ts";
 export type {HealthBarProps} from "@/GameController/components/ui/HealthBar.tsx";

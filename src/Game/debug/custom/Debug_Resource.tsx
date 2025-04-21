@@ -1,9 +1,9 @@
-import {ReactNode} from "react";
 import {observer} from "mobx-react";
-import {ResourceClass} from "@/GameController/Resource";
+import {game} from "@/Game";
 import {Button} from "@/GameController/components/ui";
-import {Container} from "@/GameController/components/ui/Box.tsx";
-import {game} from "@/Game/Classes/Game";
+import {Container} from "@/Game/debug/custom/styles.tsx";
+import {ReactNode} from "react";
+import {ResourceClass} from "@/GameController/Resource";
 
 export const Debug_ResourceGroup = ({children}: {children: ReactNode}) => (
   <div className="flex flex-col gap-2">

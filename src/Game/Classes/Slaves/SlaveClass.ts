@@ -3,7 +3,8 @@ import {SLAVES_INITIALLY_ARWA, SLAVES_INITIALLY_MARID} from "../../constants/con
 import {randomChances} from "../../helpers/randomChances.ts";
 import {makeAutoObservable} from "mobx";
 import {FactionKeys} from "../Factions/FactionClass.ts";
-import {GameBaseProps} from "@/GameController/Resource/ResourceHandler/specificTypes.ts";
+
+import {GameBaseProps} from "@/Game/types.ts";
 
 // The slave
 // - limit -> This is the total maximum of slaves that the player can have at a time
@@ -76,19 +77,16 @@ export class SlaveClass {
   public resurrect = (value = 1) => {
     this._resourceStore
       .trade([{key: 'slaves_consumed', value}], [{key: 'slaves_in_rebirth', value}])
-      .tradeIfPossible()
   }
 
   public revive = (value = 1) => {
     this._resourceStore
       .trade([{key: 'slaves_in_rebirth', value}], [{key: 'slaves_roaming', value}])
-      .tradeIfPossible()
   }
 
   public enslave = () => {
     this._resourceStore
       .trade([{key: 'slaves_roaming', value: 1}], [{key: 'slaves_enslaved', value: 1}])
-      .tradeIfPossible()
   }
 
   public assignToFaction = (faction: FactionKeys, amount = 1) => {
@@ -110,12 +108,10 @@ export class SlaveClass {
     }
     this._resourceStore
       .trade([{key: 'slaves_enslaved', value: 1}], [{key: 'slaves_wasted', value: 1}])
-      .tradeIfPossible()
   }
   public consume = () => {
     this._resourceStore
       .trade([{key: 'slaves_wasted', value: 1}], [{key: 'slaves_consumed', value: 1}])
-      .tradeIfPossible()
   }
   // public revive
 

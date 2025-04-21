@@ -16,7 +16,6 @@ export const useTurnSubscription = (
   useSubscription(callback, 'turn', _id,);
 }
 
-
 const useSubscription = (
   callback: (tick: number) => void,
   interval: 'tick' | 'turn' = 'tick',

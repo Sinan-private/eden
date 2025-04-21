@@ -1,6 +1,6 @@
-import mana_sparkle from "@/assets/animation/mana-sparkle.gif";
-import {game} from "@/Game/Classes/Game/createSingletonGame.ts";
 import {observer} from "mobx-react";
+import {game} from "@/Game";
+import mana_sparkle from "@/assets/animation/mana-sparkle.gif";
 
 const MAX_HEIGHT = 450
 

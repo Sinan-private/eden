@@ -1,15 +1,15 @@
 import React from "react";
 import {observer} from "mobx-react";
-import {Debug_BehemothControls} from "@/Game/debug/custom/Debug_BehemothControls.tsx";
+import {game} from "@/Game";
+import {Button} from "@/GameController/components/ui/button.tsx";
 import {TopBar} from "./TopBar.tsx";
 import {FooterButtons} from "./FooterButtons.tsx";
+import {Debug_BehemothControls} from "@/Game/debug/custom/Debug_BehemothControls.tsx";
 import {SidebarContent} from "./SidebarContent.tsx";
-import {InterfaceActiveLeft} from "./InterfaceController.ts";
 import {BehemothManager} from "./BehemothManager.tsx";
 import {PlayerManager} from "./PlayerManager.tsx";
-import {Button} from "@/GameController/components/ui/button.tsx";
 import {EarthContent} from "@/Game/Interface/EarthContent.tsx";
-import {game} from "@/Game/Classes/Game";
+import {InterfaceActiveLeft} from "./InterfaceController.ts";
 
 const HEADER_HEIGHT = 60;
 export const FOOTER_HEIGHT = 80;

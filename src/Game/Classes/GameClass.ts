@@ -8,10 +8,10 @@ import {UpstreamClass} from "@/Game/Classes/UpstreamClass.ts";
 import {ArwaClass, GhoulClass, IfritClass, MaridClass} from "@/Game/Classes/Factions";
 import {InterfaceController} from "@/Game/Interface/InterfaceController.ts";
 import {Tick} from "@/GameController/components/Constructors/Tick.ts";
-import {GameBaseProps} from "@/GameController/Resource/ResourceHandler/specificTypes.ts";
 import {GameBaseClasses} from "@/Game/Classes/Game/gameTypes.ts";
 import {GameCreationProps} from "@/Game/Classes/Game/GameClass.ts";
 import {id} from "@/GameController/Resource/helpers/id.ts";
+import {GameBaseProps} from "@/Game/types.ts";
 
 export class GameClass extends GameBaseClass {
   public id: string = id();

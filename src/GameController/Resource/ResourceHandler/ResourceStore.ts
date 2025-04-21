@@ -1,7 +1,7 @@
 import {makeAutoObservable} from 'mobx'
 import {Resource, ResourceState, ResourceUpdateProps} from "./index.ts";
 import {ResourceTrade, Trade} from "./Trade.ts";
-import {LevelUpdate, ResourceCostUpdate, ResourceTypeRaw, TradeChange} from "./genericTypes.ts";
+import {LevelUpdate, ResourceCostUpdate, TradeChange} from "./genericTypes.ts";
 import {id} from "@/GameController/Resource/helpers/id.ts";
 import {unique} from "@/GameController/Resource/helpers/array.ts";
 
@@ -10,12 +10,9 @@ export class ResourceStore<K extends string, T extends string> {
   public resources: Map<string, Resource<K, T>>;
 
   constructor(initialResources: ResourceUpdateProps<K, T>[], public caller = 'original') {
-    this.resources = this.initializeResources(initialResources);
+    this.resources = this._initializeResources(initialResources);
     makeAutoObservable(this);
   }
-
-  public clone = (caller = 'clone') =>
-    new ResourceStore(this.allResources.map(resource => resource.clone()), caller)
 
   public get = (id: string) => {
     return this.resources.get(id)!
@@ -25,23 +22,6 @@ export class ResourceStore<K extends string, T extends string> {
     return Array.from(this.resources.values())
       .find(resource => resource.key === key)!;
   };
-
-  public percentageOf = (value: number, max: number) => {
-    const percentage = value / (max || 1) * 100
-    return percentage <= 100
-      ? percentage
-      : 100;
-  }
-
-  public initializeResources(resources: ResourceUpdateProps<K, T>[]) {
-    const fullResources: [string, Resource<K, T>][] = resources.map((resource) => {
-      const full = new Resource(resource);
-      return [full.id, full]
-      // this.resources.set(initialResource.id, initialResource);
-    });
-    return new Map(fullResources)
-  }
-
 
   public addResource = (resource: ResourceUpdateProps<K, T>) => {
     const _resource = new Resource(resource);
@@ -56,12 +36,12 @@ export class ResourceStore<K extends string, T extends string> {
     }
   }
 
-  public updateResources = (updates: (ResourceUpdateProps<K, T> & {id: string})[]) => {
-    updates.forEach((update) => {
-      const change = this.get(update.id)
-      change.setTo(update as Partial<ResourceTypeRaw<K, T>>);
-    })
-  }
+  // public updateResources = (updates: (ResourceUpdateProps<K, T> & {id: string})[]) => {
+  //   updates.forEach((update) => {
+  //     const change = this.get(update.id)
+  //     change.setTo(update as Partial<ResourceTypeRaw<K, T>>);
+  //   })
+  // }
 
   public resourceReferences = (key: K) => resourceReferences(key, this.allResources)
 
@@ -127,18 +107,16 @@ export class ResourceStore<K extends string, T extends string> {
       resource.updateValueBy(amount || 0)
       return null;
     }
-    const trade = this.trade(cost.give, cost.gain, amount)
+    const trade = this.getTradeChange(cost.give, cost.gain, amount)
     if (trade.isTradePossible()) {
       trade.executeTrade()
     }
   }
 
-  // Todo For a long time this needed to be reworked
-  //  internally I want to be able to use this with missing value props. This will just be 0 then
-  //  From an outside the value should be enforced
-  //  But most importantly the stupid trade().tradeIfPossible() should be replaced by simple trade()
-  //  In addition there can be some kind of check that is available to evaluate the trade
-  public trade = (
+  public clone = (caller = 'clone') =>
+    new ResourceStore(this.allResources.map(resource => resource.clone()), caller)
+
+  public getTradeChange = (
     give: ResourceCostUpdate<K, T>['give'],
     gain: ResourceCostUpdate<K, T>['gain'],
     amount = 1
@@ -154,6 +132,13 @@ export class ResourceStore<K extends string, T extends string> {
     return new Trade(_give, _gain, amount)
   }
 
+  public trade = (
+    give: ResourceCostUpdate<K, T>['give'],
+    gain: ResourceCostUpdate<K, T>['gain'],
+    amount = 1
+  ) =>
+    this.getTradeChange(give, gain, amount).tradeIfPossible()
+
   public levelUp = (level: LevelUpdate<K, T>) => {
     const canLevelUp = this.hasEnough(level.give) && this.hasEnough(level.need)
     if (canLevelUp) {
@@ -161,7 +146,7 @@ export class ResourceStore<K extends string, T extends string> {
         give = [],
         gain = [],
       } = level
-      this.trade(this._levelToTradeConversion(give), this._levelToTradeConversion(gain)).enforceTrade()
+      this.getTradeChange(this._levelToTradeConversion(give), this._levelToTradeConversion(gain)).enforceTrade()
     }
   }
 
@@ -169,7 +154,7 @@ export class ResourceStore<K extends string, T extends string> {
     if (!to_check) {
       return true
     }
-    return this.trade(this._levelToTradeConversion(to_check), []).getMaxPossibleAmount() >= 1
+    return this.getTradeChange(this._levelToTradeConversion(to_check), []).getMaxPossibleAmount() >= 1
   }
 
   public getTypeSum = (type: T) => {
@@ -180,6 +165,14 @@ export class ResourceStore<K extends string, T extends string> {
   public getTypeSessionSum = (type: T) => {
     const resources = this.getByType(type)
     return resources.reduce((sum, {sessionEarned}) => (sum + sessionEarned), 0)
+  }
+
+  private _initializeResources(resources: ResourceUpdateProps<K, T>[]) {
+    const fullResources: [string, Resource<K, T>][] = resources.map((resource) => {
+      const full = new Resource(resource);
+      return [full.id, full]
+    });
+    return new Map(fullResources)
   }
 
   private _levelToTradeConversion = (to_check: LevelUpdate<K, T>['gain']): TradeChange<K, T>[] =>

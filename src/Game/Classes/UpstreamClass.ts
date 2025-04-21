@@ -1,5 +1,6 @@
 import {ResourceClass, ResourceStoreClass} from "@/GameController/Resource";
-import {GameBaseProps} from "@/GameController/Resource/ResourceHandler/specificTypes.ts";
+
+import {GameBaseProps} from "@/Game/types.ts";
 
 export class UpstreamClass {
   private _height: ResourceClass;

@@ -9,9 +9,9 @@ import {
 import {staminaDrain} from "../../constants/gameRules.ts";
 import {LevelClass} from "../LevelClass.ts";
 import {levels} from "./levels.ts";
-import {GameBaseProps} from "@/GameController/Resource/ResourceHandler/specificTypes.ts";
 import {GameState} from "@/Game/Classes/Game/GameState.ts";
 import {GameClass} from "@/Game/Classes/GameClass.ts";
+import {GameBaseProps} from "@/Game/types.ts";
 
 
 export class BehemothClass {
@@ -70,17 +70,15 @@ export class BehemothClass {
   public manaToAcid = () =>
     this._resourceStore
       .trade([{key: 'clean_mana_level_1', value: 1}], [{key: 'behemoth_acid', value: 5}], 20)
-      .tradeIfPossible()
+
   public consumeWastedSlave = () => {
       this._resourceStore
         .trade([{key: 'slaves_wasted', value: 1}], [{key: 'behemoth_stamina', value: BEHEMOTH_STAMINA_PER_WASTED_SLAVE}])
-        .tradeIfPossible()
   }
 
   public consumeSlave = () => {
     this._resourceStore
       .trade([{key: 'slaves_enslaved', value: 1}], [{key: 'behemoth_stamina', value: BEHEMOTH_STAMINA_PER_SLAVE}])
-      .tradeIfPossible()
   }
 
   get decelerating() {

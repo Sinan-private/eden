@@ -1,5 +1,5 @@
+import {game} from "@/Game";
 import {Tunnel} from "@/Game/Views/Gaja/Digging/Tunnel.tsx";
-import {game} from "@/Game/Classes/Game";
 
 export const Digging = () => {
   const {behemoth} = game()
