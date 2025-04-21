@@ -1,5 +1,5 @@
 import fs from 'fs';
-import path from './path.js';
+import path from 'path';
 import {PATH} from './path.js';
 import {fileURLToPath} from "url";
 

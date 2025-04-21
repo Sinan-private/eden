@@ -4,8 +4,6 @@ export const useApi = () => {
   const fetchResources = async () => {
     try {
       const response = await fetch('/api/resources');  // This will proxy to http://localhost:5001/resources
-      console.log('trying', response.json())
-      return []
       return await response.json();
     } catch (error) {
       console.error('Error fetching resources:', error);
