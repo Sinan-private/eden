@@ -15,7 +15,7 @@ import {EditResourceBase} from "@/GameController/Resource/Admin/Resource/Edit/Ed
 import {EditResourceValue} from "@/GameController/Resource/Admin/Resource/Edit/EditResourceValue.tsx";
 import {EditResourceCost} from "@/GameController/Resource/Admin/Resource/Edit/EditResourceCost.tsx";
 import {observer} from "mobx-react";
-import {game} from "@/Game/Classes/Game";
+import {game} from "@/Game";
 
 export const EditResource = () => {
   const {getResourceForInput} = game().admin

@@ -3,15 +3,20 @@ import {DotsVerticalCircle} from "@mynaui/icons-react";
 import {AdminPanel} from "./AdminPanel.tsx";
 import {Button, Separator, Switch} from "@/GameController/components/ui";
 import {Popover, PopoverContent, PopoverTrigger} from "@/GameController/components/ui/Popover.tsx";
-import {DebuggingComponents} from "@/Game/debug/custom/DebuggingComponents.tsx";
-import {DebugginOverlay} from "@/GameController/Resource/Admin/Debugging/DebugginOverlay.tsx";
-import {game} from "@/Game/Classes/Game";
+// import {DebuggingComponents} from "@/Game/debug/custom/DebuggingComponents.tsx";
+import {DebugginOverlay, DebugginOverlayProps} from "@/GameController/Resource/Admin/Debugging/DebugginOverlay.tsx";
+import {game} from "@/Game";
 
 export type ResourceAdminProps = {
   buttonPosition?: "top-left" | "top-right" | "bottom-right" | "bottom-left";
-}
+} & DebugginOverlayProps
 
-export const ResourceAdmin = observer(({buttonPosition = 'top-right'}: ResourceAdminProps) => {
+export const ResourceAdmin = observer((
+  {
+    buttonPosition = 'top-right',
+    customComponents,
+  }
+  : ResourceAdminProps) => {
   const {showAdminPanel} = game().admin;
 
   return (
@@ -20,7 +25,7 @@ export const ResourceAdmin = observer(({buttonPosition = 'top-right'}: ResourceA
         {showAdminPanel && <AdminPanel/>}
         <ToggleButton buttonPosition={buttonPosition}/>
       </div>
-      <DebugginOverlay customComponents={[{label: 'Slave actions', component: (<DebuggingComponents />)}]} />
+      <DebugginOverlay customComponents={customComponents} />
     </div>
   )
 })

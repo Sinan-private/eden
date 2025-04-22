@@ -4,9 +4,9 @@ import {X} from "@mynaui/icons-react";
 import {DebuggingResources} from "@/GameController/Resource/Admin/Debugging/DebuggingResources.tsx";
 import {Button} from "@/GameController/components/ui";
 import {Tabs, TabsContent, TabsList, TabsTrigger} from "@/GameController/components/ui/tabs.tsx";
-import {game} from "@/Game/Classes/Game";
+import {game} from "@/Game";
 
-type DebugginOverlayProps = {
+export type DebugginOverlayProps = {
   customComponents?: {label: string, component: React.ReactNode}[]
 }
 

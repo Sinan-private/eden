@@ -1,4 +1,6 @@
 import {useMemo} from "react";
+import {observer} from "mobx-react";
+import {game} from "@/Game";
 import {
   Input,
   Label,
@@ -10,12 +12,10 @@ import {
   SelectTrigger,
   SelectValue
 } from "@/GameController/components/ui";
-import {resourceTypes} from "@/GameController/Resource/generated/resourceTypes.ts";
-import {observer} from "mobx-react";
-import {game} from "@/Game/Classes/Game";
+// import {resourceTypes} from "@/GameController/Resource/generated/resourceTypes.ts";
 
 export const EditResourceBase = observer(() => {
-  const {keyAlreadyExists, getResourceForInput} = game().admin
+  const {keyAlreadyExists, getResourceForInput, cloneResourceStore} = game().admin
   const {
     setLabel,
     setKey,
@@ -23,6 +23,7 @@ export const EditResourceBase = observer(() => {
     resource
   } = useMemo(getResourceForInput, [getResourceForInput])
   const keyExists = useMemo(() => keyAlreadyExists(resource.key), [resource.key, keyAlreadyExists])
+  const resourceTypes = cloneResourceStore.getTypes()
 
   const keyInput = useMemo(() => {
     if (keyExists) {

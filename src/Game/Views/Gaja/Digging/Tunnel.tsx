@@ -2,7 +2,7 @@ import {observer} from "mobx-react";
 import {cn} from "@/lib/utils.ts";
 import {Acid} from "@/Game/Views/Gaja/Digging/Acid.tsx";
 import tunnelEdges from "../../../../assets/images/Tunnel.png"
-import {game} from "@/Game/Classes/Game";
+import {game} from "@/Game";
 
 export const Tunnel = observer(() => {
   const {behemoth} = game()

@@ -3,6 +3,7 @@ import {useGameInitializer} from "@/Game/Classes/Game/useGameInitializer.ts";
 import {ResourceAdmin} from "@/GameController/Resource/Admin/ResourceAdmin.tsx";
 import {TICK_AUTO_START, TICKS_PER_SECOND, TICKS_PER_TURN} from "@/GameController/Resource/constants.ts";
 import {GameBaseControlledCreationProps} from "@/GameController/GameBaseClass.ts";
+import {DebuggingComponents} from "@/Game/debug/custom/DebuggingComponents.tsx";
 
 const initialConfig: GameBaseControlledCreationProps = {
   tick: {
@@ -21,7 +22,7 @@ function App() {
   return (
     <>
       <Game/>
-      <ResourceAdmin buttonPosition={"bottom-right"}/>
+      <ResourceAdmin buttonPosition={"bottom-right"} customComponents={[{label: 'Slave actions', component: (<DebuggingComponents />)}]} />
     </>
   )
 }

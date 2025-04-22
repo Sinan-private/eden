@@ -5,7 +5,7 @@ import {AlertDialog} from "@/GameController/components/ui/alert-dialog.tsx";
 import {AdminResource} from "@/GameController/Resource/Admin/Resource/AdminResource.tsx";
 import {EditResource} from "@/GameController/Resource/Admin/Resource/Edit/EditResource.tsx";
 import {AddButton} from "@/GameController/components/ui/AddButton.tsx";
-import {game} from "@/Game/Classes/Game";
+import {game} from "@/Game";
 
 export const AdminResourceOverview = observer(() => {
   const {cloneResourceStore: resources, showResourceEdit, canEdit} = game().admin

@@ -4,7 +4,7 @@ import {ResourceKeys, ResourceTypes, TradeChange} from "@/GameController/Resourc
 import {Resource} from "@/GameController/Resource/ResourceHandler";
 import {Popover, PopoverContent, PopoverTrigger} from "@/GameController/components/ui/Popover.tsx";
 import {Separator} from "@/GameController/components/ui/separator.tsx";
-import {game} from "@/Game/Classes/Game";
+import {game} from "@/Game";
 
 type AdminResourcesProps = {
   resource: Resource<ResourceKeys, ResourceTypes>
