@@ -1,5 +1,5 @@
 import {ResourceClass, ResourceStoreClass} from "@/GameController/Resource";
-import {SLAVES_INITIALLY_ARWA, SLAVES_INITIALLY_MARID} from "../../constants/constants.ts";
+import {SLAVES_INITIALLY_ARWA, SLAVES_INITIALLY_MARID} from "../../../GameController/Resource/constants.ts";
 import {randomChances} from "../../helpers/randomChances.ts";
 import {makeAutoObservable} from "mobx";
 import {FactionKeys} from "../Factions/FactionClass.ts";

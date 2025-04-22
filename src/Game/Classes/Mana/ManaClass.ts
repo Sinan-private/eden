@@ -1,5 +1,5 @@
 import {ResourceStoreClass, ResourceTypes} from "@/GameController/Resource";
-import {CRAFTING_SPEED, DRYING_SPEED, FLUSHING_SPEED, HARVEST_SPEED} from "../../constants/constants.ts";
+import {CRAFTING_SPEED, DRYING_SPEED, FLUSHING_SPEED, HARVEST_SPEED} from "../../../GameController/Resource/constants.ts";
 import {RandomResourceUpdate} from "../RandomResourceUpdate.ts";
 import {GameState} from "@/Game/Classes/Game/GameState.ts";
 import {GameBaseProps} from "@/Game/types.ts";

@@ -1,6 +1,6 @@
 import image from '../../../assets/images/Faction2.png';
 import {FactionClass} from "./FactionClass.ts";
-import {AUTO_CRAFT, AUTO_SLAVE_HUNT, SLAVE_CREATION} from "../../constants/constants.ts";
+import {AUTO_CRAFT, AUTO_SLAVE_HUNT, SLAVE_CREATION} from "../../../GameController/Resource/constants.ts";
 import {GameBaseClasses} from "@/Game/Classes/Game/gameTypes.ts";
 import {GameClass} from "@/Game/Classes/GameClass.ts";
 

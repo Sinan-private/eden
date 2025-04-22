@@ -1,6 +1,6 @@
 import image from '../../../assets/images/Faction4.png';
 import {FactionClass} from "./FactionClass.ts";
-import {AUTO_COLLECT_MANA} from "../../constants/constants.ts";
+import {AUTO_COLLECT_MANA} from "../../../GameController/Resource/constants.ts";
 import {GameBaseClasses} from "@/Game/Classes/Game/gameTypes.ts";
 import {GameClass} from "@/Game/Classes/GameClass.ts";
 

@@ -5,7 +5,7 @@ import {
   BEHEMOTH_STAMINA_PER_WASTED_SLAVE,
   STAMINA_REGEN,
   STAMINA_REGEN_ON_FLUSHING
-} from "../../constants/constants.ts";
+} from "../../../GameController/Resource/constants.ts";
 import {staminaDrain} from "../../constants/gameRules.ts";
 import {LevelClass} from "../LevelClass.ts";
 import {levels} from "./levels.ts";
