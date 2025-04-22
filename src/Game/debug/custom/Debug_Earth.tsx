@@ -1,7 +1,7 @@
 import {game} from "@/Game";
 import {Box} from "@/GameController/components/ui/Box.tsx";
 import {Container} from "@/Game/debug/custom/styles.tsx";
-import {Debug_Resource, Debug_ResourceGroup} from "@/Game/debug/custom/Debug_Resource.tsx";
+import {Debug_Resource, Debug_ResourceGroup} from "@/GameController/Resource/Admin/Debugging/Debug_Resource.tsx";
 
 export const Debug_Earth = () => {
   const {resources} = game();

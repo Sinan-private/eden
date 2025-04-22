@@ -1,5 +1,5 @@
 import {game} from "@/Game";
-import {Debug_Resource, Debug_ResourceGroup} from "@/Game/debug/custom/Debug_Resource.tsx";
+import {Debug_Resource, Debug_ResourceGroup} from "@/GameController/Resource/Admin/Debugging/Debug_Resource.tsx";
 import {Box} from "@/GameController/components/ui";
 
 export const DebuggingResources = () => {

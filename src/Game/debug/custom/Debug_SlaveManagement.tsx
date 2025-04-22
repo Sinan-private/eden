@@ -1,7 +1,7 @@
 import {game} from "@/Game";
 import {Box, Button} from "@/GameController/components/ui";
 import {Container} from "@/Game/debug/custom/styles.tsx";
-import {Debug_CustomResource, Debug_Resource, Debug_ResourceGroup} from "./Debug_Resource.tsx";
+import {Debug_CustomResource, Debug_Resource, Debug_ResourceGroup} from "../../../GameController/Resource/Admin/Debugging/Debug_Resource.tsx";
 
 export const Debug_SlaveManagement = () => {
   const {slaves} = game();
