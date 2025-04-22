@@ -10,10 +10,154 @@ The `ResourceStore` is a MobX-powered state management class designed for use in
 - **Extensible**: Designed to integrate into a larger game system, or to act as a self-contained simulation.
 
 
----
+## Documentation
+
+### 🧮 Getters
+| Method                | propType | Return     | Description                              |
+|-----------------------|----------|------------|------------------------------------------|
+| **🔍 Access & Query** |          |            |                                          |
+| `allResources`        | `string` | Resource   | Returns the resource by its internal ID. |
+| `state`               |          | Resource[] | Returns a list of all resource states.   |
+
+
+### 📖 Methods
+
+| Method                               | propType                  | Return                               | Description                                                                                                                                   |
+|--------------------------------------|---------------------------|--------------------------------------|-----------------------------------------------------------------------------------------------------------------------------------------------|
+| **🔍 Access & Query**                |                           |                                      |                                                                                                                                               |
+| `get(id)`                            | `string`                  | Resource                             | Returns the resource by its internal ID.                                                                                                      |
+| `getByKey(key)`                      | `K (string)`              | Resource                             | Returns the resource by the (unique) key                                                                                                      |
+| `getByType(type?)`                   | `T (string)`              | Resource[]                           | Returns all resources of a specific type. If no type is given, returns all.                                                                   |
+| `getTypes()`                         |                           | T[]                                  | Returns a unique list of all types available from the store.                                                                                  |
+| `getResourcesByType()`               |                           | { type: T, resources: Resource[] }[] | Groups all resources by their type and returns them as type-resource pairs.                                                                   |
+| **⚖️ Trading & Production**          |                           |                                      |
+| `produce(key, amount)`               | `K (string)`, `number`    |                                      | Produce a resource from the `cost`description                                                                                                 |
+| `trade(give, gain, amount)`          | `TradeChange[]`, `number` |                                      | This will execute as much as possible of the given trade.                                                                                     |
+| `getTradeChange(give, gain, amount)` | `TradeChange[]`, `number` | Trade                                | Creates a new Trade instance for deeper evaluation. Used internally to check possibilities and amounts of trades                              |
+| `hasEnough(to_check?)`               | `UpdateProps & {key: K}`  | boolean                              | Checks whether the store has enough resources to fulfill a required cost.                                                                     |
+| **➕ Modification & Cloning**         |                           |                                      |                                                                                                                                               |
+| `addResource(resource)`              | `UpdateProps & {key: K}`  | Resource                             | Adds a new resource to the store and returns the newly created resource instance.                                                             |
+| `removeResource(id)`                 | string                    |                                      | Removes a resource by ID, only if no other resource references it (e.g., via cost or revealedAt).                                             |
+| `clone(caller?)`                     | string                    |                                      | Creates a deep copy of the resource store, assigning new IDs to each resource. The caller is just to reference the different stores           |
+| **🛠 Resource Relationships**        |                           |                                      |                                                                                                                                               |
+| `resourceReferences(key)`            | `K (string)`              | K[]                                  | Checks whether any other resource references the given key. If a resource is referenced the `removeResource()` will be disabled.              |
+| `replaceTradeKeys(key, newKey)`      | `K (string)`, `string`    | (ResourceState & { id: string })[]`  | Replaces all occurrences of a specific key in cost.give and cost.gain with a new key. This is used to enforce consistency when changing keys. |
+| **➗ Utilities**                      |                           |                                      |                                                                                                                                               |
+| `getTypeSum(type)`                   | T                         | number                               | Returns the sum of sessionEarned values of all resources of a specific type.                                                                  |
+| `getTypeSessionSum(type)`            | T                         | number                               | Returns the sum of sessionEarned values of all resources of a specific type.                                                                  |
+| Todo: `resetSession(type)`           | T                         |                                      | This should reset all sessions from all resources of that type                                                                                |
+
+#### Type description
+
+```ts
+type UpdateProps = Partial<Resource['state']>
+type ChangeKey = 'give' | 'gain'
+type TradeChange = {key: K; value: number}
+
+```
+
+
+
+
+# Resource
+
+The `Resource` class represents a single game resource (e.g. wood, gold, energy) and encapsulates all logic related to value tracking, constraints, trading cost, visibility conditions, and display formatting.
+
+
+## Documentation
+
+### 🗝 Keys
+
+| key            |    type    | Description                                                                                                           |
+|----------------|:----------:|:----------------------------------------------------------------------------------------------------------------------|
+| `key`          | K (string) | The primary identifier for human readability                                                                          |
+| `type`         | T (string) | Category or type (e.g. "material", "currency")                                                                        |
+| `value`        |   number   | The available amount                                                                                                  |
+| `min`          |   number   | Minimum value (default: 0)                                                                                            |
+| `max`          |   number   | Maximum value (default: Infinity)                                                                                     |
+| `label`        |   string   | Human-readable label (falls back to key)                                                                              |
+| `cost`         |    Cost    | Resources required to produce this. The cost offers a simple way to transform one resource (or multiple) into another |
+| `revealedAt`   |    Cost    | Resources needed to reveal this                                                                                       |
+| `iconName`     |   string   | Not for use. The icon getter provides the icon. The icon name is used for internal storage                            |
+| `reference_id` |   string   | When a resource is cloned the reference_id will point to its origin                                                   |
+
+### 🧮 Getters
+
+| key          |  type   | Description                                                          |
+|--------------|:-------:|:---------------------------------------------------------------------|
+| `icon`       | string  | The icon to use in your app                                          |
+| `percentage` | number  | The percentage of the value compared to the max                      |
+| `beautify`   | object  | Beautified values for better readability                             |
+| `state`      | object  | The raw resource (without methods) for passing and storing in states |
+| `is_max`     | boolean | Is the value at max                                                  |
+| `is_min`     | boolean | Is the value at min                                                  |
+
+## 📖 Methods
+
+| Method                               | propType                   | Return     | Description                                                                                                                                                                                |
+|--------------------------------------|----------------------------|------------|--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| **🔧 Value Management**              |                            |            |                                                                                                                                                                                            |
+| `updateBy(update)`                   | `UpdateProps`              |            | Updates the value while respecting `min` and `max` constraints. If constraints and value are changed, the constraints are applied first.                                                   |
+| `updateValueBy(amount)`              | `number`                   | `boolean`  | Increases or decreases the value by a given amount. Equivalent to `updateBy({ value })`. Returns `true` if the value changed, otherwise `false`.                                           |
+| `setTo(update)`                      | `UpdateProps`              |            | Fully updates the resource properties (`key`, `type`, `value`, `min`, `max`, `cost`, etc.). Used for every internal change to ensure consistency. Also updates lifetime and session stats. |
+| `setValueTo(value:)`                 | `number`                   | `boolean`  | Sets the value directly, respecting constraints. This is the core method for any change in value.                                                                                          |
+| `setToMin()`                         |                            |            | Sets the value to the minimum (`min`).                                                                                                                                                     |
+| `respectConstraints(value)`          | `number`                   | `number`   | Returns a version of the value clamped between `min` and `max`, without mutating the resource.                                                                                             |
+| `hasEnough(value: number)`           |                            | `boolean`  | Returns `true` if subtracting `value` still keeps the resource at or above its `min`.                                                                                                      |
+| **🔄 Cost Management**               |                            |            |                                                                                                                                                                                            |
+| `addCost(changeKey, extraCost)`      | `ChangeKey`, `TradeChange` |            | Ads a new cost to the give or gain cost list.                                                                                                                                              |
+| `updateCost(changeKey, change)`      | `ChangeKey`, `TradeChange` |            | Updates the cost entry for give or gain where the key matches. Modifies the value of the matching entry.                                                                                   |
+| `removeCost(changeKey, resourceKey)` | `ChangeKey`, `K`           |            | Removes a cost entry with the specified key from give or gain.                                                                                                                             |
+| **♻️ Session & Cloning**             |                            |            |                                                                                                                                                                                            |
+| `resetSession()`                     |                            |            | Resets session-based earned and spent counters.                                                                                                                                            |
+| `clone()`                            |                            | `Resource` | Creates a deep copy of the resource with a new ID and links the reference one via reference_id.                                                                                            |
+
+#### Type description
+
+```ts
+type UpdateProps = Partial<Resource['state']>
+type ChangeKey = 'give' | 'gain'
+type TradeChange = {key: K; value: number}
+
+```
+
+
+## ResourceKeys
+```ts
+type ResourceTypeRaw<K, T> = {
+  value: number;
+  min: number;
+  max: number;
+  label: string;
+  type?: T;
+  cost: ResourceCostUpdate<K, T> | null;
+  revealedAt: ResourceCostUpdate<K, T> | null;
+  iconName?: string;
+}
+type TradeChange<K, T> = {key: K; value: number} & Partial<ResourceTypeRaw<K, T>>;
+type ResourceCostUpdate<K, T> = {
+  give: TradeChange<K, T>[];
+  gain: TradeChange<K, T>[];
+}
+```
+
+# Setting up your app
+This ResourceSystem works best with fully controlled resources. But it can also be used with a custom setup
+
+## Fully controlled
+- The `GameBaseClass` creates a singleton store that offers a `tick` and an `admin`
+- The `admin` expects these folders to work  `assets`, `Admin`, `generated`, `helpers`, `hooks` and `server` to be copied. Basically you need to copy the full `GameController` folder
+- You can use the `ResourceAdmin` component to render all the helpers that are needed, or create your own system for rendering
+
+### <ResourceAdmin />
+
+```ts
+import {ResourceAdmin} from "@/GameController/Resource/Admin/ResourceAdmin.tsx";
+
+```
+
 
 ## 🧪 Example Usage
-
 
 ### Initial call
 
@@ -45,134 +189,8 @@ const Game = observer(() => {
 })
 ```
 
-The `observer` should live at the lowest possible level because this will trigger the re-render.
+>The `observer` should live at the lowest possible level because this will trigger the re-render.
 
----
-
-
-# ResourceStore-Methods
-
-## 📖 Methods
-### 🔍 Access & Query
-`get(id: string): Resource`
 <br/>
-Returns the resource by its internal ID.
-
-`getByKey(key: K): Resource`
 <br/>
-Returns a resource by its human-readable key. This eases editing with an auto-completion
-
-`getByType(type?: T): Resource[]`
 <br/>
-Returns all resources of a specific type. If no type is given, returns all.
-
-`getTypes(): T[]`
-<br/>
-Returns a unique list of all types available from the store.
-
-`getResourcesByType(): { type: T, resources: Resource[] }[]`
-<br/>
-Groups all resources by their type and returns them as type-resource pairs.
-
-`allResources: Resource[]`
-<br/>
-Returns all resources as an array.
-
-`state: ResourceState[]`
-<br/>
-Returns a simplified representation of all resources' current state.
-
----
-
-## ⚖️ Trading & Production
-
-`produce(key: K, amount?: number): void`
-Simple cost structures can be directly handled in the cost of each resource.
-- 1 flour could cost 2 wheat to produce.
-- If the resource has a cost, executes the trade as much as possible.
-- If there is no cost, simply increases the resource value.
-
-### Understanding the structure
-`give` & `gain` both expect an array of changes like
-
-```ts
-const give = [
-    {key: 'flour', value: 2},
-    {key: 'water', value: 1},
-]
-const gain = [{key: 'bread', value: 1}]
-```
-
-`trade(give, gain, amount): void`
-This will execute as much as possible of the given trade. 
-- With the above example we are trying to create 10 bread.
-- We only have 5 water though.
-- So it will only create 5 bread and consume the other resources accordingly
-
-`getTradeChange(give, gain, amount): Trade`
-Creates a new Trade instance for deeper evaluation. Used internally to check possibilities and amounts of trades
-
-`hasEnough(to_check?: LevelUpdate['gain']): boolean`
-Checks whether the store has enough resources to fulfill a required cost.
-
-```ts
-type LevelUpdateSingle<K, T> = {key: K} & Partial<ResourceTypeRaw<K, T>>;
-type LevelUpdate<K, T> = {
-    give?: LevelUpdateSingle<K, T>[];
-    need?: LevelUpdateSingle<K, T>[];
-    gain?: LevelUpdateSingle<K, T>[];
-}
-
-```
----
-## ➕ Modification & Cloning
-`addResource(resource: ResourceUpdateProps): Resource`
-<br/>
-Adds a new resource to the store and returns the newly created resource instance.
-
-`removeResource(id: string): void`
-<br/>
-Removes a resource by ID, only if no other resource references it (e.g., via cost or revealedAt).
-
-`clone(caller = 'clone'): ResourceStore`
-<br/>
-Creates a deep copy of the resource store, assigning new IDs to each resource.
-This is used e.g. to decouple the admin store from the game's resources
-
----
-
-## 🛠 Resource Relationships
-`resourceReferences(key: K): K[]`
-<br/>
-Returns all resource keys that reference the given key through costs or dependencies. Can be used to indicate the blockers to remove a resource
-
-`isResourceReferenced(key: K): boolean`
-<br/>
-Checks whether any other resource references the given key. If a resource is referenced the `removeResource()` will be disabled.
-
-`replaceTradeKeys(key: K, newKey: string): (ResourceState & { id: string })[]`
-<br/>
-Replaces all occurrences of a specific key in cost.give and cost.gain with a new key. This is used to enforce consistency when changing keys.
-The admin panel also uses this to write all according changes.
-Returns the updated resource states.
-
----
-
-# ResourceKeys
-```ts
-type ResourceTypeRaw<K, T> = {
-  value: number;
-  min: number;
-  max: number;
-  label: string;
-  type?: T;
-  cost: ResourceCostUpdate<K, T> | null;
-  revealedAt: ResourceCostUpdate<K, T> | null;
-  iconName?: string;
-}
-type TradeChange<K, T> = {key: K; value: number} & Partial<ResourceTypeRaw<K, T>>;
-type ResourceCostUpdate<K, T> = {
-  give: TradeChange<K, T>[];
-  gain: TradeChange<K, T>[];
-}
-```

@@ -7,7 +7,6 @@ import {BehemothClass} from "@/Game/Classes/Behemoth/BehemothClass.ts";
 import {UpstreamClass} from "@/Game/Classes/UpstreamClass.ts";
 import {ArwaClass, GhoulClass, IfritClass, MaridClass} from "@/Game/Classes/Factions";
 import {InterfaceController} from "@/Game/Interface/InterfaceController.ts";
-import {Tick} from "@/GameController/components/Constructors/Tick.ts";
 import {GameBaseClasses} from "@/Game/Classes/Game/gameTypes.ts";
 import {GameCreationProps} from "@/Game/Classes/Game/GameClass.ts";
 import {id} from "@/GameController/Resource/helpers/id.ts";
@@ -26,7 +25,6 @@ export class GameClass extends GameBaseClass {
   public faction_arwa: ArwaClass
   public faction_ghoul: GhoulClass
   public interface: InterfaceController
-  public tick: Tick = new Tick()
 
   constructor(initialGame: GameCreationProps) {
     super(initialGame)

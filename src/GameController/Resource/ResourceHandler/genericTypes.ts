@@ -29,7 +29,7 @@ export type ResourceBeautyType = {
   value: string;
   min: string;
   max: string;
-  fillPercentage: number;
+  percentage: number;
 }
 export type Icon = { name: string, src: string };
 type LevelUpdateSingle<K, T> = {key: K} & Partial<ResourceTypeRaw<K, T>>;

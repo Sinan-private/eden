@@ -1,8 +1,11 @@
 import {makeAutoObservable} from "mobx";
 import {id} from "@/GameController/Resource/helpers/id.ts";
 
-const TICKS_PER_SECOND = 40
-const TICKS_PER_TURN = 20
+export type TickCreationProps = {
+  ticks_per_second?: number;
+  ticks_per_turn?: number;
+  auto_start?: boolean;
+}
 
 export type Subscription = {
   callback: (tick: number) => void;
@@ -10,18 +13,29 @@ export type Subscription = {
 }
 
 export class Tick {
-  id: string = id()
-  private tickInterval: NodeJS.Timeout | null = null;
+  public id: string = id()
   public tick_index: number = 0;
-  subscribers = new Map<string, Subscription>();
+  public subscribers = new Map<string, Subscription>();
+  public _ticks_per_second = 40;
+  public _ticks_per_turn = 20;
+  private tickInterval: NodeJS.Timeout | null = null;
 
-  constructor() {
+  constructor(config?: TickCreationProps) {
+    if (config?.ticks_per_second) {
+      this.setTicksPerSecond(config.ticks_per_second)
+    }
+    if (config?.ticks_per_turn) {
+      this.setTicksPerTurn(config.ticks_per_turn)
+    }
+    if (config?.auto_start) {
+      this.start()
+    }
     makeAutoObservable(this);
   }
 
   public start = () => {
     if (this.tickInterval) return;
-    this.tickInterval = setInterval(() => this.nextInterval(), 1000 / TICKS_PER_SECOND); // 1 second per tick
+    this.tickInterval = setInterval(() => this._nextInterval(), 1000 / this.ticks_per_second); // 1 second per tick
   }
 
   public stop = () => {
@@ -31,37 +45,58 @@ export class Tick {
     }
   }
 
-  nextInterval() {
+
+  public setTicksPerSecond = (ticksPerSecond: number) =>
+    this._ticks_per_second = ticksPerSecond;
+
+  public setTicksPerTurn = (ticksPerTurn: number) =>
+    this._ticks_per_turn = ticksPerTurn;
+
+  private _nextInterval() {
     this.tick_index++;
-    this.nextTick()
+    this._nextTick()
     if (this.isNextTurn()) {
-      this.nextTurn()
+      this._nextTurn()
     }
   }
 
-  nextTick() {
+  private _nextTick() {
     this.tick_index++;
-    this.subscribers.forEach(({callback, interval}) => {
-      if (interval === 'tick') {
-        callback(this.tick_index)
-      }
-    })
+    this.tickSubscribers.forEach((callback) => callback(this.tick_index))
   }
 
-  nextTurn() {
-    this.subscribers.forEach(({callback, interval}) => {
-      if (interval === 'turn') {
-        callback(this.tick_index)
-      }
-    });
+  private _nextTurn() {
+    this.turnSubscribers.forEach((callback) => callback(this.tick_index))
+  }
+
+  private _getSubscribersByType = (type: 'tick' | 'turn'): Subscription['callback'][] =>
+    Array.from(this.subscribers)
+      .filter(([, {interval}]) => interval === type)
+      .map(([,{callback}]) => callback)
+
+
+  get tickSubscribers() {
+    return this._getSubscribersByType('tick')
+  }
+
+  get turnSubscribers() {
+    return this._getSubscribersByType('turn')
   }
 
   get isActive() {
     return !!this.tickInterval
   }
 
+  get ticks_per_second() {
+    return this._ticks_per_second
+  }
+
+  get ticks_per_turn() {
+    return this._ticks_per_turn
+  }
+
   private isNextTurn = () => {
-    return !(this.tick_index % TICKS_PER_TURN)
+    return !(this.tick_index % this.ticks_per_turn)
   }
 
   public subscribeToTick = (callback: (tick: number) => void, id: string): () => void => {
