@@ -296,7 +296,7 @@
   },
   {
     "key": "clean_mana_level_1",
-    "value": 253,
+    "value": 250,
     "min": 0,
     "max": null,
     "label": "Mana level 1",
@@ -905,6 +905,17 @@
     "max": 100,
     "label": "Human influence",
     "type": "earth",
+    "iconName": "empty",
+    "cost": null,
+    "revealedAt": null
+  },
+  {
+    "key": "test",
+    "value": 1,
+    "min": 0,
+    "max": null,
+    "label": "test",
+    "type": "",
     "iconName": "empty",
     "cost": null,
     "revealedAt": null

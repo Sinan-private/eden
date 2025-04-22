@@ -3,15 +3,15 @@ import {Trash} from "@mynaui/icons-react";
 import {game} from "@/Game";
 import {ResourceTypes} from "@/GameController/Resource";
 import {Button, Input, Badge} from "@/GameController/components/ui";
+import {resourceTypes as types} from "@/GameController/Resource/generated/resourceTypes.ts";
 import {useApi} from "@/GameController/Resource/hooks/useApi.ts";
 
 export const AdminType = () => {
-  const {admin, resources: {getTypes}} = game()
+  const {admin} = game()
   const {cloneResourceStore} = admin
   const {removeType} = useApi()
 
   const usedTypes = cloneResourceStore.getByType().map(({type}) => type);
-  const types = getTypes()
 
   return (
     <>

@@ -25,3 +25,5 @@ dist-ssr
 
 # Additional design stuff
 /Design/*
+/src/GameController/Resource/assets
+/src/assets

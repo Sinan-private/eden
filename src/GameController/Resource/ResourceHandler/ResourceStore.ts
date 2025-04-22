@@ -84,6 +84,7 @@ export class ResourceStore<K extends string, T extends string> {
       .filter(resource => resource.type === type)
   }
 
+  // Todo This is actually getTypesUsed
   public getTypes = (): T[] => {
     return this.allResources.map(({type}) => type)
       .filter(unique)

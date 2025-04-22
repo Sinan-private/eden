@@ -1,6 +1,6 @@
 import {game} from "@/Game";
 import {Box} from "@/GameController/components/ui/Box.tsx";
-import {Container} from "@/Game/debug/custom/styles.tsx";
+import {Container} from "@/GameController/Resource/Admin/Debugging/styles.tsx";
 import {Debug_Resource, Debug_ResourceGroup} from "@/GameController/Resource/Admin/Debugging/Debug_Resource.tsx";
 
 export const Debug_Earth = () => {

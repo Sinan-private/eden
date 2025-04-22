@@ -3,12 +3,15 @@ import {useApi} from "@/GameController/Resource/hooks/useApi.ts";
 import {useComponentMount} from "@/GameController/Resource/hooks/useComponentMount.ts";
 import {GameBaseClass, GameBaseControlledCreationProps} from "@/GameController/GameBaseClass.ts";
 import {baseGame} from "@/GameController/Resource/helpers/createSingletonBaseGame.ts";
+// import initialResources from '../generated/initialResources.json'
 
 declare global {
   interface Window {
     baseGame: GameBaseClass;
   }
 }
+
+// Todo Why the hell is it reloading
 
 export const useBaseGameInitializer = (config?: GameBaseControlledCreationProps) => {
   const { fetchResources } = useApi();

@@ -1,7 +1,7 @@
 import {observer} from "mobx-react";
 import {game} from "@/Game";
 import {Button} from "@/GameController/components/ui";
-import {Container} from "@/Game/debug/custom/styles.tsx";
+import {Container} from "@/GameController/Resource/Admin/Debugging/styles.tsx";
 import {ReactNode} from "react";
 import {ResourceClass} from "@/GameController/Resource";
 

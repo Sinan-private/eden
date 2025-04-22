@@ -63,5 +63,6 @@ export const resourceKeys = [
   "earth_pollution",
   "earth_fascism",
   "human_virtue",
-  "human_influence"
+  "human_influence",
+  "test"
 ] as const;
