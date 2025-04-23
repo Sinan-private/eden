@@ -49,7 +49,7 @@ export class Resource<K extends string, T extends string> {
     this.min = typeof min === 'number' ? min : 0;
     this.max = typeof max === 'number' ? max : Infinity;
     this.label = label ? label : key ? labelFromKey(key) : '';
-    this.type = typeof type === 'string' ? type : '' as T;
+    this.type = typeof type === 'string' ? type : 'empty' as T;
     this.cost = cost || null;
     this.revealedAt = revealedAt || null;
     this.iconName = iconName || 'empty';
@@ -195,6 +195,9 @@ export class Resource<K extends string, T extends string> {
 
   get is_min() {
     return this.value <= this.min
+  }
+  get progress() {
+    return (this.value - Math.floor(this.value)) * 100
   }
 }
 

@@ -3,7 +3,7 @@ import {Resource, ResourceState, ResourceUpdateProps} from "./index.ts";
 import {ResourceTrade, Trade} from "./Trade.ts";
 import {LevelUpdate, ResourceCostUpdate, TradeChange} from "./genericTypes.ts";
 import {id} from "@/GameController/Resource/helpers/id.ts";
-import {unique} from "@/GameController/Resource/helpers/array.ts";
+import {resourceTypes} from "@/GameController/Resource/generated/resourceTypes.ts";
 
 export class ResourceStore<K extends string, T extends string> {
   public id: string = id();
@@ -84,11 +84,9 @@ export class ResourceStore<K extends string, T extends string> {
       .filter(resource => resource.type === type)
   }
 
-  // Todo This is actually getTypesUsed
+  // Don't really like that
   public getTypes = (): T[] => {
-    return this.allResources.map(({type}) => type)
-      .filter(unique)
-      .filter(type => !!type.length)
+    return resourceTypes as unknown as T[]
   }
 
   public getResourcesByType = () => {
