@@ -1,8 +1,8 @@
 import {useState} from "react";
-import {useApi} from "@/GameController/Resource/hooks/useApi.ts";
 import {useComponentMount} from "@/GameController/Resource/hooks/useComponentMount.ts";
 import {GameBaseClass, GameBaseControlledCreationProps} from "@/GameController/GameBaseClass.ts";
 import {baseGame} from "@/GameController/Resource/helpers/createSingletonBaseGame.ts";
+import * as api from "@/GameController/Resource/server/api/apiService.ts";
 // import initialResources from '../generated/initialResources.json'
 
 declare global {
@@ -11,16 +11,24 @@ declare global {
   }
 }
 
-// Todo Why the hell is it reloading
-
 export const useBaseGameInitializer = (config?: GameBaseControlledCreationProps) => {
-  const { fetchResources } = useApi();
+  const { fetchResources, fetchResourceKeys, fetchResourceTypes } = api;
   const [gameReady, setGameReady] = useState(false);
 
+  // I should consider if I want to import the static keys and types here.
+  // They were a reference to the original file to prevent reloading or fetching but this seems
+  // obsolete by now
   useComponentMount(() => {
     const init = async () => {
       const rawResources = await fetchResources();
-      window.baseGame = baseGame({ resources: rawResources, ...config });
+      const keys = await fetchResourceKeys()
+      const types = await fetchResourceTypes()
+      window.baseGame = baseGame({
+        resources: rawResources,
+        resource_keys: keys,
+        resource_types: types,
+        ...config
+      });
       setGameReady(true);
     };
     init();

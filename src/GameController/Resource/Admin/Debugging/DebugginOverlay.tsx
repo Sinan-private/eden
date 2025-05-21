@@ -12,11 +12,11 @@ export type DebugginOverlayProps = {
 
 export const DebugginOverlay = observer(({customComponents}: DebugginOverlayProps) => {
   const {
-    showDebugPanel,
+    show_debug_panel,
     onToggleDebugPanel
   } = game().admin;
   const toRender = useMemo(() => {
-    if (!showDebugPanel) {
+    if (!show_debug_panel) {
       return null
     }
     if (!customComponents?.length) {
@@ -39,16 +39,16 @@ export const DebugginOverlay = observer(({customComponents}: DebugginOverlayProp
         </div>
       </Tabs>
     )
-  }, [customComponents, showDebugPanel])
+  }, [customComponents, show_debug_panel])
 
-  if (!showDebugPanel) {
+  if (!show_debug_panel) {
     return null
   }
 
   return (
     <div className="fixed top-10 left-0 w-screen h-screen pointer-events-none z-[5000] p-4 overflow-y-auto">
       {toRender}
-      <Button className="fixed top-2 right-2 pointer-events-auto" variant="outline" onClick={onToggleDebugPanel} style={{zIndex: 100}}>
+      <Button className="fixed top-2 right-20 pointer-events-auto" variant="outline" onClick={onToggleDebugPanel} style={{zIndex: 100}}>
         <X/>
       </Button>
     </div>

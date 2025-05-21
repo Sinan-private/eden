@@ -1,11 +1,17 @@
 import {observer} from "mobx-react";
+import {game} from "@/Game";
 import {DotsVerticalCircle} from "@mynaui/icons-react";
 import {AdminPanel} from "./AdminPanel.tsx";
-import {Button, Separator, Switch} from "@/GameController/components/ui";
-import {Popover, PopoverContent, PopoverTrigger} from "@/GameController/components/ui/Popover.tsx";
-
+import {
+  Button,
+  Label,
+  Separator,
+  Switch,
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
+} from "@/GameController/components";
 import {DebugginOverlay, DebugginOverlayProps} from "@/GameController/Resource/Admin/Debugging/DebugginOverlay.tsx";
-import {game} from "@/Game";
 
 export type ResourceAdminProps = {
   buttonPosition?: "top-left" | "top-right" | "bottom-right" | "bottom-left";
@@ -17,28 +23,32 @@ export const ResourceAdmin = observer((
     customComponents,
   }
   : ResourceAdminProps) => {
-  const {showAdminPanel} = game().admin;
+  const {show_admin_panel} = game().admin;
 
   return (
     <div style={{position: 'absolute', top: 0, left: 0, height: "100vh", width: "100vw", pointerEvents: "none"}}>
       <div style={{pointerEvents: "initial"}}>
-        {showAdminPanel && <AdminPanel/>}
+        {show_admin_panel && <AdminPanel/>}
         <ToggleButton buttonPosition={buttonPosition}/>
       </div>
-      <DebugginOverlay customComponents={customComponents} />
+      <DebugginOverlay customComponents={customComponents}/>
     </div>
   )
 })
 
 const ToggleButton = observer(({buttonPosition}: ResourceAdminProps) => {
   const {
-    showAdminPanel,
-    showDebugPanel,
-    showDebugPanelBeautifiedValues,
+    show_admin_panel,
+    show_debug_panel,
+    show_debug_panel_beautified_values,
     onToggleAdminPanel,
     onToggleDebugPanel,
-    onToggleDebugPanelBeautifiedValues
+    onToggleDebugPanelBeautifiedValues,
+    show_context_menu,
   } = game().admin;
+  if (!show_context_menu) {
+    return null
+  }
 
   return (
     <>
@@ -57,22 +67,24 @@ const ToggleButton = observer(({buttonPosition}: ResourceAdminProps) => {
           <div className="flex flex-col py-4 gap-2">
             <p className="mb-1 text-muted-foreground">Debug resources</p>
             <div className="flex items-center gap-4">
-              <Switch checked={showDebugPanel} onCheckedChange={onToggleDebugPanel}/>
-              <p>Debug</p>
+              <Switch id="show-debug-panel" checked={show_debug_panel} onCheckedChange={onToggleDebugPanel}/>
+              <Label htmlFor="show-debug-panel">Debug</Label>
             </div>
             <div className="flex items-center gap-4 pl-2">
               <Switch
-                disabled={!showDebugPanel}
-                checked={showDebugPanelBeautifiedValues}
+                id="show-debug-beautify"
+                disabled={!show_debug_panel}
+                checked={show_debug_panel_beautified_values}
                 onCheckedChange={onToggleDebugPanelBeautifiedValues}
               />
-              Beautify values
+              <Label htmlFor="show-debug-beautify">Beautify values</Label>
+
             </div>
             <Separator className="my-4"/>
             <p className="mb-1 text-muted-foreground">Admin</p>
             <div className="flex items-center gap-4">
-              <Switch checked={showAdminPanel} onCheckedChange={onToggleAdminPanel}/>
-              Admin Panel
+              <Switch id="show-admin-panel" checked={show_admin_panel} onCheckedChange={onToggleAdminPanel}/>
+              <Label htmlFor="show-admin-panel">Admin Panel</Label>
             </div>
           </div>
         </PopoverContent>

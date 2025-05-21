@@ -52,6 +52,9 @@ export class Tick {
   public setTicksPerTurn = (ticksPerTurn: number) =>
     this._ticks_per_turn = ticksPerTurn;
 
+  public perSecond = (number: number) =>
+    number / this._ticks_per_second
+
   private _nextInterval() {
     this.tick_index++;
     this._nextTick()

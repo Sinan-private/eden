@@ -1,18 +1,16 @@
-import {ResourceKeys, ResourceTypes} from "@/GameController/Resource";
-import {Resource} from "@/GameController/Resource/ResourceHandler";
 import {observer} from "mobx-react";
-import {AlertDialog} from "@/GameController/components/ui/alert-dialog.tsx";
+import {game} from "@/Game";
+import {AlertDialog, AddButton} from "@/GameController/components";
 import {AdminResource} from "@/GameController/Resource/Admin/Resource/AdminResource.tsx";
 import {EditResource} from "@/GameController/Resource/Admin/Resource/Edit/EditResource.tsx";
-import {AddButton} from "@/GameController/components/ui/AddButton.tsx";
-import {game} from "@/Game";
+import {ResourceClass, ResourceTypes} from "@/GameController/Resource";
 
 export const AdminResourceOverview = observer(() => {
-  const {cloneResourceStore: resources, showResourceEdit, canEdit} = game().admin
+  const {cloneResourceStore: resources, show_resource_edit, canEdit} = game().admin
   const {getResourcesByType} = resources;
   const types = getResourcesByType()
   return (
-    <AlertDialog open={showResourceEdit}>
+    <AlertDialog open={show_resource_edit}>
       <h3 className="mb-6">Starting Resources</h3>
       <div className="flex justify-center flex-row" style={{maxWidth: 1100}}>
         <div className="flex flex-col gap-12">
@@ -32,7 +30,7 @@ export const AdminResourceOverview = observer(() => {
 
 type ResourceTypeProps = {
   type: ResourceTypes;
-  resources: Resource<ResourceKeys, ResourceTypes>[];
+  resources: ResourceClass[];
   label?: string;
 }
 

@@ -1,8 +1,8 @@
 import {updateResourceTypes} from "./updateResourceTypes.js";
 
-export const writeKeys = (newResources) => {
+export const writeKeys = (newKeys) => {
   const onUpdateResourceKeys = () => {
-    const keys = newResources.map(({key}) => key);
+    const keys = newKeys.map(({key}) => key);
     return getUniqueValues(keys)
   }
   updateResourceTypes('resourceKeys', onUpdateResourceKeys);

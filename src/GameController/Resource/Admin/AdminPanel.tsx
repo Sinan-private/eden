@@ -1,7 +1,6 @@
-import {Button} from "@/GameController/components/ui/button.tsx";
-import {X} from "@mynaui/icons-react";
 import {game} from "@/Game";
-import {Tabs, TabsContent, TabsList, TabsTrigger} from "@/GameController/components";
+import {X} from "@mynaui/icons-react";
+import {Button, Tabs, TabsContent, TabsList, TabsTrigger} from "@/GameController/components";
 import {AdminResourceOverview} from "@/GameController/Resource/Admin/Resource/AdminResourceOverview.tsx";
 import {AdminType} from "@/GameController/Resource/Admin/AdminType.tsx";
 

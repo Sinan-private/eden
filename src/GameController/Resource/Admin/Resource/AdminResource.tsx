@@ -1,13 +1,16 @@
 import {EditOne, DotsVertical, Copy, Trash} from "@mynaui/icons-react";
-import {Button} from "@/GameController/components/ui/button.tsx";
-import {ResourceKeys, ResourceTypes, TradeChange} from "@/GameController/Resource";
-import {Resource} from "@/GameController/Resource/ResourceHandler";
-import {Popover, PopoverContent, PopoverTrigger} from "@/GameController/components/ui/Popover.tsx";
-import {Separator} from "@/GameController/components/ui/separator.tsx";
 import {game} from "@/Game";
+import {
+  Button,
+  Separator,
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
+} from "@/GameController/components";
+import {ResourceClass, TradeChange} from "@/GameController/Resource";
 
 type AdminResourcesProps = {
-  resource: Resource<ResourceKeys, ResourceTypes>
+  resource: ResourceClass
 }
 
 export const AdminResource = ({resource}: AdminResourcesProps) => {
@@ -24,7 +27,7 @@ export const AdminResource = ({resource}: AdminResourcesProps) => {
         <div
           className="mx-auto px-4 max-w-2xl grid-cols-1 gap-x-8 gap-y-16 sm:gap-y-20 lg:mx-0 lg:max-w-none lg:grid-cols-2">
           <div className="flex justify-between items-center">
-            <img src={resource.icon} alt={resource.label}/>
+            <img className="w-8 h-8" src={resource.icon} alt={resource.label}/>
             <div className="flex items-center gap-1 pr-4">
               {max
                 ? <p>{resource.value}<span className="text-gray-400"> / {max}</span></p>

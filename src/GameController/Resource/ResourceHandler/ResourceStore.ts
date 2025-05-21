@@ -166,6 +166,29 @@ export class ResourceStore<K extends string, T extends string> {
     return resources.reduce((sum, {sessionEarned}) => (sum + sessionEarned), 0)
   }
 
+  public getCost = (
+    cost?: ResourceCostUpdate<K, T> | null,
+  ) => {
+    if (!cost) {
+      return null
+    }
+    const normalize = (entries?: typeof cost.give) =>
+      entries?.map(({ key, value }) => {
+        const res = this.getByKey(key)
+        return {
+          key,
+          value,
+          label: res.label,
+          icon: res.icon,
+        }
+      }) ?? []
+
+    return {
+      give: normalize(cost.give),
+      gain: normalize(cost.gain),
+    }
+  }
+
   private _initializeResources(resources: ResourceUpdateProps<K, T>[]) {
     const fullResources: [string, Resource<K, T>][] = resources.map((resource) => {
       const full = new Resource(resource);

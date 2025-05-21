@@ -29,7 +29,7 @@ export const Debug_Resource = observer((
         updateValueBy
       }
   }: Debug_ResourceProps) => {
-  const {showDebugPanelBeautifiedValues} = game().admin
+  const {show_debug_panel_beautified_values} = game().admin
   const onIncrement = () => updateValueBy(incrementBy)
   const onDecrement = () => updateValueBy(-decrementBy)
 
@@ -38,7 +38,7 @@ export const Debug_Resource = observer((
       <Button variant="ghost" onClick={onDecrement} className="min-w8 hover:bg-cyan-950">-</Button>
       <div>
         <p className="text-[10px]">{label}</p>
-        <p>{showDebugPanelBeautifiedValues ? beautify.value : value.toFixed(4)}</p>
+        <p>{show_debug_panel_beautified_values ? beautify.value : value.toFixed(4)}</p>
       </div>
       <Button variant="ghost" onClick={onIncrement} className="min-w8 hover:bg-cyan-950">+</Button>
     </div>
@@ -59,7 +59,7 @@ export const Debug_CustomResource = observer((
     onIncrement,
     onDecrement,
   }: Debug_CustomResourceProps) => {
-  const {showDebugPanelBeautifiedValues} = game().admin
+  const {show_debug_panel_beautified_values} = game().admin
   return (
     <Container >
       {onDecrement &&
@@ -67,7 +67,7 @@ export const Debug_CustomResource = observer((
       }
       <div style={{flexGrow: 1}}>
         <p className="text-[10px]">{label}</p>
-        <p>{showDebugPanelBeautifiedValues ? value.toFixed() : value.toFixed(4)}</p>
+        <p>{show_debug_panel_beautified_values ? value.toFixed() : value.toFixed(4)}</p>
       </div>
       {onIncrement &&
         <Button variant="ghost" onClick={() => onIncrement()} className="min-w8 hover:bg-cyan-950">+</Button>

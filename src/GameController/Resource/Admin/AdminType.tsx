@@ -1,17 +1,28 @@
 import {ChangeEvent, useState} from "react";
-import {Trash} from "@mynaui/icons-react";
+import {observer} from "mobx-react";
 import {game} from "@/Game";
-import {ResourceTypes} from "@/GameController/Resource";
+import {Trash} from "@mynaui/icons-react";
 import {Button, Input, Badge} from "@/GameController/components/ui";
-import {resourceTypes as types} from "@/GameController/Resource/generated/resourceTypes.ts";
-import {useApi} from "@/GameController/Resource/hooks/useApi.ts";
+import {removeType, addType} from "@/GameController/Resource/server/api/apiService.ts";
+import {ResourceTypes} from "@/GameController/Resource";
 
-export const AdminType = () => {
+export const AdminType = observer(() => {
   const {admin} = game()
-  const {cloneResourceStore} = admin
-  const {removeType} = useApi()
+  const {
+    cloneResourceStore,
+    removeType: _removeType,
+    addType: _addType,
+    types
+  } = admin
 
   const usedTypes = cloneResourceStore.getByType().map(({type}) => type);
+  const onRemoveType = (resourceType: ResourceTypes) => {
+    // This is my rather dirty version of an optimistic update
+    _removeType(resourceType)
+    removeType([resourceType]).catch(() => {
+      _addType(resourceType)
+    })
+  }
 
   return (
     <>
@@ -21,7 +32,7 @@ export const AdminType = () => {
           <div key={resourceType} className="flex items-center gap-2">
             <Button
               variant="ghost"
-              onClick={() => removeType([resourceType])}
+              onClick={() => onRemoveType(resourceType)}
               disabled={usedTypes.includes(resourceType)}
             >
               <Trash />
@@ -39,14 +50,22 @@ export const AdminType = () => {
       </div>
     </>
   )
-}
+})
+
 
 const AddType = () => {
-  const {addType} = useApi();
+  // Don't really like that the whole syncing logic is happening here. Could be refactored at some point
+  const {
+    removeType: _removeType,
+    addType: _addType
+  } = game().admin
   const [input, setInput] = useState('');
   const onChange = (e: ChangeEvent<HTMLInputElement>) => setInput(e.target.value)
-  const onSubmit = () => {
-    addType(([] as string[]).concat(input))
+  const onAddType = () => {
+    _addType(input)
+    addType(([] as string[]).concat(input)).catch(() => {
+      _removeType(input)
+    })
     setInput('')
   }
   return (
@@ -56,7 +75,7 @@ const AddType = () => {
       onChange={onChange}
       className="w-[240px]"
     />
-      <Button onClick={onSubmit}>
+      <Button onClick={onAddType}>
         Add
       </Button>
     </div>

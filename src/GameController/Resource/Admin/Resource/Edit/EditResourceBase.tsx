@@ -15,7 +15,7 @@ import {
 // import {resourceTypes} from "@/GameController/Resource/generated/resourceTypes.ts";
 
 export const EditResourceBase = observer(() => {
-  const {keyAlreadyExists, getResourceForInput, cloneResourceStore} = game().admin
+  const {keyAlreadyExists, getResourceForInput, types} = game().admin
   const {
     setLabel,
     setKey,
@@ -23,7 +23,6 @@ export const EditResourceBase = observer(() => {
     resource
   } = useMemo(getResourceForInput, [getResourceForInput])
   const keyExists = useMemo(() => keyAlreadyExists(resource.key), [resource.key, keyAlreadyExists])
-  const resourceTypes = cloneResourceStore.getTypes()
 
   const keyInput = useMemo(() => {
     if (keyExists) {
@@ -78,7 +77,7 @@ export const EditResourceBase = observer(() => {
             <SelectContent style={{zIndex: 6000}}>
               <SelectGroup>
                 <SelectLabel>Types</SelectLabel>
-                {resourceTypes.map(type => (
+                {types.map(type => (
                   <SelectItem key={type} value={type}>{type}</SelectItem>
                 ))}
               </SelectGroup>

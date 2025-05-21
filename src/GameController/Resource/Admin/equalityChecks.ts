@@ -1,5 +1,4 @@
-import {ResourceKeys, ResourceState, ResourceTypes} from "@/GameController/Resource";
-import {Resource} from "@/GameController/Resource/ResourceHandler";
+import {ResourceClass, ResourceKeys, ResourceState} from "@/GameController/Resource";
 
 export const areObjectsEqual = <K extends string>(obj1: ResourceState, obj2?: Partial<ResourceState>): boolean => {
   if (obj1 === obj2) return true;
@@ -22,7 +21,7 @@ export const areObjectsEqual = <K extends string>(obj1: ResourceState, obj2?: Pa
   return true;
 }
 export const getKeyAlreadyExists = (
-  resources: Resource<ResourceKeys, ResourceTypes>[],
+  resources: ResourceClass[],
   resource: ResourceState & {id: string}
 ) => resources
   .filter(({id}) => id !== resource?.id)
