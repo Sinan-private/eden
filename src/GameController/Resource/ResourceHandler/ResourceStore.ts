@@ -107,7 +107,8 @@ export class ResourceStore<K extends string, T extends string> {
       return null;
     }
     const trade = this.getTradeChange(cost.give, cost.gain, amount)
-    if (trade.isTradePossible()) {
+    const canTrade = trade.isTradePossible() && trade.getMaxPossibleAmount() >= amount
+    if (canTrade) {
       trade.executeTrade()
     }
   }

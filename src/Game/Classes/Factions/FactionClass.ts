@@ -7,7 +7,7 @@ import {GameBaseClasses} from "@/Game/Classes/Game/gameTypes.ts";
 
 export type FactionKeys = 'ifrit' | 'marid' | 'arwa' | 'ghoul'
 
-export class FactionClass {
+export abstract class FactionClass {
   public faction!: FactionKeys;
   public image: string;
   public active: boolean;
