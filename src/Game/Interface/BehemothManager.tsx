@@ -1,8 +1,8 @@
 import {observer} from "mobx-react";
 import {game} from "@/Game";
-import {Button, Box} from "@/GameController/components/ui";
+import {Button, Box} from "@/GameEngine/components";
 import {LevelGain, LevelProgress} from "./LevelProgress.tsx";
-import {BEHEMOTH_STAMINA_PER_SLAVE, BEHEMOTH_STAMINA_PER_WASTED_SLAVE} from "../../GameController/Resource/constants.ts";
+import {BEHEMOTH_STAMINA_PER_SLAVE, BEHEMOTH_STAMINA_PER_WASTED_SLAVE} from "@/Game/constants/constants.ts";
 
 export const BehemothManager = observer(() => {
   const {behemoth, slaves, resources} = game();

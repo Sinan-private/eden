@@ -1,4 +1,4 @@
-import { GameCreationProps } from "@/Game/Classes/Game/GameClass.ts";
+import { GameCreationProps} from "@/GameEngine/GameEngine.ts";
 import {GameClass} from "@/Game/Classes/GameClass.ts";
 
 // This is only making sure that there is always only 1 GameController object.
@@ -30,7 +30,7 @@ export function createSingletonGame() {
     getInstance(initialGame?: GameCreationProps): GameClass {
       let instance = getGlobalInstance();
       if (!instance) {
-        if (!initialGame) throw new Error("First call must provide initial resources");
+        if (!initialGame) throw new Error("First call must provide initial game props");
         instance = new GameClass(initialGame);
         setGlobalInstance(instance);
       }

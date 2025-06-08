@@ -1,5 +1,5 @@
 import {game} from "@/Game";
-import {Progress} from "@/GameController/components";
+import {Progress} from "@/GameEngine/components";
 import {FactionKeys} from "@/Game/Classes/Factions/FactionClass.ts";
 
 export const FactionManager = () => {

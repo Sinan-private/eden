@@ -1,5 +1,5 @@
-import {ResourceClass, ResourceStoreClass} from "@/GameController/Resource";
-import {SLAVES_INITIALLY_ARWA, SLAVES_INITIALLY_MARID} from "../../../GameController/Resource/constants.ts";
+import {ResourceClass, ResourceEngineClass} from "@/GameEngine";
+import {SLAVES_INITIALLY_ARWA, SLAVES_INITIALLY_MARID} from "@/Game/constants/constants.ts";
 import {randomChances} from "../../helpers/randomChances.ts";
 import {makeAutoObservable} from "mobx";
 import {FactionKeys} from "../Factions/FactionClass.ts";
@@ -34,7 +34,7 @@ export class SlaveClass {
   public arwa: number = SLAVES_INITIALLY_ARWA;
   public ghoul: number = 0;
   public slave_health: ResourceClass;
-  private _resourceStore: ResourceStoreClass;
+  private _resourceStore: ResourceEngineClass;
 
   constructor({_resourceStore}: GameBaseProps) {
     this._resourceStore = _resourceStore;

@@ -1,8 +1,8 @@
-import {ResourceStoreClass, ResourceTypes} from "@/GameController/Resource";
+import {ResourceEngineClass, ResourceTypes} from "@/GameEngine";
 
 export class RandomResourceUpdate {
   constructor(
-    private _resourceStore: ResourceStoreClass
+    private _resourceStore: ResourceEngineClass
   ) {
 
   }

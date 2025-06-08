@@ -1,5 +1,5 @@
-import {ResourceStoreClass, ResourceTypes} from "@/GameController/Resource";
-import {CRAFTING_SPEED, DRYING_SPEED, FLUSHING_SPEED, HARVEST_SPEED} from "../../../GameController/Resource/constants.ts";
+import {ResourceEngineClass, ResourceTypes} from "@/GameEngine";
+import {CRAFTING_SPEED, DRYING_SPEED, FLUSHING_SPEED, HARVEST_SPEED} from "@/Game/constants/constants.ts";
 import {RandomResourceUpdate} from "../RandomResourceUpdate.ts";
 import {GameState} from "@/Game/Classes/Game/GameState.ts";
 import {GameBaseProps} from "@/Game/types.ts";
@@ -11,7 +11,7 @@ export class ManaClass {
   private _finding_chance_level_4: number = 1/4000
   private _finding_chance_level_5: number = 1/50000
   private random: RandomResourceUpdate;
-  private readonly _resourceStore: ResourceStoreClass
+  private readonly _resourceStore: ResourceEngineClass
   private readonly _gameState: GameState
   constructor({_resourceStore, _gameState}: GameBaseProps) {
     this.random = new RandomResourceUpdate(_resourceStore);

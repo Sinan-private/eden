@@ -1,4 +1,4 @@
-import {LevelUpdate, ResourceStoreClass} from "@/GameController/Resource/ResourceHandler/specificTypes.ts";
+import {LevelUpdate, ResourceEngineClass} from "@/GameEngine/ResourceEngine/ResourceHandler/specificTypes.ts";
 
 type Level = `level_${ 1 | 2 | 3 | 4 | 5 }`;
 export type Levels = {
@@ -7,7 +7,7 @@ export type Levels = {
 
 export class LevelClass {
   constructor(
-    private _resourceStore: ResourceStoreClass,
+    private _resourceStore: ResourceEngineClass,
     public levels: Levels,
     public level = 1
   ) {

@@ -1,7 +1,7 @@
 import React from "react";
 import {observer} from "mobx-react";
 import {game} from "@/Game";
-import {Button} from "@/GameController/components/ui/button.tsx";
+import {Button} from "@/GameEngine/components/ui/button.tsx";
 import {TopBar} from "./TopBar.tsx";
 import {FooterButtons} from "./FooterButtons.tsx";
 import {Debug_BehemothControls} from "@/Game/debug/custom/Debug_BehemothControls.tsx";
@@ -71,6 +71,7 @@ const Grid = ({children}: { children: React.ReactNode }) => (
     *:pointer-events-auto
   "
        style={{
+         transform: 'none', opacity: 1,
          gridTemplateRows: `${HEADER_HEIGHT}px 1fr ${FOOTER_HEIGHT}px`,
          gridTemplateColumns: '160px 1fr 100px 0.7fr',
          gridTemplateAreas: `

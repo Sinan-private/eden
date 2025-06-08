@@ -1,7 +1,7 @@
 import {observer} from "mobx-react";
 import {game} from "@/Game";
-import {Progress} from "@/GameController/components/ui/progress.tsx";
-import {TradeChange} from "@/GameController/Resource";
+import {Progress} from "@/GameEngine/components";
+import {TradeChange} from "@/GameEngine";
 
 type LevelGainProps = {
   gain: TradeChange

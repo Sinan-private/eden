@@ -1,9 +1,9 @@
 import {HarvestRenderClass} from "@/Game/Views/Gaja/Digging/HarvestRenderClass.ts";
 import {makeAutoObservable} from "mobx";
-import {id} from "@/GameController/Resource/helpers/id.ts";
-import {AUTO_CLIMB, AUTO_COLLECT_MANA} from "@/GameController/Resource/constants.ts";
+import {AUTO_CLIMB, AUTO_COLLECT_MANA} from "@/Game/constants/constants.ts";
 import {SegmentedPower} from "@/Game/Classes/SegmentedPower.ts";
-import {ResourceKeys, ResourceStoreClass} from "@/GameController/Resource";
+import {ResourceKeys, ResourceEngineClass} from "@/GameEngine";
+import {id} from "@/GameEngine/ResourceEngine/helpers/id.ts";
 
 // My goal is to create the HarvestRenderer in here. The current setup sucks
 
@@ -26,7 +26,7 @@ export class GameState {
   currentHarvest: HarvestRenderClass = harvestRender;
   // pastHarvests: HarvestRenderClass[] = [];
 
-  constructor(private _resourceStore: ResourceStoreClass) {
+  constructor(private _resourceStore: ResourceEngineClass) {
     this.influence = this._getSegmentedPower('human_influence', 3)
     makeAutoObservable(this)
   }

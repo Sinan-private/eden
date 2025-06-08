@@ -1,0 +1,56 @@
+import React, {useMemo} from "react";
+import {observer} from "mobx-react";
+import {X} from "@mynaui/icons-react";
+import {DebuggingResources} from "@/GameEngine/Admin/Debugging/DebuggingResources.tsx";
+import {Button} from "@/GameEngine/components/ui";
+import {Tabs, TabsContent, TabsList, TabsTrigger} from "@/GameEngine/components/ui/tabs.tsx";
+import {game} from "@/Game";
+
+export type DebugginOverlayProps = {
+  customComponents?: {label: string, component: React.ReactNode}[]
+}
+
+export const DebugginOverlay = observer(({customComponents}: DebugginOverlayProps) => {
+  const {
+    show_debug_panel,
+    onCloseDebugPanel
+  } = game().admin;
+  const toRender = useMemo(() => {
+    if (!show_debug_panel) {
+      return null
+    }
+    if (!customComponents?.length) {
+      return (<DebuggingResources />)
+    }
+    const list = customComponents
+      .concat({label: 'default', component: (<DebuggingResources />)})
+      .reverse()
+    return (
+      <Tabs defaultValue="default" className="pointer-events-auto fixed top-2 left-2">
+        <TabsList>
+          {list.map(({label}) => (
+            <TabsTrigger key={label} value={label}>{label}</TabsTrigger>
+          ))}
+        </TabsList>
+        <div className="px-8">
+          {list.map(({label, component}) => (
+          <TabsContent key={label} value={label}>{component}</TabsContent>
+          ))}
+        </div>
+      </Tabs>
+    )
+  }, [customComponents, show_debug_panel])
+
+  if (!show_debug_panel) {
+    return null
+  }
+
+  return (
+    <div className="fixed top-10 left-0 w-screen h-screen pointer-events-none z-[5000] p-4 overflow-y-auto">
+      {toRender}
+      <Button className="fixed top-2 right-20 pointer-events-auto" variant="outline" onClick={onCloseDebugPanel} style={{zIndex: 100}}>
+        <X/>
+      </Button>
+    </div>
+  )
+})

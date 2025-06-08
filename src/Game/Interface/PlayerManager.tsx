@@ -1,6 +1,6 @@
 import {observer} from "mobx-react";
 import {game} from "@/Game";
-import {Box, Button} from "@/GameController/components";
+import {Box, Button} from "@/GameEngine/components";
 import {LevelGain, LevelProgress} from "./LevelProgress.tsx";
 
 export const PlayerManager = observer(() => {

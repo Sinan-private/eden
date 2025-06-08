@@ -1,10 +1,10 @@
 import {makeAutoObservable} from "mobx";
-import {id} from "@/GameController/Resource/helpers/id.ts";
 import mana_for_harvest_1 from "@/assets/images/Mana-for-harvest1.png";
 import mana_for_harvest_2 from "@/assets/images/Mana-for-harvest2.png";
 import mana_for_harvest_3 from "@/assets/images/Mana-for-harvest3.png";
 import mana_for_harvest_4 from "@/assets/images/Mana-for-harvest4.png";
 import mana_for_harvest_5 from "@/assets/images/Mana-for-harvest5.png";
+import {id} from "@/GameEngine/ResourceEngine/helpers/id.ts";
 
 const POSITION_RANDOMNESS_ON_DESTRUCT = 5;
 const MAX_X_POSITION = 90;

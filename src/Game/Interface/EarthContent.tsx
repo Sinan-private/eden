@@ -1,6 +1,6 @@
 import {observer} from "mobx-react";
 import {game} from "@/Game";
-import {Box, Button, HealthBar, SegmentedBar} from "@/GameController/components";
+import {Box, Button, HealthBar, SegmentedBar} from "@/GameEngine/components";
 
 export const EarthContent = observer(() => {
   const {resources, slaves, gameState} = game();

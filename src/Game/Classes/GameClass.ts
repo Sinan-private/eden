@@ -1,4 +1,3 @@
-import {GameBaseClass} from "@/GameController/GameBaseClass.ts";
 import {GameState} from "@/Game/Classes/Game/GameState.ts";
 import {PlayerClass} from "@/Game/Classes/Player/PlayerClass.ts";
 import {SlaveClass} from "@/Game/Classes/Slaves/SlaveClass.ts";
@@ -8,11 +7,12 @@ import {UpstreamClass} from "@/Game/Classes/UpstreamClass.ts";
 import {ArwaClass, GhoulClass, IfritClass, MaridClass} from "@/Game/Classes/Factions";
 import {InterfaceController} from "@/Game/Interface/InterfaceController.ts";
 import {GameBaseClasses} from "@/Game/Classes/Game/gameTypes.ts";
-import {GameCreationProps} from "@/Game/Classes/Game/GameClass.ts";
-import {id} from "@/GameController/Resource/helpers/id.ts";
 import {GameBaseProps} from "@/Game/types.ts";
+import {GameEngine} from "@/GameEngine";
+import {id} from "@/GameEngine/ResourceEngine/helpers/id.ts";
+import {GameCreationProps} from "@/GameEngine/GameEngine.ts";
 
-export class GameClass extends GameBaseClass {
+export class GameClass extends GameEngine {
   public id: string = id();
   public gameState: GameState
   public player: PlayerClass

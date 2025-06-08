@@ -1,11 +1,11 @@
 import {makeAutoObservable} from "mobx";
-import {ResourceClass, ResourceStoreClass} from "@/GameController/Resource";
+import {ResourceClass, ResourceEngineClass} from "@/GameEngine";
 import {
   BEHEMOTH_STAMINA_PER_SLAVE,
   BEHEMOTH_STAMINA_PER_WASTED_SLAVE,
   STAMINA_REGEN,
   STAMINA_REGEN_ON_FLUSHING
-} from "../../../GameController/Resource/constants.ts";
+} from "@/Game/constants/constants.ts";
 import {staminaDrain} from "../../constants/gameRules.ts";
 import {LevelClass} from "../LevelClass.ts";
 import {levels} from "./levels.ts";
@@ -27,7 +27,7 @@ export class BehemothClass {
   public flushing_depth: ResourceClass;
   public stamina: ResourceClass;
   public drying_delay: ResourceClass;
-  private readonly _resourceStore: ResourceStoreClass;
+  private readonly _resourceStore: ResourceEngineClass;
   private readonly _gameState: GameState;
   // currentHarvest: HarvestRenderClass | null = null;
   // pastHarvests: HarvestRenderClass[] = [];
