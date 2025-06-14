@@ -68,7 +68,6 @@ const Grid = ({children}: { children: React.ReactNode }) => (
     pointer-events-none
     grid
     w-screen h-screen
-    *:pointer-events-auto
   "
        style={{
          transform: 'none', opacity: 1,
@@ -86,7 +85,7 @@ const Grid = ({children}: { children: React.ReactNode }) => (
 )
 
 const Header = ({children}: { children: React.ReactNode }) => (
-  <div style={{gridArea: 'header'}}>
+  <div style={{gridArea: 'header'}} className="*:pointer-events-auto">
     {children}
   </div>
 )
@@ -97,12 +96,12 @@ const SideBar = ({children}: { children: React.ReactNode }) => (
   </div>
 )
 const SideBarExtension = ({children}: { children: React.ReactNode }) => (
-  <div style={{gridArea: 'sidebar_extension'}}>
+  <div style={{gridArea: 'sidebar_extension'}} className="*:pointer-events-auto">
     {children}
   </div>
 )
 const Footer = ({children}: { children: React.ReactNode }) => (
-  <div style={{gridArea: 'footer'}} className="flex">
+  <div style={{gridArea: 'footer'}} className="flex *:pointer-events-auto">
     {children}
   </div>
 )
