@@ -56,7 +56,6 @@ export class BranchClass {
   public getPosition = (i: number, y: number) => {
     const y_delta = (y - this._branches[i].y)
     const parallax = (1 - this._branches[i].z / (20 - PARALLAX_INTENSITY))
-    // console.log(y_delta * parallax - 500)
     return y_delta * parallax - 500
     // return (y - this._branches[i].y) * (1 - this._branches[i].z / PARALLAX_INTENSITY) - 500
   }
@@ -92,13 +91,6 @@ export class BranchClass {
       this._removeOldest()
     }
     if (this._shouldCreateBranch(y)) {
-      // console.log('y', y)
-      // console.log('current y', y - this.oldest_branch?.y)
-      // console.log('add new branch', this._branches.length)
-      // console.log('chance', (this._branches.length * 75) / 100)
-      // console.log('_shouldRemoveBranch', this._shouldRemoveBranch(y))
-      // console.log('oldest y', this.oldest_branch?.y)
-      // console.log('-----')
       this.addBranch(y)
     }
   }
