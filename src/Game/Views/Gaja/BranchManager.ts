@@ -1,6 +1,7 @@
 import {makeAutoObservable} from "mobx";
 import {Branch} from "@/Game/Views/Gaja/Branch.ts";
 import {randomRange} from "@/Game/helpers/randomRange.ts";
+import {CLIMBING_SPEED_COEFFICIENT} from "@/Game/constants/constants.ts";
 
 const MIN_DISTANCE_TO_LAST_BRANCH = 200
 const MIN_DISTANCE_TO_REMOVE = 3000
@@ -22,8 +23,12 @@ export class BranchManager {
   private _branches: Branch[] = [];
   private _height = 0;
 
-  constructor(startingBranches: number) {
-    this._branches = Array.from({ length: startingBranches }, () => new Branch(randomRange(-2000, -300)));
+  constructor(private _initial_height: number, config?: Partial<BranchConfig>) {
+    const safe_config = {
+      ...defaultConfig,
+      ...config,
+    }
+    this._branches = Array.from({ length: safe_config.branch_amount }, () => new Branch(randomRange(-2000, -300)));
     makeAutoObservable(this);
   }
 
@@ -53,9 +58,10 @@ export class BranchManager {
     return this.branches[index].getPosition(this._height);
   }
 
-  public subscription = (climb_height: number) => {
+  public subscription = (climbing_speed: number) => {
     console.log('tick')
-    this._height = climb_height
+    const newPosition = (this._height + climbing_speed * CLIMBING_SPEED_COEFFICIENT)
+    this._height = newPosition
   }
 
   private shouldRemoveOldest(y: number): boolean {

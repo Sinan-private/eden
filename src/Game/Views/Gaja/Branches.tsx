@@ -1,4 +1,4 @@
-import {useMemo} from "react";
+import {useMemo, useRef} from "react";
 import {observer} from "mobx-react";
 import {game, useTurnSubscription} from "@/Game";
 import {BranchState} from "./BranchClass.ts";
@@ -6,16 +6,16 @@ import {BranchManager} from "@/Game/Views/Gaja/BranchManager.ts";
 import {Branch} from "@/Game/Views/Gaja/Branch.ts";
 
 // const branchClass = new BranchClass(7)
-const branchClass = new BranchManager(7)
+// const branchClass = new BranchManager(7)
 
 export const Branches = observer(({displacement}: { displacement: number }) => {
-  // const branchClass = useRef<BranchClass>(new BranchClass(7)).current
   const {climb_speed, climb_height} = game().behemoth;
+  const branchClass = useRef<BranchManager>(new BranchManager(climb_height.value)).current;
 
   useTurnSubscription(() => {
     if (climb_speed.value) {
       branchClass?.turnUpdate(displacement)
-      branchClass.subscription(climb_height.value)
+      branchClass.subscription(climb_speed.value)
     }
   })
   // console.log(branchClass2.branches[0])
@@ -44,7 +44,7 @@ export const Branches = observer(({displacement}: { displacement: number }) => {
           <BranchRender
             key={i}
             branch={branch}
-            position={getPosition(branch)}
+            position={getPositionXX(i)}
           />
         ))}
       </>
