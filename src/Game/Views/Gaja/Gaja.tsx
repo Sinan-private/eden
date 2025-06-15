@@ -8,11 +8,19 @@ import {Behemoth} from "./Behemoth.tsx";
 import {CLIMBING_SPEED_COEFFICIENT} from "@/Game/constants/constants.ts";
 import image from '../../../assets/images/seemless_trunk.png';
 
+
+// Stamm erweitern
+// - Pilze am Stamm
+// - Lichtadern (Mana)
+// - Nebelschwaden im Vordergrund
+
+
 const BACKGROUND_IMAGE_HEIGHT = 600;
 const BACKGROUND_IMAGE_WIDTH = 571;
 
 export const Gaja = observer(() => {
   const {getByKey} = game().resources
+  const climb_height = getByKey('behemoth_climb_height').value
   const [displacement, setDisplacement] = useState(0);
 
   useTickSubscription(() => {
@@ -22,13 +30,13 @@ export const Gaja = observer(() => {
       setDisplacement(() => newPosition)
     }
   })
-  const trunkDisplacement = displacement - BACKGROUND_IMAGE_HEIGHT * 3
+  const trunkDisplacement = climb_height - BACKGROUND_IMAGE_HEIGHT * 3
   const prop = (trunkDisplacement % BACKGROUND_IMAGE_HEIGHT) - BACKGROUND_IMAGE_HEIGHT
 
   return (
     <Tree>
       <Trunk displacement={prop}/>
-      <Branches displacement={displacement}/>
+      <Branches displacement={climb_height}/>
       <Behemoth/>
       <Digging/>
     </Tree>

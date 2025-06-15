@@ -1,45 +1,47 @@
-import {useMemo, useRef} from "react";
+import {useMemo} from "react";
 import {observer} from "mobx-react";
-import {game, useTurnSubscription} from "@/Game";
-import {BranchState} from "./BranchClass.ts";
-import {BranchManager} from "@/Game/Views/Gaja/BranchManager.ts";
+import {game, useTickSubscription} from "@/Game";
 import {Branch} from "@/Game/Views/Gaja/Branch.ts";
+import {createSingletonBranches} from "@/Game/Views/Gaja/createSingletonBranches.ts";
 
 // const branchClass = new BranchClass(7)
 // const branchClass = new BranchManager(7)
 
 export const Branches = observer(({displacement}: { displacement: number }) => {
   const {climb_speed, climb_height} = game().behemoth;
-  const branchClass = useRef<BranchManager>(new BranchManager(climb_height.value)).current;
+  // const branchClass = useRef<BranchManager>(new BranchManager(climb_height.value)).current;
+  const branchClass = createSingletonBranches().getInstance(climb_height.value)
 
-  useTurnSubscription(() => {
+  useTickSubscription(() => {
     if (climb_speed.value) {
-      branchClass?.turnUpdate(displacement)
-      branchClass.subscription(climb_speed.value)
+      branchClass.subscription(climb_height.value)
     }
   })
   // console.log(branchClass2.branches[0])
 
   const branchViews = useMemo(() => {
-  if (!branchClass) {
-    return null
-  }
-  // const getPosition = (x: number, i: number) =>
-  //   `translate(${x}px, ${branchClass.getPosition(i, displacement)}px)`
-
-    const getPosition = (branch: Branch) => {
-    const {x, y} = branch.getPosition(displacement)
-    return  `translate(${x}px, ${y}px)`
+    if (!branchClass) {
+      return null
     }
+    // const getPosition = (x: number, i: number) =>
+    //   `translate(${x}px, ${branchClass.getPosition(i, displacement)}px)`
+
 
     const getPositionXX = (index: number) => {
       const {x, y} = branchClass.branchPosition(index)
       return `translate(${x}px, ${y}px)`
     }
-  console.log(displacement, branchClass._height)
+    // console.log(displacement, branchClass._height)
 
     return (
       <>
+        <div className="fixed top-[300px] right-0 z-[1000]">
+          {branchClass.ordered_branches.map(branch => (
+            <p key={branch.id}>
+              {branch.new_y?.toFixed()}
+            </p>
+          ))}
+        </div>
         {branchClass.branches.map((branch, i) => (
           <BranchRender
             key={i}
@@ -55,30 +57,39 @@ export const Branches = observer(({displacement}: { displacement: number }) => {
 })
 
 type BranchProps = {
-  branch: BranchState;
+  branch: Branch;
   position: string;
 }
 
-const BranchRender = ({
-  branch: {image, z},
-  position
-}: BranchProps) => {
+const BranchRender = (
+  {
+    branch: {image, z, y, new_y},
+    position
+  }: BranchProps
+) => {
   return (
-    <img
-      src={image}
-      className={`
+    <div className={`
     absolute top-0 z-[-1] object-contain h-[400px]
     w-[800px] right-[350px]
     xl:w-[640px] xl:right-[500px]
     lg:w-[560px] lg:right-[500px]
     md:w-[480px] md:right-[400px]
     `}
-      style={{
-        filter: `blur(${z*1.5}px) brightness(${1 - z / 10}) hue-rotate(${z*10}deg)`,
-        transform: position,
-        zIndex: -1 - z,
-      }}
-      alt={image}
-    />
+         style={{
+           transform: position,
+           zIndex: -1 - z,
+         }}
+    >
+      <div className="relative border border-gray-200 rounded-lg top-1/2 w-1/3 h-10 -translate-y-1/2">
+
+        {new_y?.toFixed()} | {y?.toFixed()}
+      </div>
+      <img
+        src={image}
+        style={{filter: `blur(${z * 1.5}px) brightness(${1 - z / 10}) hue-rotate(${z * 10}deg)`,}}
+
+        alt={image}
+      />
+    </div>
   )
 }

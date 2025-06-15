@@ -52,10 +52,15 @@ export class GameClass extends GameEngine {
     this.faction_marid = new MaridClass(factionProps)
     this.faction_ifrit = new IfritClass(factionProps)
     this.faction_ghoul = new GhoulClass(factionProps)
-    this.tick.subscribeToTurn(this.turn, this.id)
+    this.tick.subscribeToTick(this._tick, this.id + '_tick')
+    this.tick.subscribeToTurn(this._turn, this.id)
   }
 
-  private turn = () => {
+  private _tick = () => {
+    this.behemoth.tickUpdate(this)
+  }
+
+  private _turn = () => {
     this.slaves.turnUpdate()
     this.upstream.turnUpdate()
     this.behemoth.turnUpdate(this)

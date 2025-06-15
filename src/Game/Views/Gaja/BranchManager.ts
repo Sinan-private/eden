@@ -1,16 +1,11 @@
 import {makeAutoObservable} from "mobx";
 import {Branch} from "@/Game/Views/Gaja/Branch.ts";
 import {randomRange} from "@/Game/helpers/randomRange.ts";
-import {CLIMBING_SPEED_COEFFICIENT} from "@/Game/constants/constants.ts";
-
-const MIN_DISTANCE_TO_LAST_BRANCH = 200
-const MIN_DISTANCE_TO_REMOVE = 3000
-const BRANCH_AMOUNT = 15
 
 const defaultConfig = {
   min_distance_to_last_branch: 200,
   visible_height: 3000,
-  branch_amount: 15,
+  branch_amount: 10,
 }
 
 export type BranchConfig = {
@@ -22,18 +17,35 @@ export type BranchConfig = {
 export class BranchManager {
   private _branches: Branch[] = [];
   private _height = 0;
+  private config: BranchConfig;
 
-  constructor(private _initial_height: number, config?: Partial<BranchConfig>) {
+  constructor(private _initial_height: number, _config?: Partial<BranchConfig>) {
     const safe_config = {
       ...defaultConfig,
-      ...config,
+      ..._config,
     }
-    this._branches = Array.from({ length: safe_config.branch_amount }, () => new Branch(randomRange(-2000, -300)));
+    this.config = safe_config;
+    this._branches = Array.from({ length: safe_config.branch_amount }, () => new Branch(randomRange(-2000, -300), _initial_height));
     makeAutoObservable(this);
   }
 
   public get branches() {
     return this._branches;
+  }
+
+  get ordered_branches() {
+    return this._branches.slice().sort((a, b) => a.new_y - b.new_y)
+  }
+
+  get highest() {
+    return this._branches.length
+      ? this.ordered_branches[0]
+      : null
+  }
+  get lowest() {
+    if (!this._branches.length) return null
+    const sorted = this.ordered_branches
+    return sorted[sorted.length - 1]
   }
 
   public get oldest() {
@@ -44,39 +56,39 @@ export class BranchManager {
     return this._branches[this._branches.length - 1];
   }
 
-  public turnUpdate(currentY: number) {
-    if (this.shouldRemoveOldest(currentY)) {
-      this._branches.shift(); // remove first
-    }
-
-    if (this.shouldCreateNew(currentY)) {
-      this._branches.push(new Branch(currentY));
-    }
-  }
-
   public branchPosition = (index: number) => {
     return this.branches[index].getPosition(this._height);
   }
 
-  public subscription = (climbing_speed: number) => {
-    console.log('tick')
-    const newPosition = (this._height + climbing_speed * CLIMBING_SPEED_COEFFICIENT)
-    this._height = newPosition
+  private _removeLowest = () => {
+    this._branches = this._branches.filter(({should_be_removed}) => !should_be_removed);
   }
 
+  public subscription = (climbing_height: number) => {
+    this._height = climbing_height - this._initial_height
+    this._removeLowest()
+    if (this.shouldCreateNew(this._height)) {
+      // Todo This is the issue now. New branches should appear at the proper position
+      this._branches.push(new Branch(this._height - randomRange(-200, 300), this._height));
+    }
+    this._branches.forEach((branch) => branch.updateY(this._height))
+  }
+
+  // Stupid because of initial creation. Remove the highest one
   private shouldRemoveOldest(y: number): boolean {
-    return this.oldest ? y - this.oldest.y > MIN_DISTANCE_TO_REMOVE : false;
+    return this.oldest ? this.oldest.should_be_removed : false;
+    // return this.oldest ? y - this.oldest.y > MIN_DISTANCE_TO_REMOVE : false;
   }
 
   private shouldCreateNew(y: number): boolean {
-    const farEnough = !this.newest || this.newest.y - y < -MIN_DISTANCE_TO_LAST_BRANCH;
+    const chanceForBranch = (currentBranches = 0) => {
+      // For 10 it should be 0 for 1 hundred
+      const chance = (1 - currentBranches / this.config.branch_amount)
+      return Math.random() < chance
+    }
+    const farEnough = !this.newest || this.newest.y - y < - this.config.min_distance_to_last_branch;
     return chanceForBranch(this._branches.length) && farEnough
 
   }
 }
 
-const chanceForBranch = (currentBranches = 0) => {
-  // For 10 it should be 0 for 1 hundred
-  const chance = (1 - currentBranches / BRANCH_AMOUNT)
-  return Math.random() < chance
-}

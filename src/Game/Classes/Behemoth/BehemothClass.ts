@@ -2,7 +2,7 @@ import {makeAutoObservable} from "mobx";
 import {ResourceClass, ResourceEngineClass} from "@/GameEngine";
 import {
   BEHEMOTH_STAMINA_PER_SLAVE,
-  BEHEMOTH_STAMINA_PER_WASTED_SLAVE,
+  BEHEMOTH_STAMINA_PER_WASTED_SLAVE, CLIMBING_SPEED_COEFFICIENT,
   STAMINA_REGEN,
   STAMINA_REGEN_ON_FLUSHING
 } from "@/Game/constants/constants.ts";
@@ -161,45 +161,52 @@ export class BehemothClass {
     return !this.is_moving && !this.is_flushing
   }
 
-  public turnUpdate = (game: GameClass) => {
+  public tickUpdate = (game: GameClass) => {
     const {
-      should_move,
-      is_flushing,
-      stopped_flushing_mana,
       is_moving,
-      should_dig,
-      is_still,
-      is_flushing_mana,
-      is_mana_starting_to_dry,
-      is_mana_drying,
       accelerating,
       decelerating,
       should_stop_moving,
       climb_speed,
       climb_height,
-      digging_depth,
-      flushing_depth,
       stamina,
-      acid,
       stopClimbing,
-      _resourceStore,
     } = this
-    const {getByKey} = this._resourceStore
-    if (should_move) {
-      game.mana.resetDiggingMana()
-    }
     if (accelerating) {
-      climb_speed.updateValueBy(0.2)
+      climb_speed.updateValueBy(0.2 / game.tick.ticks_per_turn)
     }
     if (is_moving) {
-      climb_height.updateValueBy(climb_speed.value)
-      stamina.updateValueBy(-staminaDrain(climb_speed.value))
+      const speed_change = (climb_speed.value) * CLIMBING_SPEED_COEFFICIENT
+      climb_height.updateValueBy(speed_change)
+      stamina.updateValueBy(-staminaDrain(climb_speed.value) / game.tick.ticks_per_turn)
     }
     if (should_stop_moving) {
       stopClimbing()
     }
     if (decelerating) {
-      climb_speed.updateValueBy(-1)
+      climb_speed.updateValueBy(-1 / game.tick.ticks_per_turn)
+    }
+  }
+
+  public turnUpdate = (game: GameClass) => {
+    const {
+      should_move,
+      is_flushing,
+      stopped_flushing_mana,
+      should_dig,
+      is_still,
+      is_flushing_mana,
+      is_mana_starting_to_dry,
+      is_mana_drying,
+      digging_depth,
+      flushing_depth,
+      stamina,
+      acid,
+      _resourceStore,
+    } = this
+    const {getByKey} = this._resourceStore
+    if (should_move) {
+      game.mana.resetDiggingMana()
     }
     if (is_still) {
       stamina.updateValueBy(STAMINA_REGEN)
