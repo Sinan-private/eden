@@ -5,11 +5,11 @@ import {Branch} from "@/Game/Views/Gaja/Branch.ts";
 import {createSingletonBranches} from "@/Game/Views/Gaja/createSingletonBranches.ts";
 
 // const branchClass = new BranchClass(7)
-// const branchClass = new BranchManager(7)
+// const branchClass = new BranchFactory(7)
 
 export const Branches = observer(({displacement}: { displacement: number }) => {
   const {climb_speed, climb_height} = game().behemoth;
-  // const branchClass = useRef<BranchManager>(new BranchManager(climb_height.value)).current;
+  // const branchClass = useRef<BranchFactory>(new BranchFactory(climb_height.value)).current;
   const branchClass = createSingletonBranches().getInstance(climb_height.value)
 
   useTickSubscription(() => {

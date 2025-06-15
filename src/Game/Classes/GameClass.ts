@@ -11,6 +11,7 @@ import {GameBaseProps} from "@/Game/types.ts";
 import {GameEngine} from "@/GameEngine";
 import {id} from "@/GameEngine/ResourceEngine/helpers/id.ts";
 import {GameCreationProps} from "@/GameEngine/GameEngine.ts";
+import {RenderEngine} from "@/Game/Views/Gaja/RenderEngine.ts";
 
 export class GameClass extends GameEngine {
   public id: string = id();
@@ -25,6 +26,7 @@ export class GameClass extends GameEngine {
   public faction_arwa: ArwaClass
   public faction_ghoul: GhoulClass
   public interface: InterfaceController
+  public renderEngine: RenderEngine
 
   constructor(initialGame: GameCreationProps) {
     super(initialGame)
@@ -52,12 +54,14 @@ export class GameClass extends GameEngine {
     this.faction_marid = new MaridClass(factionProps)
     this.faction_ifrit = new IfritClass(factionProps)
     this.faction_ghoul = new GhoulClass(factionProps)
+    this.renderEngine = new RenderEngine(factionProps)
     this.tick.subscribeToTick(this._tick, this.id + '_tick')
     this.tick.subscribeToTurn(this._turn, this.id)
   }
 
   private _tick = () => {
     this.behemoth.tickUpdate(this)
+    this.renderEngine.update()
   }
 
   private _turn = () => {

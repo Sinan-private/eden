@@ -14,7 +14,7 @@ export type BranchConfig = {
   branch_amount: number;
 }
 
-export class BranchManager {
+export class BranchFactory {
   private _branches: Branch[] = [];
   private _height = 0;
   private config: BranchConfig;
@@ -37,17 +37,6 @@ export class BranchManager {
     return this._branches.slice().sort((a, b) => a.new_y - b.new_y)
   }
 
-  get highest() {
-    return this._branches.length
-      ? this.ordered_branches[0]
-      : null
-  }
-  get lowest() {
-    if (!this._branches.length) return null
-    const sorted = this.ordered_branches
-    return sorted[sorted.length - 1]
-  }
-
   public get oldest() {
     return this._branches[0];
   }
@@ -68,16 +57,9 @@ export class BranchManager {
     this._height = climbing_height - this._initial_height
     this._removeLowest()
     if (this.shouldCreateNew(this._height)) {
-      // Todo This is the issue now. New branches should appear at the proper position
       this._branches.push(new Branch(this._height - randomRange(-200, 300), this._height));
     }
     this._branches.forEach((branch) => branch.updateY(this._height))
-  }
-
-  // Stupid because of initial creation. Remove the highest one
-  private shouldRemoveOldest(y: number): boolean {
-    return this.oldest ? this.oldest.should_be_removed : false;
-    // return this.oldest ? y - this.oldest.y > MIN_DISTANCE_TO_REMOVE : false;
   }
 
   private shouldCreateNew(y: number): boolean {

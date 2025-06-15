@@ -13,11 +13,12 @@ export class Branch {
   public readonly x: number;
   public y: number;
   private _original_y: number;
-  public new_y: number;
+  public new_y: number = 0;
 
-  constructor(y: number, private _original_height: number ) {
+  constructor(y: number, _original_height: number ) {
     this.y = y;
     this._original_y = y;
+    // this.new_y = _original_height - y;
     this.image = randomBranchImage();
     this.z = randomRange(1, 5);
     this.x = randomRange(70, 300);

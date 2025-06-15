@@ -1,12 +1,13 @@
-import {ReactNode, useState} from "react";
+import {ReactNode} from "react";
 import {observer} from "mobx-react";
-import {useTickSubscription} from "@/GameEngine";
 import {game} from "@/Game";
 import {Branches} from "./Branches.tsx";
 import {Digging} from "./Digging/Digging.tsx";
 import {Behemoth} from "./Behemoth.tsx";
-import {CLIMBING_SPEED_COEFFICIENT} from "@/Game/constants/constants.ts";
 import image from '../../../assets/images/seemless_trunk.png';
+import {useComponentMount} from "@/GameEngine/ResourceEngine/hooks";
+import {Mushroom} from "@/Game/Views/Gaja/RenderEngine.ts";
+import cloud_image from '../../../assets/images/clouds1.png'
 
 
 // Stamm erweitern
@@ -19,19 +20,25 @@ const BACKGROUND_IMAGE_HEIGHT = 600;
 const BACKGROUND_IMAGE_WIDTH = 571;
 
 export const Gaja = observer(() => {
+  const {renderEngine} = game()
   const {getByKey} = game().resources
   const climb_height = getByKey('behemoth_climb_height').value
-  const [displacement, setDisplacement] = useState(0);
-
-  useTickSubscription(() => {
-    const climbing_speed = getByKey('behemoth_climb_speed').value
-    if (climbing_speed) {
-      const newPosition = (displacement + climbing_speed * CLIMBING_SPEED_COEFFICIENT)
-      setDisplacement(() => newPosition)
-    }
-  })
   const trunkDisplacement = climb_height - BACKGROUND_IMAGE_HEIGHT * 3
   const prop = (trunkDisplacement % BACKGROUND_IMAGE_HEIGHT) - BACKGROUND_IMAGE_HEIGHT
+  useComponentMount(() => {
+    renderEngine.add(new Mushroom({
+      type: 'cloud',
+      x: 200,
+      y: 100,
+      z: 0,
+      image: cloud_image,
+      width: 400,
+      height: 100,
+    }))
+  })
+
+  const visibleElement = renderEngine.getElements()[0];
+  console.log(visibleElement)
 
   return (
     <Tree>
@@ -39,6 +46,9 @@ export const Gaja = observer(() => {
       <Branches displacement={climb_height}/>
       <Behemoth/>
       <Digging/>
+      { visibleElement &&
+        <img id="test-image" src={visibleElement.image} className={visibleElement.className}/>
+      }
     </Tree>
   )
 })
