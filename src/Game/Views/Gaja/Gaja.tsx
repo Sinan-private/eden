@@ -5,7 +5,7 @@ import {Digging} from "./Digging/Digging.tsx";
 import {Behemoth} from "./Behemoth.tsx";
 import image from '../../../assets/images/seemless_trunk.png';
 import {useComponentMount} from "@/GameEngine/ResourceEngine/hooks";
-import {Mushroom} from "@/Game/Views/Gaja/RenderEngine.ts";
+import {Cloud, Mushroom} from "@/Game/Views/Gaja/RenderEngine.ts";
 
 
 // Stamm erweitern
@@ -24,19 +24,19 @@ export const Gaja = observer(() => {
   const trunkDisplacement = climb_height - BACKGROUND_IMAGE_HEIGHT * 3
   const prop = (trunkDisplacement % BACKGROUND_IMAGE_HEIGHT) - BACKGROUND_IMAGE_HEIGHT
   useComponentMount(() => {
-    renderEngine.add(new Mushroom({
+    renderEngine.add(new Cloud({
       type: 'cloud',
-      x: 200,
-      y: 100,
+      offset_x: 800,
+      offset_y: -100,
       z: 10,
-     image: 'cloud1'
+      image: 'cloud1'
     }))
     renderEngine.add(new Mushroom({
       type: 'branch',
-      x: -70,
-      y: 0,
-      z: 0,
-      image: 'branch2'
+      offset_x: -40,
+      offset_y: 0,
+      z: -1,
+      image: 'branch3'
     }))
     // renderEngine.addFactory(new BranchFactory())
   })
@@ -50,15 +50,27 @@ export const Gaja = observer(() => {
       <Behemoth/>
       <Digging/>
       {elements.map(element => (
-        <img
+        <div
           key={element.id}
-          src={element.image}
           className={element.className}
           style={{
             ...element.style
           }}
-        />
+        >
+          <img src={element.image} alt=""/>
+          <p className="relative top-[-250px] right-[-100px]">{element.y.toFixed()}</p>
+        </div>
       ))}
+      {/*{elements.map(element => (*/}
+      {/*  <img*/}
+      {/*    key={element.id}*/}
+      {/*    src={element.image}*/}
+      {/*    className={element.className}*/}
+      {/*    style={{*/}
+      {/*      ...element.style*/}
+      {/*    }}*/}
+      {/*  />*/}
+      {/*))}*/}
     </Tree>
   )
 })

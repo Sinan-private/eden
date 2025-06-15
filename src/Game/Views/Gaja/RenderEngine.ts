@@ -20,8 +20,8 @@ const PARALLAX_INTENSITY = 12
 // }
 
 type RenderElement = {
-  x: number;
-  y: number;
+  offset_x?: number;
+  offset_y?: number;
   z: number;
   image: RenderImageKey;
   type: 'branch' | 'cloud' | 'mushroom' | 'market' | 'city'; // most likely own classes
@@ -54,7 +54,11 @@ export class RenderEngine {
 
   public update = () => {
     for (const source of this.sources) {
-      source.update(0, this.props.behemoth.climb_height.value);
+      if (source.left_viewport) {
+        this.remove(source);
+      } else {
+        source.update(0, this.props.behemoth.climb_height.value);
+      }
     }
   }
 
@@ -71,7 +75,7 @@ class Renderable {
   protected world_x: number = 0;
   protected world_y: number = 0;
   protected sticky: boolean;
-  public offset_x: number;
+  public offset_x: number = 0;
   public offset_y: number;
   public offset_z: number;
   public image: string;
@@ -83,8 +87,8 @@ class Renderable {
     this.id = props.id || this.id;
     this.type = this.props.type;
     this.sticky = !!props.sticky;
-    this.offset_x = props.x;
-    this.offset_y = props.y;
+    this.offset_x = props.offset_x || 0;
+    this.offset_y = props.offset_y || 0;
     this.offset_z = props.z;
     this.image = image;
     this.width = width;
@@ -115,21 +119,35 @@ class Renderable {
   }
 
   get x() {
-    console.log(this.world_x, this.initial_x)
-    console.log(this.offset_x)
-    return this.world_x - this.initial_x + this.offset_x;
+    // + 14 if
+    const position = this.world_x - this.initial_x + this.offset_x
+    // const zOffset = this.offset_z * 28
+    const zOffset = this.offset_z * 14
+    if (this.sticky) {
+    //   z-1- 28
+    //   z1 - -28
+    //   z2 - -56
+    //   z3 - -84
+    }
+    return position - zOffset;
   }
 
   get y() {
+    let zOffset = this.offset_z * 8
+    zOffset = 0
     const delta = this.world_y - this.initial_y + this.offset_y;
     const parallax = (1 + this.offset_z / (20 - PARALLAX_INTENSITY))
-    return delta * parallax
+    return delta * parallax - zOffset
   }
 
   get filter() {
     const offset = Math.abs(this.offset_z)
     const blur = offset < 2 ? 0 : offset * 1.5;
     return `blur(${blur}px)`
+  }
+
+  get left_viewport() {
+    return this.y >= window.innerHeight
   }
 
   get style() {
@@ -139,12 +157,14 @@ class Renderable {
       zIndex: this.offset_z,
       transform: this.transform,
       filter: this.filter,
-      // scale: 1 + this.offset_z / 10,
     }
   }
 
   get transform() {
-    const scale = 1 + this.offset_z / 10;
+    let scale = 1 + this.offset_z / 20;
+    if (scale < 0.2) {
+      scale = 0.2
+    }
     return `translate(${this.x}px, ${this.y}px) scale(${scale})`
   }
 }
@@ -159,6 +179,24 @@ export class Mushroom extends Renderable {
 
   getElements(): Renderable[] {
     return [this];
+  }
+
+}
+
+export class Cloud extends Renderable {
+
+  getElements(): Renderable[] {
+    return [this];
+  }
+
+  get style() {
+    return {
+      width: this.width,
+      height: this.height,
+      zIndex: this.offset_z,
+      transform: this.transform,
+      filter: this.filter + ' brightness(0.7) hue-rotate(-70deg)'
+    }
   }
 
 }
