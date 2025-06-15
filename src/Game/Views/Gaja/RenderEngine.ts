@@ -9,6 +9,10 @@
 
 import {GameBaseClasses} from "@/Game/Classes/Game/gameTypes.ts";
 import {id} from "@/GameEngine/ResourceEngine/helpers/id.ts";
+import {getImage, RenderImageKey} from "@/Game/Views/Gaja/imageRegistry.ts";
+
+const PARALLAX_INTENSITY = 12
+
 
 // interface Renderable {
 //   update(currentY: number): void;
@@ -19,11 +23,12 @@ type RenderElement = {
   x: number;
   y: number;
   z: number;
-  image: string;
+  image: RenderImageKey;
   type: 'branch' | 'cloud' | 'mushroom' | 'market' | 'city'; // most likely own classes
-  width: number;
-  height: number;
+  // width: number;
+  // height: number;
   id?: string; // optional, for keyed rendering
+  sticky?: boolean;
 }
 
 export class RenderEngine {
@@ -36,7 +41,11 @@ export class RenderEngine {
   }
 
   public add = (source: Renderable) => {
-    this.sources.push(source);
+    this.sources.push(source.initialize(0, this.props.behemoth.climb_height.value));
+  }
+
+  public addFactory = (source: any) => {
+
   }
 
   public remove = (source: Renderable) => {
@@ -53,56 +62,90 @@ export class RenderEngine {
     return this.sources.flatMap(s => s.getElements());
   }
 
-  // public subscription = () => {
-  //   this._current_height = this.props.behemoth.climb_height.value
-  // }
-  //
-  //
-  //
-  // public addElement = (element: Partial<ImaginativeProps>) => {
-  //   // By default, a new element should be spawned outside the viewport.
-  //   // This might get a little tricky because I will have to see how to calculate this and get enough randomness in it
-  // }
-  //
-  // public addFactory = () => {
-  //
-  // }
-  //
-  // public get = () => {
-  //
-  // }
 }
 
-abstract class Renderable implements RenderElement {
+class Renderable {
   public id: string = id()
-  public x: number;
-  public y: number;
-  public z: number;
+  protected initial_x: number = 0;
+  protected initial_y: number = 0;
+  protected world_x: number = 0;
+  protected world_y: number = 0;
+  protected sticky: boolean;
+  public offset_x: number;
+  public offset_y: number;
+  public offset_z: number;
   public image: string;
   public type: RenderElement['type']
   public width: number;
   public height: number;
   constructor(private props: RenderElement) {
+    const {image, width, height} = getImage(this.props.image);
     this.id = props.id || this.id;
-    this.x = props.x;
-    this.y = props.y;
-    this.z = props.z;
-    this.image = props.image;
     this.type = this.props.type;
-    this.width = this.props.width;
-    this.height = this.props.height;
+    this.sticky = !!props.sticky;
+    this.offset_x = props.x;
+    this.offset_y = props.y;
+    this.offset_z = props.z;
+    this.image = image;
+    this.width = width;
+    this.height = height;
   }
 
-  abstract update(currentX: number, currentY: number): void;
+  update(currentX: number, currentY: number): void {
+  //   This should trigger the movement of the world since creation.
+    //   The individual movement is based on the z-axes and will be calculated individually
+    this.world_x = currentX;
+    this.world_y = currentY;
+  };
   abstract getElements(): Renderable[];
+  public initialize = (initialX: number, initialY: number): Renderable => {
+    this.initial_x = initialX;
+    this.initial_y = initialY;
+    this.world_x = initialX;
+    this.world_y = initialY;
+    return this
+  }
   get className() {
     return `
     absolute top-0 z-[-1] object-contain right-[350px]
-    border border-red-500
     xl:w-[640px] xl:right-[500px]
     lg:w-[560px] lg:right-[500px]
     md:w-[480px] md:right-[400px]
     `
+  }
+
+  get x() {
+    console.log(this.world_x, this.initial_x)
+    console.log(this.offset_x)
+    return this.world_x - this.initial_x + this.offset_x;
+  }
+
+  get y() {
+    const delta = this.world_y - this.initial_y + this.offset_y;
+    const parallax = (1 + this.offset_z / (20 - PARALLAX_INTENSITY))
+    return delta * parallax
+  }
+
+  get filter() {
+    const offset = Math.abs(this.offset_z)
+    const blur = offset < 2 ? 0 : offset * 1.5;
+    return `blur(${blur}px)`
+  }
+
+  get style() {
+    return {
+      width: this.width,
+      height: this.height,
+      zIndex: this.offset_z,
+      transform: this.transform,
+      filter: this.filter,
+      // scale: 1 + this.offset_z / 10,
+    }
+  }
+
+  get transform() {
+    const scale = 1 + this.offset_z / 10;
+    return `translate(${this.x}px, ${this.y}px) scale(${scale})`
   }
 }
 
@@ -112,11 +155,6 @@ export class Mushroom extends Renderable {
   constructor(config: RenderElement) {
     super(config);
     this.config = config;
-  }
-
-  update(currentX: number, currentY: number) {
-    // console.log(currentX, currentY)
-    // Optional animation, wobble, or removal logic
   }
 
   getElements(): Renderable[] {

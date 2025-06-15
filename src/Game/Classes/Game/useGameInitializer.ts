@@ -13,7 +13,6 @@ export function useGameInitializer(config?: GameBaseControlledCreationProps) {
     const init = async () => {
       const rawResources = await fetchResources();
       const initialProps = { resources: rawResources, ...config } as GameCreationProps
-      console.log(initialProps)
       game(initialProps);
       setGameReady(true);
     };

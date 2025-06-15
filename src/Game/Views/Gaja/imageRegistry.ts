@@ -11,7 +11,7 @@ import branch_image6 from '../../../assets/images/Branch7.png'
 
 type ImageMeta = { image: string; width: number; height: number };
 
-const imageRegistry: Record<string, ImageMeta> = {
+const imageRegistry = {
   cloud1: { image: cloud_image1, width: 768, height: 450 },
   cloud2: { image: cloud_image2, width: 726, height: 450 },
   cloud3: { image: cloud_image4, width: 600, height: 420 },
@@ -21,6 +21,7 @@ const imageRegistry: Record<string, ImageMeta> = {
   branch4: { image: branch_image4, width: 800, height: 262 },
   branch5: { image: branch_image5, width: 800, height: 285 },
   branch6: { image: branch_image6, width: 800, height: 862 },
-};
+} as const;
 
-export const getImage = (key: keyof typeof imageRegistry) => imageRegistry[key];
+export type RenderImageKey = keyof typeof imageRegistry
+export const getImage = (key: RenderImageKey) => imageRegistry[key];

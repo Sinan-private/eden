@@ -1,13 +1,11 @@
 import {ReactNode} from "react";
 import {observer} from "mobx-react";
 import {game} from "@/Game";
-import {Branches} from "./Branches.tsx";
 import {Digging} from "./Digging/Digging.tsx";
 import {Behemoth} from "./Behemoth.tsx";
 import image from '../../../assets/images/seemless_trunk.png';
 import {useComponentMount} from "@/GameEngine/ResourceEngine/hooks";
 import {Mushroom} from "@/Game/Views/Gaja/RenderEngine.ts";
-import cloud_image from '../../../assets/images/clouds1.png'
 
 
 // Stamm erweitern
@@ -30,25 +28,37 @@ export const Gaja = observer(() => {
       type: 'cloud',
       x: 200,
       y: 100,
-      z: 0,
-      image: cloud_image,
-      width: 400,
-      height: 100,
+      z: 10,
+     image: 'cloud1'
     }))
+    renderEngine.add(new Mushroom({
+      type: 'branch',
+      x: -70,
+      y: 0,
+      z: 0,
+      image: 'branch2'
+    }))
+    // renderEngine.addFactory(new BranchFactory())
   })
 
-  const visibleElement = renderEngine.getElements()[0];
-  console.log(visibleElement)
+  const elements = renderEngine.getElements()
 
   return (
     <Tree>
       <Trunk displacement={prop}/>
-      <Branches displacement={climb_height}/>
+      {/*<Branches displacement={climb_height}/>*/}
       <Behemoth/>
       <Digging/>
-      { visibleElement &&
-        <img id="test-image" src={visibleElement.image} className={visibleElement.className}/>
-      }
+      {elements.map(element => (
+        <img
+          key={element.id}
+          src={element.image}
+          className={element.className}
+          style={{
+            ...element.style
+          }}
+        />
+      ))}
     </Tree>
   )
 })

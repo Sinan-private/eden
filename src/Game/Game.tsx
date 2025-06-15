@@ -13,7 +13,6 @@ declare global {
 
 export const Game = () => {
   window.game = game();
-  console.log(game())
   return (
     <Screen id="Game">
       <Background/>
