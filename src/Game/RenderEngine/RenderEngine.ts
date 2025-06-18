@@ -7,10 +7,10 @@
 // So the goal is to pass in objects here (can also be triggered by an event) so that the RenderEngine takes care
 // on how to place and move them as well as the effects to trigger
 
-import {GameBaseClasses} from "@/Game/Classes/Game/gameTypes.ts";
 import {RenderImageKey} from "@/Game/RenderEngine/imageRegistry.ts";
 import {RenderFactory} from "@/Game/RenderEngine/RenderFactory.ts";
 import {Renderable} from "@/Game/RenderEngine/Renderable.ts";
+import {GameClass} from "@/Game";
 
 export type RenderElement = {
   offset_x?: number;
@@ -25,17 +25,17 @@ export type RenderElement = {
 }
 
 export class RenderEngine {
-  private element: Renderable[] = [];
+  private elements: Renderable[] = [];
   private factories: RenderFactory[] = [];
 
   // private _starting_height: number
   // private _current_height: number
-  constructor(private props: GameBaseClasses) {
+  constructor(private props: GameClass) {
     // this._starting_height = props.behemoth.climb_height.value
   }
 
   public add = (source: Renderable) => {
-    this.element.push(source.initialize(0, this.props.behemoth.climb_height.value));
+    this.elements.push(source.initialize(0, this.props.behemoth.climb_height.value));
   }
 
   public addFactory = (factory: RenderFactory) => {
@@ -43,7 +43,7 @@ export class RenderEngine {
   }
 
   public remove = (source: Renderable) => {
-    this.element = this.element.filter(s => s !== source);
+    this.elements = this.elements.filter(s => s !== source);
   }
 
   public removeFactory = (source: RenderFactory) => {
@@ -56,7 +56,7 @@ export class RenderEngine {
   }
 
   private _updateElements = () => {
-    for (const source of this.element) {
+    for (const source of this.elements) {
       if (source.left_viewport) {
         this.remove(source);
       } else {
@@ -70,16 +70,13 @@ export class RenderEngine {
       if (factory.left_viewport) {
         this.removeFactory(factory);
       } else {
-        factory.update(0, this.props.behemoth.climb_height.value);
-        factory.getElements().forEach(element => {
-
-        })
+        factory.update(0, this.props.behemoth.climb_height.value, this.props.tick);
       }
     }
   }
 
   getElements(): Renderable[] {
-    const elements = this.element.flatMap(s => s.getElements());
+    const elements = this.elements.flatMap(s => s.getElements());
     const factories = this.factories.flatMap(s => s.getElements());
     return [...elements, ...factories];
   }

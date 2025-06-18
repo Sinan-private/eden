@@ -32,11 +32,11 @@ export abstract class Renderable {
     this.height = height;
   }
 
-  update(currentX: number, currentY: number): void {
+  update(x: number, y: number): void {
     //   This should trigger the movement of the world since creation.
     //   The individual movement is based on the z-axes and will be calculated individually
-    this.world_x = currentX;
-    this.world_y = currentY;
+    this.world_x = x;
+    this.world_y = y;
   };
 
   abstract getElements(): Renderable[];

@@ -1,8 +1,10 @@
 import {RenderElement} from "@/Game/RenderEngine/RenderEngine.ts";
 import {Renderable} from "@/Game/RenderEngine/Renderable.ts";
 import {randomRange} from "@/Game/helpers/randomRange.ts";
+import {Tick} from "@/GameEngine/Tick.ts";
+import {getImage, getImagesByType} from "@/Game/RenderEngine/imageRegistry.ts";
 
-type TupledFields = 'random_x' | 'random_y' | 'spawn';
+type TupledFields = 'random_x' | 'random_y' | 'spawn_amount';
 type RenderFactoryConfigProps = {
   initial_amount: number;
   random_x: number | [number, number];
@@ -17,12 +19,13 @@ type NormalizedRenderFactoryConfig = {
   [K in keyof RenderFactoryConfigProps]: K extends TupledFields ? [number, number] : RenderFactoryConfigProps[K];
 };
 
-const defaultConfig: RenderFactoryConfigProps = {
+const defaultConfig: NormalizedRenderFactoryConfig = {
   initial_amount: 1,
-  random_x: [-100, 100],
+  random_x: [-400, 400],
   random_y: [-100, 100],
-  spawn_amount: [0, 3],
-  spawn_min_distance: 0,
+  spawn_amount: [1, 8],
+  spawn_min_distance: 300, // should be 0
+  spawn_chance: 30,
 }
 
 // I want to
@@ -32,7 +35,8 @@ const defaultConfig: RenderFactoryConfigProps = {
 
 export class RenderFactory {
   private elements: Renderable[] = [];
-  private config: NormalizedRenderFactoryConfig
+  private config: NormalizedRenderFactoryConfig;
+  private turn: number = 0;
 
   constructor(
     private Factory: new (config: RenderElement) => Renderable,
@@ -41,18 +45,19 @@ export class RenderFactory {
     this.config = defaultConfig
     const amount = config.initial_amount ?? 1;
     for (let i = 0; i < amount; i++) {
-      const offset_x = randomRange(...this.config.random_x)
-      const offset_y = randomRange(...this.config.random_y)
-    // const random_x = Math.random() * 600;
-    // const random_y = -(Math.random() * 600);
-    const random_z = 3 + Math.random() * 5;
-      this.elements.push(new this.Factory({
-        image: 'cloud1',
-        type: 'cloud',
-        offset_x,
-        offset_y,
-        z: random_z,
-      })); // You'll need to define `generateConfig`
+      this.elements.push(this.createRandomElement())
+    //   const offset_x = randomRange(...this.config.random_x)
+    //   const offset_y = randomRange(...this.config.random_y)
+    // // const random_x = Math.random() * 600;
+    // // const random_y = -(Math.random() * 600);
+    // const random_z = 3 + Math.random() * 5;
+    //   this.elements.push(new this.Factory({
+    //     image: 'cloud1',
+    //     type: 'cloud',
+    //     offset_x,
+    //     offset_y,
+    //     z: random_z,
+    //   })); // You'll need to define `generateConfig`
     }
   }
 
@@ -62,34 +67,98 @@ export class RenderFactory {
     return this;
   }
 
-  public add = (source: Renderable) => {
-    this.element.push(source.initialize(0, this.props.behemoth.climb_height.value));
+  private createRandomElement = (): Renderable => {
+    const offset_x = randomRange(...this.config.random_x)
+    const offset_y = randomRange(...this.config.random_y)
+    const random_z = 3 + Math.random() * 5
+    return new this.Factory({
+      image: this.randomImage().key,
+      type: 'cloud',
+      offset_x,
+      offset_y,
+      z: random_z,
+    })
   }
 
-  public addFactory = (factory: RenderFactory) => {
-    this.factories.push(factory.initialize(0, this.props.behemoth.climb_height.value));
+  private spawnElement = (): Renderable => {
+    const offset_x = randomRange(...this.config.random_x)
+    const random_z = 3 + Math.random() * 5
+    return new this.Factory({
+      image: this.randomImage().key,
+      type: 'cloud',
+      offset_x,
+      offset_y: this.spawn_height,
+      z: random_z,
+    })
   }
 
-  public remove = (source: Renderable) => {
-    this.element = this.element.filter(s => s !== source);
-  }
 
-  update = (x: number, y: number): void => {
-    this.elements.forEach(item => {
-      if (item.left_viewport) {
-        // item.
+
+  public update = (x: number, y: number, tick: Tick): void => {
+    if (this.turn < tick.current_turn) {
+      this.turn = tick.current_turn;
+      if (this._shouldAddElement(y)) {
+        this._add(this.spawnElement(), x, y)
+      }
+    }
+    // console.log(tick.current_turn)
+    this.elements.forEach(element => {
+      if (element.left_viewport) {
+        this._remove(element)
       }
     });
     this.elements.forEach(i => i.update(x, y));
-    const elements = this.elements.length
-    console.log(elements)
   }
 
-  getElements = (): Renderable[] => {
+  public getElements = (): Renderable[] => {
     return this.elements;
+  }
+
+  private _add = (source: Renderable, x: number, y: number) => {
+    this.elements.push(source.initialize(x, y));
+  }
+
+  private randomImage = () => {
+    const type = 'cloud'
+    const images = getImagesByType(type)
+    const index = randomRange(0, images.length - 1)
+    return images[index]
+  }
+
+  private _remove = (source: Renderable) => {
+    this.elements = this.elements.filter(s => s !== source);
+  }
+
+  private distanceToClosestElement = (): number => {
+    const sorted = this.elements
+      .map(({y}) => y)
+      .sort((a, b) => a - b)
+    const closest = sorted[0];
+    return closest - this.spawn_height * 2
+  }
+
+  private _shouldAddElement = (y: number): boolean => {
+    const [min, max] = this.config.spawn_amount;
+    const reached_min = this.elements.length < min
+    const reached_max = this.elements.length >= max
+    if (reached_min) {
+      return true
+    }
+    if (reached_max) {
+      return false
+    }
+    const far_enough = this.distanceToClosestElement() >= this.config.spawn_min_distance
+    if (!far_enough) {
+      return false
+    }
+    return Math.random() > (this.config.spawn_chance / 100)
   }
 
   get left_viewport(): boolean {
     return this.elements.every(i => i.left_viewport);
+  }
+
+  get spawn_height(): number {
+    return -(window.innerHeight / 2)
   }
 }
