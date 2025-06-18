@@ -1,75 +1,11 @@
-// What's the idea here
-// There will be way more stuff to animate than just the branches. There shall be clouds, mushrooms and even markets
-// or cities. All of them will have to be aware of their position, the climbing height and also of their own
-// z-axes since elements should move in different speed and possibly also react to their environment, like e.g.
-// being blurred in the background or adjusting their color
-
-// So the goal is to pass in objects here (can also be triggered by an event) so that the RenderEngine takes care
-// on how to place and move them as well as the effects to trigger
-
-import {GameBaseClasses} from "@/Game/Classes/Game/gameTypes.ts";
+import {getImage} from "@/Game/RenderEngine/imageRegistry.ts";
+import {RenderElement} from "@/Game/RenderEngine/RenderEngine.ts";
 import {id} from "@/GameEngine/ResourceEngine/helpers/id.ts";
-import {getImage, RenderImageKey} from "@/Game/Views/Gaja/imageRegistry.ts";
 
 const PARALLAX_INTENSITY = 12
 
-
-// interface Renderable {
-//   update(currentY: number): void;
-//   getElements(): RenderElement[];
-// }
-
-type RenderElement = {
-  offset_x?: number;
-  offset_y?: number;
-  z: number;
-  image: RenderImageKey;
-  type: 'branch' | 'cloud' | 'mushroom' | 'market' | 'city'; // most likely own classes
-  // width: number;
-  // height: number;
-  id?: string; // optional, for keyed rendering
-  sticky?: boolean;
-}
-
-export class RenderEngine {
-  private sources: Renderable[] = [];
-
-  // private _starting_height: number
-  // private _current_height: number
-  constructor(private props: GameBaseClasses) {
-    // this._starting_height = props.behemoth.climb_height.value
-  }
-
-  public add = (source: Renderable) => {
-    this.sources.push(source.initialize(0, this.props.behemoth.climb_height.value));
-  }
-
-  public addFactory = (source: any) => {
-
-  }
-
-  public remove = (source: Renderable) => {
-    this.sources = this.sources.filter(s => s !== source);
-  }
-
-  public update = () => {
-    for (const source of this.sources) {
-      if (source.left_viewport) {
-        this.remove(source);
-      } else {
-        source.update(0, this.props.behemoth.climb_height.value);
-      }
-    }
-  }
-
-  getElements(): Renderable[] {
-    return this.sources.flatMap(s => s.getElements());
-  }
-
-}
-
-class Renderable {
-  public id: string = id()
+export abstract class Renderable {
+  public id: string = id();
   protected initial_x: number = 0;
   protected initial_y: number = 0;
   protected world_x: number = 0;
@@ -82,6 +18,7 @@ class Renderable {
   public type: RenderElement['type']
   public width: number;
   public height: number;
+
   constructor(private props: RenderElement) {
     const {image, width, height} = getImage(this.props.image);
     this.id = props.id || this.id;
@@ -89,19 +26,21 @@ class Renderable {
     this.sticky = !!props.sticky;
     this.offset_x = props.offset_x || 0;
     this.offset_y = props.offset_y || 0;
-    this.offset_z = props.z;
+    this.offset_z = Math.round(props.z);
     this.image = image;
     this.width = width;
     this.height = height;
   }
 
   update(currentX: number, currentY: number): void {
-  //   This should trigger the movement of the world since creation.
+    //   This should trigger the movement of the world since creation.
     //   The individual movement is based on the z-axes and will be calculated individually
     this.world_x = currentX;
     this.world_y = currentY;
   };
+
   abstract getElements(): Renderable[];
+
   public initialize = (initialX: number, initialY: number): Renderable => {
     this.initial_x = initialX;
     this.initial_y = initialY;
@@ -109,6 +48,7 @@ class Renderable {
     this.world_y = initialY;
     return this
   }
+
   get className() {
     return `
     absolute top-0 z-[-1] object-contain right-[350px]
@@ -122,12 +62,12 @@ class Renderable {
     // + 14 if
     const position = this.world_x - this.initial_x + this.offset_x
     // const zOffset = this.offset_z * 28
-    const zOffset = this.offset_z * 14
+    const zOffset = this.sticky ? this.offset_z * 14 : 0
     if (this.sticky) {
-    //   z-1- 28
-    //   z1 - -28
-    //   z2 - -56
-    //   z3 - -84
+      //   z-1- 28
+      //   z1 - -28
+      //   z2 - -56
+      //   z3 - -84
     }
     return position - zOffset;
   }
@@ -170,12 +110,6 @@ class Renderable {
 }
 
 export class Mushroom extends Renderable {
-  private config: RenderElement;
-
-  constructor(config: RenderElement) {
-    super(config);
-    this.config = config;
-  }
 
   getElements(): Renderable[] {
     return [this];
@@ -200,16 +134,3 @@ export class Cloud extends Renderable {
   }
 
 }
-
-
-// type ImaginativeProps = {
-//   type: 'branch' | 'cloud' | 'mushroom' | 'market' | 'city'; // most likely own classes
-//   width: number;
-//   height: number;
-//   image: string;
-//   x: number;
-//   y: number;
-//   z: number;
-//   x_offset_per_tick: number;
-//   y_offset_per_tick: number;
-// }

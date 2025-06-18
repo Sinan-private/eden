@@ -11,7 +11,7 @@ import {GameBaseProps} from "@/Game/types.ts";
 import {GameEngine} from "@/GameEngine";
 import {id} from "@/GameEngine/ResourceEngine/helpers/id.ts";
 import {GameCreationProps} from "@/GameEngine/GameEngine.ts";
-import {RenderEngine} from "@/Game/Views/Gaja/RenderEngine.ts";
+import {RenderEngine} from "@/Game/RenderEngine/RenderEngine.ts";
 
 export class GameClass extends GameEngine {
   public id: string = id();

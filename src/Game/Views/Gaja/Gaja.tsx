@@ -5,7 +5,8 @@ import {Digging} from "./Digging/Digging.tsx";
 import {Behemoth} from "./Behemoth.tsx";
 import image from '../../../assets/images/seemless_trunk.png';
 import {useComponentMount} from "@/GameEngine/ResourceEngine/hooks";
-import {Cloud, Mushroom} from "@/Game/Views/Gaja/RenderEngine.ts";
+import {RenderFactory} from "@/Game/RenderEngine/RenderFactory.ts";
+import {Cloud, Mushroom} from "@/Game/RenderEngine/Renderable.ts";
 
 
 // Stamm erweitern
@@ -35,10 +36,11 @@ export const Gaja = observer(() => {
       type: 'branch',
       offset_x: -40,
       offset_y: 0,
-      z: -1,
-      image: 'branch3'
+      z: -5,
+      image: 'branch3',
+      sticky: true,
     }))
-    // renderEngine.addFactory(new BranchFactory())
+    renderEngine.addFactory(new RenderFactory(Cloud, {initial_amount: 5}))
   })
 
   const elements = renderEngine.getElements()

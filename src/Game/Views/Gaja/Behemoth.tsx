@@ -13,7 +13,7 @@ export const Behemoth = observer(() => {
     <>
       <div
         id="Behemoth"
-        className="absolute top-1/2 -left-5 w-10 h-[100px] z-10  flex flex-col justify-center items-center -translate-y-1/2 "
+        className="absolute top-1/2 -left-5 w-10 h-[100px] z-1  flex flex-col justify-center items-center -translate-y-1/2 "
       >
         <img className="max-w-none w-[170px] -rotate-90" src={src} alt={src}/>
       </div>

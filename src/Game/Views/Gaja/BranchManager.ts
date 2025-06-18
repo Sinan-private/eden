@@ -14,7 +14,7 @@ export type BranchConfig = {
   branch_amount: number;
 }
 
-export class BranchFactory {
+export class BranchManager {
   private _branches: Branch[] = [];
   private _height = 0;
   private config: BranchConfig;
