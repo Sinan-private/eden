@@ -2,7 +2,7 @@ import {RenderElement} from "@/Game/RenderEngine/RenderEngine.ts";
 import {Renderable} from "@/Game/RenderEngine/Renderable.ts";
 import {randomRange} from "@/Game/helpers/randomRange.ts";
 import {Tick} from "@/GameEngine/Tick.ts";
-import {getImage, getImagesByType} from "@/Game/RenderEngine/imageRegistry.ts";
+import {getImagesByType} from "@/Game/RenderEngine/imageRegistry.ts";
 
 type TupledFields = 'random_x' | 'random_y' | 'spawn_amount';
 type RenderFactoryConfigProps = {
@@ -97,7 +97,7 @@ export class RenderFactory {
   public update = (x: number, y: number, tick: Tick): void => {
     if (this.turn < tick.current_turn) {
       this.turn = tick.current_turn;
-      if (this._shouldAddElement(y)) {
+      if (this._shouldAddElement()) {
         this._add(this.spawnElement(), x, y)
       }
     }
@@ -137,7 +137,7 @@ export class RenderFactory {
     return closest - this.spawn_height * 2
   }
 
-  private _shouldAddElement = (y: number): boolean => {
+  private _shouldAddElement = (): boolean => {
     const [min, max] = this.config.spawn_amount;
     const reached_min = this.elements.length < min
     const reached_max = this.elements.length >= max

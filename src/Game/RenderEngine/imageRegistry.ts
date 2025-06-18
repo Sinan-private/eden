@@ -28,7 +28,7 @@ type ImageEntry = (typeof imageRegistry)[number];
 export type RenderImageKey = ImageEntry['key'];
 export type RenderImageType = ImageEntry['type'];
 
-export const getImage = (key: RenderImageKey) =>
-  imageRegistry.find(entry => entry.key === key);
-export const getImagesByType = (type: RenderImageType) =>
+export const getImage = (key: RenderImageKey): ImageEntry =>
+  imageRegistry.find(entry => entry.key === key) as ImageEntry;
+export const getImagesByType = (type: RenderImageType): ImageEntry[] =>
   imageRegistry.filter(image => image.type === type);
