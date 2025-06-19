@@ -123,13 +123,22 @@ export class Cloud extends Renderable {
     return [this];
   }
 
+  get transform() {
+    let scale = 1 + this.offset_z / 20;
+    if (scale < 0.2) {
+      scale = 0.2
+    }
+    return `translate(${this.x}px, ${this.y}px) scale(${scale})`
+  }
+
   get style() {
     return {
       width: this.width,
       height: this.height,
       zIndex: this.offset_z,
       transform: this.transform,
-      filter: this.filter + ' brightness(0.7) hue-rotate(-70deg)'
+      filter: this.filter + ' brightness(0.7) hue-rotate(-70deg)',
+      opacity: 0.4,
     }
   }
 
