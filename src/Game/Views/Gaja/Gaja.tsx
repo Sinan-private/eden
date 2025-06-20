@@ -6,7 +6,7 @@ import {Behemoth} from "./Behemoth.tsx";
 import image from '../../../assets/images/seemless_trunk.png';
 import {useComponentMount} from "@/GameEngine/ResourceEngine/hooks";
 import {RenderFactory} from "@/Game/RenderEngine/RenderFactory.ts";
-import {Branch, Cloud} from "@/Game/RenderEngine/Renderable.ts";
+import {Branch} from "@/Game/RenderEngine/Renderable.ts";
 import {BACKGROUND_IMAGE_WIDTH} from "@/Game/RenderEngine/media_queries.ts";
 
 
@@ -32,20 +32,32 @@ export const Gaja = observer(() => {
     //   z: 10,
     //   image: 'cloud1'
     // }))
-    // renderEngine.add(new Mushroom({
+    // renderEngine.add(new Branch({
     //   type: 'branch',
-    //   offset_x: -40,
+    //   offset_x: -700,
     //   offset_y: 0,
-    //   z: -5,
+    //   z: -8,
     //   image: 'branch3',
     //   sticky: true,
     // }))
-    renderEngine.addFactory(new RenderFactory(Cloud, {initial_amount: 5}))
+    // renderEngine.addFactory(new RenderFactory(BranchForeground, {initial_amount: 5}))
+    // renderEngine.addFactory(new RenderFactory(Cloud, {
+    //   initial_amount: 5,
+    //   random_x: [-400, 800],
+    // }))
+    // renderEngine.add(new Branch({z: -9, image: 'branch1', type: 'branch', offset_x: -700}))
     renderEngine.addFactory(new RenderFactory(Branch, {
       initial_amount: 3,
       image_type: 'branch',
-      z: 1,
+      z: [0, -8],
+      offset_x: -700,
     }))
+    // renderEngine.addFactory(new RenderFactory(Branch, {
+    //   initial_amount: 3,
+    //   image_type: 'test',
+    //   z: 0,
+    //   offset_x: 0,
+    // }))
   })
 
   const elements = renderEngine.getElements()
@@ -65,7 +77,7 @@ export const Gaja = observer(() => {
           }}
         >
           <img src={element.image} alt=""/>
-          <p className="relative top-[-250px] right-[-100px]">{element.y.toFixed()}</p>
+          {/*<p className="relative top-[-250px] right-[-100px]">{element.y.toFixed()}</p>*/}
         </div>
       ))}
       {/*{elements.map(element => (*/}

@@ -81,7 +81,12 @@ export abstract class Renderable {
     let zOffset = this.offset_z * 8
     zOffset = 0
     const delta = this.world_y - this.initial_y + this.offset_y;
-    const parallax = (1 + this.offset_z / (20 - PARALLAX_INTENSITY))
+    const getParallaxFactor = (val: number): number => {
+      return 10 ** (-val / 10);
+    };
+    // const parallax = ((1 + this.offset_z) / (20 - PARALLAX_INTENSITY))
+    const parallax = getParallaxFactor(-this.offset_z)
+    console.log(this.offset_z, parallax)
     return delta * parallax - zOffset
   }
 

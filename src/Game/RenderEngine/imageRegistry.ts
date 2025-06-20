@@ -7,11 +7,13 @@ import branch_image3 from '../../assets/images/Branch4.png'
 import branch_image4 from '../../assets/images/Branch5.png'
 import branch_image5 from '../../assets/images/Branch6.png'
 import branch_image6 from '../../assets/images/Branch7.png'
+import test_image from '../../assets/images/test.png'
 
 // type ImageType = 'cloud' | 'branch'
 // type ImageMeta = { image: string; width: number; height: number; type: ImageType };
 
 const imageRegistry = [
+  { key: 'test', image: test_image, width: 160, height: 100, type: 'test' },
   { key: 'cloud1', image: cloud_image1, width: 768, height: 369, type: 'cloud' },
   { key: 'cloud2', image: cloud_image2, width: 674, height: 375, type: 'cloud' },
   // { key: 'cloud3', image: cloud_image4, width: 600, height: 420, type: 'cloud' },

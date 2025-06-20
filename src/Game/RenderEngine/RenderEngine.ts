@@ -24,6 +24,7 @@ export type RenderElement = {
   // width: number;
   // height: number;
   id?: string; // optional, for keyed rendering
+  sticky?: boolean; // This exists because I have to connect the position to elements that are defined by media queries
 }
 
 export class RenderEngine {
