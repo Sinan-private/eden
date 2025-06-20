@@ -6,7 +6,8 @@ import {Behemoth} from "./Behemoth.tsx";
 import image from '../../../assets/images/seemless_trunk.png';
 import {useComponentMount} from "@/GameEngine/ResourceEngine/hooks";
 import {RenderFactory} from "@/Game/RenderEngine/RenderFactory.ts";
-import {Cloud, Mushroom} from "@/Game/RenderEngine/Renderable.ts";
+import {Branch, Cloud} from "@/Game/RenderEngine/Renderable.ts";
+import {BACKGROUND_IMAGE_WIDTH} from "@/Game/RenderEngine/media_queries.ts";
 
 
 // Stamm erweitern
@@ -16,7 +17,6 @@ import {Cloud, Mushroom} from "@/Game/RenderEngine/Renderable.ts";
 
 
 const BACKGROUND_IMAGE_HEIGHT = 600;
-const BACKGROUND_IMAGE_WIDTH = 571;
 
 export const Gaja = observer(() => {
   const {renderEngine} = game()
@@ -25,22 +25,27 @@ export const Gaja = observer(() => {
   const trunkDisplacement = climb_height - BACKGROUND_IMAGE_HEIGHT * 3
   const prop = (trunkDisplacement % BACKGROUND_IMAGE_HEIGHT) - BACKGROUND_IMAGE_HEIGHT
   useComponentMount(() => {
-    renderEngine.add(new Cloud({
-      type: 'cloud',
-      offset_x: 800,
-      offset_y: -100,
-      z: 10,
-      image: 'cloud1'
-    }))
-    renderEngine.add(new Mushroom({
-      type: 'branch',
-      offset_x: -40,
-      offset_y: 0,
-      z: -5,
-      image: 'branch3',
-      sticky: true,
-    }))
+    // renderEngine.add(new Cloud({
+    //   type: 'cloud',
+    //   offset_x: 800,
+    //   offset_y: -100,
+    //   z: 10,
+    //   image: 'cloud1'
+    // }))
+    // renderEngine.add(new Mushroom({
+    //   type: 'branch',
+    //   offset_x: -40,
+    //   offset_y: 0,
+    //   z: -5,
+    //   image: 'branch3',
+    //   sticky: true,
+    // }))
     renderEngine.addFactory(new RenderFactory(Cloud, {initial_amount: 5}))
+    renderEngine.addFactory(new RenderFactory(Branch, {
+      initial_amount: 3,
+      image_type: 'branch',
+      z: 1,
+    }))
   })
 
   const elements = renderEngine.getElements()
@@ -77,20 +82,23 @@ export const Gaja = observer(() => {
   )
 })
 
-const Tree = ({children}: { children: ReactNode }) => (
-  <div className="
+const Tree = ({children}: { children: ReactNode }) => {
+  const {xl, lg, md} = BACKGROUND_IMAGE_WIDTH
+  return (
+    <div className={`
   fixed top-0 right-0 w-[171px] h-screen z-1
-  xl:w-[571px] lg:w-[457px] md:w-[343px]
-  ">
-    {children}
-  </div>
-)
+  xl:w-[${xl}px] lg:w-[${lg}px] md:w-[${md}px]
+  `}>
+      {children}
+    </div>
+  )
+}
 
 
 const Trunk = ({displacement}: { displacement: number }) => {
   return (
     <div className="relative w-full h-[600px]">
-      <div className={`w-[${BACKGROUND_IMAGE_WIDTH}px] h-[3000px]`}
+      <div className={`w-[${BACKGROUND_IMAGE_WIDTH.xl}px] h-[3000px]`}
            style={{transform: `translateY(${displacement}px)`, backgroundImage: `url(${image})`}}/>
     </div>
   )

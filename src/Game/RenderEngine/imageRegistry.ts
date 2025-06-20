@@ -1,6 +1,6 @@
 import cloud_image1 from '../../assets/images/clouds1.png'
 import cloud_image2 from '../../assets/images/clouds2.png'
-import cloud_image4 from '../../assets/images/clouds4.png'
+// import cloud_image4 from '../../assets/images/clouds4.png'
 import branch_image1 from '../../assets/images/Branch2.png'
 import branch_image2 from '../../assets/images/Branch3.png'
 import branch_image3 from '../../assets/images/Branch4.png'
@@ -12,9 +12,9 @@ import branch_image6 from '../../assets/images/Branch7.png'
 // type ImageMeta = { image: string; width: number; height: number; type: ImageType };
 
 const imageRegistry = [
-  { key: 'cloud1', image: cloud_image1, width: 768, height: 450, type: 'cloud' },
-  { key: 'cloud2', image: cloud_image2, width: 726, height: 450, type: 'cloud' },
-  { key: 'cloud3', image: cloud_image4, width: 600, height: 420, type: 'cloud' },
+  { key: 'cloud1', image: cloud_image1, width: 768, height: 369, type: 'cloud' },
+  { key: 'cloud2', image: cloud_image2, width: 674, height: 375, type: 'cloud' },
+  // { key: 'cloud3', image: cloud_image4, width: 600, height: 420, type: 'cloud' },
   { key: 'branch1', image: branch_image1, width: 800, height: 544, type: 'branch' },
   { key: 'branch2', image: branch_image2, width: 800, height: 222, type: 'branch' },
   { key: 'branch3', image: branch_image3, width: 800, height: 314, type: 'branch' },

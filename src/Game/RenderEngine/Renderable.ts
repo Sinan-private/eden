@@ -4,6 +4,10 @@ import {id} from "@/GameEngine/ResourceEngine/helpers/id.ts";
 
 const PARALLAX_INTENSITY = 12
 
+// I need to create something that knows the dom. No ref needed for now, but the dimensions of the image
+// and the window width and height.
+// I want to provide spawn positions inside or outside of the screen and with the option to attach to Gaja
+
 export abstract class Renderable {
   public id: string = id();
   protected initial_x: number = 0;
@@ -50,11 +54,12 @@ export abstract class Renderable {
   }
 
   get className() {
+    // xl:w-[640px] xl:right-[500px]
+    // lg:w-[560px] lg:right-[500px]
+    // md:w-[480px] md:right-[400px]
+    // absolute top-0 z-[-1] object-contain right-[350px]
     return `
-    absolute top-0 z-[-1] object-contain right-[350px]
-    xl:w-[640px] xl:right-[500px]
-    lg:w-[560px] lg:right-[500px]
-    md:w-[480px] md:right-[400px]
+    fixed top-0 z-[-1] object-contain 
     `
   }
 
@@ -109,7 +114,7 @@ export abstract class Renderable {
   }
 }
 
-export class Mushroom extends Renderable {
+export class Branch extends Renderable {
 
   getElements(): Renderable[] {
     return [this];
@@ -124,11 +129,27 @@ export class Cloud extends Renderable {
   }
 
   get transform() {
-    let scale = 1 + this.offset_z / 20;
-    if (scale < 0.2) {
-      scale = 0.2
-    }
+    const scale = 1 + this.offset_z / 10;
     return `translate(${this.x}px, ${this.y}px) scale(${scale})`
+  }
+
+  private opacity = () => {
+    const min = 0.1, max = 0.5;
+    // z: 1 has 0.5 opacity and each z removes 0.05 down to the min
+    const opacity = max - (this.offset_z - 1) * 0.05;
+    return opacity < min
+      ? min
+      : opacity > max
+        ? max
+        : opacity
+  }
+
+  get y() {
+    let zOffset = this.offset_z * 8
+    zOffset = 0
+    const delta = this.world_y - this.initial_y + this.offset_y;
+    const parallax = (1 + this.offset_z / (20 - PARALLAX_INTENSITY)) / 3
+    return delta * parallax - zOffset
   }
 
   get style() {
@@ -138,7 +159,7 @@ export class Cloud extends Renderable {
       zIndex: this.offset_z,
       transform: this.transform,
       filter: this.filter + ' brightness(0.7) hue-rotate(-70deg)',
-      opacity: 0.4,
+      opacity: this.opacity(),
     }
   }
 

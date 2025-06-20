@@ -7,31 +7,35 @@
 // So the goal is to pass in objects here (can also be triggered by an event) so that the RenderEngine takes care
 // on how to place and move them as well as the effects to trigger
 
-import {RenderImageKey} from "@/Game/RenderEngine/imageRegistry.ts";
+import {RenderImageKey, RenderImageType} from "@/Game/RenderEngine/imageRegistry.ts";
 import {RenderFactory} from "@/Game/RenderEngine/RenderFactory.ts";
 import {Renderable} from "@/Game/RenderEngine/Renderable.ts";
 import {GameClass} from "@/Game";
+import {CGPT_SpawnEngine} from "@/Game/RenderEngine/CGPT_SpawnEngine.ts";
+import {MediaQueryKey} from "@/Game/RenderEngine/media_queries.ts";
+
 
 export type RenderElement = {
   offset_x?: number;
   offset_y?: number;
   z: number;
   image: RenderImageKey;
-  type: 'branch' | 'cloud' | 'mushroom' | 'market' | 'city'; // most likely own classes
+  type: RenderImageType;
   // width: number;
   // height: number;
   id?: string; // optional, for keyed rendering
-  sticky?: boolean;
 }
 
 export class RenderEngine {
   private elements: Renderable[] = [];
   private factories: RenderFactory[] = [];
+  private spawnEngine = new CGPT_SpawnEngine();
 
   // private _starting_height: number
   // private _current_height: number
   constructor(private props: GameClass) {
     // this._starting_height = props.behemoth.climb_height.value
+    // makeAutoObservable(this)
   }
 
   public add = (source: Renderable) => {
@@ -67,18 +71,24 @@ export class RenderEngine {
 
   private _updateFactories = () => {
     for (const factory of this.factories) {
-      if (factory.left_viewport) {
-        this.removeFactory(factory);
+      if (factory.unmount_on_leaving_viewport) {
+        console.log('left viewport')
+        // This should only happen with unmount_on_leaving_viewport
+        // this.removeFactory(factory);
       } else {
         factory.update(0, this.props.behemoth.climb_height.value, this.props.tick);
       }
     }
   }
 
-  getElements(): Renderable[] {
+  public getElements(): Renderable[] {
     const elements = this.elements.flatMap(s => s.getElements());
     const factories = this.factories.flatMap(s => s.getElements());
     return [...elements, ...factories];
+  }
+
+  get screen_size(): MediaQueryKey {
+    return this.spawnEngine.getScreenSize()
   }
 
 }
