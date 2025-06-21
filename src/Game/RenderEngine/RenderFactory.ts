@@ -1,15 +1,15 @@
-import {RenderElement} from "@/Game/RenderEngine/RenderEngine.ts";
+import {RenderableProps} from "@/Game/RenderEngine/RenderEngine.ts";
 import {Renderable} from "@/Game/RenderEngine/Renderable.ts";
 import {randomRange} from "@/Game/helpers/randomRange.ts";
 import {Tick} from "@/GameEngine/Tick.ts";
 import {getImagesByType, RenderImageType} from "@/Game/RenderEngine/imageRegistry.ts";
 import {SpawnPosition} from "@/Game/RenderEngine/SpawnEngine.ts";
 
-type TupledFields = 'random_x' | 'random_y' | 'spawn_amount' | 'z';
+type TupledFields = 'x' | 'y' | 'spawn_amount' | 'z';
 type RenderFactoryConfigProps = {
   initial_amount: number;
-  random_x: number | [number, number];
-  random_y: number | [number, number];
+  x: number | [number, number];
+  y: number | [number, number];
   z: number | [number, number];
   spawn_amount: number | [number, number]; // A number say between 0 and the value. An array means between x and y
   spawn_min_distance: number; // Distance to the closest element in the list. Before min_distance is reached no new spawn is triggered
@@ -18,7 +18,7 @@ type RenderFactoryConfigProps = {
   unmount_on_leaving_viewport: boolean;
   spawn: SpawnPosition;
 }
-& Omit<RenderElement, 'image' | 'z'>
+ // & Omit<RenderElement, 'image' | 'z'>
 
 // The normalized version
 type NormalizedRenderFactoryConfig = {
@@ -27,18 +27,18 @@ type NormalizedRenderFactoryConfig = {
 
 const defaultConfig: NormalizedRenderFactoryConfig = {
   initial_amount: 1,
-  random_x: [0, 0],
-  random_y: [0, 0],
+  x: [0, 0],
+  y: [0, 0],
+  z: [3, 8],
+  spawn: 'top',
   spawn_amount: [5, 10],
-  spawn_min_distance: 300, // should be 0
+  spawn_min_distance: 0, // should be 0
   spawn_chance: 25,
   image_type: 'cloud',
   unmount_on_leaving_viewport: false,
-  offset_x: 0,
-  offset_y: 0,
-  z: [3, 8],
-  type: 'cloud',
-  spawn: 'top'
+  // offset_x: 0,
+  // offset_y: 0,
+  // type: 'cloud',
 }
 
 // I want to
@@ -52,7 +52,7 @@ export class RenderFactory {
   private turn: number = 0;
 
   constructor(
-    private Factory: new (config: RenderElement) => Renderable,
+    private Factory: new (config: RenderableProps) => Renderable,
     config?: Partial<RenderFactoryConfigProps>,
   ) {
     this.config = this._normalizeConfig(config);
@@ -70,8 +70,8 @@ export class RenderFactory {
 
   private _normalizeConfig = (config?: Partial<RenderFactoryConfigProps>): NormalizedRenderFactoryConfig => ({
     initial_amount: normalizeValue('initial_amount', config),
-    random_x: normalizeRange(config?.random_x, defaultConfig.random_x),
-    random_y: normalizeRange(config?.random_y, defaultConfig.random_y),
+    x: normalizeRange(config?.x, defaultConfig.x),
+    y: normalizeRange(config?.y, defaultConfig.y),
     spawn_amount: normalizeRange(config?.spawn_amount, defaultConfig.spawn_amount),
     spawn_min_distance: normalizeValue('spawn_min_distance', config), // should be 0
     spawn_chance: normalizeValue('spawn_chance', config),
@@ -85,8 +85,8 @@ export class RenderFactory {
   })
 
   private createRandomElement = (): Renderable => {
-    const offset_x = randomRange(...this.config.random_x) + (this.config.offset_x || 0)
-    const offset_y = randomRange(...this.config.random_y)
+    const offset_x = randomRange(...this.config.x) + (this.config.offset_x || 0)
+    const offset_y = randomRange(...this.config.y)
     const random_z = randomRange(...this.config.z)
     console.log(random_z, this.config.z)
     return new this.Factory({
@@ -99,7 +99,7 @@ export class RenderFactory {
   }
 
   private spawnElement = (): Renderable => {
-    const offset_x = randomRange(...this.config.random_x) + (this.config.offset_x || 0)
+    const offset_x = randomRange(...this.config.x) + (this.config.x || 0)
     const random_z = randomRange(...this.config.z)
     return new this.Factory({
       image: this.randomImage().key,
@@ -158,6 +158,11 @@ export class RenderFactory {
     const [min, max] = this.config.spawn_amount;
     const reached_min = this.elements.length < min
     const reached_max = this.elements.length >= max
+    const far_enough = this.distanceToClosestElement() >= this.config.spawn_min_distance
+    if (!far_enough) {
+      // console.log('not far enough')
+      return false
+    }
     if (reached_min) {
       // console.log('reached min', this.elements.length)
       return true
@@ -166,11 +171,7 @@ export class RenderFactory {
       // console.log('reached max', this.elements.length)
       return false
     }
-    const far_enough = this.distanceToClosestElement() >= this.config.spawn_min_distance
-    if (!far_enough) {
-      // console.log('not far enough')
-      return false
-    }
+
     const chance = Math.random()
     return chance < (this.config.spawn_chance / 100)
   }

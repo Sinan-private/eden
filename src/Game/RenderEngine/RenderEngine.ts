@@ -15,7 +15,7 @@ import {MediaQueryKey} from "@/Game/RenderEngine/media_queries.ts";
 import {SpawnEngine} from "@/Game/RenderEngine/SpawnEngine.ts";
 
 
-export type RenderElement = {
+export type RenderableProps = {
   offset_x?: number;
   offset_y?: number;
   z: number;

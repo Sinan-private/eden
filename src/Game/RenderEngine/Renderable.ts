@@ -1,5 +1,5 @@
 import {getImage} from "@/Game/RenderEngine/imageRegistry.ts";
-import {RenderElement} from "@/Game/RenderEngine/RenderEngine.ts";
+import {RenderableProps} from "@/Game/RenderEngine/RenderEngine.ts";
 import {id} from "@/GameEngine/ResourceEngine/helpers/id.ts";
 
 const PARALLAX_INTENSITY = 12
@@ -19,11 +19,11 @@ export abstract class Renderable {
   public offset_y: number;
   public offset_z: number;
   public image: string;
-  public type: RenderElement['type']
+  public type: RenderableProps['type']
   public width: number;
   public height: number;
 
-  constructor(private props: RenderElement) {
+  constructor(private props: RenderableProps) {
     const {image, width, height} = getImage(this.props.image);
     this.id = props.id || this.id;
     this.type = this.props.type;
@@ -86,7 +86,6 @@ export abstract class Renderable {
     };
     // const parallax = ((1 + this.offset_z) / (20 - PARALLAX_INTENSITY))
     const parallax = getParallaxFactor(-this.offset_z)
-    console.log(this.offset_z, parallax)
     return delta * parallax - zOffset
   }
 

@@ -5,7 +5,7 @@ import {Digging} from "./Digging/Digging.tsx";
 import {Behemoth} from "./Behemoth.tsx";
 import image from '../../../assets/images/seemless_trunk.png';
 import {useComponentMount} from "@/GameEngine/ResourceEngine/hooks";
-import {RenderFactory} from "@/Game/RenderEngine/RenderFactory.ts";
+import {Factory as RenderFactory} from "@/Game/RenderEngine/Factory.ts";
 import {Branch} from "@/Game/RenderEngine/Renderable.ts";
 import {BACKGROUND_IMAGE_WIDTH} from "@/Game/RenderEngine/media_queries.ts";
 
@@ -49,8 +49,8 @@ export const Gaja = observer(() => {
     renderEngine.addFactory(new RenderFactory(Branch, {
       initial_amount: 3,
       image_type: 'branch',
-      z: [0, -8],
-      offset_x: -700,
+      z: [-1, -8],
+      x: -700,
       spawn: {
         edge: 'top',
         anchor: {
@@ -139,12 +139,18 @@ const old = {
   }
 }
 
+type SpawnEdge = 'top' | 'bottom' | 'left' | 'right' | 'center';
+
 const factoryProps = {
   initial_amount: 3,
   image_type: 'branch',
   z: [0, -8],
   x: [5, 95],
   y: 0,
-  spawn_from: 'top',
   anchor: 'gaja',
+  spawn: {
+    from: 'top',
+    min_distance: 200,
+    chance: 30,
+  }
 }

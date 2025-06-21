@@ -27,10 +27,6 @@ interface Point {
 
 export class SpawnEngine {
 
-  constructor(spawn: SpawnPosition) {
-
-  }
-
   // My current idea is to provide the css class for a container here. This is the initial position of the spawning
   // And is only done by a fixed positioning
   // Animtaion is happening directly on element level using transform: translate()

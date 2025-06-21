@@ -12,7 +12,7 @@ import test_image from '../../assets/images/test.png'
 // type ImageType = 'cloud' | 'branch'
 // type ImageMeta = { image: string; width: number; height: number; type: ImageType };
 
-const imageRegistry = [
+export const imageRegistry = [
   { key: 'test', image: test_image, width: 160, height: 100, type: 'test' },
   { key: 'cloud1', image: cloud_image1, width: 768, height: 369, type: 'cloud' },
   { key: 'cloud2', image: cloud_image2, width: 674, height: 375, type: 'cloud' },
@@ -25,7 +25,7 @@ const imageRegistry = [
   { key: 'branch6', image: branch_image6, width: 800, height: 862, type: 'branch' },
 ] as const;
 
-type ImageEntry = (typeof imageRegistry)[number];
+export type ImageEntry = (typeof imageRegistry)[number];
 
 export type RenderImageKey = ImageEntry['key'];
 export type RenderImageType = ImageEntry['type'];
