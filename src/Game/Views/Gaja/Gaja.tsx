@@ -51,6 +51,14 @@ export const Gaja = observer(() => {
       image_type: 'branch',
       z: [0, -8],
       offset_x: -700,
+      spawn: {
+        edge: 'top',
+        anchor: {
+          target: 'gaja',
+          side: 'left'
+        }
+      }
+    //   Searching for anchor here
     }))
     // renderEngine.addFactory(new RenderFactory(Branch, {
     //   initial_amount: 3,
@@ -114,4 +122,29 @@ const Trunk = ({displacement}: { displacement: number }) => {
            style={{transform: `translateY(${displacement}px)`, backgroundImage: `url(${image})`}}/>
     </div>
   )
+}
+
+
+const old = {
+  initial_amount: 3,
+  image_type: 'branch',
+  z: [0, -8],
+  offset_x: -700,
+  spawn: {
+    edge: 'top',
+    anchor: {
+      target: 'gaja',
+      side: 'left'
+    }
+  }
+}
+
+const factoryProps = {
+  initial_amount: 3,
+  image_type: 'branch',
+  z: [0, -8],
+  x: [5, 95],
+  y: 0,
+  spawn_from: 'top',
+  anchor: 'gaja',
 }

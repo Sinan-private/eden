@@ -3,6 +3,7 @@ import {Renderable} from "@/Game/RenderEngine/Renderable.ts";
 import {randomRange} from "@/Game/helpers/randomRange.ts";
 import {Tick} from "@/GameEngine/Tick.ts";
 import {getImagesByType, RenderImageType} from "@/Game/RenderEngine/imageRegistry.ts";
+import {SpawnPosition} from "@/Game/RenderEngine/SpawnEngine.ts";
 
 type TupledFields = 'random_x' | 'random_y' | 'spawn_amount' | 'z';
 type RenderFactoryConfigProps = {
@@ -15,7 +16,9 @@ type RenderFactoryConfigProps = {
   spawn_chance: number; // 0 - 100. The percentage chance to spawn a new element. If the current amount is smaller than the min amount. A spawn is triggered, no matter the chance
   image_type: RenderImageType;
   unmount_on_leaving_viewport: boolean;
-} & Omit<RenderElement, 'image' | 'z'>
+  spawn: SpawnPosition;
+}
+& Omit<RenderElement, 'image' | 'z'>
 
 // The normalized version
 type NormalizedRenderFactoryConfig = {
@@ -35,6 +38,7 @@ const defaultConfig: NormalizedRenderFactoryConfig = {
   offset_y: 0,
   z: [3, 8],
   type: 'cloud',
+  spawn: 'top'
 }
 
 // I want to
@@ -77,6 +81,7 @@ export class RenderFactory {
     offset_y: normalizeValue('offset_y', config),
     z: normalizeRange(config?.z, defaultConfig.z),
     type: normalizeValue('type', config),
+    spawn: config?.spawn ?? defaultConfig.spawn, // Just the fallback until the constructor works
   })
 
   private createRandomElement = (): Renderable => {

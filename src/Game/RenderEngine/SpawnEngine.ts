@@ -9,7 +9,7 @@ type SpawnAnchor = {
   side: GajaSide;
 };
 
-type SpawnPosition =
+export type SpawnPosition =
   | SpawnEdge
   | {
   edge?: SpawnEdge;
@@ -27,6 +27,19 @@ interface Point {
 
 export class SpawnEngine {
 
+  constructor(spawn: SpawnPosition) {
+
+  }
+
+  // My current idea is to provide the css class for a container here. This is the initial position of the spawning
+  // And is only done by a fixed positioning
+  // Animtaion is happening directly on element level using transform: translate()
+  public cloud_position = () => {
+    // Needs to be aware of the image size
+    // Needs to be aware of the media queries
+    return `fixed top-0 right-[571px]`
+  }
+
   private resolveEdgePosition(spawn: SpawnPosition): Point {
     const w = window.innerWidth;
     const h = window.innerHeight;
@@ -34,14 +47,15 @@ export class SpawnEngine {
     const {edge, anchor, mode} = normalized
 
     switch (edge) {
-      case 'top':
-        return { x: this.chooseX(w, mode), y: 0 };
       case 'bottom':
         return { x: this.chooseX(w, mode), y: h };
       case 'left':
         return { x: 0, y: this.chooseY(h, mode) };
       case 'right':
         return { x: w, y: this.chooseY(h, mode) };
+      case 'top':
+      default:
+        return { x: this.chooseX(w, mode), y: 0 };
     }
   }
 
@@ -68,4 +82,7 @@ export class SpawnEngine {
     if (mode === 'fixed') return 0;
     return Math.random() * h;
   }
+
+  public getScreenSize = (): MediaQueryKey => getScreenSize(window.innerWidth);
+
 }

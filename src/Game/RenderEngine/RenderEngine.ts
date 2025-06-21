@@ -11,8 +11,8 @@ import {RenderImageKey, RenderImageType} from "@/Game/RenderEngine/imageRegistry
 import {RenderFactory} from "@/Game/RenderEngine/RenderFactory.ts";
 import {Renderable} from "@/Game/RenderEngine/Renderable.ts";
 import {GameClass} from "@/Game";
-import {CGPT_SpawnEngine} from "@/Game/RenderEngine/CGPT_SpawnEngine.ts";
 import {MediaQueryKey} from "@/Game/RenderEngine/media_queries.ts";
+import {SpawnEngine} from "@/Game/RenderEngine/SpawnEngine.ts";
 
 
 export type RenderElement = {
@@ -30,7 +30,7 @@ export type RenderElement = {
 export class RenderEngine {
   private elements: Renderable[] = [];
   private factories: RenderFactory[] = [];
-  private spawnEngine = new CGPT_SpawnEngine();
+  private spawnEngine = new SpawnEngine();
 
   // private _starting_height: number
   // private _current_height: number
