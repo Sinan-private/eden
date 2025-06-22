@@ -1,7 +1,6 @@
-import {Renderable} from "@/Game/RenderEngine/Renderable.ts";
+import {Renderable, RenderableProps} from "@/Game/RenderEngine/Renderable.ts";
 import {RenderImageType} from "@/Game/RenderEngine/imageRegistry.ts";
 import {NormalizedSpawnProps, Spawn, SpawnProps} from "@/Game/RenderEngine/Spawn.ts";
-import {RenderableProps} from "@/Game/RenderEngine/RenderEngine.ts";
 import {Tick} from "@/GameEngine/Tick.ts";
 import {randomRange} from "@/Game/helpers/randomRange.ts";
 import {imageProvider} from "@/Game/RenderEngine/ImageProvider.ts";
@@ -31,9 +30,10 @@ export class Factory {
   private elements: Renderable[] = [];
   private config: NormalizedRenderFactoryConfig;
   private turn: number = 0;
+  public unmount_on_leaving_viewport = false;
 
   constructor(
-    private Factory: new (config: RenderableProps) => Renderable,
+    private Element: new (config: RenderableProps) => Renderable,
     config?: Props,
   ) {
     this.config = this.normalizeConfig(config)
@@ -50,7 +50,7 @@ export class Factory {
   }
 
   public createElement = (config: RenderableProps) => {
-    return new this.Factory(config)
+    return new this.Element(config)
   }
 
   private _add = (source: Renderable, world_x: number, world_y: number) => {
@@ -61,7 +61,7 @@ export class Factory {
     this.elements = this.elements.filter(s => s !== source);
   }
 
-  private randomValues = (): RenderableProps => {
+  private _randomValues = (): RenderableProps => {
     const x = randomRange(...this.config.x)
     const y = randomRange(...this.config.y)
     const z = randomRange(...this.config.z)
@@ -76,16 +76,16 @@ export class Factory {
     }
   }
 
+  public propsToPlacement = (props: RenderableProps) => {
+
+  }
+
   public spawnElement = (): Renderable => {
-    // const offset_x = randomRange(...this.config.x) + (this.config.x || 0)
-    // const random_z = randomRange(...this.config.z)
-    // return new this.Factory({
-    //   image: this.randomImage().key,
-    //   type: this.config.image_type,
-    //   offset_x,
-    //   offset_y: this.spawn_height,
-    //   z: random_z,
-    // })
+    // Here I also want to define the original position.
+    // This is just a base class added to provide the initial placement. The rest is handled in the animation via transform: translate()
+    // This way I should have a clean separation
+    return new this.Element(this._randomValues())
+
   }
 
   public update = (world_x: number, world_y: number, tick: Tick): void => {
@@ -102,8 +102,12 @@ export class Factory {
         this._remove(element)
       }
     });
-    this.elements.forEach(i => i.update(world_x, world_y));
+    this.animate(world_x, world_y)
   }
+
+  public animate = (world_x: number, world_y: number) =>
+    this.elements.forEach(i => i.update(world_x, world_y));
+
 
   private distanceToClosestElement = (): number => {
     const sorted = this.elements
@@ -166,6 +170,7 @@ const defaultConfig: NormalizedRenderFactoryConfig = {
     amount: [1, 5],
     chance: 30,
     min_distance: 0,
+    anchor: '', // ugly duplication in default here
   },
 }
 
@@ -177,7 +182,7 @@ const normalizeValue = <K extends keyof RenderFactoryConfigProps>(
   const value = config?.[key] ?? defaultConfig[key];
 
   if (tupledFields.includes(key as TupledFields)) {
-    if (Array.isArray(value)) return value as NormalizedRenderFactoryConfig[K];
+    if (Array.isArray(value)) return value.sort((a, b) => a - b) as NormalizedRenderFactoryConfig[K];
     return [value, value] as NormalizedRenderFactoryConfig[K]; // Normalize number to tuple
   }
 

@@ -7,30 +7,15 @@
 // So the goal is to pass in objects here (can also be triggered by an event) so that the RenderEngine takes care
 // on how to place and move them as well as the effects to trigger
 
-import {RenderImageKey, RenderImageType} from "@/Game/RenderEngine/imageRegistry.ts";
-import {RenderFactory} from "@/Game/RenderEngine/RenderFactory.ts";
+import {Factory as RenderFactory} from "@/Game/RenderEngine/Factory.ts";
 import {Renderable} from "@/Game/RenderEngine/Renderable.ts";
 import {GameClass} from "@/Game";
-import {MediaQueryKey} from "@/Game/RenderEngine/media_queries.ts";
-import {SpawnEngine} from "@/Game/RenderEngine/SpawnEngine.ts";
 
-
-export type RenderableProps = {
-  offset_x?: number;
-  offset_y?: number;
-  z: number;
-  image: RenderImageKey;
-  type: RenderImageType;
-  // width: number;
-  // height: number;
-  id?: string; // optional, for keyed rendering
-  sticky?: boolean; // This exists because I have to connect the position to elements that are defined by media queries
-}
 
 export class RenderEngine {
   private elements: Renderable[] = [];
   private factories: RenderFactory[] = [];
-  private spawnEngine = new SpawnEngine();
+  // private spawnEngine = new SpawnEngine();
 
   // private _starting_height: number
   // private _current_height: number
@@ -86,10 +71,6 @@ export class RenderEngine {
     const elements = this.elements.flatMap(s => s.getElements());
     const factories = this.factories.flatMap(s => s.getElements());
     return [...elements, ...factories];
-  }
-
-  get screen_size(): MediaQueryKey {
-    return this.spawnEngine.getScreenSize()
   }
 
 }

@@ -1,5 +1,4 @@
-import {getImage} from "@/Game/RenderEngine/imageRegistry.ts";
-import {RenderableProps} from "@/Game/RenderEngine/RenderEngine.ts";
+import {getImage, RenderImageKey, RenderImageType} from "@/Game/RenderEngine/imageRegistry.ts";
 import {id} from "@/GameEngine/ResourceEngine/helpers/id.ts";
 
 const PARALLAX_INTENSITY = 12
@@ -7,6 +6,19 @@ const PARALLAX_INTENSITY = 12
 // I need to create something that knows the dom. No ref needed for now, but the dimensions of the image
 // and the window width and height.
 // I want to provide spawn positions inside or outside of the screen and with the option to attach to Gaja
+
+
+export type RenderableProps = {
+  x?: number;
+  y?: number;
+  z: number;
+  image: RenderImageKey;
+  type: RenderImageType;
+  // width: number;
+  // height: number;
+  id?: string; // optional, for keyed rendering
+  sticky?: boolean; // This exists because I have to connect the position to elements that are defined by media queries
+}
 
 export abstract class Renderable {
   public id: string = id();
@@ -28,8 +40,8 @@ export abstract class Renderable {
     this.id = props.id || this.id;
     this.type = this.props.type;
     this.sticky = !!props.sticky;
-    this.offset_x = props.offset_x || 0;
-    this.offset_y = props.offset_y || 0;
+    this.offset_x = props.x || 0;
+    this.offset_y = props.y || 0;
     this.offset_z = Math.round(props.z);
     this.image = image;
     this.width = width;

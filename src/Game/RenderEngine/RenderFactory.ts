@@ -1,5 +1,4 @@
-import {RenderableProps} from "@/Game/RenderEngine/RenderEngine.ts";
-import {Renderable} from "@/Game/RenderEngine/Renderable.ts";
+import {Renderable, RenderableProps} from "@/Game/RenderEngine/Renderable.ts";
 import {randomRange} from "@/Game/helpers/randomRange.ts";
 import {Tick} from "@/GameEngine/Tick.ts";
 import {getImagesByType, RenderImageType} from "@/Game/RenderEngine/imageRegistry.ts";
@@ -77,8 +76,8 @@ export class RenderFactory {
     spawn_chance: normalizeValue('spawn_chance', config),
     image_type: normalizeValue('image_type', config),
     unmount_on_leaving_viewport: normalizeValue('unmount_on_leaving_viewport', config),
-    offset_x: normalizeValue('offset_x', config),
-    offset_y: normalizeValue('offset_y', config),
+    offset_x: normalizeValue('x', config),
+    offset_y: normalizeValue('y', config),
     z: normalizeRange(config?.z, defaultConfig.z),
     type: normalizeValue('type', config),
     spawn: config?.spawn ?? defaultConfig.spawn, // Just the fallback until the constructor works
@@ -92,8 +91,8 @@ export class RenderFactory {
     return new this.Factory({
       image: this.randomImage().key,
       type: this.config.image_type,
-      offset_x,
-      offset_y,
+      x: offset_x,
+      y: offset_y,
       z: random_z,
     })
   }
@@ -104,8 +103,8 @@ export class RenderFactory {
     return new this.Factory({
       image: this.randomImage().key,
       type: this.config.image_type,
-      offset_x,
-      offset_y: this.spawn_height,
+      x: offset_x,
+      y: this.spawn_height,
       z: random_z,
     })
   }

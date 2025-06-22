@@ -52,11 +52,7 @@ export const Gaja = observer(() => {
       z: [-1, -8],
       x: -700,
       spawn: {
-        edge: 'top',
-        anchor: {
-          target: 'gaja',
-          side: 'left'
-        }
+        from: 'top',
       }
     //   Searching for anchor here
     }))
@@ -154,3 +150,21 @@ const factoryProps = {
     chance: 30,
   }
 }
+
+
+
+// const factory_config = {
+//   initial_amount: 3,
+//   image_type: 'branch',
+//   z: [-1, -8],
+//   x: -700,
+//   spawn: {
+//     from: 'top',
+//   }
+// }
+//
+// const yy = () => {
+//   renderEngine.addFactory(Branch, factory_config)
+//   renderEngine.add(new Branch({}))
+//   renderEngine.addFactory(new RenderFactory(Branch, factory_config))
+// }
