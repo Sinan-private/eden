@@ -6,8 +6,9 @@ import {
   RenderImageType
 } from "@/Game/RenderEngine/imageRegistry.ts";
 import {randomRange} from "@/Game/helpers/randomRange.ts";
+import {getGajaSize, getScreenSize, MediaQueryKey} from "@/Game/RenderEngine/media_queries.ts";
 
-class ImageProvider {
+export class ImageProvider {
   constructor(private images: readonly ImageEntry[]) {
 
   }
@@ -22,6 +23,14 @@ class ImageProvider {
     const images = getImagesByType(type)
     const index = randomRange(0, images.length - 1)
     return images[index]
+  }
+
+  get screen_size(): MediaQueryKey {
+    return getScreenSize(window.innerWidth)
+  }
+
+  get getGajaSize() {
+    return getGajaSize()
   }
 
 }

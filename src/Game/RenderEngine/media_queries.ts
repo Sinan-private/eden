@@ -21,7 +21,9 @@ export const getScreenSize = (screen_width: number): MediaQueryKey => {
   return matched || 'sm'
 }
 
-export const getGajaSize = (screen_width: number): number => {
-  const mediaQuery = getScreenSize(screen_width)
-  return BACKGROUND_IMAGE_WIDTH[mediaQuery]
+export const getGajaSize = (): { w: number; h: number } => {
+  const mediaQuery = getScreenSize(window.innerWidth)
+  const w = BACKGROUND_IMAGE_WIDTH[mediaQuery]
+  const h = window.innerHeight
+  return {w, h}
 }

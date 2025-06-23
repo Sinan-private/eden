@@ -19,7 +19,7 @@ export type SpawnProps = {
 }
 
 type ValidAnchor = Exclude<SpawnProps['anchor'], ''>
-type AnchorSizes = Record<ValidAnchor, number>
+type AnchorSizes = Record<ValidAnchor, { w: number; h: number }>
 
 export type NormalizedSpawnProps = {
   amount: [number, number];
@@ -73,7 +73,7 @@ export class Spawn {
       return window.innerWidth
     }
     const anchor_sizes: AnchorSizes = {
-      gaja: getGajaSize(window.innerWidth)
+      gaja: getGajaSize()
     }
     const width = anchor_sizes[anchor as ValidAnchor]
     if (!width) {

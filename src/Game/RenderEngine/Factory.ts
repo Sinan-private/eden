@@ -4,26 +4,27 @@ import {NormalizedSpawnProps, Spawn, SpawnProps} from "@/Game/RenderEngine/Spawn
 import {Tick} from "@/GameEngine/Tick.ts";
 import {randomRange} from "@/Game/helpers/randomRange.ts";
 import {imageProvider} from "@/Game/RenderEngine/ImageProvider.ts";
+import {AnchorProps} from "@/Game/RenderEngine/types.ts";
 
 const tupledFields: readonly ['x', 'y', 'z'] = ['x', 'y', 'z'] as const;
 type TupledFields = typeof tupledFields[number];
-type RenderFactoryConfigProps = {
+type RenderFactoryConfig = {
   initial_amount: number;
   x: number | [number, number];
   y: number | [number, number];
   z: number | [number, number];
-  image_type: RenderImageType;
+  type: RenderImageType;
   unmount_on_leaving_viewport: boolean;
-  anchor: 'gaja' | '',
+  anchor: AnchorProps;
   spawn: SpawnProps;
 }
-type Props = Omit<Partial<RenderFactoryConfigProps>, 'spawn'> & {
+export type RenderFactoryConfigProps = Omit<Partial<RenderFactoryConfig>, 'spawn'> & {
   spawn: Partial<SpawnProps>;
 }
 
 // The normalized version
 type NormalizedRenderFactoryConfig = {
-  [K in keyof RenderFactoryConfigProps]: K extends TupledFields ? [number, number] : K extends 'spawn' ? NormalizedSpawnProps : RenderFactoryConfigProps[K];
+  [K in keyof RenderFactoryConfig]: K extends TupledFields ? [number, number] : K extends 'spawn' ? NormalizedSpawnProps : RenderFactoryConfig[K];
 };
 
 export class Factory {
@@ -34,7 +35,7 @@ export class Factory {
 
   constructor(
     private Element: new (config: RenderableProps) => Renderable,
-    config?: Props,
+    config?: RenderFactoryConfigProps,
   ) {
     this.config = this.normalizeConfig(config)
   }
@@ -65,7 +66,7 @@ export class Factory {
     const x = randomRange(...this.config.x)
     const y = randomRange(...this.config.y)
     const z = randomRange(...this.config.z)
-    const type = this.config.image_type
+    const type = this.config.type
     const image = imageProvider.random(type).key
     return {
       x,
@@ -74,10 +75,6 @@ export class Factory {
       type,
       image
     }
-  }
-
-  public propsToPlacement = (props: RenderableProps) => {
-
   }
 
   public spawnElement = (): Renderable => {
@@ -140,13 +137,13 @@ export class Factory {
     return chance < (this.config.spawn.chance / 100)
   }
 
-  private normalizeConfig = (config?: Props): NormalizedRenderFactoryConfig => {
-    const normalize = <K extends keyof RenderFactoryConfigProps>(key: K) =>
+  private normalizeConfig = (config?: RenderFactoryConfigProps): NormalizedRenderFactoryConfig => {
+    const normalize = <K extends keyof RenderFactoryConfig>(key: K) =>
       normalizeValue(key, config)
 
     return {
       initial_amount: normalize('initial_amount'),
-      image_type: normalize('image_type'),
+      type: normalize('type'),
       x: normalize('x'),
       y: normalize('y'),
       z: normalize('z'),
@@ -163,7 +160,7 @@ const defaultConfig: NormalizedRenderFactoryConfig = {
   y: [0, 0],
   z: [3, 8],
   anchor: '',
-  image_type: 'cloud',
+  type: 'cloud',
   unmount_on_leaving_viewport: false,
   spawn: {
     from: 'top',
@@ -174,10 +171,20 @@ const defaultConfig: NormalizedRenderFactoryConfig = {
   },
 }
 
+// const factory_config = {
+//   initial_amount: 3,
+//   image_type: 'branch',
+//   z: [-1, -8],
+//   x: -700,
+//   spawn: {
+//     from: 'top',
+//   }
+// }
 
-const normalizeValue = <K extends keyof RenderFactoryConfigProps>(
+
+const normalizeValue = <K extends keyof RenderFactoryConfig>(
   key: K,
-  config?: Props
+  config?: RenderFactoryConfigProps
 ): NormalizedRenderFactoryConfig[K] => {
   const value = config?.[key] ?? defaultConfig[key];
 

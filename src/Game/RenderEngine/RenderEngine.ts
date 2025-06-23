@@ -7,15 +7,16 @@
 // So the goal is to pass in objects here (can also be triggered by an event) so that the RenderEngine takes care
 // on how to place and move them as well as the effects to trigger
 
-import {Factory as RenderFactory} from "@/Game/RenderEngine/Factory.ts";
-import {Renderable} from "@/Game/RenderEngine/Renderable.ts";
+import {Factory as RenderFactory, RenderFactoryConfigProps} from "@/Game/RenderEngine/Factory.ts";
+import {Renderable, RenderableProps} from "@/Game/RenderEngine/Renderable.ts";
 import {GameClass} from "@/Game";
+// import {Placement} from "@/Game/RenderEngine/Placement.ts";
 
 
 export class RenderEngine {
   private elements: Renderable[] = [];
   private factories: RenderFactory[] = [];
-  // private spawnEngine = new SpawnEngine();
+  // private spawnEngine = new Placement();
 
   // private _starting_height: number
   // private _current_height: number
@@ -28,7 +29,17 @@ export class RenderEngine {
     this.elements.push(source.initialize(0, this.props.behemoth.climb_height.value));
   }
 
-  public addFactory = (factory: RenderFactory) => {
+  public normalizeFactoryConfig = (config: RenderFactoryConfigProps) => {
+
+  }
+
+  public addFactory = (
+    config: RenderFactoryConfigProps,
+    Element: new (config: RenderableProps) => Renderable
+    ) => {
+    // Pass normalized config here
+    const factory = new RenderFactory(Element, config)
+    // Add here the props normalization and the initial positioning?
     this.factories.push(factory.initialize(0, this.props.behemoth.climb_height.value));
   }
 

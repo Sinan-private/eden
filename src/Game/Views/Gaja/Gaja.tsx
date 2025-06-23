@@ -5,9 +5,8 @@ import {Digging} from "./Digging/Digging.tsx";
 import {Behemoth} from "./Behemoth.tsx";
 import image from '../../../assets/images/seemless_trunk.png';
 import {useComponentMount} from "@/GameEngine/ResourceEngine/hooks";
-import {Factory as RenderFactory} from "@/Game/RenderEngine/Factory.ts";
-import {Branch} from "@/Game/RenderEngine/Renderable.ts";
 import {BACKGROUND_IMAGE_WIDTH} from "@/Game/RenderEngine/media_queries.ts";
+import {Placement} from "@/Game/RenderEngine/Placement.ts";
 
 
 // Stamm erweitern
@@ -46,16 +45,16 @@ export const Gaja = observer(() => {
     //   random_x: [-400, 800],
     // }))
     // renderEngine.add(new Branch({z: -9, image: 'branch1', type: 'branch', offset_x: -700}))
-    renderEngine.addFactory(new RenderFactory(Branch, {
+    renderEngine.addFactory({
       initial_amount: 3,
-      image_type: 'branch',
+      type: 'branch',
       z: [-1, -8],
       x: -700,
       spawn: {
         from: 'top',
       }
     //   Searching for anchor here
-    }))
+    })
     // renderEngine.addFactory(new RenderFactory(Branch, {
     //   initial_amount: 3,
     //   image_type: 'test',
@@ -94,9 +93,35 @@ export const Gaja = observer(() => {
       {/*    }}*/}
       {/*  />*/}
       {/*))}*/}
+      <PlacementTest />
     </Tree>
   )
 })
+
+const PlacementTest = () => {
+  const imageWidth = 100;
+  const imageHeight = 100;
+  const parentWidth = 400;
+  const parentheight = 400;
+  const topLeft = {top: -imageWidth, right: parentWidth};
+  const bottomRight = {top: parentheight, right: -imageWidth};
+  const center = {top: parentheight / 2 - imageHeight / 2, right: parentWidth / 2 - imageWidth / 2};
+  const x = new Placement({x: 20, y: 100, z: 1, width: imageWidth, height: imageHeight, anchor: {w: parentWidth, h: parentheight}});
+  const style = calculatePlacement({x: 100, y: 50}, parentWidth, parentheight, imageWidth, imageHeight)
+
+  return (
+    <div className="flex flex-wrap fixed w-[400px] h-[400px] top-32 left-1/2">
+      <div className="w-1/2 h-1/2 border border-red-500"></div>
+      <div className="w-1/2 h-1/2 border border-red-500"></div>
+      <div className="w-1/2 h-1/2 border border-red-500"></div>
+      <div className="w-1/2 h-1/2 border border-red-500"></div>
+      <div
+        className="w-[100px] h-[100px] border border-blue-50 absolute"
+        style={x.position}
+      />
+    </div>
+  )
+}
 
 const Tree = ({children}: { children: ReactNode }) => {
   const {xl, lg, md} = BACKGROUND_IMAGE_WIDTH
@@ -119,6 +144,41 @@ const Trunk = ({displacement}: { displacement: number }) => {
     </div>
   )
 }
+
+
+type PlacementConfig = {
+  from?: 'top' | 'bottom' | 'left' | 'right' | 'center';
+  x?: number; // in %
+  y?: number; // in %
+};
+
+type Position = { top: number; left: number };
+
+// Top
+// Du startest -image_width + parent_height * (y / 100)
+
+// const topLeft = {top: -imageWidth, right: parentWidth};
+// const bottomRight = {top: parentheight, right: -imageWidth};
+// const center = {top: parentheight / 2 - imageHeight / 2, right: parentWidth / 2 - imageWidth / 2};
+
+export function calculatePlacement(
+  config: PlacementConfig,
+  parent_width: number,
+  parent_height: number,
+  image_width: number,
+  image_height: number
+): Position {
+  const x_percent = (config.x ?? 0) / 100;
+  const y_percent = (config.y ?? 0) / 100;
+  const x_invert_percent = 1 - x_percent;
+  const y_invert_percent = 1 - y_percent;
+  const top = (-image_height * y_invert_percent) + (parent_height * y_percent)
+  const left = (-image_width * x_invert_percent) + (parent_width * x_percent)
+  return {top, left}
+}
+
+
+
 
 
 const old = {
