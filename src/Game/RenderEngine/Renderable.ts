@@ -1,5 +1,6 @@
 import {getImage, RenderImageKey, RenderImageType} from "@/Game/RenderEngine/imageRegistry.ts";
 import {id} from "@/GameEngine/ResourceEngine/helpers/id.ts";
+import {AnchorProps, InitialPosition} from "@/Game/RenderEngine/types.ts";
 
 const PARALLAX_INTENSITY = 12
 
@@ -16,8 +17,8 @@ export type RenderableProps = {
   type: RenderImageType;
   // width: number;
   // height: number;
+  anchor?: AnchorProps;
   id?: string; // optional, for keyed rendering
-  sticky?: boolean; // This exists because I have to connect the position to elements that are defined by media queries
 }
 
 export abstract class Renderable {
@@ -26,7 +27,6 @@ export abstract class Renderable {
   protected initial_y: number = 0;
   protected world_x: number = 0;
   protected world_y: number = 0;
-  protected sticky: boolean;
   public offset_x: number = 0;
   public offset_y: number;
   public offset_z: number;
@@ -34,18 +34,23 @@ export abstract class Renderable {
   public type: RenderableProps['type']
   public width: number;
   public height: number;
+  public anchor?: AnchorProps;
+  public top: number = 0;
+  public left: number = 0;
 
-  constructor(private props: RenderableProps) {
+  constructor(private props: RenderableProps, initialPosition: InitialPosition) {
     const {image, width, height} = getImage(this.props.image);
     this.id = props.id || this.id;
     this.type = this.props.type;
-    this.sticky = !!props.sticky;
     this.offset_x = props.x || 0;
     this.offset_y = props.y || 0;
     this.offset_z = Math.round(props.z);
     this.image = image;
     this.width = width;
     this.height = height;
+    this.anchor = props.anchor;
+    this.top = initialPosition.top;
+    this.left = initialPosition.left;
   }
 
   update(x: number, y: number): void {
@@ -58,6 +63,7 @@ export abstract class Renderable {
   abstract getElements(): Renderable[];
 
   public initialize = (initialX: number, initialY: number): Renderable => {
+
     this.initial_x = initialX;
     this.initial_y = initialY;
     this.world_x = initialX;
@@ -71,28 +77,21 @@ export abstract class Renderable {
     // md:w-[480px] md:right-[400px]
     // absolute top-0 z-[-1] object-contain right-[350px]
     return `
-    fixed top-0 z-[-1] object-contain 
+    absolute top-0 z-[-1] object-contain 
     `
   }
 
   get x() {
-    // + 14 if
-    const position = this.world_x - this.initial_x + this.offset_x
-    // const zOffset = this.offset_z * 28
-    const zOffset = this.sticky ? this.offset_z * 14 : 0
-    if (this.sticky) {
-      //   z-1- 28
-      //   z1 - -28
-      //   z2 - -56
-      //   z3 - -84
-    }
+    // If the image is smaller, it needs to go further to the right to be aligned with Gaja
+    const position = this.world_x - this.initial_x // + this.offset_x
+    const zOffset = this.anchor ? this.offset_z * 28 : 0
     return position - zOffset;
   }
 
   get y() {
     let zOffset = this.offset_z * 8
     zOffset = 0
-    const delta = this.world_y - this.initial_y + this.offset_y;
+    const delta = this.world_y - this.initial_y // + this.offset_y;
     const getParallaxFactor = (val: number): number => {
       return 10 ** (-val / 10);
     };
@@ -108,7 +107,7 @@ export abstract class Renderable {
   }
 
   get left_viewport() {
-    return this.y >= window.innerHeight
+    return this.y + this.top >= window.innerHeight
   }
 
   get style() {
@@ -118,6 +117,8 @@ export abstract class Renderable {
       zIndex: this.offset_z,
       transform: this.transform,
       filter: this.filter,
+      top: this.top,
+      left: this.left,
     }
   }
 
@@ -176,6 +177,8 @@ export class Cloud extends Renderable {
       transform: this.transform,
       filter: this.filter + ' brightness(0.7) hue-rotate(-70deg)',
       opacity: this.opacity(),
+      top: this.top,
+      left: this.left,
     }
   }
 

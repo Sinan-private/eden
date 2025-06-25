@@ -1,14 +1,5 @@
 import {imageProvider} from "@/Game/RenderEngine/ImageProvider.ts";
-import {AnchorProps} from "@/Game/RenderEngine/types.ts";
-
-type PlacementProps = {
-  x: number;
-  y: number;
-  z: number;
-  width: number;
-  height: number;
-  anchor?: AnchorProps;
-}
+import {PlacementProps} from "@/Game/RenderEngine/types.ts";
 
 export class Placement {
   x: number;
@@ -49,12 +40,22 @@ export class Placement {
     }
   }
 
-  get position() {
+  get position_outside_parent() {
     const x_percent = (this.x ?? 0) / 100;
     const y_percent = (this.y ?? 0) / 100;
     const x_invert_percent = 1 - x_percent;
     const y_invert_percent = 1 - y_percent;
     const top = (-this.height * y_invert_percent) + (this.anchor.h * y_percent)
+    const left = (-this.width * x_invert_percent) + (this.anchor.w * x_percent)
+    return {top, left}
+  }
+
+  get position_inside_parent() {
+    const x_percent = (this.x ?? 0) / 100;
+    const y_percent = (this.y ?? 0) / 100;
+    const x_invert_percent = 1 - x_percent;
+    const y_invert_percent = 1 - y_percent;
+    const top = (-this.height * y_percent) + (this.anchor.h)
     const left = (-this.width * x_invert_percent) + (this.anchor.w * x_percent)
     return {top, left}
   }

@@ -7,6 +7,8 @@ import image from '../../../assets/images/seemless_trunk.png';
 import {useComponentMount} from "@/GameEngine/ResourceEngine/hooks";
 import {BACKGROUND_IMAGE_WIDTH} from "@/Game/RenderEngine/media_queries.ts";
 import {Placement} from "@/Game/RenderEngine/Placement.ts";
+import {Branch, Cloud} from "@/Game/RenderEngine/Renderable.ts";
+import {imageProvider} from "@/Game/RenderEngine/ImageProvider.ts";
 
 
 // Stamm erweitern
@@ -31,14 +33,6 @@ export const Gaja = observer(() => {
     //   z: 10,
     //   image: 'cloud1'
     // }))
-    // renderEngine.add(new Branch({
-    //   type: 'branch',
-    //   offset_x: -700,
-    //   offset_y: 0,
-    //   z: -8,
-    //   image: 'branch3',
-    //   sticky: true,
-    // }))
     // renderEngine.addFactory(new RenderFactory(BranchForeground, {initial_amount: 5}))
     // renderEngine.addFactory(new RenderFactory(Cloud, {
     //   initial_amount: 5,
@@ -46,21 +40,16 @@ export const Gaja = observer(() => {
     // }))
     // renderEngine.add(new Branch({z: -9, image: 'branch1', type: 'branch', offset_x: -700}))
     renderEngine.addFactory({
-      initial_amount: 3,
+      initial_amount: 5,
+      spawn_min_distance: 100,
+      spawn_chance: 10,
       type: 'branch',
+      // z: -1,
       z: [-1, -8],
-      x: -700,
-      spawn: {
-        from: 'top',
-      }
-    //   Searching for anchor here
-    })
-    // renderEngine.addFactory(new RenderFactory(Branch, {
-    //   initial_amount: 3,
-    //   image_type: 'test',
-    //   z: 0,
-    //   offset_x: 0,
-    // }))
+      x: 0,
+      anchor: "gaja",
+    }, Branch
+    )
   })
 
   const elements = renderEngine.getElements()
@@ -73,6 +62,7 @@ export const Gaja = observer(() => {
       <Digging/>
       {elements.map(element => (
         <div
+          id={'Branch' + element.id}
           key={element.id}
           className={element.className}
           style={{
@@ -93,7 +83,7 @@ export const Gaja = observer(() => {
       {/*    }}*/}
       {/*  />*/}
       {/*))}*/}
-      <PlacementTest />
+      {/*<PlacementTest />*/}
     </Tree>
   )
 })
@@ -117,19 +107,20 @@ const PlacementTest = () => {
       <div className="w-1/2 h-1/2 border border-red-500"></div>
       <div
         className="w-[100px] h-[100px] border border-blue-50 absolute"
-        style={x.position}
+        style={x.position_outside_parent}
       />
     </div>
   )
 }
 
 const Tree = ({children}: { children: ReactNode }) => {
-  const {xl, lg, md} = BACKGROUND_IMAGE_WIDTH
+  const {w} = imageProvider.getGajaSize
   return (
-    <div className={`
-  fixed top-0 right-0 w-[171px] h-screen z-1
-  xl:w-[${xl}px] lg:w-[${lg}px] md:w-[${md}px]
-  `}>
+    <div id="Tree" className={`
+  fixed top-0 right-0 h-screen z-1
+  `}
+         style={{width: w}}
+    >
       {children}
     </div>
   )

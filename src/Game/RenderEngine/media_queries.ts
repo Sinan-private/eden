@@ -4,6 +4,7 @@ export const BACKGROUND_IMAGE_WIDTH = {
   lg: 457,
   md: 343,
   sm: 343,
+  xs: 171,
 }
 export const mediaQuery = {
   "2xl": 1536,
@@ -18,7 +19,7 @@ export const getScreenSize = (screen_width: number): MediaQueryKey => {
   const matched = (Object.entries(mediaQuery) as [MediaQueryKey, number][])
     .filter(([_, minWidth]) => screen_width >= minWidth)
     .sort((a, b) => b[1] - a[1])[0]?.[0] ;
-  return matched || 'sm'
+  return matched || 'xs'
 }
 
 export const getGajaSize = (): { w: number; h: number } => {

@@ -1,31 +1,18 @@
 import {Renderable, RenderableProps} from "@/Game/RenderEngine/Renderable.ts";
-import {RenderImageType} from "@/Game/RenderEngine/imageRegistry.ts";
-import {NormalizedSpawnProps, Spawn, SpawnProps} from "@/Game/RenderEngine/Spawn.ts";
+import {Spawn} from "@/Game/RenderEngine/Spawn.ts";
 import {Tick} from "@/GameEngine/Tick.ts";
 import {randomRange} from "@/Game/helpers/randomRange.ts";
 import {imageProvider} from "@/Game/RenderEngine/ImageProvider.ts";
-import {AnchorProps} from "@/Game/RenderEngine/types.ts";
-
-const tupledFields: readonly ['x', 'y', 'z'] = ['x', 'y', 'z'] as const;
-type TupledFields = typeof tupledFields[number];
-type RenderFactoryConfig = {
-  initial_amount: number;
-  x: number | [number, number];
-  y: number | [number, number];
-  z: number | [number, number];
-  type: RenderImageType;
-  unmount_on_leaving_viewport: boolean;
-  anchor: AnchorProps;
-  spawn: SpawnProps;
-}
-export type RenderFactoryConfigProps = Omit<Partial<RenderFactoryConfig>, 'spawn'> & {
-  spawn: Partial<SpawnProps>;
-}
-
-// The normalized version
-type NormalizedRenderFactoryConfig = {
-  [K in keyof RenderFactoryConfig]: K extends TupledFields ? [number, number] : K extends 'spawn' ? NormalizedSpawnProps : RenderFactoryConfig[K];
-};
+import {
+  ElementCreation,
+  NormalizedRenderFactoryConfig, PlacementProps,
+  RenderFactoryConfig,
+  RenderFactoryConfigProps,
+  tupledFields,
+  TupledFields
+} from "@/Game/RenderEngine/types.ts";
+import {id} from "@/GameEngine/ResourceEngine/helpers/id.ts";
+import {Placement} from "@/Game/RenderEngine/Placement.ts";
 
 export class Factory {
   private elements: Renderable[] = [];
@@ -34,15 +21,18 @@ export class Factory {
   public unmount_on_leaving_viewport = false;
 
   constructor(
-    private Element: new (config: RenderableProps) => Renderable,
+    private Element: ElementCreation,
     config?: RenderFactoryConfigProps,
   ) {
     this.config = this.normalizeConfig(config)
   }
 
   initialize = (x: number, y: number): this => {
+    for (let i = 0; i < this.config.initial_amount; i++) {
+      this._add(this._spawnInitialElements(), x, y)
+    }
     // In here the initial position is actually set. So in here I do the displacement
-    this.elements.forEach(i => i.initialize(x, y));
+    this.elements.forEach(i => i.initialize(x, y)); // Not sure if this is needed and why
     return this;
   }
 
@@ -50,39 +40,48 @@ export class Factory {
     return this.elements;
   }
 
-  public createElement = (config: RenderableProps) => {
-    return new this.Element(config)
-  }
-
   private _add = (source: Renderable, world_x: number, world_y: number) => {
     this.elements.push(source.initialize(world_x, world_y));
   }
 
-  private _remove = (source: Renderable) => {
-    this.elements = this.elements.filter(s => s !== source);
+  private _remove = (id: string) => {
+    this.elements = this.elements.filter(s => s.id !== id);
   }
 
-  private _randomValues = (): RenderableProps => {
+  private _randomValues = (): RenderableProps & PlacementProps => {
     const x = randomRange(...this.config.x)
     const y = randomRange(...this.config.y)
     const z = randomRange(...this.config.z)
     const type = this.config.type
-    const image = imageProvider.random(type).key
+    const image = imageProvider.random(type)
+    const {width, height} = image
     return {
       x,
       y,
       z,
       type,
-      image
+      image: image.key,
+      anchor: this.config.anchor,
+      width,
+      height,
     }
   }
 
   public spawnElement = (): Renderable => {
-    // Here I also want to define the original position.
-    // This is just a base class added to provide the initial placement. The rest is handled in the animation via transform: translate()
-    // This way I should have a clean separation
-    return new this.Element(this._randomValues())
+    const random = this._randomValues();
+    const initialPosition = new Placement(random).position_outside_parent
+    return new this.Element(random, initialPosition);
+  }
 
+  private _spawnInitialElements = (): Renderable => {
+    const random = this._randomValues();
+    const _random = {
+      ...random,
+      y: 100 //randomRange(0, 100)
+    }
+    const initialPosition = new Placement(_random).position_inside_parent
+    console.log(initialPosition)
+    return new this.Element(_random, initialPosition);
   }
 
   public update = (world_x: number, world_y: number, tick: Tick): void => {
@@ -96,7 +95,7 @@ export class Factory {
     // console.log(tick.current_turn)
     this.elements.forEach(element => {
       if (element.left_viewport) {
-        this._remove(element)
+        this._remove(element.id)
       }
     });
     this.animate(world_x, world_y)
@@ -116,10 +115,10 @@ export class Factory {
   }
 
   private _shouldAddElement = (): boolean => {
-    const [min, max] = this.config.spawn.amount;
+    const [min, max] = this.config.spawn_amount;
     const reached_min = this.elements.length < min
     const reached_max = this.elements.length >= max
-    const far_enough = this.distanceToClosestElement() >= this.config.spawn.min_distance
+    const far_enough = this.distanceToClosestElement() >= this.config.spawn_min_distance
     if (!far_enough) {
       // console.log('not far enough')
       return false
@@ -134,7 +133,7 @@ export class Factory {
     }
 
     const chance = Math.random()
-    return chance < (this.config.spawn.chance / 100)
+    return chance < (this.config.spawn_chance / 100)
   }
 
   private normalizeConfig = (config?: RenderFactoryConfigProps): NormalizedRenderFactoryConfig => {
@@ -142,6 +141,7 @@ export class Factory {
       normalizeValue(key, config)
 
     return {
+      id: normalize('id'),
       initial_amount: normalize('initial_amount'),
       type: normalize('type'),
       x: normalize('x'),
@@ -149,12 +149,15 @@ export class Factory {
       z: normalize('z'),
       anchor: normalize('anchor'),
       unmount_on_leaving_viewport: normalize('unmount_on_leaving_viewport'),
-      spawn: Spawn.normalizeConfig(config?.spawn),
+      spawn_chance: normalize('spawn_chance'),
+      spawn_amount: normalize('spawn_amount'),
+      spawn_min_distance: normalize('spawn_min_distance'),
     }
   }
 }
 
 const defaultConfig: NormalizedRenderFactoryConfig = {
+  id: id(),
   initial_amount: 1,
   x: [0, 0],
   y: [0, 0],
@@ -162,13 +165,9 @@ const defaultConfig: NormalizedRenderFactoryConfig = {
   anchor: '',
   type: 'cloud',
   unmount_on_leaving_viewport: false,
-  spawn: {
-    from: 'top',
-    amount: [1, 5],
-    chance: 30,
-    min_distance: 0,
-    anchor: '', // ugly duplication in default here
-  },
+  spawn_min_distance: 100,
+  spawn_amount: [1, 5],
+  spawn_chance: 50,
 }
 
 // const factory_config = {
