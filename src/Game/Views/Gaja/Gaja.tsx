@@ -26,18 +26,6 @@ export const Gaja = observer(() => {
   const trunkDisplacement = climb_height - BACKGROUND_IMAGE_HEIGHT * 3
   const prop = (trunkDisplacement % BACKGROUND_IMAGE_HEIGHT) - BACKGROUND_IMAGE_HEIGHT
   useComponentMount(() => {
-    // renderEngine.add(new Cloud({
-    //   type: 'cloud',
-    //   offset_x: 800,
-    //   offset_y: -100,
-    //   z: 10,
-    //   image: 'cloud1'
-    // }))
-    // renderEngine.addFactory(new RenderFactory(BranchForeground, {initial_amount: 5}))
-    // renderEngine.addFactory(new RenderFactory(Cloud, {
-    //   initial_amount: 5,
-    //   random_x: [-400, 800],
-    // }))
     // renderEngine.add(new Branch({z: -9, image: 'branch1', type: 'branch', offset_x: -700}))
     renderEngine.addFactory({
       initial_amount: 5,
@@ -46,9 +34,19 @@ export const Gaja = observer(() => {
       type: 'branch',
       // z: -1,
       z: [-1, -8],
-      x: 0,
+      x: 5,
       anchor: "gaja",
     }, Branch
+    )
+    renderEngine.addFactory({
+        initial_amount: 5,
+        spawn_min_distance: 100,
+        spawn_chance: 10,
+        type: 'cloud',
+        // z: -1,
+        z: [3, 8],
+        x: [0, 100],
+      }, Cloud
     )
   })
 
@@ -73,17 +71,6 @@ export const Gaja = observer(() => {
           {/*<p className="relative top-[-250px] right-[-100px]">{element.y.toFixed()}</p>*/}
         </div>
       ))}
-      {/*{elements.map(element => (*/}
-      {/*  <img*/}
-      {/*    key={element.id}*/}
-      {/*    src={element.image}*/}
-      {/*    className={element.className}*/}
-      {/*    style={{*/}
-      {/*      ...element.style*/}
-      {/*    }}*/}
-      {/*  />*/}
-      {/*))}*/}
-      {/*<PlacementTest />*/}
     </Tree>
   )
 })

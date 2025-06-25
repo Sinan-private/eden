@@ -54,8 +54,7 @@ export class Placement {
     const x_percent = (this.x ?? 0) / 100;
     const y_percent = (this.y ?? 0) / 100;
     const x_invert_percent = 1 - x_percent;
-    const y_invert_percent = 1 - y_percent;
-    const top = (-this.height * y_percent) + (this.anchor.h)
+    const top = y_percent * this.anchor.h - this.height * y_percent;
     const left = (-this.width * x_invert_percent) + (this.anchor.w * x_percent)
     return {top, left}
   }

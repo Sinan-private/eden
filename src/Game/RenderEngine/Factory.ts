@@ -77,10 +77,9 @@ export class Factory {
     const random = this._randomValues();
     const _random = {
       ...random,
-      y: 100 //randomRange(0, 100)
+      y: randomRange(0, 100)
     }
     const initialPosition = new Placement(_random).position_inside_parent
-    console.log(initialPosition)
     return new this.Element(_random, initialPosition);
   }
 
