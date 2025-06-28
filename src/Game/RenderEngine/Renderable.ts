@@ -131,8 +131,12 @@ export abstract class Renderable {
     return 1
   }
 
+  get drop_shadow() {
+    return '0 0 0 transparent'
+  }
+
   get filter() {
-    return `brightness(${this.brightness}) hue-rotate(${this.hue_rotate}deg) saturate(${this.saturate}) blur(${this.blur}px) opacity(${this.opacity})`;
+    return `brightness(${this.brightness}) hue-rotate(${this.hue_rotate}deg) saturate(${this.saturate}) blur(${this.blur}px) opacity(${this.opacity}) drop-shadow(${this.drop_shadow})`;
   }
 
   get scale() {

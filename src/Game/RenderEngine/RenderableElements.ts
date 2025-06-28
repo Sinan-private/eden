@@ -77,6 +77,10 @@ export class Mushroom extends Renderable {
     const rand = seedRandomFromString(this.id)
     return 0.6 * rand + 0.3
   }
+
+  get drop_shadow() {
+    return '-4px 14px 11px #170c0a'
+  }
 }
 
 export class ManaVein extends Renderable {

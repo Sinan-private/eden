@@ -16,6 +16,7 @@ import {GameClass} from "@/Game";
 import {ElementCreation, RenderFactoryConfigProps} from "@/Game/RenderEngine/types.ts";
 // import {Placement} from "@/Game/RenderEngine/Placement.ts";
 
+const GAJA_TRUNK_IMAGE_HEIGHT = 600;
 
 export class RenderEngine {
   private elements: Renderable[] = [];
@@ -29,6 +30,11 @@ export class RenderEngine {
 
   get world_y(): number {
     return this.game.behemoth.climb_height.value
+  }
+
+  get trunk_position(): number {
+    const trunkDisplacement = this.world_y - GAJA_TRUNK_IMAGE_HEIGHT * 3
+    return (trunkDisplacement % GAJA_TRUNK_IMAGE_HEIGHT) - GAJA_TRUNK_IMAGE_HEIGHT
   }
 
   public add = (source: Renderable) => {

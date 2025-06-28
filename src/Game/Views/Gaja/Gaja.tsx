@@ -6,77 +6,31 @@ import {Behemoth} from "./Behemoth.tsx";
 import image from '../../../assets/images/seemless_trunk.png';
 import {useComponentMount} from "@/GameEngine/ResourceEngine/hooks";
 import {BACKGROUND_IMAGE_WIDTH} from "@/Game/RenderEngine/media_queries.ts";
-import {Placement} from "@/Game/RenderEngine/Placement.ts";
 import {ImageProvider} from "@/Game/RenderEngine/ImageProvider.ts";
 import {Branch, Cloud, ManaVein, Mushroom} from "@/Game/RenderEngine/RenderableElements.ts";
-
-
-// Stamm erweitern
-// - Pilze am Stamm
-// - Lichtadern (Mana)
-// - Nebelschwaden im Vordergrund
-
+import {RenderFactoryConfigProps} from "@/Game/RenderEngine/types.ts";
 
 const BACKGROUND_IMAGE_HEIGHT = 600;
 
 export const Gaja = observer(() => {
-  const {renderEngine, tick} = game()
+  const {renderEngine} = game()
   const {getByKey} = game().resources
   const climb_height = getByKey('behemoth_climb_height').value
   const trunkDisplacement = climb_height - BACKGROUND_IMAGE_HEIGHT * 3
   const prop = (trunkDisplacement % BACKGROUND_IMAGE_HEIGHT) - BACKGROUND_IMAGE_HEIGHT
-  // console.log(tick.breath)
   useComponentMount(() => {
     // renderEngine.add(new Branch({z: -9, image: 'branch1', type: 'branch', offset_x: -700}))
-    renderEngine.addFactory({
-      initial_amount: 3,
-      spawn_min_distance: 100,
-      spawn_chance: 10,
-      spawn_amount: [0, 6],
-      type: 'branch',
-      // z: -10,
-      z: [-1, -9],
-      x: 1,
-      anchor: "gaja",
-    }, Branch
-    )
-    // renderEngine.addFactory({
-    //     initial_amount: 5,
-    //     spawn_min_distance: 100,
-    //     spawn_chance: 10,
-    //     type: 'cloud',
-    //     // z: -1,
-    //     z: [3, 8],
-    //     x: [0, 100],
-    //   }, Cloud
-    // )
-    renderEngine.addFactory({
-      initial_amount: 2,
-      spawn_min_distance: 400,
-      type: 'mana_vein',
-      anchor: 'gaja',
-      z: 0,
-      x: [30, 90],
-      spawn_chance: 20,
-    },
-      ManaVein
-    )
-    renderEngine.addFactory({
-      initial_amount: 2,
-      spawn_min_distance: 100,
-      type: 'mushroom',
-      anchor: 'gaja',
-      z: 0,
-      x: [30, 90],
-      spawn_chance: 20,
-    }, Mushroom)
+    renderEngine.addFactory(branchConfig, Branch)
+    renderEngine.addFactory(cloudConfig, Cloud)
+    renderEngine.addFactory(manaVeinConfig, ManaVein)
+    renderEngine.addFactory(mushroomConfig, Mushroom)
   })
 
   const elements = renderEngine.getElements()
 
   return (
     <Tree>
-      <Trunk displacement={prop}/>
+      <Trunk displacement={renderEngine.trunk_position}/>
       {/*<Branches displacement={climb_height}/>*/}
       <Behemoth/>
       <Digging/>
@@ -97,27 +51,6 @@ export const Gaja = observer(() => {
   )
 })
 
-const PlacementTest = () => {
-  const imageWidth = 100;
-  const imageHeight = 100;
-  const parentWidth = 400;
-  const parentheight = 400;
-  const x = new Placement({x: 20, y: 100, z: 1, width: imageWidth, height: imageHeight, anchor: {w: parentWidth, h: parentheight}});
-
-  return (
-    <div className="flex flex-wrap fixed w-[400px] h-[400px] top-32 left-1/2">
-      <div className="w-1/2 h-1/2 border border-red-500"></div>
-      <div className="w-1/2 h-1/2 border border-red-500"></div>
-      <div className="w-1/2 h-1/2 border border-red-500"></div>
-      <div className="w-1/2 h-1/2 border border-red-500"></div>
-      <div
-        className="w-[100px] h-[100px] border border-blue-50 absolute"
-        style={x.position_outside_viewport}
-      />
-    </div>
-  )
-}
-
 const Tree = ({children}: { children: ReactNode }) => {
   const {w} = ImageProvider.getGajaSize
   return (
@@ -131,7 +64,6 @@ const Tree = ({children}: { children: ReactNode }) => {
   )
 }
 
-
 const Trunk = ({displacement}: { displacement: number }) => {
   return (
     <div className="relative w-full h-[600px]">
@@ -141,4 +73,39 @@ const Trunk = ({displacement}: { displacement: number }) => {
   )
 }
 
-
+const branchConfig: RenderFactoryConfigProps = {
+  initial_amount: 3,
+  spawn_min_distance: 100,
+  spawn_chance: 10,
+  spawn_amount: [0, 6],
+  type: 'branch',
+  z: [-1, -9],
+  x: 1,
+  anchor: "gaja",
+}
+const cloudConfig: RenderFactoryConfigProps = {
+  initial_amount: 5,
+  spawn_min_distance: 100,
+  spawn_chance: 10,
+  type: 'cloud',
+  z: [3, 8],
+  x: [0, 100],
+}
+const manaVeinConfig: RenderFactoryConfigProps = {
+  initial_amount: 2,
+  spawn_min_distance: 400,
+  type: 'mana_vein',
+  anchor: 'gaja',
+  z: 0,
+  x: [30, 90],
+  spawn_chance: 20,
+}
+const mushroomConfig: RenderFactoryConfigProps = {
+  initial_amount: 2,
+  spawn_min_distance: 100,
+  type: 'mushroom',
+  anchor: 'gaja',
+  z: 0,
+  x: [30, 90],
+  spawn_chance: 20,
+}
