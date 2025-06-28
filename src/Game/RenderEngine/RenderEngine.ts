@@ -7,6 +7,9 @@
 // So the goal is to pass in objects here (can also be triggered by an event) so that the RenderEngine takes care
 // on how to place and move them as well as the effects to trigger
 
+// Todo I want to have the handling of the danger level here. So each component has a central truth for
+//  their danger state
+
 import {Factory as RenderFactory} from "@/Game/RenderEngine/Factory.ts";
 import {Renderable} from "@/Game/RenderEngine/Renderable.ts";
 import {GameClass} from "@/Game";
@@ -17,32 +20,27 @@ import {ElementCreation, RenderFactoryConfigProps} from "@/Game/RenderEngine/typ
 export class RenderEngine {
   private elements: Renderable[] = [];
   private factories: RenderFactory[] = [];
-  // private spawnEngine = new Placement();
-
-  // private _starting_height: number
-  // private _current_height: number
   constructor(private props: GameClass) {
-    // this._starting_height = props.behemoth.climb_height.value
-    // makeAutoObservable(this)
+  }
+
+  get world_x(): number {
+    return 0
+  }
+
+  get world_y(): number {
+    return this.props.behemoth.climb_height.value
   }
 
   public add = (source: Renderable) => {
-    this.elements.push(source.initialize(0, this.props.behemoth.climb_height.value));
+    this.elements.push(source.initialize(this.world_x, this.world_y));
   }
-
-  // public normalizeFactoryConfig = (config: RenderFactoryConfigProps) => {
-  //
-  // }
 
   public addFactory = (
     config: RenderFactoryConfigProps,
     Element: ElementCreation
     ) => {
-    console.log('add factory')
-    // Pass normalized config here
     const factory = new RenderFactory(Element, config)
-    // Add here the props normalization and the initial positioning?
-    this.factories.push(factory.initialize(0, this.props.behemoth.climb_height.value));
+    this.factories.push(factory.initialize(this.world_x, this.world_y));
   }
 
   public remove = (source: Renderable) => {
@@ -63,7 +61,7 @@ export class RenderEngine {
       if (source.left_viewport) {
         this.remove(source);
       } else {
-        source.update(0, this.props.behemoth.climb_height.value);
+        source.update(this.world_x, this.world_y);
       }
     }
   }
@@ -75,7 +73,7 @@ export class RenderEngine {
         // This should only happen with unmount_on_leaving_viewport
         // this.removeFactory(factory);
       } else {
-        factory.update(0, this.props.behemoth.climb_height.value, this.props.tick);
+        factory.update(this.world_x, this.world_y, this.props.tick);
       }
     }
   }

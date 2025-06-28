@@ -1,8 +1,8 @@
-import {getImage, RenderImageKey, RenderImageType} from "@/Game/RenderEngine/imageRegistry.ts";
+import {RenderImageKey, RenderImageType} from "@/Game/RenderEngine/imageRegistry.ts";
 import {id} from "@/GameEngine/ResourceEngine/helpers/id.ts";
 import {AnchorProps, InitialPosition} from "@/Game/RenderEngine/types.ts";
+import {ImageProvider} from "@/Game/RenderEngine/ImageProvider.ts";
 
-const PARALLAX_INTENSITY = 12
 
 // I need to create something that knows the dom. No ref needed for now, but the dimensions of the image
 // and the window width and height.
@@ -37,9 +37,10 @@ export abstract class Renderable {
   public anchor?: AnchorProps;
   public top: number = 0;
   public left: number = 0;
+  protected random_seed: number = Math.random();
 
   constructor(private props: RenderableProps, initialPosition: InitialPosition) {
-    const {image, width, height} = getImage(this.props.image);
+    const {image, width, height} = ImageProvider.getImage(this.props.image);
     this.id = props.id || this.id;
     this.type = this.props.type;
     this.offset_x = props.x || 0;
@@ -60,7 +61,9 @@ export abstract class Renderable {
     this.world_y = y;
   };
 
-  abstract getElements(): Renderable[];
+  getElements(): Renderable[] {
+    return [this];
+  }
 
   public initialize = (initialX: number, initialY: number): Renderable => {
 
@@ -77,7 +80,7 @@ export abstract class Renderable {
     // md:w-[480px] md:right-[400px]
     // absolute top-0 z-[-1] object-contain right-[350px]
     return `
-    absolute top-0 z-[-1] object-contain 
+    fixed top-0 z-[-1] object-contain 
     `
   }
 
@@ -100,10 +103,39 @@ export abstract class Renderable {
     return delta * parallax - zOffset
   }
 
-  get filter() {
+  // filter: this.filter + ` brightness(0.7) hue-rotate(${4 * Math.abs(this.offset_z)}deg) brightness(${multiplyer}) saturate(${multiplyer})`,
+
+  get brightness() {
+    return 1
+  }
+
+  get hue_rotate() {
+    return 0
+  }
+
+  get saturate() {
+    return 1
+  }
+
+  get blur() {
     const offset = Math.abs(this.offset_z)
-    const blur = offset < 2 ? 0 : offset * 1.5;
-    return `blur(${blur}px)`
+    return offset < 2 ? 0 : offset;
+  }
+
+  get opacity() {
+    return 1
+  }
+
+  get filter() {
+    return `brightness(${this.brightness}) hue-rotate(${this.hue_rotate}deg) saturate(${this.saturate}) blur(${this.blur}px) opacity(${this.opacity})`;
+  }
+
+  get scale() {
+    let scale = 1 + this.offset_z / 20;
+    if (scale < 0.2) {
+      scale = 0.2
+    }
+    return scale
   }
 
   get left_viewport() {
@@ -123,63 +155,15 @@ export abstract class Renderable {
   }
 
   get transform() {
-    let scale = 1 + this.offset_z / 20;
-    if (scale < 0.2) {
-      scale = 0.2
-    }
-    return `translate(${this.x}px, ${this.y}px) scale(${scale})`
+    return `translate(${this.x}px, ${this.y}px) scale(${this.scale})`
   }
+
+  // get seed_random() {
+  //   let hash = 0;
+  //   for (let i = 0; i < this.id.length; i++) {
+  //     hash = (hash * 31 + this.id.charCodeAt(i)) >>> 0; // unsigned 32-bit
+  //   }
+  //   return (hash % 1000000) / 1000000;
+  // }
 }
 
-export class Branch extends Renderable {
-
-  getElements(): Renderable[] {
-    return [this];
-  }
-
-}
-
-export class Cloud extends Renderable {
-
-  getElements(): Renderable[] {
-    return [this];
-  }
-
-  get transform() {
-    const scale = 1 + this.offset_z / 10;
-    return `translate(${this.x}px, ${this.y}px) scale(${scale})`
-  }
-
-  private opacity = () => {
-    const min = 0.1, max = 0.5;
-    // z: 1 has 0.5 opacity and each z removes 0.05 down to the min
-    const opacity = max - (this.offset_z - 1) * 0.05;
-    return opacity < min
-      ? min
-      : opacity > max
-        ? max
-        : opacity
-  }
-
-  get y() {
-    let zOffset = this.offset_z * 8
-    zOffset = 0
-    const delta = this.world_y - this.initial_y + this.offset_y;
-    const parallax = (1 + this.offset_z / (20 - PARALLAX_INTENSITY)) / 3
-    return delta * parallax - zOffset
-  }
-
-  get style() {
-    return {
-      width: this.width,
-      height: this.height,
-      zIndex: this.offset_z,
-      transform: this.transform,
-      filter: this.filter + ' brightness(0.7) hue-rotate(-70deg)',
-      opacity: this.opacity(),
-      top: this.top,
-      left: this.left,
-    }
-  }
-
-}

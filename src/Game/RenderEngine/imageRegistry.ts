@@ -1,36 +1,49 @@
 import cloud_image1 from '../../assets/images/clouds1.png'
 import cloud_image2 from '../../assets/images/clouds2.png'
-// import cloud_image4 from '../../assets/images/clouds4.png'
-import branch_image1 from '../../assets/images/Branch2.png'
 import branch_image2 from '../../assets/images/Branch3.png'
 import branch_image3 from '../../assets/images/Branch4.png'
 import branch_image4 from '../../assets/images/Branch5.png'
 import branch_image5 from '../../assets/images/Branch6.png'
-import branch_image6 from '../../assets/images/Branch7.png'
+import branch_image7 from '../../assets/images/Branch8.png'
+import branch_image8 from '../../assets/images/Branch9.png'
+import branch_image9 from '../../assets/images/Branch10.png'
+import branch_image10 from '../../assets/images/Branch11.png'
+import mushroom_image1 from '../../assets/images/mushroom1.png'
+import mushroom_image2 from '../../assets/images/mushroom2.png'
+import mushroom_image3 from '../../assets/images/mushroom3.png'
+import mushroom_image4 from '../../assets/images/mushroom4.png'
+import mushroom_image5 from '../../assets/images/mushroom5.png'
+import mushroom_image6 from '../../assets/images/mushroom6.png'
+import mana_vein1 from '../../assets/images/mana_vein1.png'
+import mana_vein2 from '../../assets/images/mana_vein2.png'
+import mana_vein3 from '../../assets/images/mana_vein3.png'
 import test_image from '../../assets/images/test.png'
 
-// type ImageType = 'cloud' | 'branch'
-// type ImageMeta = { image: string; width: number; height: number; type: ImageType };
 
 export const imageRegistry = [
   { key: 'test', image: test_image, width: 160, height: 100, type: 'test' },
   { key: 'cloud1', image: cloud_image1, width: 768, height: 369, type: 'cloud' },
   { key: 'cloud2', image: cloud_image2, width: 674, height: 375, type: 'cloud' },
-  // { key: 'cloud3', image: cloud_image4, width: 600, height: 420, type: 'cloud' },
-  { key: 'branch1', image: branch_image1, width: 800, height: 544, type: 'branch' },
   { key: 'branch2', image: branch_image2, width: 800, height: 222, type: 'branch' },
-  { key: 'branch3', image: branch_image3, width: 800, height: 314, type: 'branch' },
-  { key: 'branch4', image: branch_image4, width: 800, height: 262, type: 'branch' },
+  { key: 'branch3', image: branch_image3, width: 704, height: 300, type: 'branch' },
+  { key: 'branch4', image: branch_image4, width: 496, height: 280, type: 'branch' },
   { key: 'branch5', image: branch_image5, width: 800, height: 285, type: 'branch' },
-  { key: 'branch6', image: branch_image6, width: 800, height: 862, type: 'branch' },
+  { key: 'branch7', image: branch_image7, width: 600, height: 309, type: 'branch' },
+  { key: 'branch8', image: branch_image8, width: 400, height: 269, type: 'branch' },
+  { key: 'branch9', image: branch_image9, width: 300, height: 192, type: 'branch' },
+  { key: 'branch10', image: branch_image10, width: 612, height: 336, type: 'branch' },
+  { key: 'mushroom1', image: mushroom_image1, width: 250, height: 150, type: 'mushroom' },
+  { key: 'mushroom2', image: mushroom_image2, width: 185, height: 165, type: 'mushroom' },
+  { key: 'mushroom3', image: mushroom_image3, width: 185, height: 165, type: 'mushroom' },
+  { key: 'mushroom4', image: mushroom_image4, width: 224, height: 165, type: 'mushroom' },
+  { key: 'mushroom5', image: mushroom_image5, width: 386, height: 350, type: 'mushroom' },
+  { key: 'mushroom6', image: mushroom_image6, width: 357, height: 205, type: 'mushroom' },
+  { key: 'mana_vein1', image: mana_vein1, width: 120, height: 400, type: 'mana_vein' },
+  { key: 'mana_vein2', image: mana_vein2, width: 236, height: 401, type: 'mana_vein' },
+  { key: 'mana_vein3', image: mana_vein3, width: 142, height: 258, type: 'mana_vein' },
 ] as const;
 
 export type ImageEntry = (typeof imageRegistry)[number];
 
 export type RenderImageKey = ImageEntry['key'];
 export type RenderImageType = ImageEntry['type'];
-
-export const getImage = (key: RenderImageKey): ImageEntry =>
-  imageRegistry.find(entry => entry.key === key) as ImageEntry;
-export const getImagesByType = (type: RenderImageType): ImageEntry[] =>
-  imageRegistry.filter(image => image.type === type);

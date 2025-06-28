@@ -7,8 +7,8 @@ import image from '../../../assets/images/seemless_trunk.png';
 import {useComponentMount} from "@/GameEngine/ResourceEngine/hooks";
 import {BACKGROUND_IMAGE_WIDTH} from "@/Game/RenderEngine/media_queries.ts";
 import {Placement} from "@/Game/RenderEngine/Placement.ts";
-import {Branch, Cloud} from "@/Game/RenderEngine/Renderable.ts";
-import {imageProvider} from "@/Game/RenderEngine/ImageProvider.ts";
+import {ImageProvider} from "@/Game/RenderEngine/ImageProvider.ts";
+import {Branch, Cloud, ManaVein, Mushroom} from "@/Game/RenderEngine/RenderableElements.ts";
 
 
 // Stamm erweitern
@@ -28,13 +28,14 @@ export const Gaja = observer(() => {
   useComponentMount(() => {
     // renderEngine.add(new Branch({z: -9, image: 'branch1', type: 'branch', offset_x: -700}))
     renderEngine.addFactory({
-      initial_amount: 5,
+      initial_amount: 3,
       spawn_min_distance: 100,
       spawn_chance: 10,
+      spawn_amount: [0, 6],
       type: 'branch',
-      // z: -1,
-      z: [-1, -8],
-      x: 5,
+      // z: -10,
+      z: [-1, -9],
+      x: 1,
       anchor: "gaja",
     }, Branch
     )
@@ -48,6 +49,25 @@ export const Gaja = observer(() => {
         x: [0, 100],
       }, Cloud
     )
+
+    renderEngine.addFactory({
+      initial_amount: 2,
+      spawn_min_distance: 400,
+      type: 'mana_vein',
+      anchor: 'gaja',
+      z: 0,
+      x: [30, 90],
+      spawn_chance: 20,
+    }, ManaVein)
+    renderEngine.addFactory({
+      initial_amount: 2,
+      spawn_min_distance: 100,
+      type: 'mushroom',
+      anchor: 'gaja',
+      z: 0,
+      x: [30, 90],
+      spawn_chance: 20,
+    }, Mushroom)
   })
 
   const elements = renderEngine.getElements()
@@ -80,11 +100,7 @@ const PlacementTest = () => {
   const imageHeight = 100;
   const parentWidth = 400;
   const parentheight = 400;
-  const topLeft = {top: -imageWidth, right: parentWidth};
-  const bottomRight = {top: parentheight, right: -imageWidth};
-  const center = {top: parentheight / 2 - imageHeight / 2, right: parentWidth / 2 - imageWidth / 2};
   const x = new Placement({x: 20, y: 100, z: 1, width: imageWidth, height: imageHeight, anchor: {w: parentWidth, h: parentheight}});
-  const style = calculatePlacement({x: 100, y: 50}, parentWidth, parentheight, imageWidth, imageHeight)
 
   return (
     <div className="flex flex-wrap fixed w-[400px] h-[400px] top-32 left-1/2">
@@ -94,14 +110,14 @@ const PlacementTest = () => {
       <div className="w-1/2 h-1/2 border border-red-500"></div>
       <div
         className="w-[100px] h-[100px] border border-blue-50 absolute"
-        style={x.position_outside_parent}
+        style={x.position_outside_viewport}
       />
     </div>
   )
 }
 
 const Tree = ({children}: { children: ReactNode }) => {
-  const {w} = imageProvider.getGajaSize
+  const {w} = ImageProvider.getGajaSize
   return (
     <div id="Tree" className={`
   fixed top-0 right-0 h-screen z-1
@@ -124,85 +140,3 @@ const Trunk = ({displacement}: { displacement: number }) => {
 }
 
 
-type PlacementConfig = {
-  from?: 'top' | 'bottom' | 'left' | 'right' | 'center';
-  x?: number; // in %
-  y?: number; // in %
-};
-
-type Position = { top: number; left: number };
-
-// Top
-// Du startest -image_width + parent_height * (y / 100)
-
-// const topLeft = {top: -imageWidth, right: parentWidth};
-// const bottomRight = {top: parentheight, right: -imageWidth};
-// const center = {top: parentheight / 2 - imageHeight / 2, right: parentWidth / 2 - imageWidth / 2};
-
-export function calculatePlacement(
-  config: PlacementConfig,
-  parent_width: number,
-  parent_height: number,
-  image_width: number,
-  image_height: number
-): Position {
-  const x_percent = (config.x ?? 0) / 100;
-  const y_percent = (config.y ?? 0) / 100;
-  const x_invert_percent = 1 - x_percent;
-  const y_invert_percent = 1 - y_percent;
-  const top = (-image_height * y_invert_percent) + (parent_height * y_percent)
-  const left = (-image_width * x_invert_percent) + (parent_width * x_percent)
-  return {top, left}
-}
-
-
-
-
-
-const old = {
-  initial_amount: 3,
-  image_type: 'branch',
-  z: [0, -8],
-  offset_x: -700,
-  spawn: {
-    edge: 'top',
-    anchor: {
-      target: 'gaja',
-      side: 'left'
-    }
-  }
-}
-
-type SpawnEdge = 'top' | 'bottom' | 'left' | 'right' | 'center';
-
-const factoryProps = {
-  initial_amount: 3,
-  image_type: 'branch',
-  z: [0, -8],
-  x: [5, 95],
-  y: 0,
-  anchor: 'gaja',
-  spawn: {
-    from: 'top',
-    min_distance: 200,
-    chance: 30,
-  }
-}
-
-
-
-// const factory_config = {
-//   initial_amount: 3,
-//   image_type: 'branch',
-//   z: [-1, -8],
-//   x: -700,
-//   spawn: {
-//     from: 'top',
-//   }
-// }
-//
-// const yy = () => {
-//   renderEngine.addFactory(Branch, factory_config)
-//   renderEngine.add(new Branch({}))
-//   renderEngine.addFactory(new RenderFactory(Branch, factory_config))
-// }

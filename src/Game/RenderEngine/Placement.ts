@@ -1,4 +1,4 @@
-import {imageProvider} from "@/Game/RenderEngine/ImageProvider.ts";
+import {ImageProvider} from "@/Game/RenderEngine/ImageProvider.ts";
 import {PlacementProps} from "@/Game/RenderEngine/types.ts";
 
 export class Placement {
@@ -30,7 +30,7 @@ export class Placement {
     if (anchor === 'gaja') {
       return {
         key: 'gaja',
-        ...imageProvider.getGajaSize
+        ...ImageProvider.getGajaSize
       }
     }
     return {
@@ -40,22 +40,28 @@ export class Placement {
     }
   }
 
-  get position_outside_parent() {
+  get position_outside_viewport() {
+    const x_anchor_displacement = this.anchor.key !== 'window'
+      ? window.innerWidth - this.anchor.w
+      : 0
     const x_percent = (this.x ?? 0) / 100;
     const y_percent = (this.y ?? 0) / 100;
     const x_invert_percent = 1 - x_percent;
     const y_invert_percent = 1 - y_percent;
     const top = (-this.height * y_invert_percent) + (this.anchor.h * y_percent)
-    const left = (-this.width * x_invert_percent) + (this.anchor.w * x_percent)
+    const left = (-this.width * x_invert_percent) + (this.anchor.w * x_percent) + x_anchor_displacement
     return {top, left}
   }
 
-  get position_inside_parent() {
+  get position_inside_viewport() {
+    const x_anchor_displacement = this.anchor.key !== 'window'
+      ? window.innerWidth - this.anchor.w
+      : 0
     const x_percent = (this.x ?? 0) / 100;
     const y_percent = (this.y ?? 0) / 100;
     const x_invert_percent = 1 - x_percent;
     const top = y_percent * this.anchor.h - this.height * y_percent;
-    const left = (-this.width * x_invert_percent) + (this.anchor.w * x_percent)
+    const left = (-this.width * x_invert_percent) + (this.anchor.w * x_percent) + x_anchor_displacement
     return {top, left}
   }
 }

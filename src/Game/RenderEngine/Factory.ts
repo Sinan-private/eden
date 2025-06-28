@@ -1,8 +1,7 @@
 import {Renderable, RenderableProps} from "@/Game/RenderEngine/Renderable.ts";
-import {Spawn} from "@/Game/RenderEngine/Spawn.ts";
 import {Tick} from "@/GameEngine/Tick.ts";
 import {randomRange} from "@/Game/helpers/randomRange.ts";
-import {imageProvider} from "@/Game/RenderEngine/ImageProvider.ts";
+import {ImageProvider} from "@/Game/RenderEngine/ImageProvider.ts";
 import {
   ElementCreation,
   NormalizedRenderFactoryConfig, PlacementProps,
@@ -28,6 +27,7 @@ export class Factory {
   }
 
   initialize = (x: number, y: number): this => {
+    // Here I would need to calculate the position including the min_spawn_distance
     for (let i = 0; i < this.config.initial_amount; i++) {
       this._add(this._spawnInitialElements(), x, y)
     }
@@ -53,7 +53,7 @@ export class Factory {
     const y = randomRange(...this.config.y)
     const z = randomRange(...this.config.z)
     const type = this.config.type
-    const image = imageProvider.random(type)
+    const image = ImageProvider.random(type)
     const {width, height} = image
     return {
       x,
@@ -69,7 +69,7 @@ export class Factory {
 
   public spawnElement = (): Renderable => {
     const random = this._randomValues();
-    const initialPosition = new Placement(random).position_outside_parent
+    const initialPosition = new Placement(random).position_outside_viewport
     return new this.Element(random, initialPosition);
   }
 
@@ -79,7 +79,7 @@ export class Factory {
       ...random,
       y: randomRange(0, 100)
     }
-    const initialPosition = new Placement(_random).position_inside_parent
+    const initialPosition = new Placement(_random).position_inside_viewport
     return new this.Element(_random, initialPosition);
   }
 
@@ -108,9 +108,7 @@ export class Factory {
     const sorted = this.elements
       .map(({y}) => y)
       .sort((a, b) => a - b)
-    const closest = sorted[0] || Infinity;
-    // return closest - this.spawn_height * 2
-    return closest - Spawn.spawn_height * 2
+    return sorted[0] || Infinity;
   }
 
   private _shouldAddElement = (): boolean => {
@@ -168,16 +166,6 @@ const defaultConfig: NormalizedRenderFactoryConfig = {
   spawn_amount: [1, 5],
   spawn_chance: 50,
 }
-
-// const factory_config = {
-//   initial_amount: 3,
-//   image_type: 'branch',
-//   z: [-1, -8],
-//   x: -700,
-//   spawn: {
-//     from: 'top',
-//   }
-// }
 
 
 const normalizeValue = <K extends keyof RenderFactoryConfig>(

@@ -1,5 +1,4 @@
 import {
-  getImagesByType,
   ImageEntry,
   imageRegistry,
   RenderImageKey,
@@ -9,30 +8,35 @@ import {randomRange} from "@/Game/helpers/randomRange.ts";
 import {getGajaSize, getScreenSize, MediaQueryKey} from "@/Game/RenderEngine/media_queries.ts";
 
 export class ImageProvider {
-  constructor(private images: readonly ImageEntry[]) {
+  constructor() {
 
   }
 
-  public get = (key: RenderImageKey): ImageEntry =>
-    this.images.find(entry => entry.key === key) as ImageEntry;
+  static get = (key: RenderImageKey): ImageEntry =>
+    imageRegistry.find(entry => entry.key === key) as ImageEntry;
 
-  public getByType = (type: RenderImageType): ImageEntry[] =>
-    this.images.filter(image => image.type === type);
+  static getByType = (type: RenderImageType): ImageEntry[] =>
+    imageRegistry.filter(image => image.type === type);
 
-  public random = (type: RenderImageType) => {
-    const images = getImagesByType(type)
+  static random = (type: RenderImageType) => {
+    const images = ImageProvider.getImagesByType(type)
     const index = randomRange(0, images.length - 1)
     return images[index]
   }
 
-  get screen_size(): MediaQueryKey {
+  static get screen_size(): MediaQueryKey {
     return getScreenSize(window.innerWidth)
   }
 
-  get getGajaSize() {
+  static get getGajaSize() {
     return getGajaSize()
   }
 
+  static getImage = (key: RenderImageKey): ImageEntry =>
+    imageRegistry.find(entry => entry.key === key) as ImageEntry;
+
+  static getImagesByType = (type: RenderImageType): ImageEntry[] =>
+    imageRegistry.filter(image => image.type === type);
+
 }
 
-export const imageProvider = new ImageProvider(imageRegistry)
