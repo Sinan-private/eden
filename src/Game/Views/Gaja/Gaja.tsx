@@ -20,11 +20,12 @@ import {Branch, Cloud, ManaVein, Mushroom} from "@/Game/RenderEngine/RenderableE
 const BACKGROUND_IMAGE_HEIGHT = 600;
 
 export const Gaja = observer(() => {
-  const {renderEngine} = game()
+  const {renderEngine, tick} = game()
   const {getByKey} = game().resources
   const climb_height = getByKey('behemoth_climb_height').value
   const trunkDisplacement = climb_height - BACKGROUND_IMAGE_HEIGHT * 3
   const prop = (trunkDisplacement % BACKGROUND_IMAGE_HEIGHT) - BACKGROUND_IMAGE_HEIGHT
+  // console.log(tick.breath)
   useComponentMount(() => {
     // renderEngine.add(new Branch({z: -9, image: 'branch1', type: 'branch', offset_x: -700}))
     renderEngine.addFactory({
@@ -49,7 +50,6 @@ export const Gaja = observer(() => {
         x: [0, 100],
       }, Cloud
     )
-
     renderEngine.addFactory({
       initial_amount: 2,
       spawn_min_distance: 400,
@@ -58,7 +58,9 @@ export const Gaja = observer(() => {
       z: 0,
       x: [30, 90],
       spawn_chance: 20,
-    }, ManaVein)
+    },
+      ManaVein
+    )
     renderEngine.addFactory({
       initial_amount: 2,
       spawn_min_distance: 100,

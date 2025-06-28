@@ -2,6 +2,7 @@ import {RenderImageKey, RenderImageType} from "@/Game/RenderEngine/imageRegistry
 import {id} from "@/GameEngine/ResourceEngine/helpers/id.ts";
 import {AnchorProps, InitialPosition} from "@/Game/RenderEngine/types.ts";
 import {ImageProvider} from "@/Game/RenderEngine/ImageProvider.ts";
+import {Tick} from "@/GameEngine/Tick/Tick.ts";
 
 
 // I need to create something that knows the dom. No ref needed for now, but the dimensions of the image
@@ -39,7 +40,11 @@ export abstract class Renderable {
   public left: number = 0;
   protected random_seed: number = Math.random();
 
-  constructor(private props: RenderableProps, initialPosition: InitialPosition) {
+  constructor(
+    private props: RenderableProps,
+    initialPosition: InitialPosition,
+    protected _tick: Tick,
+  ) {
     const {image, width, height} = ImageProvider.getImage(this.props.image);
     this.id = props.id || this.id;
     this.type = this.props.type;

@@ -1,5 +1,5 @@
 import {Renderable, RenderableProps} from "@/Game/RenderEngine/Renderable.ts";
-import {Tick} from "@/GameEngine/Tick.ts";
+import {Tick} from "@/GameEngine/Tick/Tick.ts";
 import {randomRange} from "@/Game/helpers/randomRange.ts";
 import {ImageProvider} from "@/Game/RenderEngine/ImageProvider.ts";
 import {
@@ -14,6 +14,7 @@ import {id} from "@/GameEngine/ResourceEngine/helpers/id.ts";
 import {Placement} from "@/Game/RenderEngine/Placement.ts";
 
 export class Factory {
+  public id = id();
   private elements: Renderable[] = [];
   private config: NormalizedRenderFactoryConfig;
   private turn: number = 0;
@@ -21,7 +22,8 @@ export class Factory {
 
   constructor(
     private Element: ElementCreation,
-    config?: RenderFactoryConfigProps,
+    config: RenderFactoryConfigProps,
+    private tick: Tick,
   ) {
     this.config = this.normalizeConfig(config)
   }
@@ -70,7 +72,7 @@ export class Factory {
   public spawnElement = (): Renderable => {
     const random = this._randomValues();
     const initialPosition = new Placement(random).position_outside_viewport
-    return new this.Element(random, initialPosition);
+    return new this.Element(random, initialPosition, this.tick);
   }
 
   private _spawnInitialElements = (): Renderable => {
@@ -80,12 +82,13 @@ export class Factory {
       y: randomRange(0, 100)
     }
     const initialPosition = new Placement(_random).position_inside_viewport
-    return new this.Element(_random, initialPosition);
+    return new this.Element(_random, initialPosition, this.tick);
   }
 
-  public update = (world_x: number, world_y: number, tick: Tick): void => {
-    if (this.turn < tick.current_turn) {
-      this.turn = tick.current_turn;
+  public update = (world_x: number, world_y: number): void => {
+    const {current_turn} = this.tick
+    if (this.turn < current_turn) {
+      this.turn = current_turn;
       if (this._shouldAddElement()) {
         // console.log('spawn on ', this.turn)
         this._add(this.spawnElement(), world_x, world_y)

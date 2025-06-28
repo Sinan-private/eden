@@ -44,7 +44,7 @@ export class GameState {
 
   public renderHarvest = () => {
     // Todo seems here lies the issue with mana not rendering on the second harvest
-    console.log("renderHarvest", this.currentHarvest?.mana_images);
+    // console.log("renderHarvest", this.currentHarvest?.mana_images);
     return this.currentHarvest?.mana_images || []
   }
 

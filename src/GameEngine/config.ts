@@ -1,5 +1,5 @@
 // Default Config
-import {TickCreationProps} from "@/GameEngine/Tick.ts";
+import {TickCreationProps} from "@/GameEngine/Tick/Tick.ts";
 import {AdminControllerCreationProps} from "@/GameEngine/Admin/AdminController.ts";
 
 type Config = {

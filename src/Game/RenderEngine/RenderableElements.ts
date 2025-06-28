@@ -84,6 +84,11 @@ export class ManaVein extends Renderable {
   get scale() {
     return 0.3 + this.random_seed * 0.2
   }
+
+  get brightness(): number {
+    // return super.brightness * 4;
+    return 1 + this._tick.breath * 2
+  }
 }
 
 export class Element extends Renderable {

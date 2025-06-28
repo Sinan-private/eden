@@ -39,16 +39,16 @@ export class RenderEngine {
     config: RenderFactoryConfigProps,
     Element: ElementCreation
     ) => {
-    const factory = new RenderFactory(Element, config)
+    const factory = new RenderFactory(Element, config, this.props.tick)
     this.factories.push(factory.initialize(this.world_x, this.world_y));
   }
 
-  public remove = (source: Renderable) => {
-    this.elements = this.elements.filter(s => s !== source);
+  public remove = (id: string) => {
+    this.elements = this.elements.filter(s => s.id !== id);
   }
 
-  public removeFactory = (source: RenderFactory) => {
-    this.factories = this.factories.filter(s => s !== source);
+  public removeFactory = (id: string) => {
+    this.factories = this.factories.filter(s => s.id !== id);
   }
 
   public update = () => {
@@ -59,7 +59,7 @@ export class RenderEngine {
   private _updateElements = () => {
     for (const source of this.elements) {
       if (source.left_viewport) {
-        this.remove(source);
+        this.remove(source.id);
       } else {
         source.update(this.world_x, this.world_y);
       }
@@ -73,7 +73,7 @@ export class RenderEngine {
         // This should only happen with unmount_on_leaving_viewport
         // this.removeFactory(factory);
       } else {
-        factory.update(this.world_x, this.world_y, this.props.tick);
+        factory.update(this.world_x, this.world_y);
       }
     }
   }

@@ -10,7 +10,7 @@ export const Tunnel = observer(() => {
   const {digging_depth} = behemoth
   const {renderHarvest} = gameState
   const renderImages = renderHarvest();
-  console.log(toJS(renderImages))
+  // console.log(toJS(renderImages))
 
   return (
     <div
