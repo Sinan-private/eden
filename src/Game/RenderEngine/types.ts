@@ -1,6 +1,6 @@
 import {ImageEntry, RenderImageType} from "@/Game/RenderEngine/imageRegistry.ts";
 import {Renderable, RenderableProps} from "@/Game/RenderEngine/Renderable.ts";
-import {Tick} from "@/GameEngine/Tick/Tick.ts";
+import {GameClass} from "@/Game";
 
 export type InitialPosition = {top: number; left: number}
 
@@ -48,4 +48,4 @@ export type PlacementProps = {
   anchor?: AnchorProps;
 }
 
-export type ElementCreation = new (config: RenderableProps, initialPosition: InitialPosition, tick: Tick) => Renderable
+export type ElementCreation = new (config: RenderableProps, initialPosition: InitialPosition, game: GameClass) => Renderable

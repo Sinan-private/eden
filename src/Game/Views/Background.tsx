@@ -22,8 +22,9 @@ export const Background = observer(() => {
       }}/>
 
       <div
+        id="Danger_Blood"
         className="absolute pointer-events-none bottom-0 left-0 w-full h-1/2 bg-red-500 mix-blend-color blur-[110px] z-1"
-        style={{transform: `translateY(${bloodPosition}%)`, opacity: 0.5 + distortionStrength}}
+        style={{transform: `translateY(${bloodPosition}%)`, opacity: 0.5 + distortionStrength, zIndex: 1}}
       />
     </>
   )

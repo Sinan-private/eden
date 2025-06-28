@@ -20,7 +20,7 @@ import {ElementCreation, RenderFactoryConfigProps} from "@/Game/RenderEngine/typ
 export class RenderEngine {
   private elements: Renderable[] = [];
   private factories: RenderFactory[] = [];
-  constructor(private props: GameClass) {
+  constructor(private game: GameClass) {
   }
 
   get world_x(): number {
@@ -28,7 +28,7 @@ export class RenderEngine {
   }
 
   get world_y(): number {
-    return this.props.behemoth.climb_height.value
+    return this.game.behemoth.climb_height.value
   }
 
   public add = (source: Renderable) => {
@@ -39,7 +39,7 @@ export class RenderEngine {
     config: RenderFactoryConfigProps,
     Element: ElementCreation
     ) => {
-    const factory = new RenderFactory(Element, config, this.props.tick)
+    const factory = new RenderFactory(Element, config, this.game)
     this.factories.push(factory.initialize(this.world_x, this.world_y));
   }
 

@@ -85,9 +85,18 @@ export class ManaVein extends Renderable {
     return 0.3 + this.random_seed * 0.2
   }
 
+  get hue_rotate(): number {
+    // + this.danger_level * 15
+    return this._game.upstream.danger * 1.5;
+  }
+
+  get blur(): number {
+    return this._game.tick.breath * 2;
+  }
+
   get brightness(): number {
     // return super.brightness * 4;
-    return 1 + this._tick.breath * 2
+    return 1 + this._game.tick.breath * 2
   }
 }
 

@@ -40,16 +40,16 @@ export const Gaja = observer(() => {
       anchor: "gaja",
     }, Branch
     )
-    renderEngine.addFactory({
-        initial_amount: 5,
-        spawn_min_distance: 100,
-        spawn_chance: 10,
-        type: 'cloud',
-        // z: -1,
-        z: [3, 8],
-        x: [0, 100],
-      }, Cloud
-    )
+    // renderEngine.addFactory({
+    //     initial_amount: 5,
+    //     spawn_min_distance: 100,
+    //     spawn_chance: 10,
+    //     type: 'cloud',
+    //     // z: -1,
+    //     z: [3, 8],
+    //     x: [0, 100],
+    //   }, Cloud
+    // )
     renderEngine.addFactory({
       initial_amount: 2,
       spawn_min_distance: 400,
