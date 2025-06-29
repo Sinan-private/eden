@@ -38,35 +38,27 @@ export class Factory {
     return this;
   }
 
+  public animate = (world_x: number, world_y: number): void => {
+    const {current_turn} = this._game.tick
+    if (this.turn < current_turn) {
+      this.turn = current_turn;
+      if (this._shouldAddElement()) {
+        // console.log('spawn on ', this.turn)
+        this._add(this.spawnElement(), world_x, world_y)
+      }
+    }
+    // console.log(tick.current_turn)
+    this.elements.forEach(element => {
+      if (element.left_viewport) {
+        this._remove(element.id)
+      }
+    });
+    this._animate(world_x, world_y)
+  }
+
+
   public getElements = (): Renderable[] => {
     return this.elements;
-  }
-
-  private _add = (source: Renderable, world_x: number, world_y: number) => {
-    this.elements.push(source.initialize(world_x, world_y));
-  }
-
-  private _remove = (id: string) => {
-    this.elements = this.elements.filter(s => s.id !== id);
-  }
-
-  private _randomValues = (): RenderableProps & PlacementProps => {
-    const x = randomRange(...this.config.x)
-    const y = randomRange(...this.config.y)
-    const z = randomRange(...this.config.z)
-    const type = this.config.type
-    const image = ImageProvider.random(type)
-    const {width, height} = image
-    return {
-      x,
-      y,
-      z,
-      type,
-      image: image.key,
-      anchor: this.config.anchor,
-      width,
-      height,
-    }
   }
 
   public spawnElement = (): Renderable => {
@@ -85,40 +77,25 @@ export class Factory {
     return new this.Element(_random, initialPosition, this._game);
   }
 
-  public update = (world_x: number, world_y: number): void => {
-    const {current_turn} = this._game.tick
-    if (this.turn < current_turn) {
-      this.turn = current_turn;
-      if (this._shouldAddElement()) {
-        // console.log('spawn on ', this.turn)
-        this._add(this.spawnElement(), world_x, world_y)
-      }
-    }
-    // console.log(tick.current_turn)
-    this.elements.forEach(element => {
-      if (element.left_viewport) {
-        this._remove(element.id)
-      }
-    });
-    this.animate(world_x, world_y)
-  }
-
-  public animate = (world_x: number, world_y: number) =>
-    this.elements.forEach(i => i.update(world_x, world_y));
 
 
-  private distanceToClosestElement = (): number => {
+  private _animate = (world_x: number, world_y: number) =>
+    this.elements.forEach(elem => elem.animate(world_x, world_y));
+
+
+
+  private _distanceToClosestElement = (): number => {
     const sorted = this.elements
       .map(({y}) => y)
       .sort((a, b) => a - b)
-    return sorted[0] || Infinity;
+    return sorted[0] ?? Infinity;
   }
 
   private _shouldAddElement = (): boolean => {
     const [min, max] = this.config.spawn_amount;
     const reached_min = this.elements.length < min
     const reached_max = this.elements.length >= max
-    const far_enough = this.distanceToClosestElement() >= this.config.spawn_min_distance
+    const far_enough = this._distanceToClosestElement() >= this.config.spawn_min_distance
     if (!far_enough) {
       // console.log('not far enough')
       return false
@@ -152,6 +129,32 @@ export class Factory {
       spawn_chance: normalize('spawn_chance'),
       spawn_amount: normalize('spawn_amount'),
       spawn_min_distance: normalize('spawn_min_distance'),
+    }
+  }
+  private _add = (source: Renderable, world_x: number, world_y: number) => {
+    this.elements.push(source.initialize(world_x, world_y));
+  }
+
+  private _remove = (id: string) => {
+    this.elements = this.elements.filter(s => s.id !== id);
+  }
+
+  private _randomValues = (): RenderableProps & PlacementProps => {
+    const x = randomRange(...this.config.x)
+    const y = randomRange(...this.config.y)
+    const z = randomRange(...this.config.z)
+    const type = this.config.type
+    const image = ImageProvider.random(type)
+    const {width, height} = image
+    return {
+      x,
+      y,
+      z,
+      type,
+      image: image.key,
+      anchor: this.config.anchor,
+      width,
+      height,
     }
   }
 }

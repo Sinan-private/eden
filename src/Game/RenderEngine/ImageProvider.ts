@@ -19,7 +19,7 @@ export class ImageProvider {
     imageRegistry.filter(image => image.type === type);
 
   static random = (type: RenderImageType) => {
-    const images = ImageProvider.getImagesByType(type)
+    const images = ImageProvider.getByType(type)
     const index = randomRange(0, images.length - 1)
     return images[index]
   }
@@ -31,12 +31,6 @@ export class ImageProvider {
   static get getGajaSize() {
     return getGajaSize()
   }
-
-  static getImage = (key: RenderImageKey): ImageEntry =>
-    imageRegistry.find(entry => entry.key === key) as ImageEntry;
-
-  static getImagesByType = (type: RenderImageType): ImageEntry[] =>
-    imageRegistry.filter(image => image.type === type);
 
 }
 

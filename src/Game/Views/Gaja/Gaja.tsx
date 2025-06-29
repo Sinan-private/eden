@@ -9,15 +9,10 @@ import {BACKGROUND_IMAGE_WIDTH} from "@/Game/RenderEngine/media_queries.ts";
 import {ImageProvider} from "@/Game/RenderEngine/ImageProvider.ts";
 import {Branch, Cloud, ManaVein, Mushroom} from "@/Game/RenderEngine/RenderableElements.ts";
 import {RenderFactoryConfigProps} from "@/Game/RenderEngine/types.ts";
-
-const BACKGROUND_IMAGE_HEIGHT = 600;
+import {Renderable} from "@/Game/RenderEngine/Renderable.ts";
 
 export const Gaja = observer(() => {
   const {renderEngine} = game()
-  const {getByKey} = game().resources
-  const climb_height = getByKey('behemoth_climb_height').value
-  const trunkDisplacement = climb_height - BACKGROUND_IMAGE_HEIGHT * 3
-  const prop = (trunkDisplacement % BACKGROUND_IMAGE_HEIGHT) - BACKGROUND_IMAGE_HEIGHT
   useComponentMount(() => {
     // renderEngine.add(new Branch({z: -9, image: 'branch1', type: 'branch', offset_x: -700}))
     renderEngine.addFactory(branchConfig, Branch)
@@ -26,38 +21,57 @@ export const Gaja = observer(() => {
     renderEngine.addFactory(mushroomConfig, Mushroom)
   })
 
-  const elements = renderEngine.getElements()
-
   return (
     <Tree>
       <Trunk displacement={renderEngine.trunk_position}/>
-      {/*<Branches displacement={climb_height}/>*/}
       <Behemoth/>
       <Digging/>
-      {elements.map(element => (
-        <div
-          id={'Branch' + element.id}
-          key={element.id}
-          className={element.className}
-          style={{
-            ...element.style
-          }}
-        >
-          <img src={element.image} alt=""/>
-          {/*<p className="relative top-[-250px] right-[-100px]">{element.y.toFixed()}</p>*/}
-        </div>
-      ))}
+      <ElementMapper/>
     </Tree>
   )
 })
 
+const ElementMapper = () => {
+  const {renderEngine} = game()
+  const elements = renderEngine.getElements()
+
+  return (
+    <>
+      {elements.map(element => (
+          <ElementRender key={element.id} element={element}/>
+        )
+      )}
+    </>
+  )
+}
+
+const ElementRender = ({element}: { element: Renderable }) => {
+  const {
+    id,
+    className,
+    style,
+    image,
+    type
+  } = element;
+  return (
+    <div
+      id={type + id}
+      key={id}
+      className={className}
+      style={style}
+    >
+      <img src={image} alt=""/>
+    </div>
+  )
+}
+
 const Tree = ({children}: { children: ReactNode }) => {
   const {w} = ImageProvider.getGajaSize
   return (
-    <div id="Tree" className={`
-  fixed top-0 right-0 h-screen z-1
-  `}
-         style={{width: w}}
+    <div
+      id="Tree"
+      className={`fixed top-0 right-0 h-screen z-1`}
+      style={{width: w}}
     >
       {children}
     </div>

@@ -1,6 +1,8 @@
 import {ImageProvider} from "@/Game/RenderEngine/ImageProvider.ts";
 import {PlacementProps} from "@/Game/RenderEngine/types.ts";
 
+// Would be nice to use % positions instead of px. This way I would have a seamless resizing
+
 export class Placement {
   x: number;
   y: number;

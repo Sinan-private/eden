@@ -4,13 +4,14 @@ export class GlobalBreath {
   private current_tick: number = 0;
   private direction: 1 | -1 = 1;
   public value: number = 0;
+
   constructor(
     private duration_in_ticks: number = 100 // ms for one phase (in or out)
   ) {
-    console.log('breath')
-makeAutoObservable(this)
+    makeAutoObservable(this)
   }
-  public update(tick: number) {
+
+  public update() {
     this.current_tick++;
 
     const t = Math.min(this.current_tick / this.duration_in_ticks, 1);
@@ -19,7 +20,6 @@ makeAutoObservable(this)
     this.value = this.direction === 1
       ? eased
       : 1 - eased;
-    console.log(tick, tick % this.duration_in_ticks)
 
     if (t >= 1) {
       this.direction *= -1;

@@ -100,7 +100,7 @@ export class ManaVein extends Renderable {
 
   get brightness(): number {
     // return super.brightness * 4;
-    return 1 + this._game.tick.breath * 2
+    return 1 + this._game.tick.breath //* 2
   }
 }
 

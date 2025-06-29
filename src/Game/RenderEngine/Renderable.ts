@@ -45,11 +45,11 @@ export abstract class Renderable {
     initialPosition: InitialPosition,
     protected _game: GameClass,
   ) {
-    const {image, width, height} = ImageProvider.getImage(this.props.image);
+    const {image, width, height} = ImageProvider.get(this.props.image);
     this.id = props.id || this.id;
     this.type = this.props.type;
-    this.offset_x = props.x || 0;
-    this.offset_y = props.y || 0;
+    this.offset_x = props.x ?? 0;
+    this.offset_y = props.y ?? 0;
     this.offset_z = Math.round(props.z);
     this.image = image;
     this.width = width;
@@ -59,7 +59,7 @@ export abstract class Renderable {
     this.left = initialPosition.left;
   }
 
-  update(x: number, y: number): void {
+  animate(x: number, y: number): void {
     //   This should trigger the movement of the world since creation.
     //   The individual movement is based on the z-axes and will be calculated individually
     this.world_x = x;
@@ -71,7 +71,6 @@ export abstract class Renderable {
   }
 
   public initialize = (initialX: number, initialY: number): Renderable => {
-
     this.initial_x = initialX;
     this.initial_y = initialY;
     this.world_x = initialX;
@@ -97,18 +96,13 @@ export abstract class Renderable {
   }
 
   get y() {
-    let zOffset = this.offset_z * 8
-    zOffset = 0
     const delta = this.world_y - this.initial_y // + this.offset_y;
     const getParallaxFactor = (val: number): number => {
       return 10 ** (-val / 10);
     };
-    // const parallax = ((1 + this.offset_z) / (20 - PARALLAX_INTENSITY))
     const parallax = getParallaxFactor(-this.offset_z)
-    return delta * parallax - zOffset
+    return delta * parallax
   }
-
-  // filter: this.filter + ` brightness(0.7) hue-rotate(${4 * Math.abs(this.offset_z)}deg) brightness(${multiplyer}) saturate(${multiplyer})`,
 
   get brightness() {
     return 1
@@ -175,4 +169,3 @@ export abstract class Renderable {
   //   return (hash % 1000000) / 1000000;
   // }
 }
-

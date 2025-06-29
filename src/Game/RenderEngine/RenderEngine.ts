@@ -57,7 +57,7 @@ export class RenderEngine {
     this.factories = this.factories.filter(s => s.id !== id);
   }
 
-  public update = () => {
+  public animate = () => {
     this._updateElements()
     this._updateFactories()
   }
@@ -67,7 +67,7 @@ export class RenderEngine {
       if (source.left_viewport) {
         this.remove(source.id);
       } else {
-        source.update(this.world_x, this.world_y);
+        source.animate(this.world_x, this.world_y);
       }
     }
   }
@@ -79,7 +79,7 @@ export class RenderEngine {
         // This should only happen with unmount_on_leaving_viewport
         // this.removeFactory(factory);
       } else {
-        factory.update(this.world_x, this.world_y);
+        factory.animate(this.world_x, this.world_y);
       }
     }
   }

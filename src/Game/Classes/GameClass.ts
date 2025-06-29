@@ -61,7 +61,7 @@ export class GameClass extends GameEngine {
 
   private _tick = () => {
     this.behemoth.tickUpdate(this)
-    this.renderEngine.update()
+    this.renderEngine.animate()
   }
 
   private _turn = () => {

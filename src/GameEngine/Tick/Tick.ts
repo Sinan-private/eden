@@ -120,7 +120,7 @@ export class Tick {
 
   private _nextTick() {
     this.tick_index++;
-    this._breath.update(this.tick_index)
+    this._breath.update()
     this.tickSubscribers.forEach((callback) => callback(this.tick_index))
   }
 
