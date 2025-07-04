@@ -39,21 +39,8 @@ export class Factory {
   }
 
   public animate = (world_x: number, world_y: number): void => {
-    const {current_turn} = this._game.tick
-    if (this.turn < current_turn) {
-      this.turn = current_turn;
-      if (this._shouldAddElement()) {
-        // console.log('spawn on ', this.turn)
-        this._add(this.spawnElement(), world_x, world_y)
-      }
-    }
-    // console.log(tick.current_turn)
-    this.elements.forEach(element => {
-      if (element.left_viewport) {
-        this._remove(element.id)
-      }
-    });
     this._animate(world_x, world_y)
+    this._updateElements(world_x, world_y)
   }
 
 
@@ -77,14 +64,26 @@ export class Factory {
     return new this.Element(_random, initialPosition, this._game);
   }
 
-
+  private _updateElements = (world_x: number, world_y: number): void => {
+    const {current_turn} = this._game.tick
+    const is_turn_update = this.turn < current_turn
+    if (is_turn_update) {
+      this.turn = current_turn;
+      if (this._shouldAddElement()) {
+        this._add(this.spawnElement(), world_x, world_y)
+      }
+      this.elements.forEach(({id, left_viewport}) => {
+        if (left_viewport) {
+          this._remove(id)
+        }
+      });
+    }
+  }
 
   private _animate = (world_x: number, world_y: number) =>
     this.elements.forEach(elem => elem.animate(world_x, world_y));
 
-
-
-  private _distanceToClosestElement = (): number => {
+  private get _distance_to_closest_element(): number {
     const sorted = this.elements
       .map(({y}) => y)
       .sort((a, b) => a - b)
@@ -95,20 +94,16 @@ export class Factory {
     const [min, max] = this.config.spawn_amount;
     const reached_min = this.elements.length < min
     const reached_max = this.elements.length >= max
-    const far_enough = this._distanceToClosestElement() >= this.config.spawn_min_distance
+    const far_enough = this._distance_to_closest_element >= this.config.spawn_min_distance
     if (!far_enough) {
-      // console.log('not far enough')
       return false
     }
     if (reached_min) {
-      // console.log('reached min', this.elements.length)
       return true
     }
     if (reached_max) {
-      // console.log('reached max', this.elements.length)
       return false
     }
-
     const chance = Math.random()
     return chance < (this.config.spawn_chance / 100)
   }
@@ -143,7 +138,7 @@ export class Factory {
     const x = randomRange(...this.config.x)
     const y = randomRange(...this.config.y)
     const z = randomRange(...this.config.z)
-    const type = this.config.type
+    const {type, anchor} = this.config;
     const image = ImageProvider.random(type)
     const {width, height} = image
     return {
@@ -152,7 +147,7 @@ export class Factory {
       z,
       type,
       image: image.key,
-      anchor: this.config.anchor,
+      anchor,
       width,
       height,
     }
