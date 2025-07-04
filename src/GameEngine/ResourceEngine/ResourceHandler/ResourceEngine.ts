@@ -144,11 +144,10 @@ export class ResourceEngine<K extends string, T extends string> {
   public levelUp = (level: LevelUpdate<K, T>) => {
     const canLevelUp = this.hasEnough(level.give) && this.hasEnough(level.need)
     if (canLevelUp) {
-      const {
-        give = [],
-        gain = [],
-      } = level
-      this.getTradeChange(this._levelToTradeConversion(give), this._levelToTradeConversion(gain)).enforceTrade()
+      const {give = [], gain = []} = level
+      const _give = this._levelToTradeConversion(give)
+      const _gain = this._levelToTradeConversion(gain)
+      this.getTradeChange(_give, _gain).enforceTrade()
     }
   }
 
