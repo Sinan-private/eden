@@ -684,7 +684,7 @@
     "min": 0,
     "max": null,
     "label": "Upstream height",
-    "type": "",
+    "type": "empty",
     "iconName": "empty",
     "cost": null,
     "revealedAt": null

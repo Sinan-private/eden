@@ -1,10 +1,10 @@
-import {ResourceClass, ResourceStoreClass} from "@/GameController/Resource";
+import {ResourceClass, ResourceEngineClass} from "@/GameEngine"
 
 import {GameBaseProps} from "@/Game/types.ts";
 
 export class UpstreamClass {
   private _height: ResourceClass;
-  private _resourceStore: ResourceStoreClass
+  private _resourceStore: ResourceEngineClass
 
   constructor({_resourceStore}: GameBaseProps) {
     this._resourceStore = _resourceStore;

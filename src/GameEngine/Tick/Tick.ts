@@ -1,5 +1,6 @@
 import {makeAutoObservable} from "mobx";
 import {id} from "@/GameEngine/ResourceEngine/helpers/id.ts";
+import {GlobalBreath} from "@/GameEngine/Tick/GlobalBreath.ts";
 
 export type TickCreationProps = {
   ticks_per_second?: number;
@@ -12,6 +13,8 @@ export type Subscription = {
   interval: 'tick' | 'turn'
 }
 
+const breath = new GlobalBreath(80);
+
 export class Tick {
   public id: string = id()
   public tick_index: number = 0;
@@ -19,6 +22,7 @@ export class Tick {
   public _ticks_per_second = 40;
   public _ticks_per_turn = 20;
   private tickInterval: NodeJS.Timeout | null = null;
+  private _breath = breath;
 
   constructor(config?: TickCreationProps) {
     if (config?.ticks_per_second) {
@@ -98,6 +102,10 @@ export class Tick {
     return Math.floor(this.current_tick / this.ticks_per_turn)
   }
 
+  get breath(): number {
+    return this._breath.value
+  }
+
   private isNextTurn = () => {
     return !(this.tick_index % this.ticks_per_turn)
   }
@@ -112,6 +120,7 @@ export class Tick {
 
   private _nextTick() {
     this.tick_index++;
+    this._breath.update()
     this.tickSubscribers.forEach((callback) => callback(this.tick_index))
   }
 

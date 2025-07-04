@@ -3,13 +3,14 @@ import {cn} from "@/lib/utils.ts";
 import {Acid} from "@/Game/Views/Gaja/Digging/Acid.tsx";
 import tunnelEdges from "../../../../assets/images/Tunnel.png"
 import {game} from "@/Game";
+import {toJS} from "mobx";
 
 export const Tunnel = observer(() => {
-  const {behemoth} = game()
+  const {behemoth, gameState} = game()
   const {digging_depth} = behemoth
-  const {gameState} = game()
   const {renderHarvest} = gameState
   const renderImages = renderHarvest();
+  // console.log(toJS(renderImages))
 
   return (
     <div

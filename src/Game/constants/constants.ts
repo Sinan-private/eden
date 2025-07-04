@@ -23,7 +23,7 @@ export const BEHEMOTH_STAMINA_PER_SLAVE = 35;
 
 
 // Coefficients
-export const CLIMBING_SPEED_COEFFICIENT = 0.1
+export const CLIMBING_SPEED_COEFFICIENT = 0.3
 export const FLUSHING_SPEED = 1;
 export const DRYING_SPEED = 3;
 export const HARVEST_SPEED = 0.7;

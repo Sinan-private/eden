@@ -61,6 +61,7 @@ export class HarvestRenderClass {
 
   public createImages = (available_mana: number) => {
     const images = getManaImageValues(Math.ceil(available_mana))
+    console.log(available_mana, images, this.mana_images)
     this.mana_images.push(...images)
   }
 

@@ -2,7 +2,7 @@ import {ResourceUpdateProps} from "@/GameEngine/ResourceEngine/ResourceHandler";
 import {ResourceKeys, ResourceEngineClass, ResourceTypes} from "src/GameEngine/ResourceEngine";
 import {AdminController, AdminControllerCreationProps} from "@/GameEngine/Admin/AdminController.ts";
 import {id} from "@/GameEngine/ResourceEngine/helpers/id.ts";
-import {Tick, TickCreationProps} from "@/GameEngine/Tick.ts";
+import {Tick, TickCreationProps} from "@/GameEngine/Tick/Tick.ts";
 import {createSingletonResourceStore} from "@/GameEngine/ResourceEngine/ResourceHandler/createSingletonResourceStore.ts";
 import {unique} from "@/GameEngine/ResourceEngine/helpers/array.ts";
 import {EventEngine} from "@/GameEngine/EventEngine/EventEngine.ts";

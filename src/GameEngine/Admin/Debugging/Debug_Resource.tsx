@@ -19,7 +19,7 @@ type Debug_ResourceProps = {
 
 export const Debug_Resource = observer((
   {
-    incrementBy = 10,
+    incrementBy = 100,
     decrementBy = 10,
     resource:
       {

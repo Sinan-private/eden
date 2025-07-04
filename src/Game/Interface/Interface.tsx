@@ -1,7 +1,6 @@
 import React from "react";
 import {observer} from "mobx-react";
 import {game} from "@/Game";
-import {Button} from "@/GameEngine/components/ui/button.tsx";
 import {TopBar} from "./TopBar.tsx";
 import {FooterButtons} from "./FooterButtons.tsx";
 import {Debug_BehemothControls} from "@/Game/debug/custom/Debug_BehemothControls.tsx";
@@ -51,13 +50,13 @@ const SidebarExtension = observer(() => {
 })
 
 const FactionMain = observer(() => {
-  const {produce} = game().resources
-  const testProduce = () => produce('raw_mana_level_1', 0.35)
+  // const {produce} = game().resources
+  // const testProduce = () => produce('raw_mana_level_1', 0.35)
   // const testProduce = () => get('dirty_mana_level_1').updateValueBy(0.2)
   return (
     <>
-      Faction main
-      <Button onClick={testProduce}>Testing</Button>
+      {/*Faction main*/}
+      {/*<Button onClick={testProduce}>Testing</Button>*/}
     </>
   )
 })

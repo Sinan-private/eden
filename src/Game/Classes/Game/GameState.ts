@@ -1,11 +1,11 @@
-import {HarvestRenderClass} from "@/Game/Views/Gaja/Digging/HarvestRenderClass.ts";
+import {HarvestRenderClass} from "@/Game/RenderEngine/HarvestRenderClass.ts";
 import {makeAutoObservable} from "mobx";
 import {AUTO_CLIMB, AUTO_COLLECT_MANA} from "@/Game/constants/constants.ts";
 import {SegmentedPower} from "@/Game/Classes/SegmentedPower.ts";
 import {ResourceKeys, ResourceEngineClass} from "@/GameEngine";
 import {id} from "@/GameEngine/ResourceEngine/helpers/id.ts";
 
-// My goal is to create the HarvestRenderer in here. The current setup sucks
+// This setup sucks. And it seems to create the buggy behavior of my HarvestRenderClass
 
 
 const harvestRender = new HarvestRenderClass();
@@ -43,6 +43,8 @@ export class GameState {
   }
 
   public renderHarvest = () => {
+    // Todo seems here lies the issue with mana not rendering on the second harvest
+    // console.log("renderHarvest", this.currentHarvest?.mana_images);
     return this.currentHarvest?.mana_images || []
   }
 
